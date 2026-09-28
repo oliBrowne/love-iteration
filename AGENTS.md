@@ -2,7 +2,7 @@
 
 Read `docs/ARCHITECTURE.md` and run `node scripts/roadmap.mjs next` before editing. Complete exactly the first unchecked task in `ROADMAP.md`. Keep each day's change small and coherent. Do not skip or silently rewrite tasks.
 
-Inspect the current code and tests. Implement the task, add or adjust a meaningful test when behavior changes, run the relevant tests and build, and inspect the diff. Mark only that task `[x]` after verification. Commit with `LNNN: short description`. If push authentication works, push the commit to the tracked branch. If it fails, keep the local commit and report the exact blocker without asking for secrets or putting credentials in the repository.
+Inspect the current code and tests. Implement the task, add or adjust a meaningful test when behavior changes, run the relevant tests and build, and inspect the diff. Mark only that task `[x]` after verification. Commit with `LNNN: short description`. Follow the existing automation's branch and publishing policy; these repository instructions do not authorize direct pushes to `main` or merges. If publication fails, keep the local commit and report the exact blocker without asking for secrets or putting credentials in the repository.
 
 Do not fabricate a passing test, commit generated build output, or upload personal journal content. Never paste credentials into prompts or files. Sharing and network features require explicit product controls described in the architecture. If the next task depends on a missing service or policy decision, leave it unchecked and report what is needed.
 
