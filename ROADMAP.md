@@ -6,7 +6,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 
 - [x] L001 Create Vite React TypeScript app — Done when npm run dev shows the Love Iteration heading.
 - [x] L002 Add build and typecheck scripts — Done when both commands exit successfully.
-- [ ] L003 Add Vitest test runner — Done when one sample domain test passes.
+- [x] L003 Add Vitest test runner — Done when one sample domain test passes.
 - [ ] L004 Add Playwright browser test runner — Done when a browser smoke test opens the app.
 - [ ] L005 Add ESLint configuration — Done when npm run lint exits successfully.
 - [ ] L006 Add Prettier formatting script — Done when npm run format:check exits successfully.
