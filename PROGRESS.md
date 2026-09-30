@@ -17,3 +17,9 @@
 - Verified: npm run test:e2e (1 passed, using pre-installed Chromium via PW_CHROMIUM_PATH), npm test, npm run typecheck, npm run build, node --test scripts/roadmap.test.mjs.
 - Next: L005 add ESLint configuration.
 - Blockers: none
+
+## 2026-09-30 — L005: add ESLint configuration
+- Changed: npm run lint checks TypeScript and React hooks rules across the project.
+- Verified: npm run lint (clean), npm run typecheck, npm test, npm run build, node --test scripts/roadmap.test.mjs.
+- Next: L006 add Prettier formatting script.
+- Blockers: none

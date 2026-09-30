@@ -8,7 +8,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L002 Add build and typecheck scripts — Done when both commands exit successfully.
 - [x] L003 Add Vitest test runner — Done when one sample domain test passes.
 - [x] L004 Add Playwright browser test runner — Done when a browser smoke test opens the app.
-- [ ] L005 Add ESLint configuration — Done when npm run lint exits successfully.
+- [x] L005 Add ESLint configuration — Done when npm run lint exits successfully.
 - [ ] L006 Add Prettier formatting script — Done when npm run format:check exits successfully.
 - [ ] L007 Add strict TypeScript settings — Done when invalid implicit any fails typecheck.
 - [ ] L008 Create source folder boundaries — Done when domain, data, features, and ui folders exist with index files.
