@@ -11,3 +11,9 @@
 - Verified: npm test (2 passed), npm run typecheck, npm run build, node --test scripts/roadmap.test.mjs.
 - Next: L004 add Playwright browser smoke test.
 - Blockers: none
+
+## 2026-09-30 — L004: add Playwright browser test runner
+- Changed: npm run test:e2e builds the app, serves it, and a smoke test opens it and checks the Love Iteration heading.
+- Verified: npm run test:e2e (1 passed, using pre-installed Chromium via PW_CHROMIUM_PATH), npm test, npm run typecheck, npm run build, node --test scripts/roadmap.test.mjs.
+- Next: L005 add ESLint configuration.
+- Blockers: none
