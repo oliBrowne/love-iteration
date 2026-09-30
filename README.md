@@ -26,7 +26,7 @@ Warm paper tones, a soft rose accent, generous space, and readable type. Make th
 
 ## Where the project stands
 
-The `main` branch starts with this guide. A React, TypeScript, and Vite starter, agent instructions, and a detailed 360-task roadmap are available in [draft pull request #1](https://github.com/oliBrowne/love-iteration/pull/1).
+The roadmap is on `main`: a React, TypeScript, and Vite starter, agent instructions, and a detailed 360-task roadmap in `ROADMAP.md`.
 
 Always inspect the branch you're working on. If `ROADMAP.md` exists, it is the task queue: use its first unchecked task and its acceptance check. Read `CLAUDE.md`, `AGENTS.md`, `docs/ARCHITECTURE.md`, and `docs/DAILY-RUN.md` when present. Follow their task order and technical boundaries, and apply the personal direction above to the experience.
 
@@ -34,17 +34,17 @@ If the branch has only this README, use the starter queue below. Check existing 
 
 ## The daily rhythm for Claude
 
-**One run. One small, complete improvement. One clear handoff.**
+**Each run completes the day's target of 1–12 roadmap tasks. Each task is its own verified commit, pushed straight to `main`.** The daily target formula is in [docs/DAILY-RUN.md](docs/DAILY-RUN.md).
 
 1. **Get your bearings.** Read the instructions, inspect `git status` and recent commits, and check the current app. Use the existing automation's working branch and synchronization policy. Preserve unrelated edits. If a daily task has already been completed today in the automation's configured timezone, report that and stop.
-2. **Choose the next step.** With `ROADMAP.md`, complete exactly its first unchecked task. When the roadmap helper exists, run `node scripts/roadmap.mjs check` and `node scripts/roadmap.mjs next`. Otherwise, choose the first unchecked starter task below. State the intended result in one sentence.
+2. **Choose the next step.** With `ROADMAP.md`, complete its first unchecked task, then the next, until the day's target is met. When the roadmap helper exists, run `node scripts/roadmap.mjs check` and `node scripts/roadmap.mjs next`. Otherwise, choose the first unchecked starter task below. State the intended result in one sentence.
 3. **Keep the change small.** Finish that task's observable outcome. Reuse the current stack and components. Leave later features for later runs. If a task cannot fit in one run, record what remains and leave it unchecked.
 4. **Verify the result.** Run the relevant checks that actually exist. Once the app has a build command, run it. Test meaningful behavior changes; inspect copy and styling directly. For UI work, check a narrow phone layout, keyboard access, visible focus, and any empty or error state you changed.
 5. **Leave a useful handoff.** Mark the task complete only after its acceptance check passes. Append a short entry to `PROGRESS.md` using the format below, creating the file on the first completed implementation task. Update setup instructions when commands change.
 6. **Commit the improvement.** Review the diff and stage only the task's files. Include its checkbox and progress entry in the same commit. Use `LNNN: short description` for the existing roadmap, or `SNN: short description` for the starter queue. Publish through the existing automation's branch policy. If it uses pull requests, keep that workflow.
 7. **Stop with a clear result.** Report the task, what changed, checks performed, commit or review link, and the next task. If blocked, leave the task unchecked and explain the exact blocker. Preserve useful work and any local commit if publishing fails; do not skip ahead or claim success.
 
-Keep the habit sustainable: a real bug fix, accessibility improvement, or useful documentation change can be a good day's work. Use honest dates and meaningful commits. Avoid empty commits, repetitive copy changes, or splitting one change into lots of commits just to add green squares.
+Use honest dates and meaningful commits. Never make empty commits or artificially split one change into several commits.
 
 ### Progress entry
 

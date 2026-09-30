@@ -1,0 +1,399 @@
+# 360 daily tasks
+
+Complete one numbered task per day. Each line names one small change and its observable completion check. The first unchecked task is next. See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for the product boundaries and [AGENTS.md](AGENTS.md) for the daily workflow.
+
+## 01 Foundation and app shell
+
+- [x] L001 Create Vite React TypeScript app — Done when npm run dev shows the Love Iteration heading.
+- [ ] L002 Add build and typecheck scripts — Done when both commands exit successfully.
+- [ ] L003 Add Vitest test runner — Done when one sample domain test passes.
+- [ ] L004 Add Playwright browser test runner — Done when a browser smoke test opens the app.
+- [ ] L005 Add ESLint configuration — Done when npm run lint exits successfully.
+- [ ] L006 Add Prettier formatting script — Done when npm run format:check exits successfully.
+- [ ] L007 Add strict TypeScript settings — Done when invalid implicit any fails typecheck.
+- [ ] L008 Create source folder boundaries — Done when domain, data, features, and ui folders exist with index files.
+- [ ] L009 Define app route names — Done when route type lists Home, Check-in, Ideas, and Settings.
+- [ ] L010 Render Home route — Done when direct load displays a home heading.
+- [ ] L011 Render Settings route — Done when navigation opens Settings.
+- [ ] L012 Add shared page layout — Done when Home and Settings use the same header.
+- [ ] L013 Add skip-to-content link — Done when keyboard focus can skip the header.
+- [ ] L014 Add visible focus style — Done when links and buttons show a focus ring.
+- [ ] L015 Define color tokens — Done when light palette renders without literal component colors.
+- [ ] L016 Define typography tokens — Done when headings and body use shared scale.
+- [ ] L017 Add narrow-screen spacing — Done when Home has no horizontal overflow at 320px.
+- [ ] L018 Create Button component — Done when unit test covers disabled and click behavior.
+- [ ] L019 Create TextField component — Done when label connects to its input.
+- [ ] L020 Create TextArea component — Done when label connects to its control.
+- [ ] L021 Create EmptyState component — Done when empty text is announced as content.
+- [ ] L022 Create InlineError component — Done when error message has alert semantics.
+- [ ] L023 Create LoadingState component — Done when busy state has status semantics.
+- [ ] L024 Add GitHub Actions checks — Done when pull requests run lint, typecheck, tests, and build.
+- [ ] L025 Add no-tracking CSP baseline — Done when static page blocks unlisted remote scripts.
+- [ ] L026 Define domain record metadata — Done when type includes id, schemaVersion, createdAt, updatedAt.
+- [ ] L027 Add ID generator — Done when generated IDs are valid and distinct in a test.
+- [ ] L028 Add ISO timestamp helper — Done when test freezes time and checks output.
+- [ ] L029 Define repository interface — Done when type supports get, list, put, and delete.
+- [ ] L030 Add shell browser smoke test — Done when Playwright navigates Home to Settings.
+
+## 02 Personal check-ins
+
+- [ ] L031 Define check-in record — Done when type contains date, mood, note, and record metadata.
+- [ ] L032 Validate mood choice — Done when unsupported value returns a domain error.
+- [ ] L033 Validate local date — Done when malformed date is rejected in a test.
+- [ ] L034 Add IndexedDB database opener — Done when schema creates checkins store.
+- [ ] L035 Add check-in repository save — Done when read-after-write test returns the record.
+- [ ] L036 Add check-in repository list — Done when test returns newest date first.
+- [ ] L037 Add check-in repository delete — Done when deleted record is absent in a test.
+- [ ] L038 Render Check-in route — Done when navigation opens the check-in screen.
+- [ ] L039 Add mood selection controls — Done when keyboard can select one mood.
+- [ ] L040 Add note field — Done when a check-in accepts optional plain text.
+- [ ] L041 Add check-in submit action — Done when saved check-in appears in the view.
+- [ ] L042 Reject empty mood submit — Done when an inline error appears and nothing is saved.
+- [ ] L043 Limit note length — Done when over-limit note shows remaining limit.
+- [ ] L044 Add today's check-in summary — Done when Home shows the saved mood.
+- [ ] L045 Allow one check-in per day — Done when repeat save updates the same day.
+- [ ] L046 Show today's edited time — Done when summary renders updatedAt in local time.
+- [ ] L047 Add edit-today control — Done when saved values populate the form.
+- [ ] L048 Add delete-today control — Done when confirmation precedes deletion.
+- [ ] L049 Add check-in history list — Done when earlier dates appear under a heading.
+- [ ] L050 Add history empty state — Done when first-time users see clear instructions.
+- [ ] L051 Add history date labels — Done when today and older dates are distinguishable.
+- [ ] L052 Add history mood labels — Done when icons have visible text alternatives.
+- [ ] L053 Add history pagination — Done when more than 30 items loads another page.
+- [ ] L054 Add check-in detail view — Done when selected entry shows complete note.
+- [ ] L055 Add previous-day navigation — Done when detail can move to an older entry.
+- [ ] L056 Add next-day navigation — Done when detail can move to a newer entry.
+- [ ] L057 Add keyboard check-in flow test — Done when tab, select, save, and focus work.
+- [ ] L058 Add persistence browser test — Done when check-in survives a page reload.
+- [ ] L059 Add check-in migration test — Done when older schema opens without losing records.
+- [ ] L060 Add check-in privacy copy — Done when screen states entries stay on this device.
+
+## 03 Gratitude and memories
+
+- [ ] L061 Define gratitude record — Done when type includes text, date, and metadata.
+- [ ] L062 Validate gratitude text — Done when blank text is rejected in a test.
+- [ ] L063 Add gratitude store — Done when IndexedDB migration creates gratitude store.
+- [ ] L064 Add gratitude save method — Done when repository round trip passes.
+- [ ] L065 Add gratitude list method — Done when newest entries appear first.
+- [ ] L066 Add gratitude delete method — Done when deletion test passes.
+- [ ] L067 Render Gratitude route — Done when navigation opens the page.
+- [ ] L068 Add gratitude composer — Done when user can save one appreciation.
+- [ ] L069 Add gratitude empty state — Done when page suggests a first entry.
+- [ ] L070 Show gratitude cards — Done when text and creation date are visible.
+- [ ] L071 Add gratitude edit action — Done when edited text persists after reload.
+- [ ] L072 Add gratitude delete confirmation — Done when cancel preserves the entry.
+- [ ] L073 Add gratitude character limit — Done when oversized entry is blocked.
+- [ ] L074 Add gratitude Home preview — Done when most recent appreciation appears on Home.
+- [ ] L075 Add gratitude week count — Done when count matches saved entries for current week.
+- [ ] L076 Add gratitude filter by month — Done when selection limits visible cards.
+- [ ] L077 Add gratitude keyboard test — Done when create and delete are operable by keyboard.
+- [ ] L078 Define memory record — Done when type includes title, date, note, and metadata.
+- [ ] L079 Validate memory title — Done when blank title is rejected.
+- [ ] L080 Add memories store — Done when IndexedDB migration creates memories store.
+- [ ] L081 Add memory save method — Done when repository round trip passes.
+- [ ] L082 Add memory list method — Done when entries sort by date.
+- [ ] L083 Render Memories route — Done when navigation opens the page.
+- [ ] L084 Add memory composer — Done when title and date save a memory.
+- [ ] L085 Add optional memory note — Done when note persists after reload.
+- [ ] L086 Add memory detail — Done when selected card shows full fields.
+- [ ] L087 Add memory edit — Done when title, date, and note changes persist.
+- [ ] L088 Add memory delete — Done when confirmation and removal work.
+- [ ] L089 Add memories empty state — Done when first-use copy shows what to add.
+- [ ] L090 Add gratitude and memory browser test — Done when saved entries survive reload.
+
+## 04 Date ideas and plans
+
+- [ ] L091 Define date idea record — Done when type includes title, note, state, and metadata.
+- [ ] L092 Validate idea title — Done when empty or whitespace title is rejected.
+- [ ] L093 Add idea store — Done when IndexedDB migration creates idea store.
+- [ ] L094 Add idea save method — Done when repository round trip passes.
+- [ ] L095 Add idea list method — Done when active ideas sort above completed.
+- [ ] L096 Add idea delete method — Done when deletion test passes.
+- [ ] L097 Render Ideas route — Done when navigation opens the board.
+- [ ] L098 Add new idea form — Done when valid title creates a card.
+- [ ] L099 Add optional idea note — Done when note appears on the card.
+- [ ] L100 Add idea empty state — Done when page shows a first-idea prompt.
+- [ ] L101 Add completed toggle — Done when idea moves between active and completed.
+- [ ] L102 Add idea edit — Done when title and note updates persist.
+- [ ] L103 Add idea delete confirmation — Done when cancel leaves the card.
+- [ ] L104 Add idea category field — Done when category saves with the idea.
+- [ ] L105 Add category selector — Done when a category can be chosen by keyboard.
+- [ ] L106 Add category filter — Done when selected category limits cards.
+- [ ] L107 Add text search — Done when title or note match appears.
+- [ ] L108 Add clear-search action — Done when full list returns.
+- [ ] L109 Add active and completed counts — Done when counts match repository data.
+- [ ] L110 Add idea Home preview — Done when Home links to one active idea.
+- [ ] L111 Define planned date record — Done when type includes ideaId, startsAt, and status.
+- [ ] L112 Validate planned date time — Done when invalid timestamp is rejected.
+- [ ] L113 Add planned date store — Done when migration creates plans store.
+- [ ] L114 Add schedule action — Done when an idea can get a date and time.
+- [ ] L115 Add plan list — Done when future plans sort soonest first.
+- [ ] L116 Add plan edit action — Done when changed time persists.
+- [ ] L117 Add plan cancellation — Done when cancelled item leaves upcoming list.
+- [ ] L118 Add plans Home preview — Done when next planned date appears on Home.
+- [ ] L119 Add board browser test — Done when create, filter, complete, and reload work.
+- [ ] L120 Add plans browser test — Done when schedule and cancel flow works.
+
+## 05 Rituals and habits
+
+- [ ] L121 Define ritual record — Done when type includes name, cadence, and metadata.
+- [ ] L122 Validate ritual name — Done when empty name is rejected.
+- [ ] L123 Validate cadence — Done when only daily and weekly values pass.
+- [ ] L124 Add ritual store — Done when IndexedDB migration creates rituals store.
+- [ ] L125 Add ritual save method — Done when repository round trip passes.
+- [ ] L126 Add ritual list method — Done when active rituals return in name order.
+- [ ] L127 Render Rituals route — Done when navigation opens the page.
+- [ ] L128 Add ritual creation form — Done when name and cadence create a ritual.
+- [ ] L129 Add ritual empty state — Done when first-use instructions are shown.
+- [ ] L130 Add ritual edit action — Done when name and cadence changes persist.
+- [ ] L131 Add ritual archive action — Done when archived ritual leaves active list.
+- [ ] L132 Add archived ritual view — Done when archived records remain readable.
+- [ ] L133 Define ritual completion record — Done when type links ritual and local date.
+- [ ] L134 Add completion store — Done when migration creates completions store.
+- [ ] L135 Add mark-today action — Done when daily ritual records today's completion.
+- [ ] L136 Prevent duplicate completion — Done when second click does not create another record.
+- [ ] L137 Add undo-today action — Done when today's completion can be removed.
+- [ ] L138 Add weekly completion action — Done when weekly ritual records week start.
+- [ ] L139 Add ritual last-done label — Done when card shows most recent completion.
+- [ ] L140 Add daily ritual Home preview — Done when due rituals appear on Home.
+- [ ] L141 Add weekly ritual Home preview — Done when due weekly ritual appears on Home.
+- [ ] L142 Add ritual history — Done when detail lists completion dates.
+- [ ] L143 Add ritual streak helper — Done when pure function counts consecutive periods.
+- [ ] L144 Add ritual streak display — Done when detail shows tested streak count.
+- [ ] L145 Add ritual pause field — Done when paused ritual is not shown as due.
+- [ ] L146 Add ritual resume action — Done when resumed ritual reappears when due.
+- [ ] L147 Add ritual deletion confirmation — Done when cancel preserves history.
+- [ ] L148 Add ritual browser test — Done when create, complete, undo, and reload work.
+- [ ] L149 Add weekly boundary test — Done when week rollover uses local dates correctly.
+- [ ] L150 Add ritual privacy copy — Done when no partner visibility is implied.
+
+## 06 Weekly reflection
+
+- [ ] L151 Define reflection record — Done when type contains weekStart and four optional prompts.
+- [ ] L152 Validate reflection week — Done when malformed weekStart is rejected.
+- [ ] L153 Add reflection store — Done when migration creates reflections store.
+- [ ] L154 Add reflection save method — Done when repository round trip passes.
+- [ ] L155 Add reflection list method — Done when newest week appears first.
+- [ ] L156 Render Reflection route — Done when navigation opens the page.
+- [ ] L157 Show current week dates — Done when range follows locale week setting.
+- [ ] L158 Add what-worked prompt — Done when response saves on submit.
+- [ ] L159 Add what-was-hard prompt — Done when response saves on submit.
+- [ ] L160 Add what-to-try prompt — Done when response saves on submit.
+- [ ] L161 Add appreciation prompt — Done when response saves on submit.
+- [ ] L162 Allow partial reflection — Done when one answered prompt can save.
+- [ ] L163 Add current-week edit — Done when saved responses refill the form.
+- [ ] L164 Prevent duplicate week record — Done when save updates the existing week.
+- [ ] L165 Add reflection preview — Done when Home shows current week status.
+- [ ] L166 Add reflection history list — Done when prior weeks are browsable.
+- [ ] L167 Add reflection detail — Done when selected week shows all responses.
+- [ ] L168 Add reflection delete confirmation — Done when cancel preserves entry.
+- [ ] L169 Add optional check-in summary — Done when reflection shows week's mood labels.
+- [ ] L170 Add optional gratitude summary — Done when reflection shows week's entries count.
+- [ ] L171 Add optional ritual summary — Done when reflection shows completed count.
+- [ ] L172 Add selected next action — Done when user can save one short next-step text.
+- [ ] L173 Show next action on Home — Done when saved action is visible until next week.
+- [ ] L174 Add copy-previous action — Done when selected prior response is copied explicitly.
+- [ ] L175 Add reflection print layout — Done when printed detail omits controls.
+- [ ] L176 Add reflection keyboard test — Done when prompts and save work with keyboard.
+- [ ] L177 Add reflection browser test — Done when partial save survives reload.
+- [ ] L178 Add timezone boundary test — Done when week selection stays stable near midnight.
+- [ ] L179 Add reflection empty state — Done when first week has calm guidance.
+- [ ] L180 Add no-judgment copy review — Done when UI makes no partner performance claims.
+
+## 07 Timeline and discovery
+
+- [ ] L181 Define timeline entry shape — Done when type covers every local record kind.
+- [ ] L182 Map check-in to timeline — Done when date and summary match source record.
+- [ ] L183 Map gratitude to timeline — Done when date and summary match source record.
+- [ ] L184 Map memory to timeline — Done when date and summary match source record.
+- [ ] L185 Map plan to timeline — Done when date and summary match source record.
+- [ ] L186 Map ritual completion to timeline — Done when date and summary match source record.
+- [ ] L187 Map reflection to timeline — Done when week and summary match source record.
+- [ ] L188 Merge timeline sources — Done when pure function orders entries newest first.
+- [ ] L189 Resolve same-time ties — Done when stable ID order makes output deterministic.
+- [ ] L190 Render Timeline route — Done when navigation opens the feed.
+- [ ] L191 Add timeline empty state — Done when new account sees explanation.
+- [ ] L192 Add timeline card links — Done when card opens its source detail.
+- [ ] L193 Add timeline kind filter — Done when selected kinds limit results.
+- [ ] L194 Add timeline date range — Done when outside dates are excluded.
+- [ ] L195 Add timeline clear filters — Done when all entries return.
+- [ ] L196 Add timeline pagination — Done when feed loads 30 items at a time.
+- [ ] L197 Add timeline month headings — Done when month groups are labeled.
+- [ ] L198 Add timeline keyboard navigation — Done when cards are reachable in order.
+- [ ] L199 Add search index helper — Done when records produce normalized search text.
+- [ ] L200 Add global search input — Done when query matches supported record text.
+- [ ] L201 Add search result grouping — Done when results are labeled by kind.
+- [ ] L202 Add search no-results state — Done when query feedback is shown.
+- [ ] L203 Add search clear action — Done when query and results reset.
+- [ ] L204 Add search keyboard shortcut — Done when slash focuses search outside inputs.
+- [ ] L205 Add search privacy note — Done when query stays local to the device.
+- [ ] L206 Add date-range boundary test — Done when endpoints are included correctly.
+- [ ] L207 Add timeline merge test — Done when six source kinds order correctly.
+- [ ] L208 Add search normalization test — Done when case and whitespace do not alter matches.
+- [ ] L209 Add timeline browser test — Done when filters survive back navigation.
+- [ ] L210 Add search browser test — Done when query opens the right detail.
+
+## 08 Portability and privacy
+
+- [ ] L211 Define export schema version — Done when export envelope has a version and timestamp.
+- [ ] L212 Add export serializer — Done when all six record kinds are included.
+- [ ] L213 Exclude transient UI state — Done when export has no search or draft state.
+- [ ] L214 Add export JSON download — Done when user gets a named local file.
+- [ ] L215 Add export preview counts — Done when dialog lists per-kind counts.
+- [ ] L216 Add export browser test — Done when downloaded file parses as expected.
+- [ ] L217 Add import schema validator — Done when malformed root object is rejected.
+- [ ] L218 Validate imported IDs — Done when missing or duplicate IDs are reported.
+- [ ] L219 Validate imported dates — Done when invalid dates are reported before writing.
+- [ ] L220 Add import dry run — Done when preview shows incoming counts without writes.
+- [ ] L221 Add import file chooser — Done when JSON file can be selected by keyboard.
+- [ ] L222 Add import confirmation — Done when no records change before confirmation.
+- [ ] L223 Add import merge rule — Done when existing IDs are updated by newer updatedAt.
+- [ ] L224 Add import conflict summary — Done when skipped or changed counts are visible.
+- [ ] L225 Add import transaction — Done when failed import leaves storage unchanged.
+- [ ] L226 Add import success message — Done when user sees final counts.
+- [ ] L227 Add import browser test — Done when export and re-import restore records.
+- [ ] L228 Add full data delete action — Done when confirmation explains local removal.
+- [ ] L229 Add full data delete test — Done when all domain stores become empty.
+- [ ] L230 Add per-kind delete action — Done when selected record kind alone is cleared.
+- [ ] L231 Add privacy dashboard — Done when settings lists locally stored record counts.
+- [ ] L232 Add storage availability check — Done when unsupported browser shows a clear error.
+- [ ] L233 Add storage quota warning — Done when write failure offers export instructions.
+- [ ] L234 Add app version display — Done when Settings shows build version.
+- [ ] L235 Add privacy policy page — Done when page accurately describes local storage.
+- [ ] L236 Add data model documentation — Done when each record and export field is described.
+- [ ] L237 Add migrations rollback fixture — Done when bad migration leaves old data available.
+- [ ] L238 Add screen reader pass — Done when key forms announce labels and errors.
+- [ ] L239 Add keyboard-only pass — Done when every primary flow works without pointer.
+- [ ] L240 Tag offline release candidate — Done when local-only build and checks pass.
+
+## 09 Self-hostable API foundation
+
+- [ ] L241 Create API workspace package — Done when api has its own build and test scripts.
+- [ ] L242 Add API health endpoint — Done when GET /health returns version and status.
+- [ ] L243 Add API input validation helper — Done when invalid JSON body yields 400.
+- [ ] L244 Add API error response shape — Done when known errors share code and message fields.
+- [ ] L245 Add request ID middleware — Done when each response includes a request ID.
+- [ ] L246 Add safe request logging — Done when journal text never appears in logs.
+- [ ] L247 Add SQLite connection module — Done when test opens an in-memory database.
+- [ ] L248 Add migration runner — Done when schema version advances exactly once.
+- [ ] L249 Create accounts table — Done when migration and schema test pass.
+- [ ] L250 Create spaces table — Done when migration and schema test pass.
+- [ ] L251 Create memberships table — Done when migration and schema test pass.
+- [ ] L252 Create invites table — Done when migration and schema test pass.
+- [ ] L253 Create records table — Done when migration and schema test pass.
+- [ ] L254 Create tombstones table — Done when migration and schema test pass.
+- [ ] L255 Create sync cursors table — Done when migration and schema test pass.
+- [ ] L256 Add database backup command — Done when copied database passes integrity check.
+- [ ] L257 Add startup migration check — Done when server refuses unsupported newer schema.
+- [ ] L258 Add config validation — Done when missing secret produces a useful startup error.
+- [ ] L259 Add localhost dev config — Done when server starts without public binding by default.
+- [ ] L260 Add CORS allowlist — Done when unlisted origin receives no CORS grant.
+- [ ] L261 Add secure response headers — Done when API responses set documented headers.
+- [ ] L262 Add body size limit — Done when oversized JSON returns 413.
+- [ ] L263 Add API rate-limit hook — Done when repeated requests receive 429 in a test.
+- [ ] L264 Add API test database fixture — Done when tests use isolated temporary databases.
+- [ ] L265 Add /health integration test — Done when status and version are asserted.
+- [ ] L266 Add API OpenAPI base document — Done when health route appears in schema.
+- [ ] L267 Add Dockerfile for API — Done when local image builds successfully.
+- [ ] L268 Add compose development file — Done when API and data volume start locally.
+- [ ] L269 Document self-host setup — Done when README gives start and backup steps.
+- [ ] L270 Add API CI job — Done when migrations and tests run on pull requests.
+
+## 10 Accounts and consensual sharing
+
+- [ ] L271 Validate account handle — Done when disallowed or empty handle is rejected.
+- [ ] L272 Add password hash helper — Done when round trip verifies and wrong secret fails.
+- [ ] L273 Add account creation endpoint — Done when valid request stores one account.
+- [ ] L274 Reject duplicate handle — Done when second registration returns conflict.
+- [ ] L275 Add login endpoint — Done when valid credentials create a session.
+- [ ] L276 Add failed-login response — Done when invalid credentials reveal no account existence.
+- [ ] L277 Add login throttling — Done when repeated failures are limited.
+- [ ] L278 Add session table — Done when migration stores hashed session token.
+- [ ] L279 Set secure session cookie — Done when production cookie is HttpOnly and Secure.
+- [ ] L280 Add logout endpoint — Done when session is revoked in a test.
+- [ ] L281 Add current-account endpoint — Done when authenticated request returns account ID.
+- [ ] L282 Reject unauthenticated write — Done when protected route returns 401.
+- [ ] L283 Add password change endpoint — Done when old password is required.
+- [ ] L284 Add password-change session revocation — Done when old sessions stop working.
+- [ ] L285 Add account deletion flow — Done when records and sessions are removed after confirmation.
+- [ ] L286 Add sharing opt-in screen — Done when local data stays local until explicit choice.
+- [ ] L287 Create shared space endpoint — Done when authenticated creator becomes owner.
+- [ ] L288 List my spaces endpoint — Done when only memberships are returned.
+- [ ] L289 Create invite endpoint — Done when owner receives a one-time invitation link.
+- [ ] L290 Set invite expiry — Done when expired token cannot be accepted.
+- [ ] L291 Limit invite scope — Done when token names exactly one space.
+- [ ] L292 Accept invite endpoint — Done when accepted person becomes member.
+- [ ] L293 Reject invite reuse — Done when second acceptance fails.
+- [ ] L294 Revoke invite endpoint — Done when owner can invalidate unused token.
+- [ ] L295 Leave shared space endpoint — Done when membership is removed.
+- [ ] L296 Remove member endpoint — Done when owner can remove another member.
+- [ ] L297 Protect personal records — Done when shared member cannot fetch personal entries.
+- [ ] L298 Show shared-space member list — Done when UI names current members.
+- [ ] L299 Show invitation permission copy — Done when UI explains visibility before acceptance.
+- [ ] L300 Add invite browser flow test — Done when invitation, acceptance, and revocation work.
+
+## 11 Opt-in sync and offline conflicts
+
+- [ ] L301 Define sync record envelope — Done when scope, id, revision, and payload are typed.
+- [ ] L302 Validate sync scope — Done when personal record cannot be uploaded as shared.
+- [ ] L303 Add server record put — Done when owner write increments revision.
+- [ ] L304 Add server record list — Done when only member can read space records.
+- [ ] L305 Add server record delete — Done when deletion writes a tombstone.
+- [ ] L306 Add server cursor response — Done when changed records after cursor are returned.
+- [ ] L307 Add cursor pagination — Done when large change set pages without omissions.
+- [ ] L308 Add client sync queue store — Done when offline mutation remains queued.
+- [ ] L309 Queue local create — Done when new shared record appears in queue.
+- [ ] L310 Queue local update — Done when later edit coalesces same record.
+- [ ] L311 Queue local delete — Done when delete supersedes pending update.
+- [ ] L312 Add explicit enable-sync action — Done when queue sends only after user opts in.
+- [ ] L313 Add first upload preview — Done when UI shows exact record counts.
+- [ ] L314 Add upload worker — Done when queued record is acknowledged on success.
+- [ ] L315 Add download worker — Done when remote record appears locally.
+- [ ] L316 Add retry delay — Done when temporary failure backs off without data loss.
+- [ ] L317 Add offline status — Done when UI states that changes are waiting.
+- [ ] L318 Add last-sync timestamp — Done when successful sync time is visible.
+- [ ] L319 Add conflict detection — Done when revision mismatch returns conflict response.
+- [ ] L320 Add conflict detail view — Done when both local and remote values are shown.
+- [ ] L321 Add keep-local resolution — Done when chosen local value uploads as new revision.
+- [ ] L322 Add keep-remote resolution — Done when chosen remote value replaces local record.
+- [ ] L323 Add conflict cancellation — Done when neither version is discarded on cancel.
+- [ ] L324 Add server tombstone retention — Done when stale client cannot revive a deleted record.
+- [ ] L325 Add membership loss handling — Done when revoked member stops syncing immediately.
+- [ ] L326 Add sign-out queue handling — Done when pending local edits remain local.
+- [ ] L327 Add multi-device sync test — Done when edit on device A appears on B.
+- [ ] L328 Add offline merge test — Done when nonconflicting edits converge after reconnect.
+- [ ] L329 Add same-record conflict test — Done when both versions remain until choice.
+- [ ] L330 Add sync privacy audit — Done when no personal-scope payload crosses network.
+
+## 12 Reliability, polish, and release
+
+- [ ] L331 Audit empty states — Done when every route has a useful first-use view.
+- [ ] L332 Audit form errors — Done when errors identify the field and recovery step.
+- [ ] L333 Audit focus restoration — Done when dialogs return focus to opener.
+- [ ] L334 Audit reduced motion — Done when animation follows system preference.
+- [ ] L335 Audit high contrast — Done when controls remain clear in forced colors.
+- [ ] L336 Audit narrow layout — Done when core flows work at 320px width.
+- [ ] L337 Audit wide layout — Done when reading width stays comfortable.
+- [ ] L338 Add theme preference — Done when light, dark, and system choices persist.
+- [ ] L339 Add locale-ready strings — Done when visible UI text uses one message catalog.
+- [ ] L340 Add date formatting tests — Done when representative locale formats are checked.
+- [ ] L341 Add dependency update check — Done when CI reports outdated direct packages.
+- [ ] L342 Add dependency vulnerability check — Done when CI reports critical advisories.
+- [ ] L343 Add API authorization matrix test — Done when every write route enforces membership.
+- [ ] L344 Add invitation token entropy test — Done when generated tokens meet length requirement.
+- [ ] L345 Add session expiry test — Done when expired cookie cannot authenticate.
+- [ ] L346 Add backup restore test — Done when restored API database passes integrity check.
+- [ ] L347 Add export compatibility test — Done when older export fixture still imports.
+- [ ] L348 Add migration-from-first-version test — Done when oldest supported data upgrades.
+- [ ] L349 Add seeded demo data command — Done when sample records are clearly synthetic.
+- [ ] L350 Add demo reset command — Done when only synthetic demo data is removed.
+- [ ] L351 Add user guide for local mode — Done when setup, export, and deletion are documented.
+- [ ] L352 Add user guide for sharing — Done when consent and visibility are documented.
+- [ ] L353 Add administrator guide — Done when HTTPS, backup, and update steps are documented.
+- [ ] L354 Add troubleshooting guide — Done when common storage and sync errors have steps.
+- [ ] L355 Add release checklist — Done when build, tests, privacy, and rollback gates are listed.
+- [ ] L356 Run full browser regression — Done when all core scenarios pass on two engines.
+- [ ] L357 Run accessibility regression — Done when critical routes pass keyboard and AX checks.
+- [ ] L358 Run offline recovery regression — Done when app works after disconnected reload.
+- [ ] L359 Build release artifacts — Done when web bundle and API image are reproducible.
+- [ ] L360 Tag v1.0 release candidate — Done when all checks and 360 task boxes are complete.
