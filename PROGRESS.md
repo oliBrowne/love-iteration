@@ -29,3 +29,9 @@
 - Verified: npm run format:check, lint, typecheck, test, node --test roadmap.
 - Next: L007 strict TypeScript settings.
 - Blockers: none
+
+## 2026-10-01 — L007: add strict TypeScript settings
+- Changed: tsconfig now enables strict, noImplicitAny and noUncheckedIndexedAccess.
+- Verified: Confirmed an implicit-any file fails typecheck (TS7006) then removed it; typecheck, build, lint, format:check, tests pass.
+- Next: L008 source folder boundaries.
+- Blockers: none
