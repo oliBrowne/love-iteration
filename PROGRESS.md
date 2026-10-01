@@ -53,3 +53,9 @@
 - Verified: typecheck, build, lint, format:check; test:e2e (2 passed, incl. new home spec) with PW_CHROMIUM_PATH=/opt/pw-browsers/chromium-1194.
 - Next: L011 render Settings route via navigation.
 - Blockers: none
+
+## 2026-10-01 — L011: render Settings route
+- Changed: A main navigation with Home and Settings links; Settings opens a Settings page via hash route.
+- Verified: typecheck, build, lint, format:check, npm test (4 passed), test:e2e (3 passed incl. settings spec).
+- Next: L012 shared page layout header.
+- Blockers: none

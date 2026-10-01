@@ -1,3 +1,3 @@
 export { greeting } from './greeting.ts';
-export { routeLabels, routes } from './routes.ts';
 export type { Route } from './routes.ts';
+export { parseRoute, routeLabels, routes, routeToHash } from './routes.ts';

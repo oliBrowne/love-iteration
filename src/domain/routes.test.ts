@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { routeLabels, routes } from './routes.ts';
+import { parseRoute, routeLabels, routes, routeToHash } from './routes.ts';
 
 describe('routes', () => {
   it('lists Home, Check-in, Ideas, and Settings', () => {
@@ -9,5 +9,14 @@ describe('routes', () => {
       'Ideas',
       'Settings',
     ]);
+  });
+});
+
+describe('parseRoute', () => {
+  it('reads a route from a hash and falls back to home', () => {
+    expect(parseRoute('#/settings')).toBe('settings');
+    expect(parseRoute('')).toBe('home');
+    expect(parseRoute('#/nowhere')).toBe('home');
+    expect(routeToHash('check-in')).toBe('#/check-in');
   });
 });
