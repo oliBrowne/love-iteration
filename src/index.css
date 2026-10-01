@@ -26,3 +26,10 @@ body {
 .skip-link:focus {
   top: 0.5rem;
 }
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #b5446e;
+  outline-offset: 2px;
+}

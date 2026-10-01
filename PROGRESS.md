@@ -71,3 +71,9 @@
 - Verified: typecheck, build, lint, format:check, test:e2e (6 passed, incl. keyboard skip specs).
 - Next: L014 visible focus style.
 - Blockers: none
+
+## 2026-10-01 — L014: add visible focus style
+- Changed: Links, buttons and focusable regions show a soft rose 3px focus ring on keyboard focus.
+- Verified: typecheck, build, lint, format:check, test:e2e (7 passed incl. focus ring computed-style check).
+- Next: L015 color tokens.
+- Blockers: none
