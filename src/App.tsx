@@ -1,19 +1,14 @@
-import { routeLabels, routeToHash } from './domain/index.ts';
 import { HomePage } from './features/home/HomePage.tsx';
 import { SettingsPage } from './features/settings/SettingsPage.tsx';
+import { PageLayout } from './ui/index.ts';
 import { useRoute } from './useRoute.ts';
 
 function App() {
   const route = useRoute();
   return (
-    <div>
-      <h1>Love Iteration</h1>
-      <nav aria-label="Main">
-        <a href={routeToHash('home')}>{routeLabels.home}</a>{' '}
-        <a href={routeToHash('settings')}>{routeLabels.settings}</a>
-      </nav>
+    <PageLayout>
       {route === 'settings' ? <SettingsPage /> : <HomePage />}
-    </div>
+    </PageLayout>
   );
 }
 

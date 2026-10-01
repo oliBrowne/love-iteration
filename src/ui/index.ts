@@ -1,2 +1,1 @@
-// Small shared UI components live here.
-export {};
+export { PageLayout } from './PageLayout.tsx';

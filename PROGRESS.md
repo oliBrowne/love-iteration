@@ -59,3 +59,9 @@
 - Verified: typecheck, build, lint, format:check, npm test (4 passed), test:e2e (3 passed incl. settings spec).
 - Next: L012 shared page layout header.
 - Blockers: none
+
+## 2026-10-01 — L012: add shared page layout
+- Changed: Home and Settings now render inside one PageLayout with the same header and navigation.
+- Verified: typecheck, build, lint, format:check, npm test, test:e2e (4 passed incl. layout spec).
+- Next: L013 skip-to-content link.
+- Blockers: none

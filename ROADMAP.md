@@ -15,7 +15,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L009 Define app route names — Done when route type lists Home, Check-in, Ideas, and Settings.
 - [x] L010 Render Home route — Done when direct load displays a home heading.
 - [x] L011 Render Settings route — Done when navigation opens Settings.
-- [ ] L012 Add shared page layout — Done when Home and Settings use the same header.
+- [x] L012 Add shared page layout — Done when Home and Settings use the same header.
 - [ ] L013 Add skip-to-content link — Done when keyboard focus can skip the header.
 - [ ] L014 Add visible focus style — Done when links and buttons show a focus ring.
 - [ ] L015 Define color tokens — Done when light palette renders without literal component colors.
