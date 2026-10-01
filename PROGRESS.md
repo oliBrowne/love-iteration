@@ -35,3 +35,9 @@
 - Verified: Confirmed an implicit-any file fails typecheck (TS7006) then removed it; typecheck, build, lint, format:check, tests pass.
 - Next: L008 source folder boundaries.
 - Blockers: none
+
+## 2026-10-01 — L008: create source folder boundaries
+- Changed: src now has domain, data, features, and ui folders, each with an index file.
+- Verified: typecheck, build, lint, format:check, npm test pass.
+- Next: L009 route names type.
+- Blockers: none
