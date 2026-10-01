@@ -23,3 +23,9 @@
 - Verified: npm run lint (clean), npm run typecheck, npm test, npm run build, node --test scripts/roadmap.test.mjs.
 - Next: L006 add Prettier formatting script.
 - Blockers: none
+
+## 2026-10-01 — L006: add Prettier formatting script
+- Changed: npm run format and npm run format:check now format and verify the project.
+- Verified: npm run format:check, lint, typecheck, test, node --test roadmap.
+- Next: L007 strict TypeScript settings.
+- Blockers: none
