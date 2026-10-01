@@ -41,3 +41,9 @@
 - Verified: typecheck, build, lint, format:check, npm test pass.
 - Next: L009 route names type.
 - Blockers: none
+
+## 2026-10-01 — L009: define app route names
+- Changed: A Route type and labels list Home, Check-in, Ideas, and Settings.
+- Verified: typecheck, build, lint, format:check, npm test (new routes test) pass.
+- Next: L010 render Home route.
+- Blockers: none
