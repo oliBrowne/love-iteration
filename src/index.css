@@ -13,3 +13,16 @@ body {
   display: grid;
   place-items: center;
 }
+
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -4rem;
+  padding: 0.5rem 1rem;
+  background: #fff;
+  color: #202020;
+}
+
+.skip-link:focus {
+  top: 0.5rem;
+}

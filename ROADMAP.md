@@ -16,7 +16,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L010 Render Home route — Done when direct load displays a home heading.
 - [x] L011 Render Settings route — Done when navigation opens Settings.
 - [x] L012 Add shared page layout — Done when Home and Settings use the same header.
-- [ ] L013 Add skip-to-content link — Done when keyboard focus can skip the header.
+- [x] L013 Add skip-to-content link — Done when keyboard focus can skip the header.
 - [ ] L014 Add visible focus style — Done when links and buttons show a focus ring.
 - [ ] L015 Define color tokens — Done when light palette renders without literal component colors.
 - [ ] L016 Define typography tokens — Done when headings and body use shared scale.

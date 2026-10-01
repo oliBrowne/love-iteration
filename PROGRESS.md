@@ -65,3 +65,9 @@
 - Verified: typecheck, build, lint, format:check, npm test, test:e2e (4 passed incl. layout spec).
 - Next: L013 skip-to-content link.
 - Blockers: none
+
+## 2026-10-01 — L013: add skip-to-content link
+- Changed: A Skip to content link appears on first Tab and moves focus to the main area without changing the page route.
+- Verified: typecheck, build, lint, format:check, test:e2e (6 passed, incl. keyboard skip specs).
+- Next: L014 visible focus style.
+- Blockers: none
