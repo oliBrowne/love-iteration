@@ -47,3 +47,9 @@
 - Verified: typecheck, build, lint, format:check, npm test (new routes test) pass.
 - Next: L010 render Home route.
 - Blockers: none
+
+## 2026-10-01 — L010: render Home route
+- Changed: Direct load now shows a Home page with a Home heading under the app title.
+- Verified: typecheck, build, lint, format:check; test:e2e (2 passed, incl. new home spec) with PW_CHROMIUM_PATH=/opt/pw-browsers/chromium-1194.
+- Next: L011 render Settings route via navigation.
+- Blockers: none

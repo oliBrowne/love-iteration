@@ -13,7 +13,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L007 Add strict TypeScript settings — Done when invalid implicit any fails typecheck.
 - [x] L008 Create source folder boundaries — Done when domain, data, features, and ui folders exist with index files.
 - [x] L009 Define app route names — Done when route type lists Home, Check-in, Ideas, and Settings.
-- [ ] L010 Render Home route — Done when direct load displays a home heading.
+- [x] L010 Render Home route — Done when direct load displays a home heading.
 - [ ] L011 Render Settings route — Done when navigation opens Settings.
 - [ ] L012 Add shared page layout — Done when Home and Settings use the same header.
 - [ ] L013 Add skip-to-content link — Done when keyboard focus can skip the header.

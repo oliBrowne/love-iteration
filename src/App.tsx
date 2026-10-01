@@ -1,11 +1,12 @@
-import React from 'react';
+import { HomePage } from './features/home/HomePage.tsx';
 
-const App: React.FC = () => {
+function App() {
   return (
     <div>
       <h1>Love Iteration</h1>
+      <HomePage />
     </div>
   );
-};
+}
 
 export default App;
