@@ -23,7 +23,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L017 Add narrow-screen spacing — Done when Home has no horizontal overflow at 320px.
 - [x] L018 Create Button component — Done when unit test covers disabled and click behavior.
 - [x] L019 Create TextField component — Done when label connects to its input.
-- [ ] L020 Create TextArea component — Done when label connects to its control.
+- [x] L020 Create TextArea component — Done when label connects to its control.
 - [ ] L021 Create EmptyState component — Done when empty text is announced as content.
 - [ ] L022 Create InlineError component — Done when error message has alert semantics.
 - [ ] L023 Create LoadingState component — Done when busy state has status semantics.

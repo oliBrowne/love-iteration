@@ -107,3 +107,9 @@
 - Verified: typecheck, build, lint, format:check, npm test (9 passed incl. label-to-input test), roadmap test, test:e2e (8 passed).
 - Next: L020 TextArea component.
 - Blockers: none
+
+## 2026-10-02 — L020: create TextArea component
+- Changed: A shared TextArea pairs a visible label with its multi-line control, styled like TextField.
+- Verified: typecheck, build, lint, format:check, npm test (10 passed incl. label-to-textarea test), roadmap test, test:e2e (8 passed).
+- Next: L021 EmptyState component.
+- Blockers: none
