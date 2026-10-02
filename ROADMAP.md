@@ -18,7 +18,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L012 Add shared page layout — Done when Home and Settings use the same header.
 - [x] L013 Add skip-to-content link — Done when keyboard focus can skip the header.
 - [x] L014 Add visible focus style — Done when links and buttons show a focus ring.
-- [ ] L015 Define color tokens — Done when light palette renders without literal component colors.
+- [x] L015 Define color tokens — Done when light palette renders without literal component colors.
 - [ ] L016 Define typography tokens — Done when headings and body use shared scale.
 - [ ] L017 Add narrow-screen spacing — Done when Home has no horizontal overflow at 320px.
 - [ ] L018 Create Button component — Done when unit test covers disabled and click behavior.

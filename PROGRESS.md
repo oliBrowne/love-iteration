@@ -77,3 +77,9 @@
 - Verified: typecheck, build, lint, format:check, test:e2e (7 passed incl. focus ring computed-style check).
 - Next: L015 color tokens.
 - Blockers: none
+
+## 2026-10-02 — L015: define color tokens
+- Changed: Paper, surface, ink and rose accent colors are now CSS custom properties; component styles use them with no literal colors.
+- Verified: typecheck, build, lint, format:check, npm test (5 passed incl. new token test), roadmap test, test:e2e (7 passed).
+- Next: L016 typography tokens.
+- Blockers: none
