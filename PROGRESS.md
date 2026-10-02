@@ -83,3 +83,9 @@
 - Verified: typecheck, build, lint, format:check, npm test (5 passed incl. new token test), roadmap test, test:e2e (7 passed).
 - Next: L016 typography tokens.
 - Blockers: none
+
+## 2026-10-02 — L016: define typography tokens
+- Changed: Body text and h1/h2 headings now take size and line height from shared CSS tokens.
+- Verified: typecheck, build, lint, format:check, npm test (6 passed incl. typography test), roadmap test, test:e2e (7 passed).
+- Next: L017 narrow-screen spacing, no overflow at 320px.
+- Blockers: none

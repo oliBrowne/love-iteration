@@ -4,6 +4,12 @@
   --color-ink: #2b2523;
   --color-accent: #b5446e;
 
+  --font-size-body: 1.125rem;
+  --font-size-h1: 2rem;
+  --font-size-h2: 1.5rem;
+  --line-height-body: 1.6;
+  --line-height-heading: 1.25;
+
   font-family: system-ui, sans-serif;
   color: var(--color-ink);
   background: var(--color-paper);
@@ -11,6 +17,21 @@
 
 body {
   margin: 0;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+h1,
+h2 {
+  line-height: var(--line-height-heading);
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
 }
 
 #root {
