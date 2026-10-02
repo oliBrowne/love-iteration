@@ -101,3 +101,9 @@
 - Verified: typecheck, build, lint, format:check, npm test (8 passed incl. Button click and disabled), roadmap test, test:e2e (8 passed).
 - Next: L019 TextField component with connected label.
 - Blockers: none
+
+## 2026-10-02 — L019: create TextField component
+- Changed: A shared TextField pairs a visible label with its input and shows the rose focus ring.
+- Verified: typecheck, build, lint, format:check, npm test (9 passed incl. label-to-input test), roadmap test, test:e2e (8 passed).
+- Next: L020 TextArea component.
+- Blockers: none
