@@ -95,3 +95,9 @@
 - Verified: typecheck, build, lint, format:check, npm test, roadmap test, test:e2e (8 passed incl. new 320px overflow spec).
 - Next: L018 Button component with unit test.
 - Blockers: none
+
+## 2026-10-02 — L018: create Button component
+- Changed: A shared Button (rose accent, 44px tap target, disabled style) is available from the ui folder; added jsdom and Testing Library as dev dependencies for component tests.
+- Verified: typecheck, build, lint, format:check, npm test (8 passed incl. Button click and disabled), roadmap test, test:e2e (8 passed).
+- Next: L019 TextField component with connected label.
+- Blockers: none
