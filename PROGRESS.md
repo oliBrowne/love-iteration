@@ -89,3 +89,9 @@
 - Verified: typecheck, build, lint, format:check, npm test (6 passed incl. typography test), roadmap test, test:e2e (7 passed).
 - Next: L017 narrow-screen spacing, no overflow at 320px.
 - Blockers: none
+
+## 2026-10-02 — L017: add narrow-screen spacing
+- Changed: The page has comfortable side padding and a readable max width; Home no longer overflows sideways at 320px.
+- Verified: typecheck, build, lint, format:check, npm test, roadmap test, test:e2e (8 passed incl. new 320px overflow spec).
+- Next: L018 Button component with unit test.
+- Blockers: none

@@ -20,7 +20,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L014 Add visible focus style — Done when links and buttons show a focus ring.
 - [x] L015 Define color tokens — Done when light palette renders without literal component colors.
 - [x] L016 Define typography tokens — Done when headings and body use shared scale.
-- [ ] L017 Add narrow-screen spacing — Done when Home has no horizontal overflow at 320px.
+- [x] L017 Add narrow-screen spacing — Done when Home has no horizontal overflow at 320px.
 - [ ] L018 Create Button component — Done when unit test covers disabled and click behavior.
 - [ ] L019 Create TextField component — Done when label connects to its input.
 - [ ] L020 Create TextArea component — Done when label connects to its control.
