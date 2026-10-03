@@ -114,3 +114,12 @@ button:focus-visible,
   color: var(--color-ink);
   opacity: 0.8;
 }
+
+.inline-error {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border-left: 4px solid var(--color-accent);
+  border-radius: 0.25rem;
+  color: var(--color-ink);
+  background: var(--color-surface);
+}
