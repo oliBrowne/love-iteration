@@ -26,7 +26,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L020 Create TextArea component — Done when label connects to its control.
 - [x] L021 Create EmptyState component — Done when empty text is announced as content.
 - [x] L022 Create InlineError component — Done when error message has alert semantics.
-- [ ] L023 Create LoadingState component — Done when busy state has status semantics.
+- [x] L023 Create LoadingState component — Done when busy state has status semantics.
 - [ ] L024 Add GitHub Actions checks — Done when pull requests run lint, typecheck, tests, and build.
 - [ ] L025 Add no-tracking CSP baseline — Done when static page blocks unlisted remote scripts.
 - [ ] L026 Define domain record metadata — Done when type includes id, schemaVersion, createdAt, updatedAt.

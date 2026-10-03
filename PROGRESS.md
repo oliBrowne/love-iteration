@@ -125,3 +125,9 @@
 - Verified: typecheck, build, lint, format:check, npm test (12 passed incl. alert test), roadmap test
 - Next: L023 LoadingState component.
 - Blockers: none
+
+## 2026-10-03 — L023: create LoadingState component
+- Changed: A shared LoadingState announces a busy wait as a status message (no animation).
+- Verified: typecheck, build, lint, format:check, npm test (13 passed incl. status test), roadmap test
+- Next: L024 GitHub Actions checks workflow.
+- Blockers: none

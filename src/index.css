@@ -123,3 +123,11 @@ button:focus-visible,
   color: var(--color-ink);
   background: var(--color-surface);
 }
+
+.loading-state {
+  margin: 0;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: var(--color-ink);
+  opacity: 0.8;
+}

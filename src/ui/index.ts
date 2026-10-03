@@ -4,3 +4,4 @@ export { TextField } from './TextField.tsx';
 export { TextArea } from './TextArea.tsx';
 export { EmptyState } from './EmptyState.tsx';
 export { InlineError } from './InlineError.tsx';
+export { LoadingState } from './LoadingState.tsx';
