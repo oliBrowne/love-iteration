@@ -113,3 +113,9 @@
 - Verified: typecheck, build, lint, format:check, npm test (10 passed incl. label-to-textarea test), roadmap test, test:e2e (8 passed).
 - Next: L021 EmptyState component.
 - Blockers: none
+
+## 2026-10-03 — L021: create EmptyState component
+- Changed: A shared EmptyState shows empty-list text as plain readable content.
+- Verified: typecheck, build, lint, format:check, npm test (11 passed incl. new component test), roadmap test
+- Next: L022 InlineError component.
+- Blockers: none
