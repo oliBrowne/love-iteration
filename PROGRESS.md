@@ -131,3 +131,9 @@
 - Verified: typecheck, build, lint, format:check, npm test (13 passed incl. status test), roadmap test
 - Next: L024 GitHub Actions checks workflow.
 - Blockers: none
+
+## 2026-10-04 — L024: add GitHub Actions checks
+- Changed: Pull requests and pushes to main now run lint, typecheck, tests, roadmap test, and build in CI.
+- Verified: ran each of those commands locally (all pass); prettier check on the workflow file.
+- Next: L025 no-tracking CSP baseline for the static page.
+- Blockers: none
