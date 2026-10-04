@@ -161,3 +161,9 @@
 - Verified: lint, typecheck, npm test (19 passed incl. frozen-time test), build, format:check, roadmap test.
 - Next: L029 repository interface.
 - Blockers: none
+
+## 2026-10-04 — L029: define repository interface
+- Changed: A Repository<T> interface (get, list, put, delete) is exported from the data module for later IndexedDB storage.
+- Verified: lint, typecheck, npm test (20 passed incl. in-memory implementation test), build, format:check, roadmap test.
+- Next: L030 Playwright smoke test from Home to Settings.
+- Blockers: none

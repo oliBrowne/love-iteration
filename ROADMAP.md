@@ -32,7 +32,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L026 Define domain record metadata — Done when type includes id, schemaVersion, createdAt, updatedAt.
 - [x] L027 Add ID generator — Done when generated IDs are valid and distinct in a test.
 - [x] L028 Add ISO timestamp helper — Done when test freezes time and checks output.
-- [ ] L029 Define repository interface — Done when type supports get, list, put, and delete.
+- [x] L029 Define repository interface — Done when type supports get, list, put, and delete.
 - [ ] L030 Add shell browser smoke test — Done when Playwright navigates Home to Settings.
 
 ## 02 Personal check-ins
