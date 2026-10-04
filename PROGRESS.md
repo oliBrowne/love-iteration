@@ -137,3 +137,9 @@
 - Verified: ran each of those commands locally (all pass); prettier check on the workflow file.
 - Next: L025 no-tracking CSP baseline for the static page.
 - Blockers: none
+
+## 2026-10-04 — L025: add no-tracking CSP baseline
+- Changed: The built page carries a Content-Security-Policy that only allows same-origin scripts and connections (dev server unaffected).
+- Verified: lint, typecheck, npm test (15 passed incl. new CSP test), build (dist/index.html contains the meta tag, only a same-origin script), format:check, roadmap test.
+- Next: L026 domain record metadata type.
+- Blockers: none
