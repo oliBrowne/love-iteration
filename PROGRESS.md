@@ -143,3 +143,9 @@
 - Verified: lint, typecheck, npm test (15 passed incl. new CSP test), build (dist/index.html contains the meta tag, only a same-origin script), format:check, roadmap test.
 - Next: L026 domain record metadata type.
 - Blockers: none
+
+## 2026-10-04 — L026: define domain record metadata
+- Changed: A shared RecordMetadata type (id, schemaVersion, createdAt, updatedAt) is available from the domain module.
+- Verified: lint, typecheck, npm test (16 passed incl. type test), build, format:check, roadmap test.
+- Next: L027 ID generator.
+- Blockers: none

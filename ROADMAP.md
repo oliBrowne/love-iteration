@@ -29,7 +29,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L023 Create LoadingState component — Done when busy state has status semantics.
 - [x] L024 Add GitHub Actions checks — Done when pull requests run lint, typecheck, tests, and build.
 - [x] L025 Add no-tracking CSP baseline — Done when static page blocks unlisted remote scripts.
-- [ ] L026 Define domain record metadata — Done when type includes id, schemaVersion, createdAt, updatedAt.
+- [x] L026 Define domain record metadata — Done when type includes id, schemaVersion, createdAt, updatedAt.
 - [ ] L027 Add ID generator — Done when generated IDs are valid and distinct in a test.
 - [ ] L028 Add ISO timestamp helper — Done when test freezes time and checks output.
 - [ ] L029 Define repository interface — Done when type supports get, list, put, and delete.
