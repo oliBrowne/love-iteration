@@ -167,3 +167,9 @@
 - Verified: lint, typecheck, npm test (20 passed incl. in-memory implementation test), build, format:check, roadmap test.
 - Next: L030 Playwright smoke test from Home to Settings.
 - Blockers: none
+
+## 2026-10-04 — L030: add shell browser smoke test
+- Changed: A Playwright test navigates Home to Settings and back, against the built page (so it also exercises the CSP).
+- Verified: lint, typecheck, npm test, format:check, roadmap test; full Playwright suite 9 passed twice. One earlier cold-start run had the existing focus-ring test fail on first Tab (passed alone and in both reruns), likely a timing flake on a cold build.
+- Next: L031 check-in record type.
+- Blockers: none
