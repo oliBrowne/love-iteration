@@ -149,3 +149,9 @@
 - Verified: lint, typecheck, npm test (16 passed incl. type test), build, format:check, roadmap test.
 - Next: L027 ID generator.
 - Blockers: none
+
+## 2026-10-04 — L027: add ID generator
+- Changed: generateId() and isValidId() in the domain module create and check unique record IDs.
+- Verified: lint, typecheck, npm test (18 passed incl. 100 distinct valid IDs), build, format:check, roadmap test.
+- Next: L028 ISO timestamp helper.
+- Blockers: none
