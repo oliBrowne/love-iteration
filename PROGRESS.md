@@ -155,3 +155,9 @@
 - Verified: lint, typecheck, npm test (18 passed incl. 100 distinct valid IDs), build, format:check, roadmap test.
 - Next: L028 ISO timestamp helper.
 - Blockers: none
+
+## 2026-10-04 — L028: add ISO timestamp helper
+- Changed: nowIso() in the domain module returns the current time as an ISO string.
+- Verified: lint, typecheck, npm test (19 passed incl. frozen-time test), build, format:check, roadmap test.
+- Next: L029 repository interface.
+- Blockers: none
