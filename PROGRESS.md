@@ -227,3 +227,9 @@
 - Verified: lint, typecheck, npm test (36 passed), build, format:check, roadmap test, Playwright 11 passed incl. keyboard mood selection.
 - Next: L040 note field.
 - Blockers: none
+
+## 2026-10-05 — L040: add note field
+- Changed: The Check-in screen has an optional plain-text note field.
+- Verified: lint, typecheck, npm test (38 passed), build, format:check, roadmap test.
+- Next: L041 check-in submit action saving to the view.
+- Blockers: none
