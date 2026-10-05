@@ -7,3 +7,4 @@ export {
   openDatabase,
 } from './database.ts';
 export { createCheckInRepository } from './checkinRepository.ts';
+export { getCheckInRepository } from './localCheckIns.ts';

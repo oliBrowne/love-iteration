@@ -1,13 +1,22 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
+import { createCheckInRepository, openDatabase } from '../../data/index.ts';
 import { CheckInPage } from './CheckInPage.tsx';
 
 afterEach(cleanup);
 
+async function renderPage() {
+  const repo = createCheckInRepository(await openDatabase(new IDBFactory()));
+  const getRepository = async () => repo;
+  render(<CheckInPage getRepository={getRepository} />);
+  return repo;
+}
+
 describe('CheckInPage note field', () => {
-  it('starts empty and is not required', () => {
-    render(<CheckInPage />);
+  it('starts empty and is not required', async () => {
+    await renderPage();
     const note = screen.getByLabelText(
       'Note (optional)',
     ) as HTMLTextAreaElement;
@@ -15,12 +24,33 @@ describe('CheckInPage note field', () => {
     expect(note.required).toBe(false);
   });
 
-  it('accepts plain text', () => {
-    render(<CheckInPage />);
+  it('accepts plain text', async () => {
+    await renderPage();
     const note = screen.getByLabelText(
       'Note (optional)',
     ) as HTMLTextAreaElement;
     fireEvent.change(note, { target: { value: 'Demo <b>note</b>' } });
     expect(note.value).toBe('Demo <b>note</b>');
+  });
+});
+
+describe('CheckInPage submit', () => {
+  it('shows the saved check-in in the view and stores it', async () => {
+    const repo = await renderPage();
+    expect(await screen.findByText('Nothing saved yet.')).toBeTruthy();
+    fireEvent.click(screen.getByRole('radio', { name: 'Good' }));
+    fireEvent.change(screen.getByLabelText('Note (optional)'), {
+      target: { value: 'Demo <b>note</b>' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save check-in' }));
+    const item = await screen.findByRole('listitem');
+    expect(item.textContent).toContain('Good');
+    expect(item.textContent).toContain('Demo <b>note</b>');
+    const stored = await repo.list();
+    expect(stored).toHaveLength(1);
+    expect(stored[0]?.mood).toBe('good');
+    expect(
+      (screen.getByLabelText('Note (optional)') as HTMLTextAreaElement).value,
+    ).toBe('');
   });
 });

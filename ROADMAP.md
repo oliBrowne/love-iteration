@@ -47,7 +47,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L038 Render Check-in route — Done when navigation opens the check-in screen.
 - [x] L039 Add mood selection controls — Done when keyboard can select one mood.
 - [x] L040 Add note field — Done when a check-in accepts optional plain text.
-- [ ] L041 Add check-in submit action — Done when saved check-in appears in the view.
+- [x] L041 Add check-in submit action — Done when saved check-in appears in the view.
 - [ ] L042 Reject empty mood submit — Done when an inline error appears and nothing is saved.
 - [ ] L043 Limit note length — Done when over-limit note shows remaining limit.
 - [ ] L044 Add today's check-in summary — Done when Home shows the saved mood.

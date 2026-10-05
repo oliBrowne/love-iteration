@@ -233,3 +233,9 @@
 - Verified: lint, typecheck, npm test (38 passed), build, format:check, roadmap test.
 - Next: L041 check-in submit action saving to the view.
 - Blockers: none
+
+## 2026-10-05 — L041: add check-in submit action
+- Changed: Save check-in stores the mood and note locally (IndexedDB) and lists saved check-ins newest first, surviving reload.
+- Verified: lint, typecheck, npm test (40 passed), build, format:check, roadmap test, Playwright 12 passed incl. save + reload.
+- Next: L042 reject empty mood submit with inline error.
+- Blockers: none
