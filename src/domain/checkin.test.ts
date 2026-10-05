@@ -1,6 +1,6 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import type { CheckIn, Mood } from './checkin.ts';
-import { moods, parseMood } from './checkin.ts';
+import { moods, parseLocalDate, parseMood } from './checkin.ts';
 import { DomainError } from './errors.ts';
 import type { RecordMetadata } from './record.ts';
 
@@ -36,6 +36,28 @@ describe('parseMood', () => {
       parseMood('happy');
     } catch (error) {
       expect((error as DomainError).code).toBe('invalid-mood');
+    }
+  });
+});
+
+describe('parseLocalDate', () => {
+  it('accepts real dates including leap days', () => {
+    expect(parseLocalDate('2026-10-05')).toBe('2026-10-05');
+    expect(parseLocalDate('2028-02-29')).toBe('2028-02-29');
+  });
+
+  it('rejects malformed dates', () => {
+    for (const bad of [
+      '2026-1-5',
+      '2026-02-30',
+      '2027-02-29',
+      '2026-13-01',
+      'today',
+      '',
+      20261005,
+      null,
+    ]) {
+      expect(() => parseLocalDate(bad)).toThrow(DomainError);
     }
   });
 });

@@ -185,3 +185,9 @@
 - Verified: lint, typecheck, npm test (23 passed), build, format:check, roadmap test.
 - Next: L033 validate local date.
 - Blockers: none
+
+## 2026-10-05 — L033: validate local date
+- Changed: parseLocalDate/isLocalDate reject malformed or impossible dates with code invalid-date.
+- Verified: lint, typecheck, npm test (25 passed), build, format:check, roadmap test.
+- Next: L034 IndexedDB database opener.
+- Blockers: none

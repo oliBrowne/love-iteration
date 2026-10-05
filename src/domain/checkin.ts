@@ -26,3 +26,34 @@ export function parseMood(value: unknown): Mood {
   }
   return value;
 }
+
+const datePattern = /^(\d{4})-(\d{2})-(\d{2})$/;
+
+// A local calendar day written YYYY-MM-DD that really exists (no 2026-02-30).
+export function isLocalDate(value: unknown): value is string {
+  if (typeof value !== 'string') return false;
+  const match = datePattern.exec(value);
+  if (!match) return false;
+  const [year, month, day] = [
+    Number(match[1]),
+    Number(match[2]),
+    Number(match[3]),
+  ];
+  const probe = new Date(Date.UTC(year, month - 1, day));
+  return (
+    probe.getUTCFullYear() === year &&
+    probe.getUTCMonth() === month - 1 &&
+    probe.getUTCDate() === day
+  );
+}
+
+// Returns the date, or throws a DomainError for a malformed one.
+export function parseLocalDate(value: unknown): string {
+  if (!isLocalDate(value)) {
+    throw new DomainError(
+      'invalid-date',
+      'Use a real date written YYYY-MM-DD.',
+    );
+  }
+  return value;
+}
