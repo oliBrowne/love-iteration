@@ -45,7 +45,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L036 Add check-in repository list — Done when test returns newest date first.
 - [x] L037 Add check-in repository delete — Done when deleted record is absent in a test.
 - [x] L038 Render Check-in route — Done when navigation opens the check-in screen.
-- [ ] L039 Add mood selection controls — Done when keyboard can select one mood.
+- [x] L039 Add mood selection controls — Done when keyboard can select one mood.
 - [ ] L040 Add note field — Done when a check-in accepts optional plain text.
 - [ ] L041 Add check-in submit action — Done when saved check-in appears in the view.
 - [ ] L042 Reject empty mood submit — Done when an inline error appears and nothing is saved.

@@ -221,3 +221,9 @@
 - Verified: lint, typecheck, npm test (34 passed), build, format:check, roadmap test, Playwright 10 passed incl. new check-in navigation test.
 - Next: L039 mood selection controls.
 - Blockers: none
+
+## 2026-10-05 — L039: add mood selection controls
+- Changed: The Check-in screen shows a radio group of five moods; arrow keys move and select exactly one.
+- Verified: lint, typecheck, npm test (36 passed), build, format:check, roadmap test, Playwright 11 passed incl. keyboard mood selection.
+- Next: L040 note field.
+- Blockers: none

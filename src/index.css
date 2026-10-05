@@ -131,3 +131,29 @@ button:focus-visible,
   color: var(--color-ink);
   opacity: 0.8;
 }
+
+.mood-picker {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem 1rem;
+  border: 1px solid var(--color-accent);
+  border-radius: 0.5rem;
+  min-width: 0;
+}
+
+.mood-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+}
+
+.mood-option input {
+  width: 1.5rem;
+  height: 1.5rem;
+  accent-color: var(--color-accent);
+}
+
+.mood-option input:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}

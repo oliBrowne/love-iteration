@@ -57,3 +57,11 @@ export function parseLocalDate(value: unknown): string {
   }
   return value;
 }
+
+export const moodLabels: Record<Mood, string> = {
+  glowing: 'Glowing',
+  good: 'Good',
+  okay: 'Okay',
+  low: 'Low',
+  rough: 'Rough',
+};
