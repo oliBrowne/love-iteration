@@ -24,7 +24,7 @@ function committed(tx: IDBTransaction): Promise<void> {
 
 export function createCheckInRepository(
   db: IDBDatabase,
-): Pick<Repository<CheckIn>, 'get' | 'put'> {
+): Pick<Repository<CheckIn>, 'get' | 'put' | 'list'> {
   return {
     async get(id) {
       const tx = db.transaction(checkinsStore, 'readonly');
@@ -32,6 +32,18 @@ export function createCheckInRepository(
         tx.objectStore(checkinsStore).get(id),
       );
       return record;
+    },
+    async list() {
+      const tx = db.transaction(checkinsStore, 'readonly');
+      const records = await wrap<CheckIn[]>(
+        tx.objectStore(checkinsStore).getAll(),
+      );
+      // Newest day first; the latest update wins within one day.
+      return records.sort(
+        (a, b) =>
+          b.date.localeCompare(a.date) ||
+          b.updatedAt.localeCompare(a.updatedAt),
+      );
     },
     async put(record) {
       const tx = db.transaction(checkinsStore, 'readwrite');

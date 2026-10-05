@@ -23,3 +23,22 @@ describe('check-in repository save', () => {
     expect(await repo.get('missing')).toBeUndefined();
   });
 });
+
+describe('check-in repository list', () => {
+  it('returns newest date first', async () => {
+    const repo = createCheckInRepository(await openDatabase(new IDBFactory()));
+    await repo.put({ ...demoCheckIn, id: 'a', date: '2026-01-02' });
+    await repo.put({ ...demoCheckIn, id: 'b', date: '2026-03-01' });
+    await repo.put({ ...demoCheckIn, id: 'c', date: '2026-02-10' });
+    expect((await repo.list()).map((record) => record.id)).toEqual([
+      'b',
+      'c',
+      'a',
+    ]);
+  });
+
+  it('returns an empty list when nothing is saved', async () => {
+    const repo = createCheckInRepository(await openDatabase(new IDBFactory()));
+    expect(await repo.list()).toEqual([]);
+  });
+});

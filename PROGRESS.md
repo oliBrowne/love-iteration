@@ -203,3 +203,9 @@
 - Verified: lint, typecheck, npm test (30 passed incl. read-after-write), build, format:check, roadmap test.
 - Next: L036 repository list, newest date first.
 - Blockers: none
+
+## 2026-10-05 — L036: add check-in repository list
+- Changed: The check-in repository lists saved check-ins newest date first.
+- Verified: lint, typecheck, npm test (32 passed incl. ordering), build, format:check, roadmap test.
+- Next: L037 repository delete.
+- Blockers: none
