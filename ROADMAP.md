@@ -41,7 +41,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L032 Validate mood choice — Done when unsupported value returns a domain error.
 - [x] L033 Validate local date — Done when malformed date is rejected in a test.
 - [x] L034 Add IndexedDB database opener — Done when schema creates checkins store.
-- [ ] L035 Add check-in repository save — Done when read-after-write test returns the record.
+- [x] L035 Add check-in repository save — Done when read-after-write test returns the record.
 - [ ] L036 Add check-in repository list — Done when test returns newest date first.
 - [ ] L037 Add check-in repository delete — Done when deleted record is absent in a test.
 - [ ] L038 Render Check-in route — Done when navigation opens the check-in screen.

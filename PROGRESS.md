@@ -197,3 +197,9 @@
 - Verified: lint, typecheck, npm test (27 passed incl. store creation), build, format:check, roadmap test.
 - Next: L035 check-in repository save.
 - Blockers: none
+
+## 2026-10-05 — L035: add check-in repository save
+- Changed: createCheckInRepository(db) can put and get check-ins in IndexedDB; a read after a write returns the record.
+- Verified: lint, typecheck, npm test (30 passed incl. read-after-write), build, format:check, roadmap test.
+- Next: L036 repository list, newest date first.
+- Blockers: none

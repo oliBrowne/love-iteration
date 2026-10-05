@@ -6,3 +6,4 @@ export {
   databaseVersion,
   openDatabase,
 } from './database.ts';
+export { createCheckInRepository } from './checkinRepository.ts';
