@@ -1,6 +1,12 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import type { CheckIn, Mood } from './checkin.ts';
-import { moods, parseLocalDate, parseMood } from './checkin.ts';
+import {
+  moods,
+  noteMaxLength,
+  noteRemaining,
+  parseLocalDate,
+  parseMood,
+} from './checkin.ts';
 import { DomainError } from './errors.ts';
 import type { RecordMetadata } from './record.ts';
 
@@ -59,5 +65,14 @@ describe('parseLocalDate', () => {
     ]) {
       expect(() => parseLocalDate(bad)).toThrow(DomainError);
     }
+  });
+});
+
+describe('noteRemaining', () => {
+  it('counts down from the limit and goes negative when over', () => {
+    expect(noteRemaining('')).toBe(noteMaxLength);
+    expect(noteRemaining('abc')).toBe(noteMaxLength - 3);
+    expect(noteRemaining('x'.repeat(noteMaxLength))).toBe(0);
+    expect(noteRemaining('x'.repeat(noteMaxLength + 2))).toBe(-2);
   });
 });

@@ -75,3 +75,23 @@ describe('CheckInPage empty mood', () => {
     expect(screen.queryByRole('alert')).toBeNull();
   });
 });
+
+describe('CheckInPage note limit', () => {
+  it('shows the remaining characters and blocks saving when over', async () => {
+    const repo = await renderPage();
+    expect(screen.getByText('500 characters remaining.')).toBeTruthy();
+    fireEvent.click(screen.getByRole('radio', { name: 'Good' }));
+    fireEvent.change(screen.getByLabelText('Note (optional)'), {
+      target: { value: 'x'.repeat(503) },
+    });
+    expect((await screen.findByRole('alert')).textContent).toBe(
+      'Note is 3 characters over the limit.',
+    );
+    const save = screen.getByRole('button', {
+      name: 'Save check-in',
+    }) as HTMLButtonElement;
+    expect(save.disabled).toBe(true);
+    fireEvent.click(save);
+    expect(await repo.list()).toEqual([]);
+  });
+});

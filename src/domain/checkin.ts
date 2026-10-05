@@ -65,3 +65,10 @@ export const moodLabels: Record<Mood, string> = {
   low: 'Low',
   rough: 'Rough',
 };
+
+export const noteMaxLength = 500;
+
+// Characters left in the note; negative once the note is over the limit.
+export function noteRemaining(note: string): number {
+  return noteMaxLength - note.length;
+}

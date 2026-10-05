@@ -245,3 +245,9 @@
 - Verified: lint, typecheck, npm test (42 passed), build, format:check, roadmap test, Playwright 13 passed.
 - Next: L043 limit note length.
 - Blockers: none
+
+## 2026-10-05 — L043: limit note length
+- Changed: The note shows characters remaining (500 max); over the limit it shows how far over and Save is disabled.
+- Verified: lint, typecheck, npm test (44 passed), build, format:check, roadmap test, Playwright 13 passed.
+- Next: L044 today's check-in summary on Home.
+- Blockers: none

@@ -6,6 +6,7 @@ import {
   generateId,
   localDate,
   moodLabels,
+  noteRemaining,
   nowIso,
 } from '../../domain/index.ts';
 import type { CheckIn, Mood } from '../../domain/index.ts';
@@ -39,12 +40,15 @@ export function CheckInPage({
     };
   }, [getRepository]);
 
+  const remaining = noteRemaining(note);
+
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!mood) {
       setProblem('Pick a mood before saving.');
       return;
     }
+    if (noteRemaining(note) < 0) return;
     const now = nowIso();
     const record: CheckIn = {
       id: generateId(),
@@ -83,8 +87,19 @@ export function CheckInPage({
           value={note}
           onChange={(event) => setNote(event.target.value)}
         />
+        <p
+          id="note-remaining"
+          className={remaining < 0 ? 'inline-error' : undefined}
+          role={remaining < 0 ? 'alert' : undefined}
+        >
+          {remaining < 0
+            ? `Note is ${-remaining} characters over the limit.`
+            : `${remaining} characters remaining.`}
+        </p>
         {problem ? <InlineError>{problem}</InlineError> : null}
-        <Button type="submit">Save check-in</Button>
+        <Button type="submit" disabled={remaining < 0}>
+          Save check-in
+        </Button>
       </form>
       <h3>Saved check-ins</h3>
       {saved.length === 0 ? (
