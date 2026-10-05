@@ -54,3 +54,24 @@ describe('CheckInPage submit', () => {
     ).toBe('');
   });
 });
+
+describe('CheckInPage empty mood', () => {
+  it('shows an inline error and saves nothing', async () => {
+    const repo = await renderPage();
+    await screen.findByText('Nothing saved yet.');
+    fireEvent.click(screen.getByRole('button', { name: 'Save check-in' }));
+    expect((await screen.findByRole('alert')).textContent).toBe(
+      'Pick a mood before saving.',
+    );
+    expect(await repo.list()).toEqual([]);
+    expect(screen.getByText('Nothing saved yet.')).toBeTruthy();
+  });
+
+  it('clears the error once a mood is chosen', async () => {
+    await renderPage();
+    fireEvent.click(screen.getByRole('button', { name: 'Save check-in' }));
+    await screen.findByRole('alert');
+    fireEvent.click(screen.getByRole('radio', { name: 'Okay' }));
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
+});

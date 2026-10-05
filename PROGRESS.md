@@ -239,3 +239,9 @@
 - Verified: lint, typecheck, npm test (40 passed), build, format:check, roadmap test, Playwright 12 passed incl. save + reload.
 - Next: L042 reject empty mood submit with inline error.
 - Blockers: none
+
+## 2026-10-05 — L042: reject empty mood submit
+- Changed: Saving without a mood shows an inline error and stores nothing (also fixed the L038 e2e heading match, which the new Saved check-ins heading had made ambiguous).
+- Verified: lint, typecheck, npm test (42 passed), build, format:check, roadmap test, Playwright 13 passed.
+- Next: L043 limit note length.
+- Blockers: none

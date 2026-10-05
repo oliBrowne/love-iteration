@@ -48,7 +48,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L039 Add mood selection controls — Done when keyboard can select one mood.
 - [x] L040 Add note field — Done when a check-in accepts optional plain text.
 - [x] L041 Add check-in submit action — Done when saved check-in appears in the view.
-- [ ] L042 Reject empty mood submit — Done when an inline error appears and nothing is saved.
+- [x] L042 Reject empty mood submit — Done when an inline error appears and nothing is saved.
 - [ ] L043 Limit note length — Done when over-limit note shows remaining limit.
 - [ ] L044 Add today's check-in summary — Done when Home shows the saved mood.
 - [ ] L045 Allow one check-in per day — Done when repeat save updates the same day.

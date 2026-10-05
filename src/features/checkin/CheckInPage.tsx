@@ -41,7 +41,10 @@ export function CheckInPage({
 
   async function submit(event: FormEvent) {
     event.preventDefault();
-    if (!mood) return;
+    if (!mood) {
+      setProblem('Pick a mood before saving.');
+      return;
+    }
     const now = nowIso();
     const record: CheckIn = {
       id: generateId(),
@@ -68,7 +71,13 @@ export function CheckInPage({
       <h2 id="checkin-heading">Check-in</h2>
       <p>How are you today? A check-in takes under a minute.</p>
       <form onSubmit={submit}>
-        <MoodPicker value={mood} onChange={setMood} />
+        <MoodPicker
+          value={mood}
+          onChange={(next) => {
+            setMood(next);
+            setProblem(undefined);
+          }}
+        />
         <TextArea
           label="Note (optional)"
           value={note}
