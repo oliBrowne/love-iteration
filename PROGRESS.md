@@ -191,3 +191,9 @@
 - Verified: lint, typecheck, npm test (25 passed), build, format:check, roadmap test.
 - Next: L034 IndexedDB database opener.
 - Blockers: none
+
+## 2026-10-05 — L034: add IndexedDB database opener
+- Changed: openDatabase() opens the local database and creates the checkins store (fake-indexeddb added as a dev-only test dependency).
+- Verified: lint, typecheck, npm test (27 passed incl. store creation), build, format:check, roadmap test.
+- Next: L035 check-in repository save.
+- Blockers: none
