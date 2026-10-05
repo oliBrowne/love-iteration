@@ -173,3 +173,9 @@
 - Verified: lint, typecheck, npm test, format:check, roadmap test; full Playwright suite 9 passed twice. One earlier cold-start run had the existing focus-ring test fail on first Tab (passed alone and in both reruns), likely a timing flake on a cold build.
 - Next: L031 check-in record type.
 - Blockers: none
+
+## 2026-10-05 — L031: define check-in record
+- Changed: A CheckIn type (date, mood, note, record metadata) and the moods list are exported from the domain module.
+- Verified: lint, typecheck, npm test (type test), build, format:check, roadmap test.
+- Next: L032 validate mood choice.
+- Blockers: none

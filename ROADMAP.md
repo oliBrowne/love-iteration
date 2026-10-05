@@ -37,7 +37,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 
 ## 02 Personal check-ins
 
-- [ ] L031 Define check-in record — Done when type contains date, mood, note, and record metadata.
+- [x] L031 Define check-in record — Done when type contains date, mood, note, and record metadata.
 - [ ] L032 Validate mood choice — Done when unsupported value returns a domain error.
 - [ ] L033 Validate local date — Done when malformed date is rejected in a test.
 - [ ] L034 Add IndexedDB database opener — Done when schema creates checkins store.
