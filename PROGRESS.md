@@ -179,3 +179,9 @@
 - Verified: lint, typecheck, npm test (type test), build, format:check, roadmap test.
 - Next: L032 validate mood choice.
 - Blockers: none
+
+## 2026-10-05 — L032: validate mood choice
+- Changed: parseMood/isMood and a DomainError class reject unsupported moods with code invalid-mood.
+- Verified: lint, typecheck, npm test (23 passed), build, format:check, roadmap test.
+- Next: L033 validate local date.
+- Blockers: none

@@ -1,6 +1,7 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import type { CheckIn, Mood } from './checkin.ts';
-import { moods } from './checkin.ts';
+import { moods, parseMood } from './checkin.ts';
+import { DomainError } from './errors.ts';
 import type { RecordMetadata } from './record.ts';
 
 describe('CheckIn', () => {
@@ -19,5 +20,22 @@ describe('CheckIn', () => {
       note: 'Demo note',
     };
     expect(moods).toContain(demo.mood);
+  });
+});
+
+describe('parseMood', () => {
+  it('accepts every listed mood', () => {
+    for (const mood of moods) expect(parseMood(mood)).toBe(mood);
+  });
+
+  it('returns a domain error for an unsupported value', () => {
+    for (const bad of ['happy', '', 3, null, undefined]) {
+      expect(() => parseMood(bad)).toThrow(DomainError);
+    }
+    try {
+      parseMood('happy');
+    } catch (error) {
+      expect((error as DomainError).code).toBe('invalid-mood');
+    }
   });
 });

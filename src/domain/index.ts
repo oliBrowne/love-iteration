@@ -6,3 +6,5 @@ export { generateId, isValidId } from './id.ts';
 export { nowIso } from './time.ts';
 export type { CheckIn, Mood } from './checkin.ts';
 export { moods } from './checkin.ts';
+export { isMood, parseMood } from './checkin.ts';
+export { DomainError } from './errors.ts';
