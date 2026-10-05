@@ -42,3 +42,19 @@ describe('check-in repository list', () => {
     expect(await repo.list()).toEqual([]);
   });
 });
+
+describe('check-in repository delete', () => {
+  it('leaves the deleted record absent and keeps the others', async () => {
+    const repo = createCheckInRepository(await openDatabase(new IDBFactory()));
+    await repo.put({ ...demoCheckIn, id: 'a' });
+    await repo.put({ ...demoCheckIn, id: 'b' });
+    await repo.delete('a');
+    expect(await repo.get('a')).toBeUndefined();
+    expect((await repo.list()).map((record) => record.id)).toEqual(['b']);
+  });
+
+  it('does nothing when the id is unknown', async () => {
+    const repo = createCheckInRepository(await openDatabase(new IDBFactory()));
+    await expect(repo.delete('missing')).resolves.toBeUndefined();
+  });
+});

@@ -43,7 +43,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L034 Add IndexedDB database opener — Done when schema creates checkins store.
 - [x] L035 Add check-in repository save — Done when read-after-write test returns the record.
 - [x] L036 Add check-in repository list — Done when test returns newest date first.
-- [ ] L037 Add check-in repository delete — Done when deleted record is absent in a test.
+- [x] L037 Add check-in repository delete — Done when deleted record is absent in a test.
 - [ ] L038 Render Check-in route — Done when navigation opens the check-in screen.
 - [ ] L039 Add mood selection controls — Done when keyboard can select one mood.
 - [ ] L040 Add note field — Done when a check-in accepts optional plain text.

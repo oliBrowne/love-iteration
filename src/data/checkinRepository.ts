@@ -22,9 +22,7 @@ function committed(tx: IDBTransaction): Promise<void> {
   });
 }
 
-export function createCheckInRepository(
-  db: IDBDatabase,
-): Pick<Repository<CheckIn>, 'get' | 'put' | 'list'> {
+export function createCheckInRepository(db: IDBDatabase): Repository<CheckIn> {
   return {
     async get(id) {
       const tx = db.transaction(checkinsStore, 'readonly');
@@ -48,6 +46,11 @@ export function createCheckInRepository(
     async put(record) {
       const tx = db.transaction(checkinsStore, 'readwrite');
       tx.objectStore(checkinsStore).put(record);
+      await committed(tx);
+    },
+    async delete(id) {
+      const tx = db.transaction(checkinsStore, 'readwrite');
+      tx.objectStore(checkinsStore).delete(id);
       await committed(tx);
     },
   };

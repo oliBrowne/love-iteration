@@ -209,3 +209,9 @@
 - Verified: lint, typecheck, npm test (32 passed incl. ordering), build, format:check, roadmap test.
 - Next: L037 repository delete.
 - Blockers: none
+
+## 2026-10-05 — L037: add check-in repository delete
+- Changed: The check-in repository now implements the full Repository interface, including delete.
+- Verified: lint, typecheck, npm test (34 passed incl. delete), build, format:check, roadmap test.
+- Next: L038 render Check-in route.
+- Blockers: none
