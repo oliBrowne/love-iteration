@@ -19,6 +19,7 @@ export function PageLayout({ children }: { children: ReactNode }) {
         <h1>Love Iteration</h1>
         <nav aria-label="Main">
           <a href={routeToHash('home')}>{routeLabels.home}</a>{' '}
+          <a href={routeToHash('check-in')}>{routeLabels['check-in']}</a>{' '}
           <a href={routeToHash('settings')}>{routeLabels.settings}</a>
         </nav>
       </header>

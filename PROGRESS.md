@@ -215,3 +215,9 @@
 - Verified: lint, typecheck, npm test (34 passed incl. delete), build, format:check, roadmap test.
 - Next: L038 render Check-in route.
 - Blockers: none
+
+## 2026-10-05 — L038: render Check-in route
+- Changed: A Check-in link in the header opens a Check-in screen at #/check-in.
+- Verified: lint, typecheck, npm test (34 passed), build, format:check, roadmap test, Playwright 10 passed incl. new check-in navigation test.
+- Next: L039 mood selection controls.
+- Blockers: none
