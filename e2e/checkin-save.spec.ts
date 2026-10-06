@@ -23,3 +23,14 @@ test('Home shows the mood saved today', async ({ page }) => {
   await page.goto('/#/');
   await expect(page.getByTestId('today-summary')).toContainText('Glowing');
 });
+
+test('saving twice in one day keeps a single check-in', async ({ page }) => {
+  await page.goto('/#/check-in');
+  await page.getByRole('radio', { name: 'Good' }).check();
+  await page.getByRole('button', { name: 'Save check-in' }).click();
+  await expect(page.getByRole('listitem')).toHaveCount(1);
+  await page.getByRole('radio', { name: 'Low', exact: true }).check();
+  await page.getByRole('button', { name: 'Save check-in' }).click();
+  await expect(page.getByRole('listitem')).toHaveCount(1);
+  await expect(page.getByRole('listitem')).toContainText('Low');
+});

@@ -50,17 +50,20 @@ export function CheckInPage({
     }
     if (noteRemaining(note) < 0) return;
     const now = nowIso();
-    const record: CheckIn = {
-      id: generateId(),
-      schemaVersion: 1,
-      createdAt: now,
-      updatedAt: now,
-      date: localDate(),
-      mood,
-      note,
-    };
+    const date = localDate();
     try {
       const repo = await getRepository();
+      // One check-in per day: a repeat save updates today's record.
+      const existing = (await repo.list()).find((r) => r.date === date);
+      const record: CheckIn = {
+        id: existing?.id ?? generateId(),
+        schemaVersion: 1,
+        createdAt: existing?.createdAt ?? now,
+        updatedAt: now,
+        date,
+        mood,
+        note,
+      };
       await repo.put(record);
       setSaved(await repo.list());
       setProblem(undefined);

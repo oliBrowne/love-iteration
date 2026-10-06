@@ -95,3 +95,22 @@ describe('CheckInPage note limit', () => {
     expect(await repo.list()).toEqual([]);
   });
 });
+
+describe('CheckInPage one per day', () => {
+  it('updates today’s record on a repeat save', async () => {
+    const repo = await renderPage();
+    await screen.findByText('Nothing saved yet.');
+    fireEvent.click(screen.getByRole('radio', { name: 'Good' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Save check-in' }));
+    await screen.findByRole('listitem');
+    const [first] = await repo.list();
+    fireEvent.click(screen.getByRole('radio', { name: 'Low' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Save check-in' }));
+    await screen.findByText(/Low/);
+    const stored = await repo.list();
+    expect(stored).toHaveLength(1);
+    expect(stored[0]?.id).toBe(first?.id);
+    expect(stored[0]?.createdAt).toBe(first?.createdAt);
+    expect(stored[0]?.mood).toBe('low');
+  });
+});

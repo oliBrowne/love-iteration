@@ -257,3 +257,9 @@
 - Verified: lint, typecheck, npm test (46 passed), build, format:check, roadmap test, Playwright 14 passed (using pre-installed Chromium).
 - Next: L045 allow one check-in per day (repeat save updates the same day).
 - Blockers: none
+
+## 2026-10-06 — L045: allow one check-in per day
+- Changed: Saving again on the same day updates today's check-in (same id and created time) instead of adding a second one.
+- Verified: lint, typecheck, npm test (47 passed), build, format:check, roadmap test, Playwright 15 passed (using pre-installed Chromium).
+- Next: L046 show today's edited time (summary renders updatedAt in local time).
+- Blockers: none
