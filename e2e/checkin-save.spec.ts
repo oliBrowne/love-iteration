@@ -14,3 +14,12 @@ test('a saved check-in appears in the list and survives a reload', async ({
     page.getByRole('listitem').filter({ hasText: 'Demo note' }),
   ).toBeVisible();
 });
+
+test('Home shows the mood saved today', async ({ page }) => {
+  await page.goto('/#/check-in');
+  await page.getByRole('radio', { name: 'Glowing' }).check();
+  await page.getByRole('button', { name: 'Save check-in' }).click();
+  await expect(page.getByRole('listitem').first()).toContainText('Glowing');
+  await page.goto('/#/');
+  await expect(page.getByTestId('today-summary')).toContainText('Glowing');
+});

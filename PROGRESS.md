@@ -251,3 +251,9 @@
 - Verified: lint, typecheck, npm test (44 passed), build, format:check, roadmap test, Playwright 13 passed.
 - Next: L044 today's check-in summary on Home.
 - Blockers: none
+
+## 2026-10-06 — L044: add today's check-in summary
+- Changed: Home shows "Today you checked in feeling <mood>" when a check-in is saved for today.
+- Verified: lint, typecheck, npm test (46 passed), build, format:check, roadmap test, Playwright 14 passed (using pre-installed Chromium).
+- Next: L045 allow one check-in per day (repeat save updates the same day).
+- Blockers: none

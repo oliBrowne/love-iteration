@@ -50,7 +50,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L041 Add check-in submit action — Done when saved check-in appears in the view.
 - [x] L042 Reject empty mood submit — Done when an inline error appears and nothing is saved.
 - [x] L043 Limit note length — Done when over-limit note shows remaining limit.
-- [ ] L044 Add today's check-in summary — Done when Home shows the saved mood.
+- [x] L044 Add today's check-in summary — Done when Home shows the saved mood.
 - [ ] L045 Allow one check-in per day — Done when repeat save updates the same day.
 - [ ] L046 Show today's edited time — Done when summary renders updatedAt in local time.
 - [ ] L047 Add edit-today control — Done when saved values populate the form.
