@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getCheckInRepository } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
-import { localDate, moodLabels } from '../../domain/index.ts';
+import { formatLocalTime, localDate, moodLabels } from '../../domain/index.ts';
 import type { CheckIn } from '../../domain/index.ts';
 
 type HomePageProps = {
@@ -37,7 +37,7 @@ export function HomePage({
       {today ? (
         <p data-testid="today-summary">
           Today you checked in feeling <strong>{moodLabels[today.mood]}</strong>
-          .
+          . Last edited at {formatLocalTime(today.updatedAt)}.
         </p>
       ) : null}
     </section>

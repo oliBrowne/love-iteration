@@ -3,7 +3,7 @@ import { cleanup, render, screen } from '@testing-library/react';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
 import { createCheckInRepository, openDatabase } from '../../data/index.ts';
-import { localDate } from '../../domain/index.ts';
+import { formatLocalTime, localDate } from '../../domain/index.ts';
 import type { CheckIn } from '../../domain/index.ts';
 import { HomePage } from './HomePage.tsx';
 
@@ -32,6 +32,14 @@ describe('HomePage summary', () => {
     await setup([checkIn(localDate(), 'glowing')]);
     expect((await screen.findByTestId('today-summary')).textContent).toContain(
       'Glowing',
+    );
+  });
+
+  it('shows when today was last edited in local time', async () => {
+    await setup([checkIn(localDate(), 'glowing')]);
+    const time = formatLocalTime('2026-01-01T00:00:00.000Z');
+    expect((await screen.findByTestId('today-summary')).textContent).toContain(
+      `Last edited at ${time}`,
     );
   });
 

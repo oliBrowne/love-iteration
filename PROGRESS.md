@@ -263,3 +263,9 @@
 - Verified: lint, typecheck, npm test (47 passed), build, format:check, roadmap test, Playwright 15 passed (using pre-installed Chromium).
 - Next: L046 show today's edited time (summary renders updatedAt in local time).
 - Blockers: none
+
+## 2026-10-07 — L046: show today's edited time
+- Changed: Home's summary now adds "Last edited at <time>" using the check-in's updatedAt in local time.
+- Verified: lint, typecheck, npm test (49 passed), build, format:check, roadmap test, Playwright 15 passed (using pre-installed Chromium).
+- Next: L047 add edit-today control (saved values populate the form).
+- Blockers: none

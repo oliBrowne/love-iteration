@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { localDate, nowIso } from './time.ts';
+import { formatLocalTime, localDate, nowIso } from './time.ts';
 
 describe('nowIso', () => {
   afterEach(() => {
@@ -17,5 +17,12 @@ describe('localDate', () => {
   it('formats the local calendar day with zero padding', () => {
     expect(localDate(new Date(2026, 0, 5, 23, 59))).toBe('2026-01-05');
     expect(localDate(new Date(2026, 11, 31, 0, 0))).toBe('2026-12-31');
+  });
+});
+
+describe('formatLocalTime', () => {
+  it('renders the stored instant in local time', () => {
+    const local = new Date(2026, 5, 7, 15, 7);
+    expect(formatLocalTime(local.toISOString(), 'en-US')).toBe('3:07 PM');
   });
 });
