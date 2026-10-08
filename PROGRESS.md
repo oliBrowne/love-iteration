@@ -269,3 +269,9 @@
 - Verified: lint, typecheck, npm test (49 passed), build, format:check, roadmap test, Playwright 15 passed (using pre-installed Chromium).
 - Next: L047 add edit-today control (saved values populate the form).
 - Blockers: none
+
+## 2026-10-08 — L047: add edit-today control
+- Changed: Home links to "Edit today's check-in", and the check-in form opens with today's saved mood and note filled in.
+- Verified: lint, typecheck, npm test (51 passed), build, format:check, roadmap test, Playwright 15 passed (using pre-installed Chromium).
+- Next: L048 add delete-today control (confirmation precedes deletion).
+- Blockers: none

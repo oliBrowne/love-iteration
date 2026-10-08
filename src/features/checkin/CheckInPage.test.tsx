@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
 import { createCheckInRepository, openDatabase } from '../../data/index.ts';
+import { localDate } from '../../domain/index.ts';
 import { CheckInPage } from './CheckInPage.tsx';
 
 afterEach(cleanup);
@@ -112,5 +113,28 @@ describe('CheckInPage one per day', () => {
     expect(stored[0]?.id).toBe(first?.id);
     expect(stored[0]?.createdAt).toBe(first?.createdAt);
     expect(stored[0]?.mood).toBe('low');
+  });
+});
+
+describe('CheckInPage edit today', () => {
+  it('fills the form with today’s saved values', async () => {
+    const repo = createCheckInRepository(await openDatabase(new IDBFactory()));
+    await repo.put({
+      id: 'today',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      date: localDate(),
+      mood: 'good',
+      note: 'Demo note',
+    });
+    render(<CheckInPage getRepository={async () => repo} />);
+    await screen.findByRole('listitem');
+    expect(
+      (screen.getByRole('radio', { name: 'Good' }) as HTMLInputElement).checked,
+    ).toBe(true);
+    expect(
+      (screen.getByLabelText('Note (optional)') as HTMLTextAreaElement).value,
+    ).toBe('Demo note');
   });
 });

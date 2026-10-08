@@ -30,7 +30,14 @@ export function CheckInPage({
     getRepository()
       .then((repo) => repo.list())
       .then((records) => {
-        if (!cancelled) setSaved(records);
+        if (cancelled) return;
+        setSaved(records);
+        // Editing today: saved values fill the form unless the person typed first.
+        const today = records.find((r) => r.date === localDate());
+        if (today) {
+          setMood((current) => current ?? today.mood);
+          setNote((current) => current || today.note);
+        }
       })
       .catch(() => {
         if (!cancelled) setProblem('Could not load your saved check-ins.');

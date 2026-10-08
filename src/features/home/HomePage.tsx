@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getCheckInRepository } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
-import { formatLocalTime, localDate, moodLabels } from '../../domain/index.ts';
+import {
+  formatLocalTime,
+  localDate,
+  moodLabels,
+  routeToHash,
+} from '../../domain/index.ts';
 import type { CheckIn } from '../../domain/index.ts';
 
 type HomePageProps = {
@@ -35,10 +40,16 @@ export function HomePage({
       <h2 id="home-heading">Home</h2>
       <p>A little closer, one small step at a time.</p>
       {today ? (
-        <p data-testid="today-summary">
-          Today you checked in feeling <strong>{moodLabels[today.mood]}</strong>
-          . Last edited at {formatLocalTime(today.updatedAt)}.
-        </p>
+        <>
+          <p data-testid="today-summary">
+            Today you checked in feeling{' '}
+            <strong>{moodLabels[today.mood]}</strong>. Last edited at{' '}
+            {formatLocalTime(today.updatedAt)}.
+          </p>
+          <p>
+            <a href={routeToHash('check-in')}>Edit today&rsquo;s check-in</a>
+          </p>
+        </>
       ) : null}
     </section>
   );

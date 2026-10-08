@@ -53,7 +53,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L044 Add today's check-in summary — Done when Home shows the saved mood.
 - [x] L045 Allow one check-in per day — Done when repeat save updates the same day.
 - [x] L046 Show today's edited time — Done when summary renders updatedAt in local time.
-- [ ] L047 Add edit-today control — Done when saved values populate the form.
+- [x] L047 Add edit-today control — Done when saved values populate the form.
 - [ ] L048 Add delete-today control — Done when confirmation precedes deletion.
 - [ ] L049 Add check-in history list — Done when earlier dates appear under a heading.
 - [ ] L050 Add history empty state — Done when first-time users see clear instructions.

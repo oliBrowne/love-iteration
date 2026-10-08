@@ -43,6 +43,12 @@ describe('HomePage summary', () => {
     );
   });
 
+  it('links to the check-in form to edit today', async () => {
+    await setup([checkIn(localDate(), 'glowing')]);
+    const link = await screen.findByRole('link', { name: /Edit today/ });
+    expect(link.getAttribute('href')).toBe('#/check-in');
+  });
+
   it('shows nothing when only other days are saved', async () => {
     await setup([checkIn('2000-01-01', 'rough')]);
     await new Promise((resolve) => setTimeout(resolve, 20));
