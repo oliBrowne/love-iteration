@@ -65,11 +65,13 @@ export function HomePage({
   if (selected) {
     // The list is newest first, so the next index is the older entry.
     const older = earlier[selectedIndex + 1];
+    const newer = earlier[selectedIndex - 1];
     return (
       <CheckInDetail
         record={selected}
         onBack={() => setSelectedId(undefined)}
         onOlder={older ? () => setSelectedId(older.id) : undefined}
+        onNewer={newer ? () => setSelectedId(newer.id) : undefined}
       />
     );
   }

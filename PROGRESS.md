@@ -323,3 +323,9 @@
 - Verified: lint, typecheck, npm test (65 passed), build, format:check, roadmap test.
 - Next: L056 next-day navigation to a newer entry.
 - Blockers: none
+
+## 2026-10-09 — L056: add next-day navigation
+- Changed: The detail view has a Next entry button that moves to the next newer check-in (disabled at the newest).
+- Verified: lint, typecheck, npm test (65 passed), build, format:check, roadmap test.
+- Next: L057 keyboard check-in flow test (tab, select, save, focus).
+- Blockers: none
