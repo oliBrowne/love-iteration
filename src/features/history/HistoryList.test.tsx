@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
+import { localDate } from '../../domain/index.ts';
 import type { CheckIn } from '../../domain/index.ts';
 import { HistoryList } from './HistoryList.tsx';
 
@@ -32,12 +33,17 @@ describe('HistoryList', () => {
       screen.getByRole('heading', { name: 'Earlier check-ins' }),
     ).toBeTruthy();
     expect(screen.getAllByRole('listitem')).toHaveLength(2);
-    expect(screen.getByText(/2026-01-03/)).toBeTruthy();
+    expect(screen.getByText(/Jan 3, 2026/)).toBeTruthy();
   });
 
   it('explains what to do when there is no history yet', () => {
     render(<HistoryList records={[]} />);
     expect(screen.getByText(/Open Check-in, pick how you feel/)).toBeTruthy();
     expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+  });
+
+  it('labels today differently from older dates', () => {
+    render(<HistoryList records={[checkIn(localDate(), 'glowing')]} />);
+    expect(screen.getByText(/^Today:/)).toBeTruthy();
   });
 });

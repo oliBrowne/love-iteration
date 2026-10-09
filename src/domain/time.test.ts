@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { formatLocalTime, localDate, nowIso } from './time.ts';
+import { formatDateLabel, formatLocalTime, localDate, nowIso } from './time.ts';
 
 describe('nowIso', () => {
   afterEach(() => {
@@ -24,5 +24,18 @@ describe('formatLocalTime', () => {
   it('renders the stored instant in local time', () => {
     const local = new Date(2026, 5, 7, 15, 7);
     expect(formatLocalTime(local.toISOString(), 'en-US')).toBe('3:07 PM');
+  });
+});
+
+describe('formatDateLabel', () => {
+  const now = new Date(2026, 0, 10, 12);
+
+  it('labels today and yesterday in words', () => {
+    expect(formatDateLabel('2026-01-10', now)).toBe('Today');
+    expect(formatDateLabel('2026-01-09', now)).toBe('Yesterday');
+  });
+
+  it('shows a readable date for older days', () => {
+    expect(formatDateLabel('2026-01-03', now, 'en-US')).toBe('Jan 3, 2026');
   });
 });

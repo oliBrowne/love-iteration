@@ -293,3 +293,9 @@
 - Verified: lint, typecheck, npm test (55 passed), build, format:check, roadmap test.
 - Next: L051 history date labels distinguishing today from older dates.
 - Blockers: none
+
+## 2026-10-09 — L051: add history date labels
+- Changed: History rows show Today, Yesterday, or a readable date like Jan 3, 2026 instead of raw ISO dates.
+- Verified: lint, typecheck, npm test (58 passed), build, format:check, roadmap test.
+- Next: L052 history mood labels with visible text alternatives for icons.
+- Blockers: none

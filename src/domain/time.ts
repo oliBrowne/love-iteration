@@ -15,3 +15,24 @@ export function formatLocalTime(iso: string, locale?: string): string {
     minute: '2-digit',
   });
 }
+
+// "Today", "Yesterday", or a readable date such as "Jan 3, 2026" for a YYYY-MM-DD day.
+export function formatDateLabel(
+  date: string,
+  now: Date = new Date(),
+  locale?: string,
+): string {
+  if (date === localDate(now)) return 'Today';
+  const yesterday = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() - 1,
+  );
+  if (date === localDate(yesterday)) return 'Yesterday';
+  const [year = 0, month = 1, day = 1] = date.split('-').map(Number);
+  return new Date(year, month - 1, day).toLocaleDateString(locale, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}

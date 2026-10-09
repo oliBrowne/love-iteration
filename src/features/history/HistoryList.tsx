@@ -1,4 +1,4 @@
-import { moodLabels } from '../../domain/index.ts';
+import { formatDateLabel, moodLabels } from '../../domain/index.ts';
 import type { CheckIn } from '../../domain/index.ts';
 import { EmptyState } from '../../ui/index.ts';
 
@@ -20,7 +20,7 @@ export function HistoryList({ records }: HistoryListProps) {
       <ul>
         {records.map((record) => (
           <li key={record.id}>
-            {record.date}: {moodLabels[record.mood]}
+            {formatDateLabel(record.date)}: {moodLabels[record.mood]}
           </li>
         ))}
       </ul>
