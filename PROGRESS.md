@@ -317,3 +317,9 @@
 - Verified: lint, typecheck, npm test (64 passed), build, format:check, roadmap test. Keyboard: View and Back are native buttons with the existing focus ring.
 - Next: L055 previous-day navigation inside the detail view.
 - Blockers: none
+
+## 2026-10-09 — L055: add previous-day navigation
+- Changed: The detail view has a Previous entry button that moves to the next older check-in (disabled at the oldest).
+- Verified: lint, typecheck, npm test (65 passed), build, format:check, roadmap test.
+- Next: L056 next-day navigation to a newer entry.
+- Blockers: none

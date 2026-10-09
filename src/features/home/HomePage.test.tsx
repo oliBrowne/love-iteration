@@ -95,4 +95,26 @@ describe('HomePage summary', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Back to Home' }));
     expect(screen.getByRole('heading', { name: 'Home' })).toBeTruthy();
   });
+
+  it('moves from an entry to the older one', async () => {
+    await setup([
+      { ...checkIn('2000-01-02', 'good'), note: 'Newer demo note' },
+      { ...checkIn('2000-01-01', 'rough'), note: 'Older demo note' },
+    ]);
+    fireEvent.click(
+      (await screen.findAllByRole('button', { name: /View/ }))[0]!,
+    );
+    expect(screen.getByTestId('detail-note').textContent).toBe(
+      'Newer demo note',
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Previous entry' }));
+    expect(screen.getByTestId('detail-note').textContent).toBe(
+      'Older demo note',
+    );
+    expect(
+      screen
+        .getByRole('button', { name: 'Previous entry' })
+        .hasAttribute('disabled'),
+    ).toBe(true);
+  });
 });

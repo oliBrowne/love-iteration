@@ -5,10 +5,11 @@ import { Button } from '../../ui/index.ts';
 type CheckInDetailProps = {
   record: CheckIn;
   onBack: () => void;
+  onOlder?: () => void;
 };
 
 // One saved check-in with its complete note.
-export function CheckInDetail({ record, onBack }: CheckInDetailProps) {
+export function CheckInDetail({ record, onBack, onOlder }: CheckInDetailProps) {
   return (
     <section aria-labelledby="detail-heading">
       <h2 id="detail-heading">{formatDateLabel(record.date)}</h2>
@@ -23,6 +24,11 @@ export function CheckInDetail({ record, onBack }: CheckInDetailProps) {
       ) : (
         <p>No note for this day.</p>
       )}
+      <p>
+        <Button onClick={onOlder} disabled={!onOlder}>
+          Previous entry
+        </Button>
+      </p>
       <Button onClick={onBack}>Back to Home</Button>
     </section>
   );

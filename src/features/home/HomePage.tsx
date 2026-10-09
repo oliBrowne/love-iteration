@@ -21,7 +21,7 @@ export function HomePage({
 }: HomePageProps) {
   const [records, setRecords] = useState<CheckIn[]>([]);
   const [loaded, setLoaded] = useState(false);
-  const [selected, setSelected] = useState<CheckIn>();
+  const [selectedId, setSelectedId] = useState<string>();
   const [confirming, setConfirming] = useState(false);
   const [deleteFailed, setDeleteFailed] = useState(false);
 
@@ -59,9 +59,18 @@ export function HomePage({
     };
   }, [getRepository]);
 
+  const earlier = records.filter((r) => r.date !== day);
+  const selectedIndex = earlier.findIndex((r) => r.id === selectedId);
+  const selected = earlier[selectedIndex];
   if (selected) {
+    // The list is newest first, so the next index is the older entry.
+    const older = earlier[selectedIndex + 1];
     return (
-      <CheckInDetail record={selected} onBack={() => setSelected(undefined)} />
+      <CheckInDetail
+        record={selected}
+        onBack={() => setSelectedId(undefined)}
+        onOlder={older ? () => setSelectedId(older.id) : undefined}
+      />
     );
   }
 
@@ -97,8 +106,8 @@ export function HomePage({
       ) : null}
       {loaded ? (
         <HistoryList
-          records={records.filter((r) => r.date !== day)}
-          onSelect={setSelected}
+          records={earlier}
+          onSelect={(record) => setSelectedId(record.id)}
         />
       ) : null}
     </section>
