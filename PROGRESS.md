@@ -275,3 +275,9 @@
 - Verified: lint, typecheck, npm test (51 passed), build, format:check, roadmap test, Playwright 15 passed (using pre-installed Chromium).
 - Next: L048 add delete-today control (confirmation precedes deletion).
 - Blockers: none
+
+## 2026-10-09 — L048: add delete-today control
+- Changed: Home offers a Delete today's check-in button that asks for confirmation (Yes, delete / Keep it) before removing it.
+- Verified: lint, typecheck, npm test (53 passed), build, format:check, roadmap test.
+- Next: L049 check-in history list (earlier dates under a heading).
+- Blockers: none

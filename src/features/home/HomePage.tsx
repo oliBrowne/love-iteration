@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Button } from '../../ui/index.ts';
 import { getCheckInRepository } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
@@ -17,6 +18,21 @@ export function HomePage({
   getRepository = getCheckInRepository,
 }: HomePageProps) {
   const [today, setToday] = useState<CheckIn>();
+  const [confirming, setConfirming] = useState(false);
+  const [deleteFailed, setDeleteFailed] = useState(false);
+
+  async function deleteToday() {
+    if (!today) return;
+    try {
+      const repo = await getRepository();
+      await repo.delete(today.id);
+      setToday(undefined);
+      setConfirming(false);
+      setDeleteFailed(false);
+    } catch {
+      setDeleteFailed(true);
+    }
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -49,6 +65,20 @@ export function HomePage({
           <p>
             <a href={routeToHash('check-in')}>Edit today&rsquo;s check-in</a>
           </p>
+          {confirming ? (
+            <div role="group" aria-label="Confirm delete">
+              <p>Delete today&rsquo;s check-in? This cannot be undone.</p>
+              {deleteFailed ? (
+                <p role="alert">Could not delete. Please try again.</p>
+              ) : null}
+              <Button onClick={deleteToday}>Yes, delete</Button>{' '}
+              <Button onClick={() => setConfirming(false)}>Keep it</Button>
+            </div>
+          ) : (
+            <Button onClick={() => setConfirming(true)}>
+              Delete today&rsquo;s check-in
+            </Button>
+          )}
         </>
       ) : null}
     </section>

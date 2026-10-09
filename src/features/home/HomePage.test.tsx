@@ -1,5 +1,11 @@
 // @vitest-environment jsdom
-import { cleanup, render, screen } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
 import { createCheckInRepository, openDatabase } from '../../data/index.ts';
@@ -53,5 +59,26 @@ describe('HomePage summary', () => {
     await setup([checkIn('2000-01-01', 'rough')]);
     await new Promise((resolve) => setTimeout(resolve, 20));
     expect(screen.queryByTestId('today-summary')).toBeNull();
+  });
+
+  it('asks before deleting and keeps the check-in on cancel', async () => {
+    await setup([checkIn(localDate(), 'glowing')]);
+    fireEvent.click(
+      await screen.findByRole('button', { name: /Delete today/ }),
+    );
+    expect(screen.getByText(/This cannot be undone/)).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Keep it' }));
+    expect(screen.getByTestId('today-summary')).toBeTruthy();
+  });
+
+  it('deletes today only after confirmation', async () => {
+    await setup([checkIn(localDate(), 'glowing')]);
+    fireEvent.click(
+      await screen.findByRole('button', { name: /Delete today/ }),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Yes, delete' }));
+    await waitFor(() =>
+      expect(screen.queryByTestId('today-summary')).toBeNull(),
+    );
   });
 });
