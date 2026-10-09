@@ -60,7 +60,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L051 Add history date labels — Done when today and older dates are distinguishable.
 - [x] L052 Add history mood labels — Done when icons have visible text alternatives.
 - [x] L053 Add history pagination — Done when more than 30 items loads another page.
-- [ ] L054 Add check-in detail view — Done when selected entry shows complete note.
+- [x] L054 Add check-in detail view — Done when selected entry shows complete note.
 - [ ] L055 Add previous-day navigation — Done when detail can move to an older entry.
 - [ ] L056 Add next-day navigation — Done when detail can move to a newer entry.
 - [ ] L057 Add keyboard check-in flow test — Done when tab, select, save, and focus work.

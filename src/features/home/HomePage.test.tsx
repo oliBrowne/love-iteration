@@ -81,4 +81,18 @@ describe('HomePage summary', () => {
       expect(screen.queryByTestId('today-summary')).toBeNull(),
     );
   });
+
+  it('opens an earlier check-in with its full note', async () => {
+    const earlier = {
+      ...checkIn('2000-01-01', 'rough'),
+      note: 'Full demo note',
+    };
+    await setup([earlier]);
+    fireEvent.click(await screen.findByRole('button', { name: /View/ }));
+    expect(screen.getByTestId('detail-note').textContent).toBe(
+      'Full demo note',
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Back to Home' }));
+    expect(screen.getByRole('heading', { name: 'Home' })).toBeTruthy();
+  });
 });

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { CheckInDetail } from '../history/CheckInDetail.tsx';
 import { HistoryList } from '../history/HistoryList.tsx';
 import { Button } from '../../ui/index.ts';
 import { getCheckInRepository } from '../../data/index.ts';
@@ -20,6 +21,7 @@ export function HomePage({
 }: HomePageProps) {
   const [records, setRecords] = useState<CheckIn[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [selected, setSelected] = useState<CheckIn>();
   const [confirming, setConfirming] = useState(false);
   const [deleteFailed, setDeleteFailed] = useState(false);
 
@@ -57,6 +59,12 @@ export function HomePage({
     };
   }, [getRepository]);
 
+  if (selected) {
+    return (
+      <CheckInDetail record={selected} onBack={() => setSelected(undefined)} />
+    );
+  }
+
   return (
     <section aria-labelledby="home-heading">
       <h2 id="home-heading">Home</h2>
@@ -88,7 +96,10 @@ export function HomePage({
         </>
       ) : null}
       {loaded ? (
-        <HistoryList records={records.filter((r) => r.date !== day)} />
+        <HistoryList
+          records={records.filter((r) => r.date !== day)}
+          onSelect={setSelected}
+        />
       ) : null}
     </section>
   );

@@ -311,3 +311,9 @@
 - Verified: lint, typecheck, npm test (60 passed), build, format:check, roadmap test.
 - Next: L054 check-in detail view showing the complete note.
 - Blockers: none
+
+## 2026-10-09 — L054: add check-in detail view
+- Changed: Each history row has a View button that opens that day's mood and complete note, with a Back to Home button.
+- Verified: lint, typecheck, npm test (64 passed), build, format:check, roadmap test. Keyboard: View and Back are native buttons with the existing focus ring.
+- Next: L055 previous-day navigation inside the detail view.
+- Blockers: none

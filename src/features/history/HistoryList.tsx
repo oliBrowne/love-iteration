@@ -7,10 +7,11 @@ export const historyPageSize = 30;
 
 type HistoryListProps = {
   records: CheckIn[];
+  onSelect?: (record: CheckIn) => void;
 };
 
 // Earlier check-ins, newest first, or instructions when there are none yet.
-export function HistoryList({ records }: HistoryListProps) {
+export function HistoryList({ records, onSelect }: HistoryListProps) {
   const [pages, setPages] = useState(1);
   const shown = records.slice(0, pages * historyPageSize);
   return (
@@ -28,6 +29,22 @@ export function HistoryList({ records }: HistoryListProps) {
             {formatDateLabel(record.date)}:{' '}
             <span aria-hidden="true">{moodIcons[record.mood]}</span>{' '}
             <span>{moodLabels[record.mood]}</span>
+            {onSelect ? (
+              <>
+                {' '}
+                <button
+                  type="button"
+                  className="link-button"
+                  onClick={() => onSelect(record)}
+                >
+                  View
+                  <span className="visually-hidden">
+                    {' '}
+                    {formatDateLabel(record.date)} check-in
+                  </span>
+                </button>
+              </>
+            ) : null}
           </li>
         ))}
       </ul>

@@ -1,0 +1,29 @@
+import { formatDateLabel, moodIcons, moodLabels } from '../../domain/index.ts';
+import type { CheckIn } from '../../domain/index.ts';
+import { Button } from '../../ui/index.ts';
+
+type CheckInDetailProps = {
+  record: CheckIn;
+  onBack: () => void;
+};
+
+// One saved check-in with its complete note.
+export function CheckInDetail({ record, onBack }: CheckInDetailProps) {
+  return (
+    <section aria-labelledby="detail-heading">
+      <h2 id="detail-heading">{formatDateLabel(record.date)}</h2>
+      <p>
+        <span aria-hidden="true">{moodIcons[record.mood]}</span>{' '}
+        <strong>{moodLabels[record.mood]}</strong>
+      </p>
+      {record.note ? (
+        <p className="note-text" data-testid="detail-note">
+          {record.note}
+        </p>
+      ) : (
+        <p>No note for this day.</p>
+      )}
+      <Button onClick={onBack}>Back to Home</Button>
+    </section>
+  );
+}
