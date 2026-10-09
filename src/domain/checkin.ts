@@ -66,6 +66,15 @@ export const moodLabels: Record<Mood, string> = {
   rough: 'Rough',
 };
 
+// A small glyph per mood. It is decoration only; the label is always shown too.
+export const moodIcons: Record<Mood, string> = {
+  glowing: '✨',
+  good: '🙂',
+  okay: '😐',
+  low: '🌧️',
+  rough: '🌪️',
+};
+
 export const noteMaxLength = 500;
 
 // Characters left in the note; negative once the note is over the limit.

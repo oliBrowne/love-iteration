@@ -46,4 +46,13 @@ describe('HistoryList', () => {
     render(<HistoryList records={[checkIn(localDate(), 'glowing')]} />);
     expect(screen.getByText(/^Today:/)).toBeTruthy();
   });
+
+  it('pairs every mood icon with visible text', () => {
+    const { container } = render(
+      <HistoryList records={[checkIn('2026-01-03', 'glowing')]} />,
+    );
+    const icon = container.querySelector('[aria-hidden="true"]');
+    expect(icon?.textContent).toBe('✨');
+    expect(screen.getByText('Glowing')).toBeTruthy();
+  });
 });

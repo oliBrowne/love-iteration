@@ -9,5 +9,5 @@ export { moods } from './checkin.ts';
 export { isMood, parseMood } from './checkin.ts';
 export { DomainError } from './errors.ts';
 export { isLocalDate, parseLocalDate } from './checkin.ts';
-export { moodLabels } from './checkin.ts';
+export { moodIcons, moodLabels } from './checkin.ts';
 export { noteMaxLength, noteRemaining } from './checkin.ts';

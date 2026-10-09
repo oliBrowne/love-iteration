@@ -299,3 +299,9 @@
 - Verified: lint, typecheck, npm test (58 passed), build, format:check, roadmap test.
 - Next: L052 history mood labels with visible text alternatives for icons.
 - Blockers: none
+
+## 2026-10-09 — L052: add history mood labels
+- Changed: Each history row shows a mood icon (hidden from screen readers) beside its visible mood word.
+- Verified: lint, typecheck, npm test (59 passed), build, format:check, roadmap test.
+- Next: L053 history pagination (load another page after 30 items).
+- Blockers: none

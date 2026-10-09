@@ -58,7 +58,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L049 Add check-in history list — Done when earlier dates appear under a heading.
 - [x] L050 Add history empty state — Done when first-time users see clear instructions.
 - [x] L051 Add history date labels — Done when today and older dates are distinguishable.
-- [ ] L052 Add history mood labels — Done when icons have visible text alternatives.
+- [x] L052 Add history mood labels — Done when icons have visible text alternatives.
 - [ ] L053 Add history pagination — Done when more than 30 items loads another page.
 - [ ] L054 Add check-in detail view — Done when selected entry shows complete note.
 - [ ] L055 Add previous-day navigation — Done when detail can move to an older entry.
