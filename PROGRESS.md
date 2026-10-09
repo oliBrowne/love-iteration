@@ -305,3 +305,9 @@
 - Verified: lint, typecheck, npm test (59 passed), build, format:check, roadmap test.
 - Next: L053 history pagination (load another page after 30 items).
 - Blockers: none
+
+## 2026-10-09 — L053: add history pagination
+- Changed: History shows 30 check-ins at a time with a Show more button that loads the next page.
+- Verified: lint, typecheck, npm test (60 passed), build, format:check, roadmap test.
+- Next: L054 check-in detail view showing the complete note.
+- Blockers: none

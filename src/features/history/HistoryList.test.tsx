@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { localDate } from '../../domain/index.ts';
 import type { CheckIn } from '../../domain/index.ts';
-import { HistoryList } from './HistoryList.tsx';
+import { HistoryList, historyPageSize } from './HistoryList.tsx';
 
 afterEach(cleanup);
 
@@ -54,5 +54,16 @@ describe('HistoryList', () => {
     const icon = container.querySelector('[aria-hidden="true"]');
     expect(icon?.textContent).toBe('✨');
     expect(screen.getByText('Glowing')).toBeTruthy();
+  });
+
+  it('loads another page when there are more than 30 items', () => {
+    const many = Array.from({ length: historyPageSize + 5 }, (_, i) =>
+      checkIn(localDate(new Date(2025, 0, i + 1)), 'okay'),
+    );
+    render(<HistoryList records={many} />);
+    expect(screen.getAllByRole('listitem')).toHaveLength(historyPageSize);
+    fireEvent.click(screen.getByRole('button', { name: 'Show more' }));
+    expect(screen.getAllByRole('listitem')).toHaveLength(historyPageSize + 5);
+    expect(screen.queryByRole('button', { name: 'Show more' })).toBeNull();
   });
 });

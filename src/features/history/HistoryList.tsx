@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { formatDateLabel, moodIcons, moodLabels } from '../../domain/index.ts';
 import type { CheckIn } from '../../domain/index.ts';
-import { EmptyState } from '../../ui/index.ts';
+import { Button, EmptyState } from '../../ui/index.ts';
+
+export const historyPageSize = 30;
 
 type HistoryListProps = {
   records: CheckIn[];
@@ -8,6 +11,8 @@ type HistoryListProps = {
 
 // Earlier check-ins, newest first, or instructions when there are none yet.
 export function HistoryList({ records }: HistoryListProps) {
+  const [pages, setPages] = useState(1);
+  const shown = records.slice(0, pages * historyPageSize);
   return (
     <section aria-labelledby="history-heading">
       <h3 id="history-heading">Earlier check-ins</h3>
@@ -18,7 +23,7 @@ export function HistoryList({ records }: HistoryListProps) {
         </EmptyState>
       ) : null}
       <ul>
-        {records.map((record) => (
+        {shown.map((record) => (
           <li key={record.id}>
             {formatDateLabel(record.date)}:{' '}
             <span aria-hidden="true">{moodIcons[record.mood]}</span>{' '}
@@ -26,6 +31,9 @@ export function HistoryList({ records }: HistoryListProps) {
           </li>
         ))}
       </ul>
+      {shown.length < records.length ? (
+        <Button onClick={() => setPages((n) => n + 1)}>Show more</Button>
+      ) : null}
     </section>
   );
 }
