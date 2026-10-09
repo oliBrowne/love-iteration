@@ -335,3 +335,9 @@
 - Verified: lint, typecheck, npm test (65 passed), build, format:check, roadmap test, Playwright 16 passed (pre-installed Chromium).
 - Next: L058 persistence browser test (check-in survives a reload).
 - Blockers: none
+
+## 2026-10-09 — L058: add persistence browser test
+- Changed: A Playwright test saves a check-in, reloads Home, and confirms the summary and the edit form still hold the saved mood and note.
+- Verified: lint, typecheck, npm test (65 passed), build, format:check, roadmap test, Playwright persistence spec passed (pre-installed Chromium).
+- Next: L059 check-in migration test (older schema opens without losing records).
+- Blockers: none
