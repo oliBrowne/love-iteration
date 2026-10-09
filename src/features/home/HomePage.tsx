@@ -19,6 +19,7 @@ export function HomePage({
   getRepository = getCheckInRepository,
 }: HomePageProps) {
   const [records, setRecords] = useState<CheckIn[]>([]);
+  const [loaded, setLoaded] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [deleteFailed, setDeleteFailed] = useState(false);
 
@@ -44,7 +45,9 @@ export function HomePage({
     getRepository()
       .then((repo) => repo.list())
       .then((records) => {
-        if (!cancelled) setRecords(records);
+        if (cancelled) return;
+        setRecords(records);
+        setLoaded(true);
       })
       .catch(() => {
         // The summary is optional; Home still works without it.
@@ -84,7 +87,9 @@ export function HomePage({
           )}
         </>
       ) : null}
-      <HistoryList records={records.filter((r) => r.date !== day)} />
+      {loaded ? (
+        <HistoryList records={records.filter((r) => r.date !== day)} />
+      ) : null}
     </section>
   );
 }

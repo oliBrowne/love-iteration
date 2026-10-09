@@ -34,4 +34,10 @@ describe('HistoryList', () => {
     expect(screen.getAllByRole('listitem')).toHaveLength(2);
     expect(screen.getByText(/2026-01-03/)).toBeTruthy();
   });
+
+  it('explains what to do when there is no history yet', () => {
+    render(<HistoryList records={[]} />);
+    expect(screen.getByText(/Open Check-in, pick how you feel/)).toBeTruthy();
+    expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+  });
 });

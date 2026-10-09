@@ -287,3 +287,9 @@
 - Verified: lint, typecheck, npm test (54 passed), build, format:check, roadmap test.
 - Next: L050 history empty state with clear first-time instructions.
 - Blockers: none
+
+## 2026-10-09 — L050: add history empty state
+- Changed: With no earlier check-ins, the history section tells first-time users to open Check-in, pick a feeling, and save.
+- Verified: lint, typecheck, npm test (55 passed), build, format:check, roadmap test.
+- Next: L051 history date labels distinguishing today from older dates.
+- Blockers: none
