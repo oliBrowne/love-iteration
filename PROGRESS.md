@@ -341,3 +341,9 @@
 - Verified: lint, typecheck, npm test (65 passed), build, format:check, roadmap test, Playwright persistence spec passed (pre-installed Chromium).
 - Next: L059 check-in migration test (older schema opens without losing records).
 - Blockers: none
+
+## 2026-10-09 — L059: add check-in migration test
+- Changed: A test seeds a database exactly as the first release stored it and confirms openDatabase keeps every record readable.
+- Verified: lint, typecheck, npm test (66 passed), build, format:check, roadmap test. Only schema v1 exists so far, so the test guards the open path that future migrations must keep working.
+- Next: L060 (see ROADMAP.md).
+- Blockers: none
