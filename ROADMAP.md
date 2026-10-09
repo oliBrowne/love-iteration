@@ -63,7 +63,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L054 Add check-in detail view — Done when selected entry shows complete note.
 - [x] L055 Add previous-day navigation — Done when detail can move to an older entry.
 - [x] L056 Add next-day navigation — Done when detail can move to a newer entry.
-- [ ] L057 Add keyboard check-in flow test — Done when tab, select, save, and focus work.
+- [x] L057 Add keyboard check-in flow test — Done when tab, select, save, and focus work.
 - [ ] L058 Add persistence browser test — Done when check-in survives a page reload.
 - [ ] L059 Add check-in migration test — Done when older schema opens without losing records.
 - [ ] L060 Add check-in privacy copy — Done when screen states entries stay on this device.

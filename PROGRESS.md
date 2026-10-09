@@ -329,3 +329,9 @@
 - Verified: lint, typecheck, npm test (65 passed), build, format:check, roadmap test.
 - Next: L057 keyboard check-in flow test (tab, select, save, focus).
 - Blockers: none
+
+## 2026-10-09 — L057: add keyboard check-in flow test
+- Changed: A Playwright test completes a check-in using only Tab, arrow keys, typing and Enter, and confirms focus order and that focus stays on Save.
+- Verified: lint, typecheck, npm test (65 passed), build, format:check, roadmap test, Playwright 16 passed (pre-installed Chromium).
+- Next: L058 persistence browser test (check-in survives a reload).
+- Blockers: none
