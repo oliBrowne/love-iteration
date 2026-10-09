@@ -281,3 +281,9 @@
 - Verified: lint, typecheck, npm test (53 passed), build, format:check, roadmap test.
 - Next: L049 check-in history list (earlier dates under a heading).
 - Blockers: none
+
+## 2026-10-09 — L049: add check-in history list
+- Changed: Home lists earlier check-ins (date and mood) under an "Earlier check-ins" heading, newest first.
+- Verified: lint, typecheck, npm test (54 passed), build, format:check, roadmap test.
+- Next: L050 history empty state with clear first-time instructions.
+- Blockers: none

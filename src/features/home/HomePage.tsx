@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { HistoryList } from '../history/HistoryList.tsx';
 import { Button } from '../../ui/index.ts';
 import { getCheckInRepository } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
@@ -17,16 +18,20 @@ type HomePageProps = {
 export function HomePage({
   getRepository = getCheckInRepository,
 }: HomePageProps) {
-  const [today, setToday] = useState<CheckIn>();
+  const [records, setRecords] = useState<CheckIn[]>([]);
   const [confirming, setConfirming] = useState(false);
   const [deleteFailed, setDeleteFailed] = useState(false);
+
+  // The list is newest first, so the first match is the latest update.
+  const day = localDate();
+  const today = records.find((r) => r.date === day);
 
   async function deleteToday() {
     if (!today) return;
     try {
       const repo = await getRepository();
       await repo.delete(today.id);
-      setToday(undefined);
+      setRecords((all) => all.filter((r) => r.id !== today.id));
       setConfirming(false);
       setDeleteFailed(false);
     } catch {
@@ -39,9 +44,7 @@ export function HomePage({
     getRepository()
       .then((repo) => repo.list())
       .then((records) => {
-        const day = localDate();
-        // The list is newest first, so the first match is the latest update.
-        if (!cancelled) setToday(records.find((r) => r.date === day));
+        if (!cancelled) setRecords(records);
       })
       .catch(() => {
         // The summary is optional; Home still works without it.
@@ -81,6 +84,7 @@ export function HomePage({
           )}
         </>
       ) : null}
+      <HistoryList records={records.filter((r) => r.date !== day)} />
     </section>
   );
 }
