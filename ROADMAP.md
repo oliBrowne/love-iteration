@@ -77,7 +77,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L065 Add gratitude list method — Done when newest entries appear first.
 - [x] L066 Add gratitude delete method — Done when deletion test passes.
 - [x] L067 Render Gratitude route — Done when navigation opens the page.
-- [ ] L068 Add gratitude composer — Done when user can save one appreciation.
+- [x] L068 Add gratitude composer — Done when user can save one appreciation.
 - [ ] L069 Add gratitude empty state — Done when page suggests a first entry.
 - [ ] L070 Show gratitude cards — Done when text and creation date are visible.
 - [ ] L071 Add gratitude edit action — Done when edited text persists after reload.

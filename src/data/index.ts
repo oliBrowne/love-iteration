@@ -13,3 +13,4 @@ export {
 } from './checkinRepository.ts';
 export { createGratitudeRepository } from './gratitudeRepository.ts';
 export { getCheckInRepository } from './localCheckIns.ts';
+export { getGratitudeRepository } from './localGratitude.ts';

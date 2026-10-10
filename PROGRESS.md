@@ -401,3 +401,9 @@
 - Verified: lint, typecheck, unit tests (route + page), build, format:check, roadmap test, Playwright 18 passed (pre-installed Chromium).
 - Next: L068 gratitude composer.
 - Blockers: none
+
+## 2026-10-10 — L068: add gratitude composer
+- Changed: On Gratitude you can type one appreciation, save it to this device, and see 'Saved.'; blank text shows a gentle inline message.
+- Verified: lint, typecheck, unit tests (79), build, format:check, roadmap test, Playwright 19 passed (pre-installed Chromium).
+- Next: L069 gratitude empty state.
+- Blockers: none
