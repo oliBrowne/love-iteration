@@ -365,3 +365,9 @@
 - Verified: lint, typecheck, unit tests (type test), build, format:check, roadmap test.
 - Next: L062 reject blank gratitude text.
 - Blockers: none
+
+## 2026-10-10 — L062: validate gratitude text
+- Changed: Blank or whitespace-only gratitude text is rejected with a friendly DomainError; valid text is trimmed.
+- Verified: lint, typecheck, unit tests (blank rejected), build, format:check, roadmap test.
+- Next: L063 add gratitude object store via migration.
+- Blockers: none
