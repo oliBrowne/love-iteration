@@ -371,3 +371,9 @@
 - Verified: lint, typecheck, unit tests (blank rejected), build, format:check, roadmap test.
 - Next: L063 add gratitude object store via migration.
 - Blockers: none
+
+## 2026-10-10 — L063: add gratitude object store
+- Changed: Schema v2 adds a gratitude store; databases from v1 upgrade in place and keep their check-ins.
+- Verified: lint, typecheck, unit tests (fresh create + v1 upgrade), build, format:check, roadmap test.
+- Next: L064 gratitude save method.
+- Blockers: none

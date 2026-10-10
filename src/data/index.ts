@@ -4,6 +4,7 @@ export {
   checkinsStore,
   databaseName,
   databaseVersion,
+  gratitudeStore,
   openDatabase,
 } from './database.ts';
 export { createCheckInRepository } from './checkinRepository.ts';
