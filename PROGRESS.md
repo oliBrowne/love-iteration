@@ -407,3 +407,9 @@
 - Verified: lint, typecheck, unit tests (79), build, format:check, roadmap test, Playwright 19 passed (pre-installed Chromium).
 - Next: L069 gratitude empty state.
 - Blockers: none
+
+## 2026-10-10 — L069: add gratitude empty state
+- Changed: With no entries, Gratitude suggests a first appreciation; the hint disappears after saving.
+- Verified: lint, typecheck, unit tests (80), build, format:check, roadmap test.
+- Next: L070 show gratitude cards.
+- Blockers: none

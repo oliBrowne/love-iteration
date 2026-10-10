@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { getGratitudeRepository } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
@@ -10,7 +10,7 @@ import {
   parseGratitudeText,
 } from '../../domain/index.ts';
 import type { Gratitude } from '../../domain/index.ts';
-import { Button, InlineError, TextArea } from '../../ui/index.ts';
+import { Button, EmptyState, InlineError, TextArea } from '../../ui/index.ts';
 
 type GratitudePageProps = {
   getRepository?: () => Promise<Repository<Gratitude>>;
@@ -22,6 +22,25 @@ export function GratitudePage({
   const [text, setText] = useState('');
   const [problem, setProblem] = useState<string>();
   const [justSaved, setJustSaved] = useState(false);
+  const [entries, setEntries] = useState<Gratitude[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    getRepository()
+      .then((repo) => repo.list())
+      .then((records) => {
+        if (cancelled) return;
+        setEntries(records);
+        setLoaded(true);
+      })
+      .catch(() => {
+        if (!cancelled) setProblem('Could not load your saved appreciations.');
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [getRepository]);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -38,6 +57,8 @@ export function GratitudePage({
         date: localDate(),
         text: clean,
       });
+      setEntries(await repo.list());
+      setLoaded(true);
       setText('');
       setProblem(undefined);
       setJustSaved(true);
@@ -68,6 +89,12 @@ export function GratitudePage({
         {justSaved ? <p role="status">Saved.</p> : null}
         <Button type="submit">Save appreciation</Button>
       </form>
+      {loaded && entries.length === 0 ? (
+        <EmptyState>
+          Nothing here yet. Start with one small thing, like a message that made
+          you smile or something kind someone did today.
+        </EmptyState>
+      ) : null}
     </section>
   );
 }

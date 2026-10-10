@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
 import App from '../../App.tsx';
@@ -46,5 +47,20 @@ describe('Gratitude composer', () => {
       'Write a few words to save.',
     );
     expect(await repo.list()).toEqual([]);
+  });
+});
+
+describe('Gratitude empty state', () => {
+  it('suggests a first entry, then goes away once one is saved', async () => {
+    await renderPage();
+    expect((await screen.findByText(/Nothing here yet/)).textContent).toContain(
+      'Start with one small thing',
+    );
+    fireEvent.change(screen.getByLabelText('What are you grateful for?'), {
+      target: { value: 'Demo thanks' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save appreciation' }));
+    await screen.findByRole('status');
+    expect(screen.queryByText(/Nothing here yet/)).toBeNull();
   });
 });
