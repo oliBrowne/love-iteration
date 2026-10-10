@@ -74,7 +74,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L062 Validate gratitude text — Done when blank text is rejected in a test.
 - [x] L063 Add gratitude store — Done when IndexedDB migration creates gratitude store.
 - [x] L064 Add gratitude save method — Done when repository round trip passes.
-- [ ] L065 Add gratitude list method — Done when newest entries appear first.
+- [x] L065 Add gratitude list method — Done when newest entries appear first.
 - [ ] L066 Add gratitude delete method — Done when deletion test passes.
 - [ ] L067 Render Gratitude route — Done when navigation opens the page.
 - [ ] L068 Add gratitude composer — Done when user can save one appreciation.

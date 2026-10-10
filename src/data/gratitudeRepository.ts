@@ -6,5 +6,8 @@ import type { Repository } from './repository.ts';
 export function createGratitudeRepository(
   db: IDBDatabase,
 ): Repository<Gratitude> {
-  return createStoreRepository<Gratitude>(db, gratitudeStore);
+  // Newest first, by when each appreciation was written.
+  return createStoreRepository<Gratitude>(db, gratitudeStore, (a, b) =>
+    b.createdAt.localeCompare(a.createdAt),
+  );
 }

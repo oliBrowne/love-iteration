@@ -32,3 +32,34 @@ describe('gratitude repository save', () => {
     expect(await repo.list()).toHaveLength(1);
   });
 });
+
+describe('gratitude repository list', () => {
+  it('returns newest entries first', async () => {
+    const repo = createGratitudeRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put({
+      ...demo,
+      id: 'old',
+      createdAt: '2026-01-01T09:00:00.000Z',
+    });
+    await repo.put({
+      ...demo,
+      id: 'new',
+      createdAt: '2026-01-03T09:00:00.000Z',
+    });
+    await repo.put({
+      ...demo,
+      id: 'mid',
+      createdAt: '2026-01-02T09:00:00.000Z',
+    });
+    expect((await repo.list()).map((g) => g.id)).toEqual(['new', 'mid', 'old']);
+  });
+
+  it('is empty before anything is saved', async () => {
+    const repo = createGratitudeRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    expect(await repo.list()).toEqual([]);
+  });
+});

@@ -383,3 +383,9 @@
 - Verified: lint, typecheck, unit tests (save round trip + replace, existing check-in repo tests), build, format:check, roadmap test.
 - Next: L065 list gratitude newest first.
 - Blockers: none
+
+## 2026-10-10 — L065: list gratitude newest first
+- Changed: Gratitude entries list in newest-first order.
+- Verified: lint, typecheck, unit tests (ordering + empty), build, format:check, roadmap test.
+- Next: L066 gratitude delete test.
+- Blockers: none
