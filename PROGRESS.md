@@ -359,3 +359,9 @@
 - Verified: lint, typecheck, unit tests, build, format:check, roadmap test.
 - Next: L061 define gratitude record.
 - Blockers: none
+
+## 2026-10-10 — L061: define gratitude record
+- Changed: A Gratitude type holds text, a local date, and standard record metadata.
+- Verified: lint, typecheck, unit tests (type test), build, format:check, roadmap test.
+- Next: L062 reject blank gratitude text.
+- Blockers: none

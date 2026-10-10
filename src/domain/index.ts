@@ -11,3 +11,4 @@ export { DomainError } from './errors.ts';
 export { isLocalDate, parseLocalDate } from './checkin.ts';
 export { moodIcons, moodLabels } from './checkin.ts';
 export { noteMaxLength, noteRemaining } from './checkin.ts';
+export type { Gratitude } from './gratitude.ts';
