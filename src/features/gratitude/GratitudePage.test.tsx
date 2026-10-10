@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
+import { formatDateLabel } from '../../domain/index.ts';
 import App from '../../App.tsx';
 import { createGratitudeRepository, openDatabase } from '../../data/index.ts';
 import { GratitudePage } from './GratitudePage.tsx';
@@ -62,5 +63,37 @@ describe('Gratitude empty state', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Save appreciation' }));
     await screen.findByRole('status');
     expect(screen.queryByText(/Nothing here yet/)).toBeNull();
+  });
+});
+
+describe('Gratitude cards', () => {
+  it('shows each saved entry’s text and date, newest first', async () => {
+    const repo = createGratitudeRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    const base = {
+      schemaVersion: 1,
+      updatedAt: '2026-03-02T09:00:00.000Z',
+    };
+    await repo.put({
+      ...base,
+      id: 'a',
+      createdAt: '2026-03-01T09:00:00.000Z',
+      date: '2026-03-01',
+      text: 'Demo: older thanks',
+    });
+    await repo.put({
+      ...base,
+      id: 'b',
+      createdAt: '2026-03-02T09:00:00.000Z',
+      date: '2026-03-02',
+      text: 'Demo: newer thanks',
+    });
+    render(<GratitudePage getRepository={async () => repo} />);
+    const items = await screen.findAllByRole('listitem');
+    expect(items).toHaveLength(2);
+    expect(items[0]?.textContent).toContain('Demo: newer thanks');
+    expect(items[0]?.textContent).toContain(formatDateLabel('2026-03-02'));
+    expect(items[1]?.textContent).toContain('Demo: older thanks');
   });
 });

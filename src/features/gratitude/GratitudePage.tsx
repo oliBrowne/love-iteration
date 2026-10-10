@@ -10,6 +10,7 @@ import {
   parseGratitudeText,
 } from '../../domain/index.ts';
 import type { Gratitude } from '../../domain/index.ts';
+import { GratitudeList } from './GratitudeList.tsx';
 import { Button, EmptyState, InlineError, TextArea } from '../../ui/index.ts';
 
 type GratitudePageProps = {
@@ -89,6 +90,7 @@ export function GratitudePage({
         {justSaved ? <p role="status">Saved.</p> : null}
         <Button type="submit">Save appreciation</Button>
       </form>
+      <GratitudeList entries={entries} />
       {loaded && entries.length === 0 ? (
         <EmptyState>
           Nothing here yet. Start with one small thing, like a message that made

@@ -413,3 +413,9 @@
 - Verified: lint, typecheck, unit tests (80), build, format:check, roadmap test.
 - Next: L070 show gratitude cards.
 - Blockers: none
+
+## 2026-10-10 — L070: show gratitude cards
+- Changed: Saved appreciations appear as cards showing their text and date, newest first, styled with the warm tokens.
+- Verified: lint, typecheck, unit tests (81, incl. color-token guard), build, format:check, roadmap test. Cards wrap long words for narrow phones.
+- Next: L071 gratitude edit action.
+- Blockers: none
