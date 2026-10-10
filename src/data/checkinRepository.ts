@@ -1,4 +1,4 @@
-import type { CheckIn } from '../domain/index.ts';
+import type { CheckIn, RecordMetadata } from '../domain/index.ts';
 import { checkinsStore } from './database.ts';
 import type { Repository } from './repository.ts';
 
@@ -22,36 +22,41 @@ function committed(tx: IDBTransaction): Promise<void> {
   });
 }
 
-export function createCheckInRepository(db: IDBDatabase): Repository<CheckIn> {
+// A repository over one IndexedDB object store. `compare` orders list().
+export function createStoreRepository<T extends RecordMetadata>(
+  db: IDBDatabase,
+  store: string,
+  compare?: (a: T, b: T) => number,
+): Repository<T> {
   return {
     async get(id) {
-      const tx = db.transaction(checkinsStore, 'readonly');
-      const record = await wrap<CheckIn | undefined>(
-        tx.objectStore(checkinsStore).get(id),
-      );
-      return record;
+      const tx = db.transaction(store, 'readonly');
+      return wrap<T | undefined>(tx.objectStore(store).get(id));
     },
     async list() {
-      const tx = db.transaction(checkinsStore, 'readonly');
-      const records = await wrap<CheckIn[]>(
-        tx.objectStore(checkinsStore).getAll(),
-      );
-      // Newest day first; the latest update wins within one day.
-      return records.sort(
-        (a, b) =>
-          b.date.localeCompare(a.date) ||
-          b.updatedAt.localeCompare(a.updatedAt),
-      );
+      const tx = db.transaction(store, 'readonly');
+      const records = await wrap<T[]>(tx.objectStore(store).getAll());
+      return compare ? records.sort(compare) : records;
     },
     async put(record) {
-      const tx = db.transaction(checkinsStore, 'readwrite');
-      tx.objectStore(checkinsStore).put(record);
+      const tx = db.transaction(store, 'readwrite');
+      tx.objectStore(store).put(record);
       await committed(tx);
     },
     async delete(id) {
-      const tx = db.transaction(checkinsStore, 'readwrite');
-      tx.objectStore(checkinsStore).delete(id);
+      const tx = db.transaction(store, 'readwrite');
+      tx.objectStore(store).delete(id);
       await committed(tx);
     },
   };
+}
+
+export function createCheckInRepository(db: IDBDatabase): Repository<CheckIn> {
+  // Newest day first; the latest update wins within one day.
+  return createStoreRepository<CheckIn>(
+    db,
+    checkinsStore,
+    (a, b) =>
+      b.date.localeCompare(a.date) || b.updatedAt.localeCompare(a.updatedAt),
+  );
 }

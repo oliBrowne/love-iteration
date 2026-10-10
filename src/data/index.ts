@@ -7,5 +7,9 @@ export {
   gratitudeStore,
   openDatabase,
 } from './database.ts';
-export { createCheckInRepository } from './checkinRepository.ts';
+export {
+  createCheckInRepository,
+  createStoreRepository,
+} from './checkinRepository.ts';
+export { createGratitudeRepository } from './gratitudeRepository.ts';
 export { getCheckInRepository } from './localCheckIns.ts';

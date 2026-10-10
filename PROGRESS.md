@@ -377,3 +377,9 @@
 - Verified: lint, typecheck, unit tests (fresh create + v1 upgrade), build, format:check, roadmap test.
 - Next: L064 gratitude save method.
 - Blockers: none
+
+## 2026-10-10 — L064: add gratitude save method
+- Changed: A gratitude repository saves and reloads records; check-in storage now shares one generic store repository.
+- Verified: lint, typecheck, unit tests (save round trip + replace, existing check-in repo tests), build, format:check, roadmap test.
+- Next: L065 list gratitude newest first.
+- Blockers: none
