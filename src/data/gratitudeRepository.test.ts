@@ -63,3 +63,25 @@ describe('gratitude repository list', () => {
     expect(await repo.list()).toEqual([]);
   });
 });
+
+describe('gratitude repository delete', () => {
+  it('removes only the chosen entry', async () => {
+    const repo = createGratitudeRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put(demo);
+    await repo.put({ ...demo, id: 'g-2' });
+    await repo.delete('g-1');
+    expect(await repo.get('g-1')).toBeUndefined();
+    expect((await repo.list()).map((g) => g.id)).toEqual(['g-2']);
+  });
+
+  it('ignores an unknown id', async () => {
+    const repo = createGratitudeRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put(demo);
+    await repo.delete('missing');
+    expect(await repo.list()).toHaveLength(1);
+  });
+});

@@ -389,3 +389,9 @@
 - Verified: lint, typecheck, unit tests (ordering + empty), build, format:check, roadmap test.
 - Next: L066 gratitude delete test.
 - Blockers: none
+
+## 2026-10-10 — L066: add gratitude delete test
+- Changed: Deleting a gratitude entry removes only that entry; unknown ids are ignored.
+- Verified: lint, typecheck, unit tests (delete + unknown id), build, format:check, roadmap test.
+- Next: L067 render Gratitude route.
+- Blockers: none
