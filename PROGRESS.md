@@ -395,3 +395,9 @@
 - Verified: lint, typecheck, unit tests (delete + unknown id), build, format:check, roadmap test.
 - Next: L067 render Gratitude route.
 - Blockers: none
+
+## 2026-10-10 — L067: render Gratitude route
+- Changed: A Gratitude link in the main nav opens a Gratitude page at #/gratitude.
+- Verified: lint, typecheck, unit tests (route + page), build, format:check, roadmap test, Playwright 18 passed (pre-installed Chromium).
+- Next: L068 gratitude composer.
+- Blockers: none

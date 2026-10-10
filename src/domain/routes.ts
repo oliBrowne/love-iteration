@@ -1,10 +1,17 @@
-export const routes = ['home', 'check-in', 'ideas', 'settings'] as const;
+export const routes = [
+  'home',
+  'check-in',
+  'gratitude',
+  'ideas',
+  'settings',
+] as const;
 
 export type Route = (typeof routes)[number];
 
 export const routeLabels: Record<Route, string> = {
   home: 'Home',
   'check-in': 'Check-in',
+  gratitude: 'Gratitude',
   ideas: 'Ideas',
   settings: 'Settings',
 };

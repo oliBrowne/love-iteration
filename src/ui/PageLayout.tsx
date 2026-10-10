@@ -20,6 +20,7 @@ export function PageLayout({ children }: { children: ReactNode }) {
         <nav aria-label="Main">
           <a href={routeToHash('home')}>{routeLabels.home}</a>{' '}
           <a href={routeToHash('check-in')}>{routeLabels['check-in']}</a>{' '}
+          <a href={routeToHash('gratitude')}>{routeLabels.gratitude}</a>{' '}
           <a href={routeToHash('settings')}>{routeLabels.settings}</a>
         </nav>
       </header>
