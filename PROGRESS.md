@@ -347,3 +347,15 @@
 - Verified: lint, typecheck, npm test (66 passed), build, format:check, roadmap test. Only schema v1 exists so far, so the test guards the open path that future migrations must keep working.
 - Next: L060 (see ROADMAP.md).
 - Blockers: none
+
+## 2026-10-10 — L060: add check-in privacy copy
+- Changed: The check-in screen states that entries stay on this device.
+- Verified: lint, typecheck, unit tests, build, format:check, roadmap test.
+- Next: L061 define gratitude record.
+- Blockers: none
+
+## 2026-10-10 — L060: add check-in privacy copy
+- Changed: The check-in screen states that entries stay on this device.
+- Verified: lint, typecheck, unit tests, build, format:check, roadmap test.
+- Next: L061 define gratitude record.
+- Blockers: none

@@ -84,6 +84,9 @@ export function CheckInPage({
     <section aria-labelledby="checkin-heading">
       <h2 id="checkin-heading">Check-in</h2>
       <p>How are you today? A check-in takes under a minute.</p>
+      <p className="privacy-note">
+        Your entries stay on this device. Nothing is uploaded.
+      </p>
       <form onSubmit={submit}>
         <MoodPicker
           value={mood}

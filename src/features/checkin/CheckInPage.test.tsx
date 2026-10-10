@@ -138,3 +138,10 @@ describe('CheckInPage edit today', () => {
     ).toBe('Demo note');
   });
 });
+
+describe('CheckInPage privacy copy', () => {
+  it('states that entries stay on this device', async () => {
+    await renderPage();
+    expect(screen.getByText(/entries stay on this device/i)).toBeTruthy();
+  });
+});
