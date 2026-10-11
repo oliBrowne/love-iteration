@@ -443,3 +443,9 @@
 - Verified: lint, typecheck, unit tests (89, incl. newest preview + none), build, format:check, roadmap test.
 - Next: L075 gratitude week count.
 - Blockers: none
+
+## 2026-10-11 — L075: add gratitude week count
+- Changed: Gratitude shows 'This week: N' counting entries from the current Monday–Sunday week.
+- Verified: lint, typecheck, unit tests (93, incl. week boundaries + page count), build, format:check, roadmap test.
+- Next: L076 gratitude filter by month.
+- Blockers: none

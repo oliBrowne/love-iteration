@@ -4,6 +4,7 @@ import { getGratitudeRepository } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
   DomainError,
+  countGratitudeThisWeek,
   generateId,
   localDate,
   nowIso,
@@ -103,6 +104,11 @@ export function GratitudePage({
         {justSaved ? <p role="status">Saved.</p> : null}
         <Button type="submit">Save appreciation</Button>
       </form>
+      {entries.length > 0 ? (
+        <p data-testid="week-count">
+          This week: {countGratitudeThisWeek(entries)}
+        </p>
+      ) : null}
       <GratitudeList entries={entries} onEdit={edit} onDelete={remove} />
       {loaded && entries.length === 0 ? (
         <EmptyState>

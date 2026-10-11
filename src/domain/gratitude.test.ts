@@ -1,7 +1,11 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import { DomainError } from './errors.ts';
 import type { Gratitude } from './gratitude.ts';
-import { GRATITUDE_MAX_LENGTH, parseGratitudeText } from './gratitude.ts';
+import {
+  GRATITUDE_MAX_LENGTH,
+  countGratitudeThisWeek,
+  parseGratitudeText,
+} from './gratitude.ts';
 import type { RecordMetadata } from './record.ts';
 
 describe('Gratitude', () => {
@@ -36,5 +40,33 @@ describe('parseGratitudeText', () => {
     const atLimit = 'a'.repeat(GRATITUDE_MAX_LENGTH);
     expect(parseGratitudeText(atLimit)).toBe(atLimit);
     expect(() => parseGratitudeText(atLimit + 'a')).toThrow(DomainError);
+  });
+});
+
+describe('countGratitudeThisWeek', () => {
+  // Wednesday 2026-03-04; its week runs Mon 2026-03-02 to Sun 2026-03-08.
+  const now = new Date(2026, 2, 4, 12);
+  const days = (list: string[]) => list.map((date) => ({ date }));
+
+  it('counts only entries from the current Monday-to-Sunday week', () => {
+    const entries = days([
+      '2026-03-01', // Sunday before
+      '2026-03-02',
+      '2026-03-04',
+      '2026-03-08',
+      '2026-03-09', // Monday after
+    ]);
+    expect(countGratitudeThisWeek(entries, now)).toBe(3);
+  });
+
+  it('treats Sunday as the end of the week', () => {
+    const sunday = new Date(2026, 2, 8, 20);
+    expect(
+      countGratitudeThisWeek(days(['2026-03-02', '2026-03-08']), sunday),
+    ).toBe(2);
+  });
+
+  it('is zero with no entries', () => {
+    expect(countGratitudeThisWeek([], now)).toBe(0);
   });
 });

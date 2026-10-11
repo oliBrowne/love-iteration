@@ -196,3 +196,22 @@ describe('Gratitude delete confirmation', () => {
     expect(await repo.list()).toEqual([]);
   });
 });
+
+describe('Gratitude week count', () => {
+  it('matches the entries saved this week', async () => {
+    const repo = await renderPage();
+    for (const text of ['Demo one', 'Demo two']) {
+      fireEvent.change(screen.getByLabelText('What are you grateful for?'), {
+        target: { value: text },
+      });
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Save appreciation' }),
+      );
+      await screen.findByText(text);
+    }
+    expect(await repo.list()).toHaveLength(2);
+    expect((await screen.findByTestId('week-count')).textContent).toBe(
+      'This week: 2',
+    );
+  });
+});

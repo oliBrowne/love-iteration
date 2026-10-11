@@ -1,4 +1,5 @@
 import { DomainError } from './errors.ts';
+import { localDate } from './time.ts';
 import type { RecordMetadata } from './record.ts';
 
 // A small appreciation. `date` is a local calendar day, YYYY-MM-DD.
@@ -22,4 +23,26 @@ export function parseGratitudeText(value: unknown): string {
     );
   }
   return text;
+}
+
+// How many entries have a `date` in the current Monday-to-Sunday week.
+export function countGratitudeThisWeek(
+  entries: Pick<Gratitude, 'date'>[],
+  now: Date = new Date(),
+): number {
+  const daysSinceMonday = (now.getDay() + 6) % 7;
+  const monday = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() - daysSinceMonday,
+  );
+  const nextMonday = new Date(
+    monday.getFullYear(),
+    monday.getMonth(),
+    monday.getDate() + 7,
+  );
+  // YYYY-MM-DD strings sort in calendar order.
+  const start = localDate(monday);
+  const end = localDate(nextMonday);
+  return entries.filter((e) => e.date >= start && e.date < end).length;
 }
