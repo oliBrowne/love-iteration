@@ -215,3 +215,37 @@ describe('Gratitude week count', () => {
     );
   });
 });
+
+describe('Gratitude month filter', () => {
+  it('limits visible cards to the selected month', async () => {
+    const repo = createGratitudeRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    const base = { schemaVersion: 1, updatedAt: '2026-03-02T09:00:00.000Z' };
+    await repo.put({
+      ...base,
+      id: 'm1',
+      createdAt: '2026-01-15T09:00:00.000Z',
+      date: '2026-01-15',
+      text: 'Demo: january thanks',
+    });
+    await repo.put({
+      ...base,
+      id: 'm2',
+      createdAt: '2026-03-02T09:00:00.000Z',
+      date: '2026-03-02',
+      text: 'Demo: march thanks',
+    });
+    render(<GratitudePage getRepository={async () => repo} />);
+    await screen.findByText('Demo: march thanks');
+    fireEvent.change(screen.getByLabelText('Show month'), {
+      target: { value: '2026-01' },
+    });
+    expect(screen.getByText('Demo: january thanks')).toBeTruthy();
+    expect(screen.queryByText('Demo: march thanks')).toBeNull();
+    fireEvent.change(screen.getByLabelText('Show month'), {
+      target: { value: '' },
+    });
+    expect(screen.getByText('Demo: march thanks')).toBeTruthy();
+  });
+});

@@ -92,6 +92,7 @@ button:focus-visible,
 }
 
 .field input,
+.field select,
 .field textarea {
   font: inherit;
   padding: 0.5rem 0.75rem;
@@ -102,6 +103,7 @@ button:focus-visible,
 }
 
 .field input:focus-visible,
+.field select:focus-visible,
 .field textarea:focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 2px;

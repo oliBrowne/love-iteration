@@ -5,6 +5,9 @@ import type { Repository } from '../../data/index.ts';
 import {
   DomainError,
   countGratitudeThisWeek,
+  filterGratitudeByMonth,
+  formatMonthLabel,
+  gratitudeMonths,
   generateId,
   localDate,
   nowIso,
@@ -26,6 +29,7 @@ export function GratitudePage({
   const [justSaved, setJustSaved] = useState(false);
   const [entries, setEntries] = useState<Gratitude[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [month, setMonth] = useState('');
 
   useEffect(() => {
     let cancelled = false;
@@ -109,7 +113,28 @@ export function GratitudePage({
           This week: {countGratitudeThisWeek(entries)}
         </p>
       ) : null}
-      <GratitudeList entries={entries} onEdit={edit} onDelete={remove} />
+      {entries.length > 0 ? (
+        <div className="field">
+          <label htmlFor="gratitude-month">Show month</label>
+          <select
+            id="gratitude-month"
+            value={month}
+            onChange={(event) => setMonth(event.target.value)}
+          >
+            <option value="">All months</option>
+            {gratitudeMonths(entries).map((m) => (
+              <option key={m} value={m}>
+                {formatMonthLabel(m)}
+              </option>
+            ))}
+          </select>
+        </div>
+      ) : null}
+      <GratitudeList
+        entries={filterGratitudeByMonth(entries, month)}
+        onEdit={edit}
+        onDelete={remove}
+      />
       {loaded && entries.length === 0 ? (
         <EmptyState>
           Nothing here yet. Start with one small thing, like a message that made

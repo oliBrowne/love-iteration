@@ -4,6 +4,9 @@ import type { Gratitude } from './gratitude.ts';
 import {
   GRATITUDE_MAX_LENGTH,
   countGratitudeThisWeek,
+  filterGratitudeByMonth,
+  formatMonthLabel,
+  gratitudeMonths,
   parseGratitudeText,
 } from './gratitude.ts';
 import type { RecordMetadata } from './record.ts';
@@ -68,5 +71,27 @@ describe('countGratitudeThisWeek', () => {
 
   it('is zero with no entries', () => {
     expect(countGratitudeThisWeek([], now)).toBe(0);
+  });
+});
+
+describe('gratitude month filter', () => {
+  const entries = [
+    { date: '2026-03-02' },
+    { date: '2026-03-20' },
+    { date: '2026-01-15' },
+  ];
+
+  it('lists distinct months newest first', () => {
+    expect(gratitudeMonths(entries)).toEqual(['2026-03', '2026-01']);
+  });
+
+  it('limits entries to the selected month, or keeps all when empty', () => {
+    expect(filterGratitudeByMonth(entries, '2026-03')).toHaveLength(2);
+    expect(filterGratitudeByMonth(entries, '2026-01')).toHaveLength(1);
+    expect(filterGratitudeByMonth(entries, '')).toHaveLength(3);
+  });
+
+  it('labels a month readably', () => {
+    expect(formatMonthLabel('2026-03', 'en-US')).toBe('March 2026');
   });
 });

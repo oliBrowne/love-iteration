@@ -449,3 +449,9 @@
 - Verified: lint, typecheck, unit tests (93, incl. week boundaries + page count), build, format:check, roadmap test.
 - Next: L076 gratitude filter by month.
 - Blockers: none
+
+## 2026-10-11 — L076: add gratitude filter by month
+- Changed: Gratitude has a 'Show month' selector that limits visible cards to one month; 'All months' restores them.
+- Verified: lint, typecheck, unit tests (97, incl. filter helpers + page selection), build, format:check, roadmap test; select shares field focus styling.
+- Next: L077 gratitude keyboard test.
+- Blockers: none

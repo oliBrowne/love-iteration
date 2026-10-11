@@ -15,5 +15,8 @@ export type { Gratitude } from './gratitude.ts';
 export {
   GRATITUDE_MAX_LENGTH,
   countGratitudeThisWeek,
+  filterGratitudeByMonth,
+  formatMonthLabel,
+  gratitudeMonths,
   parseGratitudeText,
 } from './gratitude.ts';
