@@ -431,3 +431,9 @@
 - Verified: lint, typecheck, unit tests (85, incl. cancel preserves + confirm removes), build, format:check, roadmap test.
 - Next: L073 gratitude character limit.
 - Blockers: none
+
+## 2026-10-11 — L073: add gratitude character limit
+- Changed: Gratitude entries over 500 characters are refused with a gentle inline message.
+- Verified: lint, typecheck, unit tests (87, incl. limit boundary + UI block), build, format:check, roadmap test.
+- Next: L074 gratitude Home preview.
+- Blockers: none

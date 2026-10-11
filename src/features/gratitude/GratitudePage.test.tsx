@@ -51,6 +51,20 @@ describe('Gratitude composer', () => {
   });
 });
 
+describe('Gratitude character limit', () => {
+  it('blocks an oversized entry with an inline message', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('What are you grateful for?'), {
+      target: { value: 'a'.repeat(501) },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save appreciation' }));
+    expect((await screen.findByRole('alert')).textContent).toBe(
+      'Keep it under 500 characters.',
+    );
+    expect(await repo.list()).toEqual([]);
+  });
+});
+
 describe('Gratitude empty state', () => {
   it('suggests a first entry, then goes away once one is saved', async () => {
     await renderPage();

@@ -12,4 +12,4 @@ export { isLocalDate, parseLocalDate } from './checkin.ts';
 export { moodIcons, moodLabels } from './checkin.ts';
 export { noteMaxLength, noteRemaining } from './checkin.ts';
 export type { Gratitude } from './gratitude.ts';
-export { parseGratitudeText } from './gratitude.ts';
+export { GRATITUDE_MAX_LENGTH, parseGratitudeText } from './gratitude.ts';

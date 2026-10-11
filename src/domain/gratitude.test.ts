@@ -1,7 +1,7 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import { DomainError } from './errors.ts';
 import type { Gratitude } from './gratitude.ts';
-import { parseGratitudeText } from './gratitude.ts';
+import { GRATITUDE_MAX_LENGTH, parseGratitudeText } from './gratitude.ts';
 import type { RecordMetadata } from './record.ts';
 
 describe('Gratitude', () => {
@@ -30,5 +30,11 @@ describe('parseGratitudeText', () => {
 
   it('returns trimmed text', () => {
     expect(parseGratitudeText('  Demo thanks  ')).toBe('Demo thanks');
+  });
+
+  it('blocks oversized text but allows exactly the limit', () => {
+    const atLimit = 'a'.repeat(GRATITUDE_MAX_LENGTH);
+    expect(parseGratitudeText(atLimit)).toBe(atLimit);
+    expect(() => parseGratitudeText(atLimit + 'a')).toThrow(DomainError);
   });
 });

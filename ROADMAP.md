@@ -82,7 +82,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L070 Show gratitude cards — Done when text and creation date are visible.
 - [x] L071 Add gratitude edit action — Done when edited text persists after reload.
 - [x] L072 Add gratitude delete confirmation — Done when cancel preserves the entry.
-- [ ] L073 Add gratitude character limit — Done when oversized entry is blocked.
+- [x] L073 Add gratitude character limit — Done when oversized entry is blocked.
 - [ ] L074 Add gratitude Home preview — Done when most recent appreciation appears on Home.
 - [ ] L075 Add gratitude week count — Done when count matches saved entries for current week.
 - [ ] L076 Add gratitude filter by month — Done when selection limits visible cards.
