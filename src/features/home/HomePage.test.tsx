@@ -8,7 +8,11 @@ import {
 } from '@testing-library/react';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
-import { createCheckInRepository, openDatabase } from '../../data/index.ts';
+import {
+  createCheckInRepository,
+  createGratitudeRepository,
+  openDatabase,
+} from '../../data/index.ts';
 import { formatLocalTime, localDate } from '../../domain/index.ts';
 import type { CheckIn } from '../../domain/index.ts';
 import { HomePage } from './HomePage.tsx';
@@ -116,5 +120,51 @@ describe('HomePage summary', () => {
         .getByRole('button', { name: 'Previous entry' })
         .hasAttribute('disabled'),
     ).toBe(true);
+  });
+});
+
+describe('HomePage gratitude preview', () => {
+  it('shows the most recent appreciation', async () => {
+    const db = await openDatabase(new IDBFactory());
+    const gratitude = createGratitudeRepository(db);
+    const base = { schemaVersion: 1, updatedAt: '2026-03-02T09:00:00.000Z' };
+    await gratitude.put({
+      ...base,
+      id: 'g1',
+      createdAt: '2026-03-01T09:00:00.000Z',
+      date: '2026-03-01',
+      text: 'Demo: older thanks',
+    });
+    await gratitude.put({
+      ...base,
+      id: 'g2',
+      createdAt: '2026-03-02T09:00:00.000Z',
+      date: '2026-03-02',
+      text: 'Demo: newest thanks',
+    });
+    const checkIns = createCheckInRepository(db);
+    render(
+      <HomePage
+        getRepository={async () => checkIns}
+        getGratitudeRepo={async () => gratitude}
+      />,
+    );
+    expect((await screen.findByTestId('gratitude-preview')).textContent).toBe(
+      'Demo: newest thanks',
+    );
+  });
+
+  it('shows no preview when there are no appreciations', async () => {
+    const db = await openDatabase(new IDBFactory());
+    const gratitude = createGratitudeRepository(db);
+    const checkIns = createCheckInRepository(db);
+    render(
+      <HomePage
+        getRepository={async () => checkIns}
+        getGratitudeRepo={async () => gratitude}
+      />,
+    );
+    await screen.findByRole('heading', { name: 'Home' });
+    expect(screen.queryByTestId('gratitude-preview')).toBeNull();
   });
 });

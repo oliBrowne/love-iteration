@@ -437,3 +437,9 @@
 - Verified: lint, typecheck, unit tests (87, incl. limit boundary + UI block), build, format:check, roadmap test.
 - Next: L074 gratitude Home preview.
 - Blockers: none
+
+## 2026-10-11 — L074: add gratitude Home preview
+- Changed: Home shows the latest appreciation with a link to Gratitude; nothing appears when there are none.
+- Verified: lint, typecheck, unit tests (89, incl. newest preview + none), build, format:check, roadmap test.
+- Next: L075 gratitude week count.
+- Blockers: none

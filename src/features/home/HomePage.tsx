@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { CheckInDetail } from '../history/CheckInDetail.tsx';
 import { HistoryList } from '../history/HistoryList.tsx';
 import { Button } from '../../ui/index.ts';
-import { getCheckInRepository } from '../../data/index.ts';
+import {
+  getCheckInRepository,
+  getGratitudeRepository,
+} from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
   formatLocalTime,
@@ -10,15 +13,18 @@ import {
   moodLabels,
   routeToHash,
 } from '../../domain/index.ts';
-import type { CheckIn } from '../../domain/index.ts';
+import type { CheckIn, Gratitude } from '../../domain/index.ts';
 
 type HomePageProps = {
   getRepository?: () => Promise<Repository<CheckIn>>;
+  getGratitudeRepo?: () => Promise<Repository<Gratitude>>;
 };
 
 export function HomePage({
   getRepository = getCheckInRepository,
+  getGratitudeRepo = getGratitudeRepository,
 }: HomePageProps) {
+  const [latestGratitude, setLatestGratitude] = useState<Gratitude>();
   const [records, setRecords] = useState<CheckIn[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [selectedId, setSelectedId] = useState<string>();
@@ -58,6 +64,24 @@ export function HomePage({
       cancelled = true;
     };
   }, [getRepository]);
+
+  useEffect(() => {
+    let cancelled = false;
+    // Starting from a resolved promise keeps a failing opener from throwing here.
+    Promise.resolve()
+      .then(getGratitudeRepo)
+      .then((repo) => repo.list())
+      .then((entries) => {
+        // The list is newest first.
+        if (!cancelled) setLatestGratitude(entries[0]);
+      })
+      .catch(() => {
+        // The preview is optional; Home still works without it.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [getGratitudeRepo]);
 
   const earlier = records.filter((r) => r.date !== day);
   const selectedIndex = earlier.findIndex((r) => r.id === selectedId);
@@ -105,6 +129,15 @@ export function HomePage({
             </Button>
           )}
         </>
+      ) : null}
+      {latestGratitude ? (
+        <section aria-labelledby="home-gratitude-heading">
+          <h3 id="home-gratitude-heading">Latest appreciation</h3>
+          <p data-testid="gratitude-preview">{latestGratitude.text}</p>
+          <p>
+            <a href={routeToHash('gratitude')}>Open Gratitude</a>
+          </p>
+        </section>
       ) : null}
       {loaded ? (
         <HistoryList
