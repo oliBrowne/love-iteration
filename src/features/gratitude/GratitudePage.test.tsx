@@ -148,3 +148,37 @@ describe('Gratitude edit', () => {
     expect((await repo.list())[0]?.text).toBe('Demo: keep me');
   });
 });
+
+describe('Gratitude delete confirmation', () => {
+  async function seeded() {
+    const repo = createGratitudeRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put({
+      id: 'd1',
+      schemaVersion: 1,
+      createdAt: '2026-03-01T09:00:00.000Z',
+      updatedAt: '2026-03-01T09:00:00.000Z',
+      date: '2026-03-01',
+      text: 'Demo: maybe delete',
+    });
+    render(<GratitudePage getRepository={async () => repo} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Delete' }));
+    return repo;
+  }
+
+  it('cancel preserves the entry', async () => {
+    const repo = await seeded();
+    expect(screen.getByText(/Delete this appreciation\?/)).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    expect(screen.getByText('Demo: maybe delete')).toBeTruthy();
+    expect(await repo.list()).toHaveLength(1);
+  });
+
+  it('confirming removes the entry', async () => {
+    const repo = await seeded();
+    fireEvent.click(screen.getByRole('button', { name: 'Yes, delete' }));
+    expect(await screen.findByText(/Nothing here yet/)).toBeTruthy();
+    expect(await repo.list()).toEqual([]);
+  });
+});

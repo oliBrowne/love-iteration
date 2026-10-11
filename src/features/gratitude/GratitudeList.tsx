@@ -7,13 +7,20 @@ type GratitudeListProps = {
   entries: Gratitude[];
   // Saves new text for one entry; rejects with an Error whose message is shown.
   onEdit?: (entry: Gratitude, text: string) => Promise<void>;
+  // Removes one entry after the person confirms.
+  onDelete?: (entry: Gratitude) => Promise<void>;
 };
 
 // One card per appreciation, in the order given (newest first).
-export function GratitudeList({ entries, onEdit }: GratitudeListProps) {
+export function GratitudeList({
+  entries,
+  onEdit,
+  onDelete,
+}: GratitudeListProps) {
   const [editingId, setEditingId] = useState<string>();
   const [draft, setDraft] = useState('');
   const [problem, setProblem] = useState<string>();
+  const [confirmingId, setConfirmingId] = useState<string>();
 
   if (entries.length === 0) return null;
 
@@ -50,6 +57,19 @@ export function GratitudeList({ entries, onEdit }: GratitudeListProps) {
               <Button type="submit">Save edit</Button>
               <Button onClick={() => setEditingId(undefined)}>Cancel</Button>
             </form>
+          ) : confirmingId === entry.id ? (
+            <>
+              <p>Delete this appreciation? This cannot be undone.</p>
+              <Button
+                onClick={async () => {
+                  await onDelete?.(entry);
+                  setConfirmingId(undefined);
+                }}
+              >
+                Yes, delete
+              </Button>
+              <Button onClick={() => setConfirmingId(undefined)}>Cancel</Button>
+            </>
           ) : (
             <>
               <p>{entry.text}</p>
@@ -63,6 +83,11 @@ export function GratitudeList({ entries, onEdit }: GratitudeListProps) {
                   }}
                 >
                   Edit
+                </Button>
+              ) : null}
+              {onDelete ? (
+                <Button onClick={() => setConfirmingId(entry.id)}>
+                  Delete
                 </Button>
               ) : null}
             </>

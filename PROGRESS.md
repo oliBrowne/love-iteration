@@ -425,3 +425,9 @@
 - Verified: lint, typecheck, unit tests (83, incl. edit persists after reload + blank edit refused), build, format:check, roadmap test.
 - Next: L072 gratitude delete confirmation.
 - Blockers: none
+
+## 2026-10-11 — L072: add gratitude delete confirmation
+- Changed: Each gratitude card has a Delete button that asks for confirmation; Cancel keeps the entry, Yes removes it.
+- Verified: lint, typecheck, unit tests (85, incl. cancel preserves + confirm removes), build, format:check, roadmap test.
+- Next: L073 gratitude character limit.
+- Blockers: none
