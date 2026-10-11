@@ -86,7 +86,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L074 Add gratitude Home preview — Done when most recent appreciation appears on Home.
 - [x] L075 Add gratitude week count — Done when count matches saved entries for current week.
 - [x] L076 Add gratitude filter by month — Done when selection limits visible cards.
-- [ ] L077 Add gratitude keyboard test — Done when create and delete are operable by keyboard.
+- [x] L077 Add gratitude keyboard test — Done when create and delete are operable by keyboard.
 - [ ] L078 Define memory record — Done when type includes title, date, note, and metadata.
 - [ ] L079 Validate memory title — Done when blank title is rejected.
 - [ ] L080 Add memories store — Done when IndexedDB migration creates memories store.

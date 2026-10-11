@@ -455,3 +455,9 @@
 - Verified: lint, typecheck, unit tests (97, incl. filter helpers + page selection), build, format:check, roadmap test; select shares field focus styling.
 - Next: L077 gratitude keyboard test.
 - Blockers: none
+
+## 2026-10-11 — L077: add gratitude keyboard test
+- Changed: Playwright test proves an appreciation can be created and deleted (with confirmation) using only the keyboard.
+- Verified: lint, typecheck, unit tests (97), build, format:check, roadmap test, Playwright 20 passed (pre-installed Chromium; one unrelated focus.spec flake passed on re-run).
+- Next: L078 define memory record.
+- Blockers: none
