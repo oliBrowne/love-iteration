@@ -97,3 +97,54 @@ describe('Gratitude cards', () => {
     expect(items[1]?.textContent).toContain('Demo: older thanks');
   });
 });
+
+describe('Gratitude edit', () => {
+  it('persists edited text after reload', async () => {
+    const repo = createGratitudeRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put({
+      id: 'e1',
+      schemaVersion: 1,
+      createdAt: '2026-03-01T09:00:00.000Z',
+      updatedAt: '2026-03-01T09:00:00.000Z',
+      date: '2026-03-01',
+      text: 'Demo: before',
+    });
+    render(<GratitudePage getRepository={async () => repo} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Edit' }));
+    fireEvent.change(screen.getByLabelText('Edit appreciation'), {
+      target: { value: ' Demo: after ' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save edit' }));
+    expect(await screen.findByText('Demo: after')).toBeTruthy();
+    cleanup();
+    render(<GratitudePage getRepository={async () => repo} />);
+    expect(await screen.findByText('Demo: after')).toBeTruthy();
+    expect((await repo.list())[0]?.text).toBe('Demo: after');
+  });
+
+  it('refuses a blank edit and keeps the original', async () => {
+    const repo = createGratitudeRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put({
+      id: 'e2',
+      schemaVersion: 1,
+      createdAt: '2026-03-01T09:00:00.000Z',
+      updatedAt: '2026-03-01T09:00:00.000Z',
+      date: '2026-03-01',
+      text: 'Demo: keep me',
+    });
+    render(<GratitudePage getRepository={async () => repo} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Edit' }));
+    fireEvent.change(screen.getByLabelText('Edit appreciation'), {
+      target: { value: '  ' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save edit' }));
+    expect((await screen.findByRole('alert')).textContent).toBe(
+      'Write a few words to save.',
+    );
+    expect((await repo.list())[0]?.text).toBe('Demo: keep me');
+  });
+});

@@ -419,3 +419,9 @@
 - Verified: lint, typecheck, unit tests (81, incl. color-token guard), build, format:check, roadmap test. Cards wrap long words for narrow phones.
 - Next: L071 gratitude edit action.
 - Blockers: none
+
+## 2026-10-11 — L071: add gratitude edit action
+- Changed: Each gratitude card has an Edit button that opens an inline editor; saved text persists.
+- Verified: lint, typecheck, unit tests (83, incl. edit persists after reload + blank edit refused), build, format:check, roadmap test.
+- Next: L072 gratitude delete confirmation.
+- Blockers: none

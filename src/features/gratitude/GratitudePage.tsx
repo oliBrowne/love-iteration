@@ -72,6 +72,13 @@ export function GratitudePage({
     }
   }
 
+  async function edit(entry: Gratitude, newText: string) {
+    const clean = parseGratitudeText(newText);
+    const repo = await getRepository();
+    await repo.put({ ...entry, text: clean, updatedAt: nowIso() });
+    setEntries(await repo.list());
+  }
+
   return (
     <section aria-labelledby="gratitude-heading">
       <h2 id="gratitude-heading">Gratitude</h2>
@@ -90,7 +97,7 @@ export function GratitudePage({
         {justSaved ? <p role="status">Saved.</p> : null}
         <Button type="submit">Save appreciation</Button>
       </form>
-      <GratitudeList entries={entries} />
+      <GratitudeList entries={entries} onEdit={edit} />
       {loaded && entries.length === 0 ? (
         <EmptyState>
           Nothing here yet. Start with one small thing, like a message that made
