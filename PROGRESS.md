@@ -473,3 +473,9 @@
 - Verified: lint, typecheck, unit tests, build, format:check, roadmap test.
 - Next: L080 add memories IndexedDB store via migration.
 - Blockers: none
+
+## 2026-10-12 — L080: add memories store
+- Changed: Local database v3 adds a `memories` store; older databases upgrade without losing check-ins or gratitude.
+- Verified: lint, typecheck, unit tests (migration from v1 checks the new store), build, format:check, roadmap test.
+- Next: L081 memory save method with repository round trip.
+- Blockers: none

@@ -6,6 +6,7 @@ import {
   databaseName,
   databaseVersion,
   gratitudeStore,
+  memoriesStore,
   openDatabase,
 } from './database.ts';
 
@@ -30,16 +31,18 @@ function seedOlderDatabase(factory: IDBFactory, record: object) {
 }
 
 describe('openDatabase', () => {
-  it('creates the checkins and gratitude stores keyed by id', async () => {
+  it('creates the checkins, gratitude and memories stores keyed by id', async () => {
     const db = await openDatabase(new IDBFactory());
     expect(db.name).toBe(databaseName);
     expect([...db.objectStoreNames].sort()).toEqual(
-      [checkinsStore, gratitudeStore].sort(),
+      [checkinsStore, gratitudeStore, memoriesStore].sort(),
     );
     const gratitude = db
       .transaction(gratitudeStore)
       .objectStore(gratitudeStore);
     expect(gratitude.keyPath).toBe('id');
+    const memories = db.transaction(memoriesStore).objectStore(memoriesStore);
+    expect(memories.keyPath).toBe('id');
     const store = db.transaction(checkinsStore).objectStore(checkinsStore);
     expect(store.keyPath).toBe('id');
     db.close();
@@ -71,6 +74,7 @@ describe('openDatabase', () => {
     expect(db.version).toBe(databaseVersion);
     expect(await createCheckInRepository(db).list()).toEqual([saved]);
     expect(db.objectStoreNames.contains(gratitudeStore)).toBe(true);
+    expect(db.objectStoreNames.contains(memoriesStore)).toBe(true);
     db.close();
   });
 });

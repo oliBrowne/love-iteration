@@ -89,7 +89,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L077 Add gratitude keyboard test — Done when create and delete are operable by keyboard.
 - [x] L078 Define memory record — Done when type includes title, date, note, and metadata.
 - [x] L079 Validate memory title — Done when blank title is rejected.
-- [ ] L080 Add memories store — Done when IndexedDB migration creates memories store.
+- [x] L080 Add memories store — Done when IndexedDB migration creates memories store.
 - [ ] L081 Add memory save method — Done when repository round trip passes.
 - [ ] L082 Add memory list method — Done when entries sort by date.
 - [ ] L083 Render Memories route — Done when navigation opens the page.
