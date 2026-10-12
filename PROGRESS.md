@@ -491,3 +491,9 @@
 - Verified: lint, typecheck, unit tests (date order, same-day tie, empty), build, format:check, roadmap test.
 - Next: L083 render Memories route reachable from navigation.
 - Blockers: none
+
+## 2026-10-12 — L083: render Memories route
+- Changed: A "Memories" link in the main navigation opens a Memories page (placeholder copy for now).
+- Verified: lint, typecheck, unit tests (route parsing, nav link, page heading), build, format:check, roadmap test, Playwright (21 passed, pre-installed Chromium).
+- Next: L084 memory composer saving title and date.
+- Blockers: none
