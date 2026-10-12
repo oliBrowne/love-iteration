@@ -20,3 +20,4 @@ export {
   gratitudeMonths,
   parseGratitudeText,
 } from './gratitude.ts';
+export type { Memory } from './memory.ts';

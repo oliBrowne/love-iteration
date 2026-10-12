@@ -461,3 +461,9 @@
 - Verified: lint, typecheck, unit tests (97), build, format:check, roadmap test, Playwright 20 passed (pre-installed Chromium; one unrelated focus.spec flake passed on re-run).
 - Next: L078 define memory record.
 - Blockers: none
+
+## 2026-10-12 — L078: define memory record
+- Changed: A `Memory` type (title, date, note, record metadata) exists in the domain layer, ready for storage.
+- Verified: lint, typecheck, unit tests, build, format:check, roadmap test.
+- Next: L079 validate memory title (reject blank).
+- Blockers: none
