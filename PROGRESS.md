@@ -479,3 +479,9 @@
 - Verified: lint, typecheck, unit tests (migration from v1 checks the new store), build, format:check, roadmap test.
 - Next: L081 memory save method with repository round trip.
 - Blockers: none
+
+## 2026-10-12 — L081: add memory save method
+- Changed: A memory repository can save, replace, read and delete memories in the local database.
+- Verified: lint, typecheck, unit tests (round trip, replace by id, store isolation), build, format:check, roadmap test.
+- Next: L082 memory list sorted by date.
+- Blockers: none
