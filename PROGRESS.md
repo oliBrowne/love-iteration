@@ -485,3 +485,9 @@
 - Verified: lint, typecheck, unit tests (round trip, replace by id, store isolation), build, format:check, roadmap test.
 - Next: L082 memory list sorted by date.
 - Blockers: none
+
+## 2026-10-12 — L082: add memory list method
+- Changed: Memory lists come back sorted by memory date, newest first (same-day ties by write time).
+- Verified: lint, typecheck, unit tests (date order, same-day tie, empty), build, format:check, roadmap test.
+- Next: L083 render Memories route reachable from navigation.
+- Blockers: none

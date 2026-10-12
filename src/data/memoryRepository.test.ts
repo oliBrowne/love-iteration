@@ -43,3 +43,33 @@ describe('memory repository save', () => {
     ).toBe(0);
   });
 });
+
+describe('memory repository list', () => {
+  it('sorts memories by date, newest first', async () => {
+    const repo = createMemoryRepository(await openDatabase(new IDBFactory()));
+    await repo.put({ ...demo, id: 'mid', date: '2026-02-01' });
+    await repo.put({ ...demo, id: 'old', date: '2025-12-25' });
+    await repo.put({ ...demo, id: 'new', date: '2026-03-10' });
+    expect((await repo.list()).map((m) => m.id)).toEqual(['new', 'mid', 'old']);
+  });
+
+  it('orders same-day memories by when they were written', async () => {
+    const repo = createMemoryRepository(await openDatabase(new IDBFactory()));
+    await repo.put({
+      ...demo,
+      id: 'first',
+      createdAt: '2026-01-01T08:00:00.000Z',
+    });
+    await repo.put({
+      ...demo,
+      id: 'second',
+      createdAt: '2026-01-01T20:00:00.000Z',
+    });
+    expect((await repo.list()).map((m) => m.id)).toEqual(['second', 'first']);
+  });
+
+  it('returns an empty list when nothing is saved', async () => {
+    const repo = createMemoryRepository(await openDatabase(new IDBFactory()));
+    expect(await repo.list()).toEqual([]);
+  });
+});

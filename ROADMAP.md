@@ -91,7 +91,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L079 Validate memory title — Done when blank title is rejected.
 - [x] L080 Add memories store — Done when IndexedDB migration creates memories store.
 - [x] L081 Add memory save method — Done when repository round trip passes.
-- [ ] L082 Add memory list method — Done when entries sort by date.
+- [x] L082 Add memory list method — Done when entries sort by date.
 - [ ] L083 Render Memories route — Done when navigation opens the page.
 - [ ] L084 Add memory composer — Done when title and date save a memory.
 - [ ] L085 Add optional memory note — Done when note persists after reload.

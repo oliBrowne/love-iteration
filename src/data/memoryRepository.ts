@@ -4,8 +4,11 @@ import { memoriesStore } from './database.ts';
 import type { Repository } from './repository.ts';
 
 export function createMemoryRepository(db: IDBDatabase): Repository<Memory> {
-  // Newest first, by when each memory was written.
-  return createStoreRepository<Memory>(db, memoriesStore, (a, b) =>
-    b.createdAt.localeCompare(a.createdAt),
+  // Newest memory date first; ties go to the most recently written.
+  return createStoreRepository<Memory>(
+    db,
+    memoriesStore,
+    (a, b) =>
+      b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt),
   );
 }
