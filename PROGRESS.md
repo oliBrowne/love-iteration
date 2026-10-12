@@ -467,3 +467,9 @@
 - Verified: lint, typecheck, unit tests, build, format:check, roadmap test.
 - Next: L079 validate memory title (reject blank).
 - Blockers: none
+
+## 2026-10-12 — L079: validate memory title
+- Changed: `parseMemoryTitle` trims a title and rejects blank input with a gentle message.
+- Verified: lint, typecheck, unit tests, build, format:check, roadmap test.
+- Next: L080 add memories IndexedDB store via migration.
+- Blockers: none

@@ -21,3 +21,4 @@ export {
   parseGratitudeText,
 } from './gratitude.ts';
 export type { Memory } from './memory.ts';
+export { parseMemoryTitle } from './memory.ts';

@@ -1,5 +1,7 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
+import { DomainError } from './errors.ts';
 import type { Memory } from './memory.ts';
+import { parseMemoryTitle } from './memory.ts';
 import type { RecordMetadata } from './record.ts';
 
 describe('Memory', () => {
@@ -19,4 +21,22 @@ describe('Memory', () => {
     };
     expect(demo.title).toContain('Demo');
   });
+});
+
+describe('parseMemoryTitle', () => {
+  it('returns the trimmed title', () => {
+    expect(parseMemoryTitle('  First call  ')).toBe('First call');
+  });
+
+  it.each(['', '   ', '\n\t', null, undefined, 42])(
+    'rejects blank or non-text input %j',
+    (value) => {
+      expect(() => parseMemoryTitle(value)).toThrow(DomainError);
+      try {
+        parseMemoryTitle(value);
+      } catch (error) {
+        expect((error as DomainError).code).toBe('blank-memory-title');
+      }
+    },
+  );
 });
