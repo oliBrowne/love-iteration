@@ -93,7 +93,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L081 Add memory save method — Done when repository round trip passes.
 - [x] L082 Add memory list method — Done when entries sort by date.
 - [x] L083 Render Memories route — Done when navigation opens the page.
-- [ ] L084 Add memory composer — Done when title and date save a memory.
+- [x] L084 Add memory composer — Done when title and date save a memory.
 - [ ] L085 Add optional memory note — Done when note persists after reload.
 - [ ] L086 Add memory detail — Done when selected card shows full fields.
 - [ ] L087 Add memory edit — Done when title, date, and note changes persist.

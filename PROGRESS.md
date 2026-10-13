@@ -497,3 +497,9 @@
 - Verified: lint, typecheck, unit tests (route parsing, nav link, page heading), build, format:check, roadmap test, Playwright (21 passed, pre-installed Chromium).
 - Next: L084 memory composer saving title and date.
 - Blockers: none
+
+## 2026-10-13 — L084: add memory composer
+- Changed: The Memories page has a title and date form; saving stores the memory and lists it below.
+- Verified: lint, typecheck, unit tests (save, blank title, missing date), build, format:check, roadmap test.
+- Next: L085 optional memory note persisting after reload.
+- Blockers: none
