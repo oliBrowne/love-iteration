@@ -69,4 +69,30 @@ describe('Memory composer', () => {
     expect((await screen.findByRole('alert')).textContent).toBe('Pick a date.');
     expect(await repo.list()).toEqual([]);
   });
+
+  it('keeps an optional note after reload', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Memory title'), {
+      target: { value: 'Demo: the lake walk' },
+    });
+    fireEvent.change(screen.getByLabelText('Note (optional)'), {
+      target: { value: '  Demo note about the sunset.  ' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save memory' }));
+    await screen.findByRole('status');
+    expect((await repo.list())[0]?.note).toBe('Demo note about the sunset.');
+    cleanup();
+    render(<MemoriesPage getRepository={async () => repo} />);
+    expect(await screen.findByText('Demo note about the sunset.')).toBeTruthy();
+  });
+
+  it('saves an empty note when none is given', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Memory title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save memory' }));
+    await screen.findByRole('status');
+    expect((await repo.list())[0]?.note).toBe('');
+  });
 });

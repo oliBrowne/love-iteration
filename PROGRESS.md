@@ -503,3 +503,9 @@
 - Verified: lint, typecheck, unit tests (save, blank title, missing date), build, format:check, roadmap test.
 - Next: L085 optional memory note persisting after reload.
 - Blockers: none
+
+## 2026-10-13 — L085: add optional memory note
+- Changed: The memory form has an optional note; it is saved with the memory and shown on its card after reload.
+- Verified: lint, typecheck, unit tests (note persists across remount, empty note), build, format:check, roadmap test.
+- Next: L086 memory detail showing full fields for the selected card.
+- Blockers: none

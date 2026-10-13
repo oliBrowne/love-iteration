@@ -11,7 +11,7 @@ import {
   parseMemoryTitle,
 } from '../../domain/index.ts';
 import type { Memory } from '../../domain/index.ts';
-import { Button, InlineError, TextField } from '../../ui/index.ts';
+import { Button, InlineError, TextArea, TextField } from '../../ui/index.ts';
 
 type MemoriesPageProps = {
   getRepository?: () => Promise<Repository<Memory>>;
@@ -22,6 +22,7 @@ export function MemoriesPage({
 }: MemoriesPageProps) {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState(() => localDate());
+  const [note, setNote] = useState('');
   const [problem, setProblem] = useState<string>();
   const [justSaved, setJustSaved] = useState(false);
   const [memories, setMemories] = useState<Memory[]>([]);
@@ -58,10 +59,11 @@ export function MemoriesPage({
         updatedAt: now,
         title: clean,
         date,
-        note: '',
+        note: note.trim(),
       });
       setMemories(await repo.list());
       setTitle('');
+      setNote('');
       setProblem(undefined);
       setJustSaved(true);
     } catch (error) {
@@ -97,6 +99,14 @@ export function MemoriesPage({
             setJustSaved(false);
           }}
         />
+        <TextArea
+          label="Note (optional)"
+          value={note}
+          onChange={(event) => {
+            setNote(event.target.value);
+            setJustSaved(false);
+          }}
+        />
         {problem ? <InlineError>{problem}</InlineError> : null}
         {justSaved ? <p role="status">Saved.</p> : null}
         <Button type="submit">Save memory</Button>
@@ -106,6 +116,7 @@ export function MemoriesPage({
           {memories.map((memory) => (
             <li key={memory.id} className="gratitude-card">
               <p>{memory.title}</p>
+              {memory.note ? <p>{memory.note}</p> : null}
               <small>{formatDateLabel(memory.date)}</small>
             </li>
           ))}
