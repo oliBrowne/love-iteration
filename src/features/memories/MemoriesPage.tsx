@@ -11,7 +11,13 @@ import {
   parseMemoryTitle,
 } from '../../domain/index.ts';
 import type { Memory } from '../../domain/index.ts';
-import { Button, InlineError, TextArea, TextField } from '../../ui/index.ts';
+import {
+  Button,
+  EmptyState,
+  InlineError,
+  TextArea,
+  TextField,
+} from '../../ui/index.ts';
 
 type MemoriesPageProps = {
   getRepository?: () => Promise<Repository<Memory>>;
@@ -26,6 +32,7 @@ export function MemoriesPage({
   const [problem, setProblem] = useState<string>();
   const [justSaved, setJustSaved] = useState(false);
   const [memories, setMemories] = useState<Memory[]>([]);
+  const [loaded, setLoaded] = useState(false);
   const [selectedId, setSelectedId] = useState<string>();
   const [editing, setEditing] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
@@ -39,7 +46,10 @@ export function MemoriesPage({
     getRepository()
       .then((repo) => repo.list())
       .then((records) => {
-        if (!cancelled) setMemories(records);
+        if (!cancelled) {
+          setMemories(records);
+          setLoaded(true);
+        }
       })
       .catch(() => {
         if (!cancelled) setProblem('Could not load your saved memories.');
@@ -166,6 +176,12 @@ export function MemoriesPage({
         {justSaved ? <p role="status">Saved.</p> : null}
         <Button type="submit">Save memory</Button>
       </form>
+      {loaded && memories.length === 0 ? (
+        <EmptyState>
+          No memories yet. Add a title and a date for a moment worth keeping,
+          like a trip, a first, or an ordinary evening that felt good.
+        </EmptyState>
+      ) : null}
       {memories.length > 0 ? (
         <ul className="gratitude-list">
           {memories.map((memory) => (

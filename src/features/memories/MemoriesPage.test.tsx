@@ -217,4 +217,15 @@ describe('Memory composer', () => {
     expect(await repo.list()).toEqual([]);
     expect(screen.queryByRole('heading', { name: 'Demo' })).toBeNull();
   });
+
+  it('shows first-use copy until a memory is saved', async () => {
+    await renderPage();
+    expect(await screen.findByText(/No memories yet/)).toBeTruthy();
+    fireEvent.change(screen.getByLabelText('Memory title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save memory' }));
+    await screen.findByRole('status');
+    expect(screen.queryByText(/No memories yet/)).toBeNull();
+  });
 });

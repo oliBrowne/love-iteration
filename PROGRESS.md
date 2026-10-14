@@ -527,3 +527,9 @@
 - Verified: lint, typecheck, unit tests (cancel keeps, confirm removes), build, format:check, roadmap test.
 - Next: L089 memories empty state with first-use copy.
 - Blockers: none
+
+## 2026-10-14 — L089: add memories empty state
+- Changed: The Memories page shows first-use copy explaining what to add until a memory is saved.
+- Verified: lint, typecheck, unit test (copy shown then hidden after save), build, format:check, roadmap test.
+- Next: L090 gratitude and memory browser test (saved entries survive reload).
+- Blockers: none
