@@ -515,3 +515,9 @@
 - Verified: lint, typecheck, unit tests (detail fields, empty-note copy), build, format:check, roadmap test.
 - Next: L087 memory edit persisting title, date, and note changes.
 - Blockers: none
+
+## 2026-10-14 — L087: add memory edit
+- Changed: Selected memories have an Edit memory form; title, date, and note changes are saved and survive reload.
+- Verified: lint, typecheck, unit tests (edit persists after remount, blank title refused), build, format:check, roadmap test.
+- Next: L088 memory delete with confirmation.
+- Blockers: none

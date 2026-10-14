@@ -27,6 +27,11 @@ export function MemoriesPage({
   const [justSaved, setJustSaved] = useState(false);
   const [memories, setMemories] = useState<Memory[]>([]);
   const [selectedId, setSelectedId] = useState<string>();
+  const [editing, setEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState('');
+  const [editDate, setEditDate] = useState('');
+  const [editNote, setEditNote] = useState('');
+  const [editProblem, setEditProblem] = useState<string>();
 
   useEffect(() => {
     let cancelled = false;
@@ -69,6 +74,40 @@ export function MemoriesPage({
       setJustSaved(true);
     } catch (error) {
       setProblem(
+        error instanceof DomainError
+          ? error.message
+          : 'Could not save this. Nothing was lost; try again.',
+      );
+    }
+  }
+
+  function startEdit(memory: Memory) {
+    setEditTitle(memory.title);
+    setEditDate(memory.date);
+    setEditNote(memory.note);
+    setEditProblem(undefined);
+    setEditing(true);
+  }
+
+  async function saveEdit(event: FormEvent, memory: Memory) {
+    event.preventDefault();
+    try {
+      const clean = parseMemoryTitle(editTitle);
+      if (editDate === '') {
+        throw new DomainError('blank-memory-date', 'Pick a date.');
+      }
+      const repo = await getRepository();
+      await repo.put({
+        ...memory,
+        updatedAt: nowIso(),
+        title: clean,
+        date: editDate,
+        note: editNote.trim(),
+      });
+      setMemories(await repo.list());
+      setEditing(false);
+    } catch (error) {
+      setEditProblem(
         error instanceof DomainError
           ? error.message
           : 'Could not save this. Nothing was lost; try again.',
@@ -121,7 +160,10 @@ export function MemoriesPage({
               <Button
                 type="button"
                 aria-pressed={memory.id === selectedId}
-                onClick={() => setSelectedId(memory.id)}
+                onClick={() => {
+                  setSelectedId(memory.id);
+                  setEditing(false);
+                }}
               >
                 {memory.title}
               </Button>
@@ -131,11 +173,41 @@ export function MemoriesPage({
           ))}
         </ul>
       ) : null}
-      {selected ? (
+      {selected && editing ? (
+        <form
+          aria-label="Edit memory"
+          onSubmit={(event) => saveEdit(event, selected)}
+        >
+          <TextField
+            label="Edit title"
+            value={editTitle}
+            onChange={(event) => setEditTitle(event.target.value)}
+          />
+          <TextField
+            label="Edit date"
+            type="date"
+            value={editDate}
+            onChange={(event) => setEditDate(event.target.value)}
+          />
+          <TextArea
+            label="Edit note"
+            value={editNote}
+            onChange={(event) => setEditNote(event.target.value)}
+          />
+          {editProblem ? <InlineError>{editProblem}</InlineError> : null}
+          <Button type="submit">Save changes</Button>
+          <Button type="button" onClick={() => setEditing(false)}>
+            Cancel
+          </Button>
+        </form>
+      ) : selected ? (
         <section aria-labelledby="memory-detail-heading">
           <h3 id="memory-detail-heading">{selected.title}</h3>
           <p>{formatDateLabel(selected.date)}</p>
           <p>{selected.note || 'No note for this memory.'}</p>
+          <Button type="button" onClick={() => startEdit(selected)}>
+            Edit memory
+          </Button>
         </section>
       ) : null}
     </section>

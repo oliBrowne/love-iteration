@@ -96,7 +96,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L084 Add memory composer — Done when title and date save a memory.
 - [x] L085 Add optional memory note — Done when note persists after reload.
 - [x] L086 Add memory detail — Done when selected card shows full fields.
-- [ ] L087 Add memory edit — Done when title, date, and note changes persist.
+- [x] L087 Add memory edit — Done when title, date, and note changes persist.
 - [ ] L088 Add memory delete — Done when confirmation and removal work.
 - [ ] L089 Add memories empty state — Done when first-use copy shows what to add.
 - [ ] L090 Add gratitude and memory browser test — Done when saved entries survive reload.

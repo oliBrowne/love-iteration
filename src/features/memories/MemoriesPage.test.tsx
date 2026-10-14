@@ -132,4 +132,52 @@ describe('Memory composer', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Demo' }));
     expect(screen.getByText('No note for this memory.')).toBeTruthy();
   });
+
+  it('persists edits to title, date, and note', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Memory title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save memory' }));
+    await screen.findByRole('status');
+    fireEvent.click(screen.getByRole('button', { name: 'Demo' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Edit memory' }));
+    fireEvent.change(screen.getByLabelText('Edit title'), {
+      target: { value: '  Demo: renamed  ' },
+    });
+    fireEvent.change(screen.getByLabelText('Edit date'), {
+      target: { value: '2026-04-02' },
+    });
+    fireEvent.change(screen.getByLabelText('Edit note'), {
+      target: { value: 'Demo edited note.' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }));
+    await screen.findByText('Demo edited note.');
+    const [saved] = await repo.list();
+    expect(saved).toMatchObject({
+      title: 'Demo: renamed',
+      date: '2026-04-02',
+      note: 'Demo edited note.',
+    });
+    cleanup();
+    render(<MemoriesPage getRepository={async () => repo} />);
+    expect(await screen.findByText('Demo edited note.')).toBeTruthy();
+  });
+
+  it('refuses a blank edited title and keeps the original', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Memory title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save memory' }));
+    await screen.findByRole('status');
+    fireEvent.click(screen.getByRole('button', { name: 'Demo' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Edit memory' }));
+    fireEvent.change(screen.getByLabelText('Edit title'), {
+      target: { value: '   ' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }));
+    await screen.findByRole('alert');
+    expect((await repo.list())[0]?.title).toBe('Demo');
+  });
 });
