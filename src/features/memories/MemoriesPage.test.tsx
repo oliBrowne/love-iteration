@@ -1,5 +1,11 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -179,5 +185,36 @@ describe('Memory composer', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Save changes' }));
     await screen.findByRole('alert');
     expect((await repo.list())[0]?.title).toBe('Demo');
+  });
+
+  async function saveAndSelect() {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Memory title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save memory' }));
+    await screen.findByRole('status');
+    fireEvent.click(screen.getByRole('button', { name: 'Demo' }));
+    return repo;
+  }
+
+  it('keeps the memory when delete is cancelled', async () => {
+    const repo = await saveAndSelect();
+    fireEvent.click(screen.getByRole('button', { name: 'Delete memory' }));
+    expect(screen.getByText(/This cannot be undone/)).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    expect((await repo.list()).length).toBe(1);
+    expect(screen.getByRole('button', { name: 'Delete memory' })).toBeTruthy();
+  });
+
+  it('removes the memory after confirmation', async () => {
+    const repo = await saveAndSelect();
+    fireEvent.click(screen.getByRole('button', { name: 'Delete memory' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Yes, delete' }));
+    await waitFor(() =>
+      expect(screen.queryByRole('button', { name: 'Demo' })).toBeNull(),
+    );
+    expect(await repo.list()).toEqual([]);
+    expect(screen.queryByRole('heading', { name: 'Demo' })).toBeNull();
   });
 });

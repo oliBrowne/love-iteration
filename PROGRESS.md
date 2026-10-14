@@ -521,3 +521,9 @@
 - Verified: lint, typecheck, unit tests (edit persists after remount, blank title refused), build, format:check, roadmap test.
 - Next: L088 memory delete with confirmation.
 - Blockers: none
+
+## 2026-10-14 — L088: add memory delete
+- Changed: A selected memory can be deleted after an explicit confirmation; cancelling keeps it.
+- Verified: lint, typecheck, unit tests (cancel keeps, confirm removes), build, format:check, roadmap test.
+- Next: L089 memories empty state with first-use copy.
+- Blockers: none

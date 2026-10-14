@@ -28,6 +28,7 @@ export function MemoriesPage({
   const [memories, setMemories] = useState<Memory[]>([]);
   const [selectedId, setSelectedId] = useState<string>();
   const [editing, setEditing] = useState(false);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [editTitle, setEditTitle] = useState('');
   const [editDate, setEditDate] = useState('');
   const [editNote, setEditNote] = useState('');
@@ -115,6 +116,18 @@ export function MemoriesPage({
     }
   }
 
+  async function remove(memory: Memory) {
+    try {
+      const repo = await getRepository();
+      await repo.delete(memory.id);
+      setMemories(await repo.list());
+      setSelectedId(undefined);
+      setConfirmingDelete(false);
+    } catch {
+      setProblem('Could not delete this. Nothing was lost; try again.');
+    }
+  }
+
   const selected = memories.find((memory) => memory.id === selectedId);
 
   return (
@@ -163,6 +176,7 @@ export function MemoriesPage({
                 onClick={() => {
                   setSelectedId(memory.id);
                   setEditing(false);
+                  setConfirmingDelete(false);
                 }}
               >
                 {memory.title}
@@ -205,9 +219,26 @@ export function MemoriesPage({
           <h3 id="memory-detail-heading">{selected.title}</h3>
           <p>{formatDateLabel(selected.date)}</p>
           <p>{selected.note || 'No note for this memory.'}</p>
-          <Button type="button" onClick={() => startEdit(selected)}>
-            Edit memory
-          </Button>
+          {confirmingDelete ? (
+            <>
+              <p>Delete this memory? This cannot be undone.</p>
+              <Button type="button" onClick={() => remove(selected)}>
+                Yes, delete
+              </Button>
+              <Button type="button" onClick={() => setConfirmingDelete(false)}>
+                Cancel
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button type="button" onClick={() => startEdit(selected)}>
+                Edit memory
+              </Button>
+              <Button type="button" onClick={() => setConfirmingDelete(true)}>
+                Delete memory
+              </Button>
+            </>
+          )}
         </section>
       ) : null}
     </section>
