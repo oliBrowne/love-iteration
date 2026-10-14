@@ -26,6 +26,7 @@ export function MemoriesPage({
   const [problem, setProblem] = useState<string>();
   const [justSaved, setJustSaved] = useState(false);
   const [memories, setMemories] = useState<Memory[]>([]);
+  const [selectedId, setSelectedId] = useState<string>();
 
   useEffect(() => {
     let cancelled = false;
@@ -75,6 +76,8 @@ export function MemoriesPage({
     }
   }
 
+  const selected = memories.find((memory) => memory.id === selectedId);
+
   return (
     <section aria-labelledby="memories-heading">
       <h2 id="memories-heading">Memories</h2>
@@ -115,12 +118,25 @@ export function MemoriesPage({
         <ul className="gratitude-list">
           {memories.map((memory) => (
             <li key={memory.id} className="gratitude-card">
-              <p>{memory.title}</p>
+              <Button
+                type="button"
+                aria-pressed={memory.id === selectedId}
+                onClick={() => setSelectedId(memory.id)}
+              >
+                {memory.title}
+              </Button>
               {memory.note ? <p>{memory.note}</p> : null}
               <small>{formatDateLabel(memory.date)}</small>
             </li>
           ))}
         </ul>
+      ) : null}
+      {selected ? (
+        <section aria-labelledby="memory-detail-heading">
+          <h3 id="memory-detail-heading">{selected.title}</h3>
+          <p>{formatDateLabel(selected.date)}</p>
+          <p>{selected.note || 'No note for this memory.'}</p>
+        </section>
       ) : null}
     </section>
   );

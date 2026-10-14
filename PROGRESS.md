@@ -509,3 +509,9 @@
 - Verified: lint, typecheck, unit tests (note persists across remount, empty note), build, format:check, roadmap test.
 - Next: L086 memory detail showing full fields for the selected card.
 - Blockers: none
+
+## 2026-10-14 — L086: add memory detail
+- Changed: Memory titles on the Memories page are buttons; selecting one shows a detail panel with its title, date, and full note.
+- Verified: lint, typecheck, unit tests (detail fields, empty-note copy), build, format:check, roadmap test.
+- Next: L087 memory edit persisting title, date, and note changes.
+- Blockers: none

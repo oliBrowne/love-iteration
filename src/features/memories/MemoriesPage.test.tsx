@@ -95,4 +95,41 @@ describe('Memory composer', () => {
     await screen.findByRole('status');
     expect((await repo.list())[0]?.note).toBe('');
   });
+
+  it('shows the full fields of the selected memory', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Memory title'), {
+      target: { value: 'Demo: the lake walk' },
+    });
+    fireEvent.change(screen.getByLabelText('Memory date'), {
+      target: { value: '2026-05-01' },
+    });
+    fireEvent.change(screen.getByLabelText('Note (optional)'), {
+      target: { value: 'Demo note about the sunset.' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save memory' }));
+    await screen.findByRole('status');
+    expect((await repo.list()).length).toBe(1);
+    expect(
+      screen.queryByRole('heading', { name: 'Demo: the lake walk' }),
+    ).toBeNull();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Demo: the lake walk' }),
+    );
+    const detail = screen.getByRole('heading', { name: 'Demo: the lake walk' })
+      .parentElement as HTMLElement;
+    expect(detail.textContent).toContain('Demo note about the sunset.');
+    expect(detail.textContent).toContain('2026');
+  });
+
+  it('says when a selected memory has no note', async () => {
+    await renderPage();
+    fireEvent.change(screen.getByLabelText('Memory title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save memory' }));
+    await screen.findByRole('status');
+    fireEvent.click(screen.getByRole('button', { name: 'Demo' }));
+    expect(screen.getByText('No note for this memory.')).toBeTruthy();
+  });
 });
