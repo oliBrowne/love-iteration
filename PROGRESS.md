@@ -533,3 +533,9 @@
 - Verified: lint, typecheck, unit test (copy shown then hidden after save), build, format:check, roadmap test.
 - Next: L090 gratitude and memory browser test (saved entries survive reload).
 - Blockers: none
+
+## 2026-10-14 — L090: add gratitude and memory browser test
+- Changed: Browser tests confirm saved appreciations and memories are still shown after a page reload.
+- Verified: lint, Playwright (23 passed), build, format:check, roadmap test.
+- Next: L091 define date idea record type.
+- Blockers: none
