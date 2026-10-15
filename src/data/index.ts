@@ -5,6 +5,7 @@ export {
   databaseName,
   databaseVersion,
   gratitudeStore,
+  ideasStore,
   memoriesStore,
   openDatabase,
 } from './database.ts';

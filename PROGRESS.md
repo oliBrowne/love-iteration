@@ -551,3 +551,9 @@
 - Verified: lint, typecheck, unit tests (blank/whitespace/non-text rejected, trim), build, format:check, roadmap test.
 - Next: L093 add idea IndexedDB store via migration.
 - Blockers: none
+
+## 2026-10-15 — L093: add idea store
+- Changed: The local database upgrades to v4 and gains an ideas store; older data is kept.
+- Verified: lint, typecheck, unit tests (fresh and older-database migration), build, format:check, roadmap test.
+- Next: L094 idea save method with repository round trip.
+- Blockers: none

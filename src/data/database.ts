@@ -1,8 +1,9 @@
 export const databaseName = 'love-iteration';
-export const databaseVersion = 3;
+export const databaseVersion = 4;
 export const checkinsStore = 'checkins';
 export const gratitudeStore = 'gratitude';
 export const memoriesStore = 'memories';
+export const ideasStore = 'ideas';
 
 // Opens the local database, creating the object stores on first use.
 export function openDatabase(
@@ -22,6 +23,10 @@ export function openDatabase(
       // Added in schema v3.
       if (!db.objectStoreNames.contains(memoriesStore)) {
         db.createObjectStore(memoriesStore, { keyPath: 'id' });
+      }
+      // Added in schema v4.
+      if (!db.objectStoreNames.contains(ideasStore)) {
+        db.createObjectStore(ideasStore, { keyPath: 'id' });
       }
     };
     request.onsuccess = () => resolve(request.result);
