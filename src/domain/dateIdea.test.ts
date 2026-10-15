@@ -1,4 +1,6 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
+import { DomainError } from './errors.ts';
+import { parseDateIdeaTitle } from './dateIdea.ts';
 import type { DateIdea, DateIdeaState } from './dateIdea.ts';
 import type { RecordMetadata } from './record.ts';
 
@@ -19,4 +21,22 @@ describe('DateIdea', () => {
     };
     expect(demo.state).toBe('active');
   });
+});
+
+describe('parseDateIdeaTitle', () => {
+  it('returns the trimmed title', () => {
+    expect(parseDateIdeaTitle('  Picnic  ')).toBe('Picnic');
+  });
+
+  it.each(['', '   ', '\n\t', null, undefined, 42])(
+    'rejects blank or non-text input %j',
+    (value) => {
+      expect(() => parseDateIdeaTitle(value)).toThrow(DomainError);
+      try {
+        parseDateIdeaTitle(value);
+      } catch (error) {
+        expect((error as DomainError).code).toBe('blank-idea-title');
+      }
+    },
+  );
 });

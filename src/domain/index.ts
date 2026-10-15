@@ -23,4 +23,4 @@ export {
 export type { Memory } from './memory.ts';
 export { parseMemoryTitle } from './memory.ts';
 export type { DateIdea, DateIdeaState } from './dateIdea.ts';
-export { dateIdeaStates } from './dateIdea.ts';
+export { dateIdeaStates, parseDateIdeaTitle } from './dateIdea.ts';

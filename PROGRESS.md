@@ -545,3 +545,9 @@
 - Verified: lint, typecheck, unit type test, build, format:check, roadmap test.
 - Next: L092 validate idea title (reject blank).
 - Blockers: none
+
+## 2026-10-15 — L092: validate idea title
+- Changed: Blank or whitespace date idea titles are rejected with a gentle message; valid titles are trimmed.
+- Verified: lint, typecheck, unit tests (blank/whitespace/non-text rejected, trim), build, format:check, roadmap test.
+- Next: L093 add idea IndexedDB store via migration.
+- Blockers: none
