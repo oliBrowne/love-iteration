@@ -103,7 +103,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 
 ## 04 Date ideas and plans
 
-- [ ] L091 Define date idea record — Done when type includes title, note, state, and metadata.
+- [x] L091 Define date idea record — Done when type includes title, note, state, and metadata.
 - [ ] L092 Validate idea title — Done when empty or whitespace title is rejected.
 - [ ] L093 Add idea store — Done when IndexedDB migration creates idea store.
 - [ ] L094 Add idea save method — Done when repository round trip passes.

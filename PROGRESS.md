@@ -539,3 +539,9 @@
 - Verified: lint, Playwright (23 passed), build, format:check, roadmap test.
 - Next: L091 define date idea record type.
 - Blockers: none
+
+## 2026-10-15 — L091: define date idea record
+- Changed: A DateIdea type (title, note, active/completed state, record metadata) exists in the domain layer.
+- Verified: lint, typecheck, unit type test, build, format:check, roadmap test.
+- Next: L092 validate idea title (reject blank).
+- Blockers: none
