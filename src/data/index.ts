@@ -18,3 +18,5 @@ export { createMemoryRepository } from './memoryRepository.ts';
 export { getCheckInRepository } from './localCheckIns.ts';
 export { getGratitudeRepository } from './localGratitude.ts';
 export { getMemoryRepository } from './localMemories.ts';
+export { createIdeaRepository } from './ideaRepository.ts';
+export { getIdeaRepository } from './localIdeas.ts';

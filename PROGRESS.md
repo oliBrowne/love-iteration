@@ -557,3 +557,9 @@
 - Verified: lint, typecheck, unit tests (fresh and older-database migration), build, format:check, roadmap test.
 - Next: L094 idea save method with repository round trip.
 - Blockers: none
+
+## 2026-10-15 — L094: add idea save method
+- Changed: Date ideas can be saved to and read back from the local ideas store.
+- Verified: lint, typecheck, repository round-trip and replace tests, build, format:check, roadmap test.
+- Next: L095 idea list with active ideas above completed.
+- Blockers: none
