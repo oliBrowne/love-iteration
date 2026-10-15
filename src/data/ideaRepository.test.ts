@@ -29,3 +29,42 @@ describe('idea repository save', () => {
     expect(await repo.list()).toHaveLength(1);
   });
 });
+
+describe('idea repository list', () => {
+  it('sorts active ideas above completed ones', async () => {
+    const repo = createIdeaRepository(await openDatabase(new IDBFactory()));
+    await repo.put({
+      ...demo,
+      id: 'done-new',
+      state: 'completed',
+      createdAt: '2026-03-01T00:00:00.000Z',
+    });
+    await repo.put({
+      ...demo,
+      id: 'active-old',
+      createdAt: '2026-01-01T00:00:00.000Z',
+    });
+    await repo.put({
+      ...demo,
+      id: 'active-new',
+      createdAt: '2026-02-01T00:00:00.000Z',
+    });
+    await repo.put({
+      ...demo,
+      id: 'done-old',
+      state: 'completed',
+      createdAt: '2026-01-15T00:00:00.000Z',
+    });
+    expect((await repo.list()).map((i) => i.id)).toEqual([
+      'active-new',
+      'active-old',
+      'done-new',
+      'done-old',
+    ]);
+  });
+
+  it('returns an empty list when nothing is saved', async () => {
+    const repo = createIdeaRepository(await openDatabase(new IDBFactory()));
+    expect(await repo.list()).toEqual([]);
+  });
+});

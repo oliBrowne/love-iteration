@@ -563,3 +563,9 @@
 - Verified: lint, typecheck, repository round-trip and replace tests, build, format:check, roadmap test.
 - Next: L095 idea list with active ideas above completed.
 - Blockers: none
+
+## 2026-10-15 — L095: add idea list method
+- Changed: Listing ideas returns active ideas first, completed after, newest first in each group.
+- Verified: lint, typecheck, unit tests (sort order, empty list), build, format:check, roadmap test.
+- Next: L096 idea delete method with a deletion test.
+- Blockers: none
