@@ -569,3 +569,9 @@
 - Verified: lint, typecheck, unit tests (sort order, empty list), build, format:check, roadmap test.
 - Next: L096 idea delete method with a deletion test.
 - Blockers: none
+
+## 2026-10-15 — L096: add idea delete method
+- Changed: Saved date ideas can be removed from the local store without touching the others.
+- Verified: lint, typecheck, unit tests (delete one, delete missing), build, format:check, roadmap test.
+- Next: L097 render the Ideas route.
+- Blockers: none

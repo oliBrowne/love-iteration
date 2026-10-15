@@ -68,3 +68,19 @@ describe('idea repository list', () => {
     expect(await repo.list()).toEqual([]);
   });
 });
+
+describe('idea repository delete', () => {
+  it('removes only the deleted idea', async () => {
+    const repo = createIdeaRepository(await openDatabase(new IDBFactory()));
+    await repo.put(demo);
+    await repo.put({ ...demo, id: 'i-2' });
+    await repo.delete('i-1');
+    expect(await repo.get('i-1')).toBeUndefined();
+    expect((await repo.list()).map((i) => i.id)).toEqual(['i-2']);
+  });
+
+  it('does nothing when the idea does not exist', async () => {
+    const repo = createIdeaRepository(await openDatabase(new IDBFactory()));
+    await expect(repo.delete('missing')).resolves.toBeUndefined();
+  });
+});
