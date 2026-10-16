@@ -55,4 +55,27 @@ describe('New idea form', () => {
     );
     expect(await repo.list()).toEqual([]);
   });
+
+  it('shows the optional note on the card', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Idea title'), {
+      target: { value: 'Demo: picnic' },
+    });
+    fireEvent.change(screen.getByLabelText('Note (optional)'), {
+      target: { value: '  Demo note: bring a blanket.  ' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+    expect(await screen.findByText('Demo note: bring a blanket.')).toBeTruthy();
+    expect((await repo.list())[0]?.note).toBe('Demo note: bring a blanket.');
+  });
+
+  it('saves an empty note when none is given', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Idea title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+    await screen.findByText('Demo');
+    expect((await repo.list())[0]?.note).toBe('');
+  });
 });

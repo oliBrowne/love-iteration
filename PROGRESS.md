@@ -587,3 +587,9 @@
 - Verified: lint, typecheck, full vitest (143 pass), build, format:check, roadmap test.
 - Next: L099 optional idea note shown on the card.
 - Blockers: none
+
+## 2026-10-16 — L099: add optional idea note
+- Changed: New ideas can include an optional note, shown on the card.
+- Verified: lint, typecheck, full vitest (145 pass), build, format:check.
+- Next: L100 idea empty state with first-idea prompt.
+- Blockers: none

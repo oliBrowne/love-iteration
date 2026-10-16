@@ -9,7 +9,7 @@ import {
   parseDateIdeaTitle,
 } from '../../domain/index.ts';
 import type { DateIdea } from '../../domain/index.ts';
-import { Button, InlineError, TextField } from '../../ui/index.ts';
+import { Button, InlineError, TextArea, TextField } from '../../ui/index.ts';
 
 type IdeasPageProps = {
   getRepository?: () => Promise<Repository<DateIdea>>;
@@ -19,6 +19,7 @@ export function IdeasPage({
   getRepository = getIdeaRepository,
 }: IdeasPageProps) {
   const [title, setTitle] = useState('');
+  const [note, setNote] = useState('');
   const [problem, setProblem] = useState<string>();
   const [ideas, setIdeas] = useState<DateIdea[]>([]);
 
@@ -49,11 +50,12 @@ export function IdeasPage({
         createdAt: now,
         updatedAt: now,
         title: clean,
-        note: '',
+        note: note.trim(),
         state: 'active',
       });
       setIdeas(await repo.list());
       setTitle('');
+      setNote('');
       setProblem(undefined);
     } catch (error) {
       setProblem(
@@ -77,6 +79,11 @@ export function IdeasPage({
             setProblem(undefined);
           }}
         />
+        <TextArea
+          label="Note (optional)"
+          value={note}
+          onChange={(event) => setNote(event.target.value)}
+        />
         {problem ? <InlineError>{problem}</InlineError> : null}
         <Button type="submit">Add idea</Button>
       </form>
@@ -85,6 +92,7 @@ export function IdeasPage({
           {ideas.map((idea) => (
             <li key={idea.id} className="gratitude-card">
               <strong>{idea.title}</strong>
+              {idea.note ? <p>{idea.note}</p> : null}
             </li>
           ))}
         </ul>
