@@ -115,7 +115,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L100 Add idea empty state — Done when page shows a first-idea prompt.
 - [x] L101 Add completed toggle — Done when idea moves between active and completed.
 - [x] L102 Add idea edit — Done when title and note updates persist.
-- [ ] L103 Add idea delete confirmation — Done when cancel leaves the card.
+- [x] L103 Add idea delete confirmation — Done when cancel leaves the card.
 - [ ] L104 Add idea category field — Done when category saves with the idea.
 - [ ] L105 Add category selector — Done when a category can be chosen by keyboard.
 - [ ] L106 Add category filter — Done when selected category limits cards.

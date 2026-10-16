@@ -611,3 +611,9 @@
 - Verified: lint, typecheck, full vitest (149 pass), build, format:check.
 - Next: L103 idea delete confirmation.
 - Blockers: none
+
+## 2026-10-16 — L103: add idea delete confirmation
+- Changed: Deleting an idea asks first; cancel leaves the card, confirm removes it.
+- Verified: lint, typecheck, full vitest (151 pass), build, format:check.
+- Next: L104 idea category field saved with the idea.
+- Blockers: none

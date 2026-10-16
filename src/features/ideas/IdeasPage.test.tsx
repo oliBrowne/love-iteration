@@ -1,5 +1,11 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -147,5 +153,32 @@ describe('New idea form', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Save changes' }));
     await screen.findByRole('alert');
     expect((await repo.list())[0]?.title).toBe('Demo');
+  });
+
+  async function addAndAskDelete() {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Idea title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+    await screen.findByText('Demo');
+    fireEvent.click(screen.getByRole('button', { name: 'Delete idea' }));
+    return repo;
+  }
+
+  it('keeps the card when delete is cancelled', async () => {
+    const repo = await addAndAskDelete();
+    expect(screen.getByText(/This cannot be undone/)).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    expect(screen.getByText('Demo')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Delete idea' })).toBeTruthy();
+    expect(await repo.list()).toHaveLength(1);
+  });
+
+  it('removes the card after confirmation', async () => {
+    const repo = await addAndAskDelete();
+    fireEvent.click(screen.getByRole('button', { name: 'Yes, delete' }));
+    await waitFor(() => expect(screen.queryByText('Demo')).toBeNull());
+    expect(await repo.list()).toEqual([]);
   });
 });

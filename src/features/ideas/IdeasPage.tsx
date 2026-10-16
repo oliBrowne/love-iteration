@@ -30,6 +30,7 @@ export function IdeasPage({
   const [editTitle, setEditTitle] = useState('');
   const [editNote, setEditNote] = useState('');
   const [editProblem, setEditProblem] = useState<string>();
+  const [confirmingId, setConfirmingId] = useState<string>();
   const [problem, setProblem] = useState<string>();
   const [ideas, setIdeas] = useState<DateIdea[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -91,6 +92,17 @@ export function IdeasPage({
       setIdeas(await repo.list());
     } catch {
       setProblem('Could not update this. Nothing was lost; try again.');
+    }
+  }
+
+  async function remove(idea: DateIdea) {
+    try {
+      const repo = await getRepository();
+      await repo.delete(idea.id);
+      setIdeas(await repo.list());
+      setConfirmingId(undefined);
+    } catch {
+      setProblem('Could not delete this. Nothing was lost; try again.');
     }
   }
 
@@ -199,6 +211,27 @@ export function IdeasPage({
                       <Button type="button" onClick={() => startEdit(idea)}>
                         Edit idea
                       </Button>
+                      {idea.id === confirmingId ? (
+                        <>
+                          <p>Delete this idea? This cannot be undone.</p>
+                          <Button type="button" onClick={() => remove(idea)}>
+                            Yes, delete
+                          </Button>
+                          <Button
+                            type="button"
+                            onClick={() => setConfirmingId(undefined)}
+                          >
+                            Cancel
+                          </Button>
+                        </>
+                      ) : (
+                        <Button
+                          type="button"
+                          onClick={() => setConfirmingId(idea.id)}
+                        >
+                          Delete idea
+                        </Button>
+                      )}
                     </>
                   )}
                 </li>
