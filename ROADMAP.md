@@ -110,7 +110,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L095 Add idea list method — Done when active ideas sort above completed.
 - [x] L096 Add idea delete method — Done when deletion test passes.
 - [x] L097 Render Ideas route — Done when navigation opens the board.
-- [ ] L098 Add new idea form — Done when valid title creates a card.
+- [x] L098 Add new idea form — Done when valid title creates a card.
 - [ ] L099 Add optional idea note — Done when note appears on the card.
 - [ ] L100 Add idea empty state — Done when page shows a first-idea prompt.
 - [ ] L101 Add completed toggle — Done when idea moves between active and completed.

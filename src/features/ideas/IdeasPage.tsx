@@ -1,8 +1,94 @@
-export function IdeasPage() {
+import { useEffect, useState } from 'react';
+import type { FormEvent } from 'react';
+import { getIdeaRepository } from '../../data/index.ts';
+import type { Repository } from '../../data/index.ts';
+import {
+  DomainError,
+  generateId,
+  nowIso,
+  parseDateIdeaTitle,
+} from '../../domain/index.ts';
+import type { DateIdea } from '../../domain/index.ts';
+import { Button, InlineError, TextField } from '../../ui/index.ts';
+
+type IdeasPageProps = {
+  getRepository?: () => Promise<Repository<DateIdea>>;
+};
+
+export function IdeasPage({
+  getRepository = getIdeaRepository,
+}: IdeasPageProps) {
+  const [title, setTitle] = useState('');
+  const [problem, setProblem] = useState<string>();
+  const [ideas, setIdeas] = useState<DateIdea[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    getRepository()
+      .then((repo) => repo.list())
+      .then((records) => {
+        if (!cancelled) setIdeas(records);
+      })
+      .catch(() => {
+        if (!cancelled) setProblem('Could not load your saved ideas.');
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [getRepository]);
+
+  async function submit(event: FormEvent) {
+    event.preventDefault();
+    try {
+      const clean = parseDateIdeaTitle(title);
+      const now = nowIso();
+      const repo = await getRepository();
+      await repo.put({
+        id: generateId(),
+        schemaVersion: 1,
+        createdAt: now,
+        updatedAt: now,
+        title: clean,
+        note: '',
+        state: 'active',
+      });
+      setIdeas(await repo.list());
+      setTitle('');
+      setProblem(undefined);
+    } catch (error) {
+      setProblem(
+        error instanceof DomainError
+          ? error.message
+          : 'Could not save this. Nothing was lost; try again.',
+      );
+    }
+  }
+
   return (
     <section aria-labelledby="ideas-heading">
       <h2 id="ideas-heading">Ideas</h2>
       <p>Things to do together. Ideas stay on this device.</p>
+      <form onSubmit={submit}>
+        <TextField
+          label="Idea title"
+          value={title}
+          onChange={(event) => {
+            setTitle(event.target.value);
+            setProblem(undefined);
+          }}
+        />
+        {problem ? <InlineError>{problem}</InlineError> : null}
+        <Button type="submit">Add idea</Button>
+      </form>
+      {ideas.length > 0 ? (
+        <ul className="gratitude-list">
+          {ideas.map((idea) => (
+            <li key={idea.id} className="gratitude-card">
+              <strong>{idea.title}</strong>
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </section>
   );
 }

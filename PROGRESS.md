@@ -581,3 +581,9 @@
 - Verified: lint, typecheck, unit tests (route + nav link), build, format:check, roadmap test.
 - Next: L098 new idea form creating a card.
 - Blockers: none
+
+## 2026-10-16 — L098: add new idea form
+- Changed: Ideas page has a title form; a valid title creates a card, a blank one shows an error. Also adds the missing Ideas link to the main nav (L097's nav test was failing on its commit).
+- Verified: lint, typecheck, full vitest (143 pass), build, format:check, roadmap test.
+- Next: L099 optional idea note shown on the card.
+- Blockers: none
