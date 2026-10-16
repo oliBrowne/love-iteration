@@ -89,4 +89,23 @@ describe('New idea form', () => {
     await screen.findByText('Demo');
     expect(screen.queryByText(/No ideas yet/)).toBeNull();
   });
+
+  it('moves an idea between active and completed', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Idea title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+    await screen.findByText('Demo');
+    const active = screen.getByRole('region', { name: 'To do' });
+    expect(active.textContent).toContain('Demo');
+    fireEvent.click(screen.getByRole('button', { name: 'Mark done' }));
+    const done = await screen.findByRole('region', { name: 'Done' });
+    expect(done.textContent).toContain('Demo');
+    expect(screen.queryByRole('region', { name: 'To do' })).toBeNull();
+    expect((await repo.list())[0]?.state).toBe('completed');
+    fireEvent.click(screen.getByRole('button', { name: 'Move back to to do' }));
+    expect(await screen.findByRole('region', { name: 'To do' })).toBeTruthy();
+    expect((await repo.list())[0]?.state).toBe('active');
+  });
 });

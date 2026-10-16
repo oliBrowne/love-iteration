@@ -599,3 +599,9 @@
 - Verified: lint, typecheck, full vitest (146 pass), build, format:check.
 - Next: L101 completed toggle moving ideas between active and completed.
 - Blockers: none
+
+## 2026-10-16 — L101: add completed toggle
+- Changed: Ideas are grouped under To do and Done, and a button moves an idea between them.
+- Verified: lint, typecheck, full vitest (147 pass), build, format:check.
+- Next: L102 idea edit persisting title and note.
+- Blockers: none

@@ -76,6 +76,20 @@ export function IdeasPage({
     }
   }
 
+  async function toggle(idea: DateIdea) {
+    try {
+      const repo = await getRepository();
+      await repo.put({
+        ...idea,
+        updatedAt: nowIso(),
+        state: idea.state === 'active' ? 'completed' : 'active',
+      });
+      setIdeas(await repo.list());
+    } catch {
+      setProblem('Could not update this. Nothing was lost; try again.');
+    }
+  }
+
   return (
     <section aria-labelledby="ideas-heading">
       <h2 id="ideas-heading">Ideas</h2>
@@ -103,16 +117,28 @@ export function IdeasPage({
           a walk, a film night, or a trip someday.
         </EmptyState>
       ) : null}
-      {ideas.length > 0 ? (
-        <ul className="gratitude-list">
-          {ideas.map((idea) => (
-            <li key={idea.id} className="gratitude-card">
-              <strong>{idea.title}</strong>
-              {idea.note ? <p>{idea.note}</p> : null}
-            </li>
-          ))}
-        </ul>
-      ) : null}
+      {(['active', 'completed'] as const).map((state) => {
+        const group = ideas.filter((idea) => idea.state === state);
+        if (group.length === 0) return null;
+        return (
+          <section key={state} aria-labelledby={`${state}-ideas-heading`}>
+            <h3 id={`${state}-ideas-heading`}>
+              {state === 'active' ? 'To do' : 'Done'}
+            </h3>
+            <ul className="gratitude-list">
+              {group.map((idea) => (
+                <li key={idea.id} className="gratitude-card">
+                  <strong>{idea.title}</strong>
+                  {idea.note ? <p>{idea.note}</p> : null}
+                  <Button type="button" onClick={() => toggle(idea)}>
+                    {state === 'active' ? 'Mark done' : 'Move back to to do'}
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })}
     </section>
   );
 }
