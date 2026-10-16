@@ -575,3 +575,9 @@
 - Verified: lint, typecheck, unit tests (delete one, delete missing), build, format:check, roadmap test.
 - Next: L097 render the Ideas route.
 - Blockers: none
+
+## 2026-10-16 — L097: render Ideas route
+- Changed: Navigation now opens an Ideas page.
+- Verified: lint, typecheck, unit tests (route + nav link), build, format:check, roadmap test.
+- Next: L098 new idea form creating a card.
+- Blockers: none
