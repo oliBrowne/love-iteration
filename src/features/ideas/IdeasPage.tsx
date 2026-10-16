@@ -26,6 +26,10 @@ export function IdeasPage({
 }: IdeasPageProps) {
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
+  const [editingId, setEditingId] = useState<string>();
+  const [editTitle, setEditTitle] = useState('');
+  const [editNote, setEditNote] = useState('');
+  const [editProblem, setEditProblem] = useState<string>();
   const [problem, setProblem] = useState<string>();
   const [ideas, setIdeas] = useState<DateIdea[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -90,6 +94,35 @@ export function IdeasPage({
     }
   }
 
+  function startEdit(idea: DateIdea) {
+    setEditTitle(idea.title);
+    setEditNote(idea.note);
+    setEditProblem(undefined);
+    setEditingId(idea.id);
+  }
+
+  async function saveEdit(event: FormEvent, idea: DateIdea) {
+    event.preventDefault();
+    try {
+      const clean = parseDateIdeaTitle(editTitle);
+      const repo = await getRepository();
+      await repo.put({
+        ...idea,
+        updatedAt: nowIso(),
+        title: clean,
+        note: editNote.trim(),
+      });
+      setIdeas(await repo.list());
+      setEditingId(undefined);
+    } catch (error) {
+      setEditProblem(
+        error instanceof DomainError
+          ? error.message
+          : 'Could not save this. Nothing was lost; try again.',
+      );
+    }
+  }
+
   return (
     <section aria-labelledby="ideas-heading">
       <h2 id="ideas-heading">Ideas</h2>
@@ -128,11 +161,46 @@ export function IdeasPage({
             <ul className="gratitude-list">
               {group.map((idea) => (
                 <li key={idea.id} className="gratitude-card">
-                  <strong>{idea.title}</strong>
-                  {idea.note ? <p>{idea.note}</p> : null}
-                  <Button type="button" onClick={() => toggle(idea)}>
-                    {state === 'active' ? 'Mark done' : 'Move back to to do'}
-                  </Button>
+                  {idea.id === editingId ? (
+                    <form
+                      aria-label="Edit idea"
+                      onSubmit={(event) => saveEdit(event, idea)}
+                    >
+                      <TextField
+                        label="Edit title"
+                        value={editTitle}
+                        onChange={(event) => setEditTitle(event.target.value)}
+                      />
+                      <TextArea
+                        label="Edit note"
+                        value={editNote}
+                        onChange={(event) => setEditNote(event.target.value)}
+                      />
+                      {editProblem ? (
+                        <InlineError>{editProblem}</InlineError>
+                      ) : null}
+                      <Button type="submit">Save changes</Button>
+                      <Button
+                        type="button"
+                        onClick={() => setEditingId(undefined)}
+                      >
+                        Cancel
+                      </Button>
+                    </form>
+                  ) : (
+                    <>
+                      <strong>{idea.title}</strong>
+                      {idea.note ? <p>{idea.note}</p> : null}
+                      <Button type="button" onClick={() => toggle(idea)}>
+                        {state === 'active'
+                          ? 'Mark done'
+                          : 'Move back to to do'}
+                      </Button>
+                      <Button type="button" onClick={() => startEdit(idea)}>
+                        Edit idea
+                      </Button>
+                    </>
+                  )}
                 </li>
               ))}
             </ul>

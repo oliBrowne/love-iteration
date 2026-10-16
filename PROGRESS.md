@@ -605,3 +605,9 @@
 - Verified: lint, typecheck, full vitest (147 pass), build, format:check.
 - Next: L102 idea edit persisting title and note.
 - Blockers: none
+
+## 2026-10-16 — L102: add idea edit
+- Changed: Ideas can be edited; title and note changes persist and a blank title is refused.
+- Verified: lint, typecheck, full vitest (149 pass), build, format:check.
+- Next: L103 idea delete confirmation.
+- Blockers: none

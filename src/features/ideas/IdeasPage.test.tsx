@@ -108,4 +108,44 @@ describe('New idea form', () => {
     expect(await screen.findByRole('region', { name: 'To do' })).toBeTruthy();
     expect((await repo.list())[0]?.state).toBe('active');
   });
+
+  async function addDemo() {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Idea title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+    await screen.findByText('Demo');
+    fireEvent.click(screen.getByRole('button', { name: 'Edit idea' }));
+    return repo;
+  }
+
+  it('persists edits to title and note', async () => {
+    const repo = await addDemo();
+    fireEvent.change(screen.getByLabelText('Edit title'), {
+      target: { value: '  Demo: renamed  ' },
+    });
+    fireEvent.change(screen.getByLabelText('Edit note'), {
+      target: { value: 'Demo edited note.' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }));
+    await screen.findByText('Demo edited note.');
+    expect((await repo.list())[0]).toMatchObject({
+      title: 'Demo: renamed',
+      note: 'Demo edited note.',
+    });
+    cleanup();
+    render(<IdeasPage getRepository={async () => repo} />);
+    expect(await screen.findByText('Demo: renamed')).toBeTruthy();
+  });
+
+  it('refuses a blank edited title and keeps the original', async () => {
+    const repo = await addDemo();
+    fireEvent.change(screen.getByLabelText('Edit title'), {
+      target: { value: '   ' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }));
+    await screen.findByRole('alert');
+    expect((await repo.list())[0]?.title).toBe('Demo');
+  });
 });
