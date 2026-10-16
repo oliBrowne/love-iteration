@@ -593,3 +593,9 @@
 - Verified: lint, typecheck, full vitest (145 pass), build, format:check.
 - Next: L100 idea empty state with first-idea prompt.
 - Blockers: none
+
+## 2026-10-16 — L100: add idea empty state
+- Changed: Ideas page shows a first-idea prompt until an idea exists.
+- Verified: lint, typecheck, full vitest (146 pass), build, format:check.
+- Next: L101 completed toggle moving ideas between active and completed.
+- Blockers: none

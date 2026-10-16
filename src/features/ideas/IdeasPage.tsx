@@ -9,7 +9,13 @@ import {
   parseDateIdeaTitle,
 } from '../../domain/index.ts';
 import type { DateIdea } from '../../domain/index.ts';
-import { Button, InlineError, TextArea, TextField } from '../../ui/index.ts';
+import {
+  Button,
+  EmptyState,
+  InlineError,
+  TextArea,
+  TextField,
+} from '../../ui/index.ts';
 
 type IdeasPageProps = {
   getRepository?: () => Promise<Repository<DateIdea>>;
@@ -22,13 +28,17 @@ export function IdeasPage({
   const [note, setNote] = useState('');
   const [problem, setProblem] = useState<string>();
   const [ideas, setIdeas] = useState<DateIdea[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     getRepository()
       .then((repo) => repo.list())
       .then((records) => {
-        if (!cancelled) setIdeas(records);
+        if (!cancelled) {
+          setIdeas(records);
+          setLoaded(true);
+        }
       })
       .catch(() => {
         if (!cancelled) setProblem('Could not load your saved ideas.');
@@ -87,6 +97,12 @@ export function IdeasPage({
         {problem ? <InlineError>{problem}</InlineError> : null}
         <Button type="submit">Add idea</Button>
       </form>
+      {loaded && ideas.length === 0 ? (
+        <EmptyState>
+          No ideas yet. Add the first thing you would like to do together, like
+          a walk, a film night, or a trip someday.
+        </EmptyState>
+      ) : null}
       {ideas.length > 0 ? (
         <ul className="gratitude-list">
           {ideas.map((idea) => (

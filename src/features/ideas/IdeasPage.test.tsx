@@ -78,4 +78,15 @@ describe('New idea form', () => {
     await screen.findByText('Demo');
     expect((await repo.list())[0]?.note).toBe('');
   });
+
+  it('shows first-use copy until an idea is saved', async () => {
+    await renderPage();
+    expect(await screen.findByText(/No ideas yet/)).toBeTruthy();
+    fireEvent.change(screen.getByLabelText('Idea title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+    await screen.findByText('Demo');
+    expect(screen.queryByText(/No ideas yet/)).toBeNull();
+  });
 });
