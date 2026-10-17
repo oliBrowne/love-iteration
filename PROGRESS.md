@@ -665,3 +665,9 @@
 - Verified: lint, typecheck (type test), vitest, build, format:check, roadmap tests.
 - Next: L112 reject invalid planned date timestamps.
 - Blockers: none
+
+## 2026-10-17 — L112: validate planned date time
+- Changed: parsePlannedStart rejects impossible days and times (e.g. 30 Feb); no visible change yet.
+- Verified: lint, typecheck, vitest (177 pass), build, format:check, roadmap tests.
+- Next: L113 plans object store migration.
+- Blockers: none
