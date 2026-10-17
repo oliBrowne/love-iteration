@@ -21,3 +21,5 @@ export { getGratitudeRepository } from './localGratitude.ts';
 export { getMemoryRepository } from './localMemories.ts';
 export { createIdeaRepository } from './ideaRepository.ts';
 export { getIdeaRepository } from './localIdeas.ts';
+export { createPlanRepository } from './planRepository.ts';
+export { getPlanRepository } from './localPlans.ts';

@@ -677,3 +677,9 @@
 - Verified: lint, typecheck, vitest (177 pass incl. upgrade test), build, format:check, roadmap tests.
 - Next: L114 schedule action on an idea.
 - Blockers: none
+
+## 2026-10-17 — L114: add schedule action
+- Changed: Active idea cards have a Schedule button; picking a date and time saves a plan and shows 'Scheduled for …'.
+- Verified: lint, typecheck, vitest (179 pass), build, format:check, roadmap tests; datetime-local input is native and keyboard-operable.
+- Next: L115 plan list sorted soonest first.
+- Blockers: none

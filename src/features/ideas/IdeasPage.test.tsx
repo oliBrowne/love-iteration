@@ -10,7 +10,11 @@ import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
 import App from '../../App.tsx';
-import { createIdeaRepository, openDatabase } from '../../data/index.ts';
+import {
+  createIdeaRepository,
+  createPlanRepository,
+  openDatabase,
+} from '../../data/index.ts';
 import { IdeasPage } from './IdeasPage.tsx';
 
 afterEach(cleanup);
@@ -32,9 +36,18 @@ describe('Ideas route', () => {
 });
 
 describe('New idea form', () => {
+  let plans: ReturnType<typeof createPlanRepository>;
+
   async function renderPage() {
-    const repo = createIdeaRepository(await openDatabase(new IDBFactory()));
-    render(<IdeasPage getRepository={async () => repo} />);
+    const db = await openDatabase(new IDBFactory());
+    const repo = createIdeaRepository(db);
+    plans = createPlanRepository(db);
+    render(
+      <IdeasPage
+        getRepository={async () => repo}
+        getPlanRepo={async () => plans}
+      />,
+    );
     return repo;
   }
 
@@ -196,6 +209,41 @@ describe('New idea form', () => {
       `${stored.length - done} to do · ${done} done`,
     );
     expect(done).toBe(1);
+  });
+
+  it('gives an idea a date and time', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Idea title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+    await screen.findByText('Demo');
+    fireEvent.click(screen.getByRole('button', { name: 'Schedule' }));
+    fireEvent.change(screen.getByLabelText('Date and time'), {
+      target: { value: '2026-02-14T19:00' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save date' }));
+    await screen.findByText(/Scheduled for/);
+    const saved = await plans.list();
+    const [idea] = await repo.list();
+    expect(saved).toHaveLength(1);
+    expect(saved[0]).toMatchObject({ ideaId: idea?.id, status: 'planned' });
+    expect(saved[0]?.startsAt).toBe(new Date(2026, 1, 14, 19, 0).toISOString());
+  });
+
+  it('refuses an impossible date and time', async () => {
+    await renderPage();
+    fireEvent.change(screen.getByLabelText('Idea title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+    await screen.findByText('Demo');
+    fireEvent.click(screen.getByRole('button', { name: 'Schedule' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Save date' }));
+    expect((await screen.findByRole('alert')).textContent).toBe(
+      'Choose a real day and time.',
+    );
+    expect(await plans.list()).toEqual([]);
   });
 
   it('saves an empty note when none is given', async () => {

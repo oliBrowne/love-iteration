@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { getIdeaRepository } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
+import { ScheduleIdea } from './ScheduleIdea.tsx';
 import {
   DomainError,
   countIdeas,
@@ -13,7 +14,11 @@ import {
   parseDateIdeaTitle,
   searchIdeas,
 } from '../../domain/index.ts';
-import type { DateIdea, DateIdeaCategory } from '../../domain/index.ts';
+import type {
+  DateIdea,
+  DateIdeaCategory,
+  PlannedDate,
+} from '../../domain/index.ts';
 import {
   Button,
   EmptyState,
@@ -38,10 +43,12 @@ const categoryOptions = dateIdeaCategories.map((value) => ({
 
 type IdeasPageProps = {
   getRepository?: () => Promise<Repository<DateIdea>>;
+  getPlanRepo?: () => Promise<Repository<PlannedDate>>;
 };
 
 export function IdeasPage({
   getRepository = getIdeaRepository,
+  getPlanRepo,
 }: IdeasPageProps) {
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
@@ -277,6 +284,12 @@ export function IdeasPage({
                       <Button type="button" onClick={() => startEdit(idea)}>
                         Edit idea
                       </Button>
+                      {state === 'active' ? (
+                        <ScheduleIdea
+                          ideaId={idea.id}
+                          getPlanRepo={getPlanRepo}
+                        />
+                      ) : null}
                       {idea.id === confirmingId ? (
                         <>
                           <p>Delete this idea? This cannot be undone.</p>
