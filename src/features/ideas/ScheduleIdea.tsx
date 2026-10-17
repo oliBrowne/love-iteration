@@ -14,12 +14,14 @@ import { Button, InlineError, TextField } from '../../ui/index.ts';
 type ScheduleIdeaProps = {
   ideaId: string;
   getPlanRepo?: () => Promise<Repository<PlannedDate>>;
+  onScheduled?: () => void;
 };
 
 // A small form that gives one idea a day and time.
 export function ScheduleIdea({
   ideaId,
   getPlanRepo = getPlanRepository,
+  onScheduled,
 }: ScheduleIdeaProps) {
   const [open, setOpen] = useState(false);
   const [when, setWhen] = useState('');
@@ -50,6 +52,7 @@ export function ScheduleIdea({
       setOpen(false);
       setWhen('');
       setProblem(undefined);
+      onScheduled?.();
     } catch (error) {
       setProblem(
         error instanceof DomainError

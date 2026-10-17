@@ -5,6 +5,7 @@ import {
   render,
   screen,
   waitFor,
+  within,
 } from '@testing-library/react';
 import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
@@ -229,6 +230,37 @@ describe('New idea form', () => {
     expect(saved).toHaveLength(1);
     expect(saved[0]).toMatchObject({ ideaId: idea?.id, status: 'planned' });
     expect(saved[0]?.startsAt).toBe(new Date(2026, 1, 14, 19, 0).toISOString());
+  });
+
+  it('lists future plans soonest first', async () => {
+    await renderPage();
+    for (const [name, when] of [
+      ['Demo later', '2099-05-01T10:00'],
+      ['Demo sooner', '2098-05-01T10:00'],
+    ] as const) {
+      fireEvent.change(screen.getByLabelText('Idea title'), {
+        target: { value: name },
+      });
+      fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+      await screen.findByText(name);
+      const card = screen.getByText(name).closest('li')!;
+      fireEvent.click(within(card).getByRole('button', { name: 'Schedule' }));
+      fireEvent.change(within(card).getByLabelText('Date and time'), {
+        target: { value: when },
+      });
+      fireEvent.click(within(card).getByRole('button', { name: 'Save date' }));
+      await within(card).findByText(/Scheduled for/);
+    }
+    const section = await screen.findByRole('region', {
+      name: 'Upcoming plans',
+    });
+    await waitFor(() =>
+      expect(within(section).getAllByRole('listitem')).toHaveLength(2),
+    );
+    const titles = within(section)
+      .getAllByRole('listitem')
+      .map((li) => li.querySelector('strong')?.textContent);
+    expect(titles).toEqual(['Demo sooner', 'Demo later']);
   });
 
   it('refuses an impossible date and time', async () => {

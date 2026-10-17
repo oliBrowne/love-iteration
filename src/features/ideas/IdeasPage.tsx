@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
-import { getIdeaRepository } from '../../data/index.ts';
+import { getIdeaRepository, getPlanRepository } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import { ScheduleIdea } from './ScheduleIdea.tsx';
 import {
@@ -13,6 +13,7 @@ import {
   nowIso,
   parseDateIdeaTitle,
   searchIdeas,
+  upcomingPlans,
 } from '../../domain/index.ts';
 import type {
   DateIdea,
@@ -48,7 +49,7 @@ type IdeasPageProps = {
 
 export function IdeasPage({
   getRepository = getIdeaRepository,
-  getPlanRepo,
+  getPlanRepo = getPlanRepository,
 }: IdeasPageProps) {
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
@@ -64,6 +65,7 @@ export function IdeasPage({
   const [categoryFilter, setCategoryFilter] = useState<DateIdeaCategory | ''>(
     '',
   );
+  const [plans, setPlans] = useState<PlannedDate[]>([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -83,6 +85,30 @@ export function IdeasPage({
       cancelled = true;
     };
   }, [getRepository]);
+
+  async function loadPlans() {
+    try {
+      const repo = await getPlanRepo();
+      setPlans(await repo.list());
+    } catch {
+      // The plan list is optional; ideas still work without it.
+    }
+  }
+
+  useEffect(() => {
+    let cancelled = false;
+    getPlanRepo()
+      .then((repo) => repo.list())
+      .then((records) => {
+        if (!cancelled) setPlans(records);
+      })
+      .catch(() => {
+        // The plan list is optional; ideas still work without it.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [getPlanRepo]);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -169,6 +195,7 @@ export function IdeasPage({
   }
 
   const counts = countIdeas(ideas);
+  const upcoming = upcomingPlans(plans);
 
   return (
     <section aria-labelledby="ideas-heading">
@@ -218,6 +245,27 @@ export function IdeasPage({
           setCategoryFilter(event.target.value as DateIdeaCategory | '')
         }
       />
+      {upcoming.length > 0 ? (
+        <section aria-labelledby="upcoming-plans-heading">
+          <h3 id="upcoming-plans-heading">Upcoming plans</h3>
+          <ul className="gratitude-list">
+            {upcoming.map((plan) => (
+              <li key={plan.id} className="gratitude-card">
+                <strong>
+                  {ideas.find((idea) => idea.id === plan.ideaId)?.title ??
+                    'An idea you removed'}
+                </strong>
+                <p>
+                  {new Date(plan.startsAt).toLocaleString(undefined, {
+                    dateStyle: 'medium',
+                    timeStyle: 'short',
+                  })}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
       {loaded && ideas.length > 0 ? (
         <p aria-label="Idea counts">
           {counts.active} to do · {counts.completed} done
@@ -288,6 +336,7 @@ export function IdeasPage({
                         <ScheduleIdea
                           ideaId={idea.id}
                           getPlanRepo={getPlanRepo}
+                          onScheduled={loadPlans}
                         />
                       ) : null}
                       {idea.id === confirmingId ? (

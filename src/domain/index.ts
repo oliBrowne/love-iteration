@@ -33,4 +33,8 @@ export {
   searchIdeas,
 } from './dateIdea.ts';
 export type { PlannedDate, PlannedDateStatus } from './plannedDate.ts';
-export { parsePlannedStart, plannedDateStatuses } from './plannedDate.ts';
+export {
+  parsePlannedStart,
+  plannedDateStatuses,
+  upcomingPlans,
+} from './plannedDate.ts';

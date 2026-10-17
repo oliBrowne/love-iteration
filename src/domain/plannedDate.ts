@@ -41,3 +41,14 @@ export function parsePlannedStart(value: unknown): string {
   }
   throw new DomainError('invalid-planned-start', 'Choose a real day and time.');
 }
+
+// Plans that are still planned and start after `now`, soonest first.
+export function upcomingPlans(
+  plans: PlannedDate[],
+  now: Date = new Date(),
+): PlannedDate[] {
+  const cutoff = now.toISOString();
+  return plans
+    .filter((plan) => plan.status === 'planned' && plan.startsAt > cutoff)
+    .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+}

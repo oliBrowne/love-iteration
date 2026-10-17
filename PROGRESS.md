@@ -683,3 +683,9 @@
 - Verified: lint, typecheck, vitest (179 pass), build, format:check, roadmap tests; datetime-local input is native and keyboard-operable.
 - Next: L115 plan list sorted soonest first.
 - Blockers: none
+
+## 2026-10-17 — L115: add plan list
+- Changed: Ideas shows an Upcoming plans list of future planned dates, soonest first.
+- Verified: lint, typecheck, vitest (182 pass), build, format:check, roadmap tests.
+- Next: L116 plan edit action.
+- Blockers: none
