@@ -5,11 +5,21 @@ import type { RecordMetadata } from './record.ts';
 export const dateIdeaStates = ['active', 'completed'] as const;
 export type DateIdeaState = (typeof dateIdeaStates)[number];
 
+// What kind of time together an idea is. Ideas saved before categories existed have none.
+export const dateIdeaCategories = [
+  'outing',
+  'at-home',
+  'trip',
+  'other',
+] as const;
+export type DateIdeaCategory = (typeof dateIdeaCategories)[number];
+
 // `note` may be an empty string.
 export type DateIdea = RecordMetadata & {
   title: string;
   note: string;
   state: DateIdeaState;
+  category?: DateIdeaCategory;
 };
 
 // Returns the trimmed title, or throws a DomainError when it is blank.

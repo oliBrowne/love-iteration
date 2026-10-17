@@ -617,3 +617,9 @@
 - Verified: lint, typecheck, full vitest (151 pass), build, format:check.
 - Next: L104 idea category field saved with the idea.
 - Blockers: none
+
+## 2026-10-17 — L104: add idea category field
+- Changed: Ideas now store a category (defaults to other); older ideas without one still load.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L105 keyboard-usable category selector.
+- Blockers: none

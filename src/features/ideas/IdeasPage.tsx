@@ -67,6 +67,7 @@ export function IdeasPage({
         title: clean,
         note: note.trim(),
         state: 'active',
+        category: 'other',
       });
       setIdeas(await repo.list());
       setTitle('');

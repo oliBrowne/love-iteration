@@ -1,6 +1,6 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import { DomainError } from './errors.ts';
-import { parseDateIdeaTitle } from './dateIdea.ts';
+import { dateIdeaCategories, parseDateIdeaTitle } from './dateIdea.ts';
 import type { DateIdea, DateIdeaState } from './dateIdea.ts';
 import type { RecordMetadata } from './record.ts';
 
@@ -20,6 +20,22 @@ describe('DateIdea', () => {
       state: 'active',
     };
     expect(demo.state).toBe('active');
+  });
+});
+
+describe('DateIdea category', () => {
+  it('offers a fixed list and is optional on old records', () => {
+    expect(dateIdeaCategories).toContain('other');
+    const old: DateIdea = {
+      id: 'demo-2',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      title: 'Demo',
+      note: '',
+      state: 'active',
+    };
+    expect(old.category).toBeUndefined();
   });
 });
 

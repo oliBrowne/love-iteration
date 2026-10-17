@@ -75,6 +75,16 @@ describe('New idea form', () => {
     expect((await repo.list())[0]?.note).toBe('Demo note: bring a blanket.');
   });
 
+  it('saves a category with the idea', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Idea title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+    await screen.findByText('Demo');
+    expect((await repo.list())[0]?.category).toBe('other');
+  });
+
   it('saves an empty note when none is given', async () => {
     const repo = await renderPage();
     fireEvent.change(screen.getByLabelText('Idea title'), {
