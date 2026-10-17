@@ -2,6 +2,7 @@ import { describe, expect, expectTypeOf, it } from 'vitest';
 import { DomainError } from './errors.ts';
 import {
   dateIdeaCategories,
+  countIdeas,
   filterIdeasByCategory,
   searchIdeas,
   parseDateIdeaTitle,
@@ -107,5 +108,23 @@ describe('searchIdeas', () => {
   it('keeps everything for blank text and nothing for no match', () => {
     expect(searchIdeas(ideas, '  ')).toEqual(ideas);
     expect(searchIdeas(ideas, 'zzz')).toEqual([]);
+  });
+});
+
+describe('countIdeas', () => {
+  it('counts active and completed ideas', () => {
+    const make = (state: DateIdea['state']): DateIdea => ({
+      id: Math.random().toString(),
+      schemaVersion: 1,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      title: 'Demo',
+      note: '',
+      state,
+    });
+    expect(
+      countIdeas([make('active'), make('completed'), make('active')]),
+    ).toEqual({ active: 2, completed: 1 });
+    expect(countIdeas([])).toEqual({ active: 0, completed: 0 });
   });
 });

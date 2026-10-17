@@ -4,6 +4,7 @@ import { getIdeaRepository } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
   DomainError,
+  countIdeas,
   dateIdeaCategories,
   dateIdeaCategoryLabels,
   filterIdeasByCategory,
@@ -160,6 +161,8 @@ export function IdeasPage({
     }
   }
 
+  const counts = countIdeas(ideas);
+
   return (
     <section aria-labelledby="ideas-heading">
       <h2 id="ideas-heading">Ideas</h2>
@@ -208,6 +211,11 @@ export function IdeasPage({
           setCategoryFilter(event.target.value as DateIdeaCategory | '')
         }
       />
+      {loaded && ideas.length > 0 ? (
+        <p aria-label="Idea counts">
+          {counts.active} to do · {counts.completed} done
+        </p>
+      ) : null}
       {loaded && ideas.length === 0 ? (
         <EmptyState>
           No ideas yet. Add the first thing you would like to do together, like

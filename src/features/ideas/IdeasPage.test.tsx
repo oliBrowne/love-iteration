@@ -176,6 +176,28 @@ describe('New idea form', () => {
     expect(screen.queryByRole('button', { name: 'Clear search' })).toBeNull();
   });
 
+  it('shows counts that match the repository', async () => {
+    const repo = await renderPage();
+    for (const name of ['Demo one', 'Demo two']) {
+      fireEvent.change(screen.getByLabelText('Idea title'), {
+        target: { value: name },
+      });
+      fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+      await screen.findByText(name);
+    }
+    expect(screen.getByLabelText('Idea counts').textContent).toBe(
+      '2 to do · 0 done',
+    );
+    fireEvent.click(screen.getAllByRole('button', { name: 'Mark done' })[0]!);
+    await screen.findByRole('region', { name: 'Done' });
+    const stored = await repo.list();
+    const done = stored.filter((i) => i.state === 'completed').length;
+    expect(screen.getByLabelText('Idea counts').textContent).toBe(
+      `${stored.length - done} to do · ${done} done`,
+    );
+    expect(done).toBe(1);
+  });
+
   it('saves an empty note when none is given', async () => {
     const repo = await renderPage();
     fireEvent.change(screen.getByLabelText('Idea title'), {

@@ -57,3 +57,12 @@ export function searchIdeas(ideas: DateIdea[], text: string): DateIdea[] {
     `${idea.title}\n${idea.note}`.toLowerCase().includes(needle),
   );
 }
+
+// How many ideas are still to do and how many are done.
+export function countIdeas(ideas: DateIdea[]): {
+  active: number;
+  completed: number;
+} {
+  const completed = ideas.filter((idea) => idea.state === 'completed').length;
+  return { active: ideas.length - completed, completed };
+}

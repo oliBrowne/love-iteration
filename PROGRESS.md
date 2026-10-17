@@ -647,3 +647,9 @@
 - Verified: lint, typecheck, vitest (162 pass), build, format:check, roadmap tests.
 - Next: L109 active and completed counts.
 - Blockers: none
+
+## 2026-10-17 — L109: add active and completed counts
+- Changed: Ideas shows how many are to do and how many are done, counted from saved data.
+- Verified: lint, typecheck, vitest (164 pass), build, format:check, roadmap tests.
+- Next: L110 Home preview of one active idea.
+- Blockers: none
