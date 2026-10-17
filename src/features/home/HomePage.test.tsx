@@ -11,6 +11,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import {
   createCheckInRepository,
   createGratitudeRepository,
+  createIdeaRepository,
   openDatabase,
 } from '../../data/index.ts';
 import { formatLocalTime, localDate } from '../../domain/index.ts';
@@ -166,5 +167,64 @@ describe('HomePage gratitude preview', () => {
     );
     await screen.findByRole('heading', { name: 'Home' });
     expect(screen.queryByTestId('gratitude-preview')).toBeNull();
+  });
+});
+
+describe('HomePage idea preview', () => {
+  const base = {
+    schemaVersion: 1,
+    createdAt: '2026-03-01T09:00:00.000Z',
+    updatedAt: '2026-03-01T09:00:00.000Z',
+    note: '',
+  };
+
+  it('links to one active idea', async () => {
+    const db = await openDatabase(new IDBFactory());
+    const ideas = createIdeaRepository(db);
+    await ideas.put({
+      ...base,
+      id: 'i1',
+      title: 'Demo: done',
+      state: 'completed',
+    });
+    await ideas.put({
+      ...base,
+      id: 'i2',
+      title: 'Demo: picnic',
+      state: 'active',
+    });
+    render(
+      <HomePage
+        getRepository={async () => createCheckInRepository(db)}
+        getIdeaRepo={async () => ideas}
+      />,
+    );
+    expect((await screen.findByTestId('idea-preview')).textContent).toBe(
+      'Demo: picnic',
+    );
+    expect(
+      screen.getByRole('link', { name: 'Open Ideas' }).getAttribute('href'),
+    ).toBe('#/ideas');
+  });
+
+  it('shows no preview when every idea is done or none exist', async () => {
+    const db = await openDatabase(new IDBFactory());
+    const ideas = createIdeaRepository(db);
+    await ideas.put({
+      ...base,
+      id: 'i1',
+      title: 'Demo: done',
+      state: 'completed',
+    });
+    render(
+      <HomePage
+        getRepository={async () => createCheckInRepository(db)}
+        getIdeaRepo={async () => ideas}
+      />,
+    );
+    await screen.findByRole('heading', { name: 'Home' });
+    await waitFor(() =>
+      expect(screen.queryByTestId('idea-preview')).toBeNull(),
+    );
   });
 });

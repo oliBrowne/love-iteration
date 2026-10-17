@@ -122,7 +122,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L107 Add text search — Done when title or note match appears.
 - [x] L108 Add clear-search action — Done when full list returns.
 - [x] L109 Add active and completed counts — Done when counts match repository data.
-- [ ] L110 Add idea Home preview — Done when Home links to one active idea.
+- [x] L110 Add idea Home preview — Done when Home links to one active idea.
 - [ ] L111 Define planned date record — Done when type includes ideaId, startsAt, and status.
 - [ ] L112 Validate planned date time — Done when invalid timestamp is rejected.
 - [ ] L113 Add planned date store — Done when migration creates plans store.

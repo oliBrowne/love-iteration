@@ -5,6 +5,7 @@ import { Button } from '../../ui/index.ts';
 import {
   getCheckInRepository,
   getGratitudeRepository,
+  getIdeaRepository,
 } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
@@ -13,18 +14,21 @@ import {
   moodLabels,
   routeToHash,
 } from '../../domain/index.ts';
-import type { CheckIn, Gratitude } from '../../domain/index.ts';
+import type { CheckIn, DateIdea, Gratitude } from '../../domain/index.ts';
 
 type HomePageProps = {
   getRepository?: () => Promise<Repository<CheckIn>>;
   getGratitudeRepo?: () => Promise<Repository<Gratitude>>;
+  getIdeaRepo?: () => Promise<Repository<DateIdea>>;
 };
 
 export function HomePage({
   getRepository = getCheckInRepository,
   getGratitudeRepo = getGratitudeRepository,
+  getIdeaRepo = getIdeaRepository,
 }: HomePageProps) {
   const [latestGratitude, setLatestGratitude] = useState<Gratitude>();
+  const [activeIdea, setActiveIdea] = useState<DateIdea>();
   const [records, setRecords] = useState<CheckIn[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [selectedId, setSelectedId] = useState<string>();
@@ -83,6 +87,25 @@ export function HomePage({
     };
   }, [getGratitudeRepo]);
 
+  useEffect(() => {
+    let cancelled = false;
+    Promise.resolve()
+      .then(getIdeaRepo)
+      .then((repo) => repo.list())
+      .then((ideas) => {
+        // Active ideas are listed first, newest first.
+        const first = ideas[0];
+        if (!cancelled)
+          setActiveIdea(first?.state === 'active' ? first : undefined);
+      })
+      .catch(() => {
+        // The preview is optional; Home still works without it.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [getIdeaRepo]);
+
   const earlier = records.filter((r) => r.date !== day);
   const selectedIndex = earlier.findIndex((r) => r.id === selectedId);
   const selected = earlier[selectedIndex];
@@ -136,6 +159,15 @@ export function HomePage({
           <p data-testid="gratitude-preview">{latestGratitude.text}</p>
           <p>
             <a href={routeToHash('gratitude')}>Open Gratitude</a>
+          </p>
+        </section>
+      ) : null}
+      {activeIdea ? (
+        <section aria-labelledby="home-idea-heading">
+          <h3 id="home-idea-heading">An idea to try</h3>
+          <p data-testid="idea-preview">{activeIdea.title}</p>
+          <p>
+            <a href={routeToHash('ideas')}>Open Ideas</a>
           </p>
         </section>
       ) : null}

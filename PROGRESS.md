@@ -653,3 +653,9 @@
 - Verified: lint, typecheck, vitest (164 pass), build, format:check, roadmap tests.
 - Next: L110 Home preview of one active idea.
 - Blockers: none
+
+## 2026-10-17 — L110: add idea Home preview
+- Changed: Home shows an 'An idea to try' card with the newest active idea and a link to Ideas.
+- Verified: lint, typecheck, vitest (166 pass), build, format:check, roadmap tests.
+- Next: L111 planned date record type.
+- Blockers: none
