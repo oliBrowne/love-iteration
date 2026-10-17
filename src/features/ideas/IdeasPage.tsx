@@ -10,6 +10,7 @@ import {
   generateId,
   nowIso,
   parseDateIdeaTitle,
+  searchIdeas,
 } from '../../domain/index.ts';
 import type { DateIdea, DateIdeaCategory } from '../../domain/index.ts';
 import {
@@ -51,6 +52,7 @@ export function IdeasPage({
   const [confirmingId, setConfirmingId] = useState<string>();
   const [problem, setProblem] = useState<string>();
   const [ideas, setIdeas] = useState<DateIdea[]>([]);
+  const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<DateIdeaCategory | ''>(
     '',
   );
@@ -187,6 +189,12 @@ export function IdeasPage({
         {problem ? <InlineError>{problem}</InlineError> : null}
         <Button type="submit">Add idea</Button>
       </form>
+      <TextField
+        label="Search ideas"
+        type="search"
+        value={search}
+        onChange={(event) => setSearch(event.target.value)}
+      />
       <Select
         label="Show category"
         value={categoryFilter}
@@ -202,9 +210,10 @@ export function IdeasPage({
         </EmptyState>
       ) : null}
       {(['active', 'completed'] as const).map((state) => {
-        const group = filterIdeasByCategory(ideas, categoryFilter).filter(
-          (idea) => idea.state === state,
-        );
+        const group = searchIdeas(
+          filterIdeasByCategory(ideas, categoryFilter),
+          search,
+        ).filter((idea) => idea.state === state);
         if (group.length === 0) return null;
         return (
           <section key={state} aria-labelledby={`${state}-ideas-heading`}>

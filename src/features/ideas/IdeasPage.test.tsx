@@ -126,6 +126,33 @@ describe('New idea form', () => {
     expect(screen.getByText('Demo outing')).toBeTruthy();
   });
 
+  it('shows only ideas whose title or note match the search', async () => {
+    await renderPage();
+    for (const [name, text] of [
+      ['Demo picnic', 'blanket'],
+      ['Demo film', 'popcorn'],
+    ] as const) {
+      fireEvent.change(screen.getByLabelText('Idea title'), {
+        target: { value: name },
+      });
+      fireEvent.change(screen.getByLabelText('Note (optional)'), {
+        target: { value: text },
+      });
+      fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+      await screen.findByText(name);
+    }
+    fireEvent.change(screen.getByLabelText('Search ideas'), {
+      target: { value: 'POPCORN' },
+    });
+    expect(screen.getByText('Demo film')).toBeTruthy();
+    expect(screen.queryByText('Demo picnic')).toBeNull();
+    fireEvent.change(screen.getByLabelText('Search ideas'), {
+      target: { value: 'picn' },
+    });
+    expect(screen.getByText('Demo picnic')).toBeTruthy();
+    expect(screen.queryByText('Demo film')).toBeNull();
+  });
+
   it('saves an empty note when none is given', async () => {
     const repo = await renderPage();
     fireEvent.change(screen.getByLabelText('Idea title'), {

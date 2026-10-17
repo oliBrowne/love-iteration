@@ -3,6 +3,7 @@ import { DomainError } from './errors.ts';
 import {
   dateIdeaCategories,
   filterIdeasByCategory,
+  searchIdeas,
   parseDateIdeaTitle,
 } from './dateIdea.ts';
 import type { DateIdea, DateIdeaState } from './dateIdea.ts';
@@ -83,5 +84,28 @@ describe('filterIdeasByCategory', () => {
   it('keeps everything for an empty filter', () => {
     const ideas = [make('a', 'trip'), make('c')];
     expect(filterIdeasByCategory(ideas, '')).toEqual(ideas);
+  });
+});
+
+describe('searchIdeas', () => {
+  const make = (title: string, note: string): DateIdea => ({
+    id: title,
+    schemaVersion: 1,
+    createdAt: '2026-01-01T00:00:00.000Z',
+    updatedAt: '2026-01-01T00:00:00.000Z',
+    title,
+    note,
+    state: 'active',
+  });
+  const ideas = [make('Picnic', 'bring a blanket'), make('Film', 'popcorn')];
+
+  it('matches title or note, ignoring case', () => {
+    expect(searchIdeas(ideas, 'PICN').map((i) => i.id)).toEqual(['Picnic']);
+    expect(searchIdeas(ideas, 'Popcorn').map((i) => i.id)).toEqual(['Film']);
+  });
+
+  it('keeps everything for blank text and nothing for no match', () => {
+    expect(searchIdeas(ideas, '  ')).toEqual(ideas);
+    expect(searchIdeas(ideas, 'zzz')).toEqual([]);
   });
 });

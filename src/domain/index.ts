@@ -29,4 +29,5 @@ export {
   dateIdeaStates,
   filterIdeasByCategory,
   parseDateIdeaTitle,
+  searchIdeas,
 } from './dateIdea.ts';

@@ -47,3 +47,13 @@ export function filterIdeasByCategory(
     ? ideas
     : ideas.filter((idea) => idea.category === category);
 }
+
+// Keeps ideas whose title or note contains the text, ignoring case.
+// Blank text keeps every idea.
+export function searchIdeas(ideas: DateIdea[], text: string): DateIdea[] {
+  const needle = text.trim().toLowerCase();
+  if (needle === '') return ideas;
+  return ideas.filter((idea) =>
+    `${idea.title}\n${idea.note}`.toLowerCase().includes(needle),
+  );
+}

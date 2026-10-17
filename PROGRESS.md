@@ -635,3 +635,9 @@
 - Verified: lint, typecheck, vitest (158 pass), build, format:check, roadmap tests.
 - Next: L107 text search over title and note.
 - Blockers: none
+
+## 2026-10-17 — L107: add text search
+- Changed: Ideas has a Search ideas box; cards whose title or note match (ignoring case) stay visible.
+- Verified: lint, typecheck, vitest (161 pass), build, format:check, roadmap tests.
+- Next: L108 clear-search action.
+- Blockers: none
