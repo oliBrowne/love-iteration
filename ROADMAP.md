@@ -117,7 +117,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L102 Add idea edit — Done when title and note updates persist.
 - [x] L103 Add idea delete confirmation — Done when cancel leaves the card.
 - [x] L104 Add idea category field — Done when category saves with the idea.
-- [ ] L105 Add category selector — Done when a category can be chosen by keyboard.
+- [x] L105 Add category selector — Done when a category can be chosen by keyboard.
 - [ ] L106 Add category filter — Done when selected category limits cards.
 - [ ] L107 Add text search — Done when title or note match appears.
 - [ ] L108 Add clear-search action — Done when full list returns.

@@ -623,3 +623,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L105 keyboard-usable category selector.
 - Blockers: none
+
+## 2026-10-17 — L105: add category selector
+- Changed: The new-idea form has a Category select (native, keyboard-operable); the chosen category shows on the card.
+- Verified: lint, typecheck, vitest (155 pass), build, format:check, roadmap tests.
+- Next: L106 category filter.
+- Blockers: none

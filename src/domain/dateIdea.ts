@@ -14,6 +14,13 @@ export const dateIdeaCategories = [
 ] as const;
 export type DateIdeaCategory = (typeof dateIdeaCategories)[number];
 
+export const dateIdeaCategoryLabels: Record<DateIdeaCategory, string> = {
+  outing: 'Outing',
+  'at-home': 'At home',
+  trip: 'Trip',
+  other: 'Other',
+};
+
 // `note` may be an empty string.
 export type DateIdea = RecordMetadata & {
   title: string;

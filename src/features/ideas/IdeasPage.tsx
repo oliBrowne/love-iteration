@@ -4,18 +4,26 @@ import { getIdeaRepository } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
   DomainError,
+  dateIdeaCategories,
+  dateIdeaCategoryLabels,
   generateId,
   nowIso,
   parseDateIdeaTitle,
 } from '../../domain/index.ts';
-import type { DateIdea } from '../../domain/index.ts';
+import type { DateIdea, DateIdeaCategory } from '../../domain/index.ts';
 import {
   Button,
   EmptyState,
   InlineError,
+  Select,
   TextArea,
   TextField,
 } from '../../ui/index.ts';
+
+const categoryOptions = dateIdeaCategories.map((value) => ({
+  value,
+  label: dateIdeaCategoryLabels[value],
+}));
 
 type IdeasPageProps = {
   getRepository?: () => Promise<Repository<DateIdea>>;
@@ -26,6 +34,7 @@ export function IdeasPage({
 }: IdeasPageProps) {
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
+  const [category, setCategory] = useState<DateIdeaCategory>('other');
   const [editingId, setEditingId] = useState<string>();
   const [editTitle, setEditTitle] = useState('');
   const [editNote, setEditNote] = useState('');
@@ -67,11 +76,12 @@ export function IdeasPage({
         title: clean,
         note: note.trim(),
         state: 'active',
-        category: 'other',
+        category,
       });
       setIdeas(await repo.list());
       setTitle('');
       setNote('');
+      setCategory('other');
       setProblem(undefined);
     } catch (error) {
       setProblem(
@@ -154,6 +164,14 @@ export function IdeasPage({
           value={note}
           onChange={(event) => setNote(event.target.value)}
         />
+        <Select
+          label="Category"
+          value={category}
+          options={categoryOptions}
+          onChange={(event) =>
+            setCategory(event.target.value as DateIdeaCategory)
+          }
+        />
         {problem ? <InlineError>{problem}</InlineError> : null}
         <Button type="submit">Add idea</Button>
       </form>
@@ -203,6 +221,9 @@ export function IdeasPage({
                   ) : (
                     <>
                       <strong>{idea.title}</strong>
+                      {idea.category ? (
+                        <p>{dateIdeaCategoryLabels[idea.category]}</p>
+                      ) : null}
                       {idea.note ? <p>{idea.note}</p> : null}
                       <Button type="button" onClick={() => toggle(idea)}>
                         {state === 'active'

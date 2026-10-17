@@ -85,6 +85,21 @@ describe('New idea form', () => {
     expect((await repo.list())[0]?.category).toBe('other');
   });
 
+  it('lets a category be chosen with the keyboard-reachable select', async () => {
+    const repo = await renderPage();
+    const select = screen.getByLabelText('Category') as HTMLSelectElement;
+    expect(select.tagName).toBe('SELECT');
+    fireEvent.change(select, { target: { value: 'trip' } });
+    fireEvent.change(screen.getByLabelText('Idea title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+    await screen.findByText('Demo');
+    expect(screen.getAllByText('Trip').length).toBeGreaterThan(1);
+    expect((await repo.list())[0]?.category).toBe('trip');
+    expect(select.value).toBe('other');
+  });
+
   it('saves an empty note when none is given', async () => {
     const repo = await renderPage();
     fireEvent.change(screen.getByLabelText('Idea title'), {
