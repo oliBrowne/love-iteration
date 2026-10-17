@@ -125,7 +125,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L110 Add idea Home preview — Done when Home links to one active idea.
 - [x] L111 Define planned date record — Done when type includes ideaId, startsAt, and status.
 - [x] L112 Validate planned date time — Done when invalid timestamp is rejected.
-- [ ] L113 Add planned date store — Done when migration creates plans store.
+- [x] L113 Add planned date store — Done when migration creates plans store.
 - [ ] L114 Add schedule action — Done when an idea can get a date and time.
 - [ ] L115 Add plan list — Done when future plans sort soonest first.
 - [ ] L116 Add plan edit action — Done when changed time persists.

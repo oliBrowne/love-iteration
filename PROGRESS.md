@@ -671,3 +671,9 @@
 - Verified: lint, typecheck, vitest (177 pass), build, format:check, roadmap tests.
 - Next: L113 plans object store migration.
 - Blockers: none
+
+## 2026-10-17 — L113: add planned date store
+- Changed: Local database schema v5 adds a plans store; older databases upgrade and keep their records.
+- Verified: lint, typecheck, vitest (177 pass incl. upgrade test), build, format:check, roadmap tests.
+- Next: L114 schedule action on an idea.
+- Blockers: none

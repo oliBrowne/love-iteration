@@ -8,6 +8,7 @@ export {
   ideasStore,
   memoriesStore,
   openDatabase,
+  plansStore,
 } from './database.ts';
 export {
   createCheckInRepository,
