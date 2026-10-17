@@ -27,5 +27,6 @@ export {
   dateIdeaCategories,
   dateIdeaCategoryLabels,
   dateIdeaStates,
+  filterIdeasByCategory,
   parseDateIdeaTitle,
 } from './dateIdea.ts';

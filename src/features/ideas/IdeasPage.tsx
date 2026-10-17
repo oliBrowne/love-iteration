@@ -6,6 +6,7 @@ import {
   DomainError,
   dateIdeaCategories,
   dateIdeaCategoryLabels,
+  filterIdeasByCategory,
   generateId,
   nowIso,
   parseDateIdeaTitle,
@@ -19,6 +20,14 @@ import {
   TextArea,
   TextField,
 } from '../../ui/index.ts';
+
+const filterOptions = [
+  { value: '', label: 'All categories' },
+  ...dateIdeaCategories.map((value) => ({
+    value,
+    label: dateIdeaCategoryLabels[value],
+  })),
+];
 
 const categoryOptions = dateIdeaCategories.map((value) => ({
   value,
@@ -42,6 +51,9 @@ export function IdeasPage({
   const [confirmingId, setConfirmingId] = useState<string>();
   const [problem, setProblem] = useState<string>();
   const [ideas, setIdeas] = useState<DateIdea[]>([]);
+  const [categoryFilter, setCategoryFilter] = useState<DateIdeaCategory | ''>(
+    '',
+  );
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -175,6 +187,14 @@ export function IdeasPage({
         {problem ? <InlineError>{problem}</InlineError> : null}
         <Button type="submit">Add idea</Button>
       </form>
+      <Select
+        label="Show category"
+        value={categoryFilter}
+        options={filterOptions}
+        onChange={(event) =>
+          setCategoryFilter(event.target.value as DateIdeaCategory | '')
+        }
+      />
       {loaded && ideas.length === 0 ? (
         <EmptyState>
           No ideas yet. Add the first thing you would like to do together, like
@@ -182,7 +202,9 @@ export function IdeasPage({
         </EmptyState>
       ) : null}
       {(['active', 'completed'] as const).map((state) => {
-        const group = ideas.filter((idea) => idea.state === state);
+        const group = filterIdeasByCategory(ideas, categoryFilter).filter(
+          (idea) => idea.state === state,
+        );
         if (group.length === 0) return null;
         return (
           <section key={state} aria-labelledby={`${state}-ideas-heading`}>

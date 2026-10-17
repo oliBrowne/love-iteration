@@ -1,6 +1,10 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import { DomainError } from './errors.ts';
-import { dateIdeaCategories, parseDateIdeaTitle } from './dateIdea.ts';
+import {
+  dateIdeaCategories,
+  filterIdeasByCategory,
+  parseDateIdeaTitle,
+} from './dateIdea.ts';
 import type { DateIdea, DateIdeaState } from './dateIdea.ts';
 import type { RecordMetadata } from './record.ts';
 
@@ -55,4 +59,29 @@ describe('parseDateIdeaTitle', () => {
       }
     },
   );
+});
+
+describe('filterIdeasByCategory', () => {
+  const make = (id: string, category?: DateIdea['category']): DateIdea => ({
+    id,
+    schemaVersion: 1,
+    createdAt: '2026-01-01T00:00:00.000Z',
+    updatedAt: '2026-01-01T00:00:00.000Z',
+    title: id,
+    note: '',
+    state: 'active',
+    category,
+  });
+
+  it('keeps only the chosen category', () => {
+    const ideas = [make('a', 'trip'), make('b', 'outing'), make('c')];
+    expect(filterIdeasByCategory(ideas, 'trip').map((i) => i.id)).toEqual([
+      'a',
+    ]);
+  });
+
+  it('keeps everything for an empty filter', () => {
+    const ideas = [make('a', 'trip'), make('c')];
+    expect(filterIdeasByCategory(ideas, '')).toEqual(ideas);
+  });
 });

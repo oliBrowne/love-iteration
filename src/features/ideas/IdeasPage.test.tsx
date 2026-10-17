@@ -100,6 +100,32 @@ describe('New idea form', () => {
     expect(select.value).toBe('other');
   });
 
+  it('limits cards to the selected category', async () => {
+    await renderPage();
+    for (const [name, value] of [
+      ['Demo trip', 'trip'],
+      ['Demo outing', 'outing'],
+    ] as const) {
+      fireEvent.change(screen.getByLabelText('Category'), {
+        target: { value },
+      });
+      fireEvent.change(screen.getByLabelText('Idea title'), {
+        target: { value: name },
+      });
+      fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+      await screen.findByText(name);
+    }
+    fireEvent.change(screen.getByLabelText('Show category'), {
+      target: { value: 'trip' },
+    });
+    expect(screen.getByText('Demo trip')).toBeTruthy();
+    expect(screen.queryByText('Demo outing')).toBeNull();
+    fireEvent.change(screen.getByLabelText('Show category'), {
+      target: { value: '' },
+    });
+    expect(screen.getByText('Demo outing')).toBeTruthy();
+  });
+
   it('saves an empty note when none is given', async () => {
     const repo = await renderPage();
     fireEvent.change(screen.getByLabelText('Idea title'), {

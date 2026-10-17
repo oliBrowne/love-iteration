@@ -37,3 +37,13 @@ export function parseDateIdeaTitle(value: unknown): string {
   }
   return title;
 }
+
+// Keeps ideas in the chosen category; an empty filter keeps every idea.
+export function filterIdeasByCategory(
+  ideas: DateIdea[],
+  category: DateIdeaCategory | '',
+): DateIdea[] {
+  return category === ''
+    ? ideas
+    : ideas.filter((idea) => idea.category === category);
+}

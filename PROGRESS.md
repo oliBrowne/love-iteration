@@ -629,3 +629,9 @@
 - Verified: lint, typecheck, vitest (155 pass), build, format:check, roadmap tests.
 - Next: L106 category filter.
 - Blockers: none
+
+## 2026-10-17 — L106: add category filter
+- Changed: A Show category select on Ideas limits the cards to one category; All categories restores the list.
+- Verified: lint, typecheck, vitest (158 pass), build, format:check, roadmap tests.
+- Next: L107 text search over title and note.
+- Blockers: none
