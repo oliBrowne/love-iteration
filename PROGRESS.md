@@ -659,3 +659,9 @@
 - Verified: lint, typecheck, vitest (166 pass), build, format:check, roadmap tests.
 - Next: L111 planned date record type.
 - Blockers: none
+
+## 2026-10-17 — L111: define planned date record
+- Changed: A PlannedDate type (ideaId, startsAt, status) exists in the domain; no visible change yet.
+- Verified: lint, typecheck (type test), vitest, build, format:check, roadmap tests.
+- Next: L112 reject invalid planned date timestamps.
+- Blockers: none
