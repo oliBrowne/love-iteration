@@ -153,6 +153,29 @@ describe('New idea form', () => {
     expect(screen.queryByText('Demo film')).toBeNull();
   });
 
+  it('returns the full list when search is cleared', async () => {
+    await renderPage();
+    for (const name of ['Demo picnic', 'Demo film']) {
+      fireEvent.change(screen.getByLabelText('Idea title'), {
+        target: { value: name },
+      });
+      fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+      await screen.findByText(name);
+    }
+    expect(screen.queryByRole('button', { name: 'Clear search' })).toBeNull();
+    fireEvent.change(screen.getByLabelText('Search ideas'), {
+      target: { value: 'film' },
+    });
+    expect(screen.queryByText('Demo picnic')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Clear search' }));
+    expect(screen.getByText('Demo picnic')).toBeTruthy();
+    expect(screen.getByText('Demo film')).toBeTruthy();
+    expect(
+      (screen.getByLabelText('Search ideas') as HTMLInputElement).value,
+    ).toBe('');
+    expect(screen.queryByRole('button', { name: 'Clear search' })).toBeNull();
+  });
+
   it('saves an empty note when none is given', async () => {
     const repo = await renderPage();
     fireEvent.change(screen.getByLabelText('Idea title'), {

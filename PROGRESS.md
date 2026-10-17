@@ -641,3 +641,9 @@
 - Verified: lint, typecheck, vitest (161 pass), build, format:check, roadmap tests.
 - Next: L108 clear-search action.
 - Blockers: none
+
+## 2026-10-17 — L108: add clear-search action
+- Changed: A Clear search button appears while searching and restores the full list.
+- Verified: lint, typecheck, vitest (162 pass), build, format:check, roadmap tests.
+- Next: L109 active and completed counts.
+- Blockers: none

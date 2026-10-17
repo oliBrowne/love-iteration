@@ -120,7 +120,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L105 Add category selector — Done when a category can be chosen by keyboard.
 - [x] L106 Add category filter — Done when selected category limits cards.
 - [x] L107 Add text search — Done when title or note match appears.
-- [ ] L108 Add clear-search action — Done when full list returns.
+- [x] L108 Add clear-search action — Done when full list returns.
 - [ ] L109 Add active and completed counts — Done when counts match repository data.
 - [ ] L110 Add idea Home preview — Done when Home links to one active idea.
 - [ ] L111 Define planned date record — Done when type includes ideaId, startsAt, and status.

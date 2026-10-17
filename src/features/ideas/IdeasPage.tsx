@@ -195,6 +195,11 @@ export function IdeasPage({
         value={search}
         onChange={(event) => setSearch(event.target.value)}
       />
+      {search ? (
+        <Button type="button" onClick={() => setSearch('')}>
+          Clear search
+        </Button>
+      ) : null}
       <Select
         label="Show category"
         value={categoryFilter}
