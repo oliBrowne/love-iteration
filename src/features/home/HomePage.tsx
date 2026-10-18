@@ -6,6 +6,7 @@ import {
   getCheckInRepository,
   getGratitudeRepository,
   getIdeaRepository,
+  getPlanRepository,
 } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
@@ -13,22 +14,34 @@ import {
   localDate,
   moodLabels,
   routeToHash,
+  upcomingPlans,
 } from '../../domain/index.ts';
-import type { CheckIn, DateIdea, Gratitude } from '../../domain/index.ts';
+import type {
+  CheckIn,
+  DateIdea,
+  Gratitude,
+  PlannedDate,
+} from '../../domain/index.ts';
 
 type HomePageProps = {
   getRepository?: () => Promise<Repository<CheckIn>>;
   getGratitudeRepo?: () => Promise<Repository<Gratitude>>;
   getIdeaRepo?: () => Promise<Repository<DateIdea>>;
+  getPlanRepo?: () => Promise<Repository<PlannedDate>>;
 };
 
 export function HomePage({
   getRepository = getCheckInRepository,
   getGratitudeRepo = getGratitudeRepository,
   getIdeaRepo = getIdeaRepository,
+  getPlanRepo = getPlanRepository,
 }: HomePageProps) {
   const [latestGratitude, setLatestGratitude] = useState<Gratitude>();
   const [activeIdea, setActiveIdea] = useState<DateIdea>();
+  const [nextPlan, setNextPlan] = useState<{
+    title: string;
+    startsAt: string;
+  }>();
   const [records, setRecords] = useState<CheckIn[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [selectedId, setSelectedId] = useState<string>();
@@ -106,6 +119,30 @@ export function HomePage({
     };
   }, [getIdeaRepo]);
 
+  useEffect(() => {
+    let cancelled = false;
+    Promise.resolve()
+      .then(async () => {
+        const [plans, ideas] = await Promise.all([
+          getPlanRepo().then((repo) => repo.list()),
+          getIdeaRepo().then((repo) => repo.list()),
+        ]);
+        const [next] = upcomingPlans(plans);
+        if (cancelled || !next) return;
+        const idea = ideas.find((i) => i.id === next.ideaId);
+        setNextPlan({
+          title: idea?.title ?? 'An idea you removed',
+          startsAt: next.startsAt,
+        });
+      })
+      .catch(() => {
+        // The preview is optional; Home still works without it.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [getPlanRepo, getIdeaRepo]);
+
   const earlier = records.filter((r) => r.date !== day);
   const selectedIndex = earlier.findIndex((r) => r.id === selectedId);
   const selected = earlier[selectedIndex];
@@ -166,6 +203,21 @@ export function HomePage({
         <section aria-labelledby="home-idea-heading">
           <h3 id="home-idea-heading">An idea to try</h3>
           <p data-testid="idea-preview">{activeIdea.title}</p>
+          <p>
+            <a href={routeToHash('ideas')}>Open Ideas</a>
+          </p>
+        </section>
+      ) : null}
+      {nextPlan ? (
+        <section aria-labelledby="home-plan-heading">
+          <h3 id="home-plan-heading">Next planned date</h3>
+          <p data-testid="plan-preview">
+            {nextPlan.title} ·{' '}
+            {new Date(nextPlan.startsAt).toLocaleString(undefined, {
+              dateStyle: 'medium',
+              timeStyle: 'short',
+            })}
+          </p>
           <p>
             <a href={routeToHash('ideas')}>Open Ideas</a>
           </p>

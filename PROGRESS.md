@@ -701,3 +701,9 @@
 - Verified: lint, typecheck, vitest (184; one unrelated gratitude route test timed out under load and passed on rerun), build, format:check, roadmap tests.
 - Next: L118 show next planned date on Home.
 - Blockers: none
+
+## 2026-10-18 — L118: add plans Home preview
+- Changed: Home shows a Next planned date card with the soonest upcoming plan and a link to Ideas.
+- Verified: lint, typecheck, vitest (full suite), build, format:check, roadmap tests.
+- Next: L119 board browser test.
+- Blockers: none

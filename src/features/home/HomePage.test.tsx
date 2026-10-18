@@ -12,6 +12,7 @@ import {
   createCheckInRepository,
   createGratitudeRepository,
   createIdeaRepository,
+  createPlanRepository,
   openDatabase,
 } from '../../data/index.ts';
 import { formatLocalTime, localDate } from '../../domain/index.ts';
@@ -225,6 +226,59 @@ describe('HomePage idea preview', () => {
     await screen.findByRole('heading', { name: 'Home' });
     await waitFor(() =>
       expect(screen.queryByTestId('idea-preview')).toBeNull(),
+    );
+  });
+});
+
+describe('HomePage plan preview', () => {
+  const base = {
+    schemaVersion: 1,
+    createdAt: '2026-03-01T09:00:00.000Z',
+    updatedAt: '2026-03-01T09:00:00.000Z',
+  };
+
+  async function setupPlans(
+    plans: { id: string; startsAt: string; status: 'planned' | 'cancelled' }[],
+  ) {
+    const db = await openDatabase(new IDBFactory());
+    const ideas = createIdeaRepository(db);
+    const planRepo = createPlanRepository(db);
+    await ideas.put({
+      ...base,
+      id: 'i1',
+      title: 'Demo: picnic',
+      note: '',
+      state: 'active',
+    });
+    for (const plan of plans)
+      await planRepo.put({ ...base, ideaId: 'i1', ...plan });
+    render(
+      <HomePage
+        getRepository={async () => createCheckInRepository(db)}
+        getIdeaRepo={async () => ideas}
+        getPlanRepo={async () => planRepo}
+      />,
+    );
+  }
+
+  it('shows the soonest upcoming plan', async () => {
+    await setupPlans([
+      { id: 'p1', startsAt: '2099-06-01T10:00:00.000Z', status: 'planned' },
+      { id: 'p2', startsAt: '2098-06-01T10:00:00.000Z', status: 'planned' },
+      { id: 'p3', startsAt: '2097-06-01T10:00:00.000Z', status: 'cancelled' },
+    ]);
+    const preview = await screen.findByTestId('plan-preview');
+    expect(preview.textContent).toContain('Demo: picnic');
+    expect(preview.textContent).toContain('2098');
+  });
+
+  it('shows nothing when no plan is upcoming', async () => {
+    await setupPlans([
+      { id: 'p1', startsAt: '2099-06-01T10:00:00.000Z', status: 'cancelled' },
+    ]);
+    await screen.findByRole('heading', { name: 'Home' });
+    await waitFor(() =>
+      expect(screen.queryByTestId('plan-preview')).toBeNull(),
     );
   });
 });
