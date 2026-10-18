@@ -695,3 +695,9 @@
 - Verified: lint, typecheck, vitest (183 pass), build, format:check, roadmap tests.
 - Next: L117 plan cancellation.
 - Blockers: none
+
+## 2026-10-18 — L117: add plan cancellation
+- Changed: Upcoming plans have a Cancel plan button; cancelled plans leave the upcoming list.
+- Verified: lint, typecheck, vitest (184; one unrelated gratitude route test timed out under load and passed on rerun), build, format:check, roadmap tests.
+- Next: L118 show next planned date on Home.
+- Blockers: none

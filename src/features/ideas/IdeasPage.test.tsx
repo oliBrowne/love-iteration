@@ -293,6 +293,27 @@ describe('New idea form', () => {
     ).toBeTruthy();
   });
 
+  it('removes a cancelled plan from the upcoming list', async () => {
+    await renderPage();
+    fireEvent.change(screen.getByLabelText('Idea title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+    await screen.findByText('Demo');
+    fireEvent.click(screen.getByRole('button', { name: 'Schedule' }));
+    fireEvent.change(screen.getByLabelText('Date and time'), {
+      target: { value: '2099-05-01T10:00' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save date' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Cancel plan' }));
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('region', { name: 'Upcoming plans' }),
+      ).toBeNull(),
+    );
+    expect((await plans.list())[0]?.status).toBe('cancelled');
+  });
+
   it('refuses an impossible date and time', async () => {
     await renderPage();
     fireEvent.change(screen.getByLabelText('Idea title'), {

@@ -33,6 +33,14 @@ export function UpcomingPlan({ plan, title, onChange }: UpcomingPlanProps) {
     setEditing(true);
   }
 
+  async function cancelPlan() {
+    try {
+      await onChange({ ...plan, status: 'cancelled', updatedAt: nowIso() });
+    } catch {
+      setProblem('Could not cancel this. Nothing was lost; try again.');
+    }
+  }
+
   async function save(event: FormEvent) {
     event.preventDefault();
     try {
@@ -74,6 +82,10 @@ export function UpcomingPlan({ plan, title, onChange }: UpcomingPlanProps) {
           <Button type="button" onClick={startEdit}>
             Change time
           </Button>
+          <Button type="button" onClick={cancelPlan}>
+            Cancel plan
+          </Button>
+          {problem ? <InlineError>{problem}</InlineError> : null}
         </>
       )}
     </li>
