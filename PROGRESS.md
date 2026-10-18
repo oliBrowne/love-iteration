@@ -689,3 +689,9 @@
 - Verified: lint, typecheck, vitest (182 pass), build, format:check, roadmap tests.
 - Next: L116 plan edit action.
 - Blockers: none
+
+## 2026-10-18 — L116: add plan edit action
+- Changed: Upcoming plans have a Change time button; the new time is saved and the list re-sorts.
+- Verified: lint, typecheck, vitest (183 pass), build, format:check, roadmap tests.
+- Next: L117 plan cancellation.
+- Blockers: none

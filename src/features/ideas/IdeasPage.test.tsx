@@ -263,6 +263,36 @@ describe('New idea form', () => {
     expect(titles).toEqual(['Demo sooner', 'Demo later']);
   });
 
+  it('changes the time of an upcoming plan', async () => {
+    await renderPage();
+    fireEvent.change(screen.getByLabelText('Idea title'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Add idea' }));
+    await screen.findByText('Demo');
+    fireEvent.click(screen.getByRole('button', { name: 'Schedule' }));
+    fireEvent.change(screen.getByLabelText('Date and time'), {
+      target: { value: '2099-05-01T10:00' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save date' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Change time' }));
+    expect(
+      (screen.getByLabelText('New date and time') as HTMLInputElement).value,
+    ).toBe('2099-05-01T10:00');
+    fireEvent.change(screen.getByLabelText('New date and time'), {
+      target: { value: '2099-06-02T18:30' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save time' }));
+    await waitFor(async () =>
+      expect((await plans.list())[0]?.startsAt).toBe(
+        new Date(2099, 5, 2, 18, 30).toISOString(),
+      ),
+    );
+    expect(
+      await screen.findByRole('button', { name: 'Change time' }),
+    ).toBeTruthy();
+  });
+
   it('refuses an impossible date and time', async () => {
     await renderPage();
     fireEvent.change(screen.getByLabelText('Idea title'), {

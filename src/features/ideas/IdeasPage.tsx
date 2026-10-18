@@ -3,6 +3,7 @@ import type { FormEvent } from 'react';
 import { getIdeaRepository, getPlanRepository } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import { ScheduleIdea } from './ScheduleIdea.tsx';
+import { UpcomingPlan } from './UpcomingPlan.tsx';
 import {
   DomainError,
   countIdeas,
@@ -109,6 +110,12 @@ export function IdeasPage({
       cancelled = true;
     };
   }, [getPlanRepo]);
+
+  async function savePlan(plan: PlannedDate) {
+    const repo = await getPlanRepo();
+    await repo.put(plan);
+    setPlans(await repo.list());
+  }
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -250,18 +257,15 @@ export function IdeasPage({
           <h3 id="upcoming-plans-heading">Upcoming plans</h3>
           <ul className="gratitude-list">
             {upcoming.map((plan) => (
-              <li key={plan.id} className="gratitude-card">
-                <strong>
-                  {ideas.find((idea) => idea.id === plan.ideaId)?.title ??
-                    'An idea you removed'}
-                </strong>
-                <p>
-                  {new Date(plan.startsAt).toLocaleString(undefined, {
-                    dateStyle: 'medium',
-                    timeStyle: 'short',
-                  })}
-                </p>
-              </li>
+              <UpcomingPlan
+                key={plan.id}
+                plan={plan}
+                title={
+                  ideas.find((idea) => idea.id === plan.ideaId)?.title ??
+                  'An idea you removed'
+                }
+                onChange={savePlan}
+              />
             ))}
           </ul>
         </section>

@@ -35,6 +35,7 @@ export {
 export type { PlannedDate, PlannedDateStatus } from './plannedDate.ts';
 export {
   parsePlannedStart,
+  plannedStartInputValue,
   plannedDateStatuses,
   upcomingPlans,
 } from './plannedDate.ts';

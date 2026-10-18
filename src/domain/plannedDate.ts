@@ -52,3 +52,11 @@ export function upcomingPlans(
     .filter((plan) => plan.status === 'planned' && plan.startsAt > cutoff)
     .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
 }
+
+// Turns an ISO timestamp back into the "YYYY-MM-DDTHH:mm" local value a
+// datetime-local input expects.
+export function plannedStartInputValue(startsAt: string): string {
+  const d = new Date(startsAt);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
