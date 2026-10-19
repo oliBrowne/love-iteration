@@ -743,3 +743,9 @@
 - Verified: lint, typecheck, vitest (migration test covers rituals), build, format:check, roadmap tests.
 - Next: L125 ritual save method with repository round trip.
 - Blockers: none
+
+## 2026-10-19 — L125: add ritual save method
+- Changed: A ritual repository saves and reads back rituals from the local database (no UI yet).
+- Verified: lint, typecheck, vitest (round-trip and replace tests), build, format:check, roadmap tests.
+- Next: L126 ritual list in name order.
+- Blockers: none

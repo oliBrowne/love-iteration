@@ -24,3 +24,5 @@ export { createIdeaRepository } from './ideaRepository.ts';
 export { getIdeaRepository } from './localIdeas.ts';
 export { createPlanRepository } from './planRepository.ts';
 export { getPlanRepository } from './localPlans.ts';
+export { createRitualRepository } from './ritualRepository.ts';
+export { getRitualRepository } from './localRituals.ts';
