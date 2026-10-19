@@ -719,3 +719,9 @@
 - Verified: playwright e2e/plans.spec.ts, lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L121 ritual record type.
 - Blockers: none
+
+## 2026-10-19 — L121: define ritual record
+- Changed: Added the Ritual type (name, cadence, record metadata); no UI yet.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L122 reject empty ritual names.
+- Blockers: none

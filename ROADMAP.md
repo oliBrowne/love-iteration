@@ -136,7 +136,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 
 ## 05 Rituals and habits
 
-- [ ] L121 Define ritual record — Done when type includes name, cadence, and metadata.
+- [x] L121 Define ritual record — Done when type includes name, cadence, and metadata.
 - [ ] L122 Validate ritual name — Done when empty name is rejected.
 - [ ] L123 Validate cadence — Done when only daily and weekly values pass.
 - [ ] L124 Add ritual store — Done when IndexedDB migration creates rituals store.
