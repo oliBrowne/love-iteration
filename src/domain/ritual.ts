@@ -18,3 +18,15 @@ export function parseRitualName(value: unknown): string {
   }
   return name;
 }
+
+// Returns the cadence, or throws a DomainError unless it is daily or weekly.
+export function parseRitualCadence(value: unknown): RitualCadence {
+  const cadence = ritualCadences.find((option) => option === value);
+  if (cadence === undefined) {
+    throw new DomainError(
+      'invalid-ritual-cadence',
+      'Choose daily or weekly for this ritual.',
+    );
+  }
+  return cadence;
+}

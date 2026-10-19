@@ -731,3 +731,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L123 accept only daily and weekly cadence.
 - Blockers: none
+
+## 2026-10-19 — L123: validate cadence
+- Changed: Only daily and weekly ritual cadences are accepted (domain only; no UI yet).
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L124 rituals IndexedDB store and migration.
+- Blockers: none

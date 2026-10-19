@@ -40,4 +40,8 @@ export {
   upcomingPlans,
 } from './plannedDate.ts';
 export type { Ritual, RitualCadence } from './ritual.ts';
-export { parseRitualName, ritualCadences } from './ritual.ts';
+export {
+  parseRitualCadence,
+  parseRitualName,
+  ritualCadences,
+} from './ritual.ts';
