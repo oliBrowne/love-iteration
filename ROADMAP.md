@@ -139,7 +139,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L121 Define ritual record — Done when type includes name, cadence, and metadata.
 - [x] L122 Validate ritual name — Done when empty name is rejected.
 - [x] L123 Validate cadence — Done when only daily and weekly values pass.
-- [ ] L124 Add ritual store — Done when IndexedDB migration creates rituals store.
+- [x] L124 Add ritual store — Done when IndexedDB migration creates rituals store.
 - [ ] L125 Add ritual save method — Done when repository round trip passes.
 - [ ] L126 Add ritual list method — Done when active rituals return in name order.
 - [ ] L127 Render Rituals route — Done when navigation opens the page.

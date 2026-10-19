@@ -10,6 +10,7 @@ import {
   memoriesStore,
   openDatabase,
   plansStore,
+  ritualsStore,
 } from './database.ts';
 
 // Builds a database the way the first release did, then adds one saved record.
@@ -33,7 +34,7 @@ function seedOlderDatabase(factory: IDBFactory, record: object) {
 }
 
 describe('openDatabase', () => {
-  it('creates the checkins, gratitude, memories, ideas and plans stores keyed by id', async () => {
+  it('creates the checkins, gratitude, memories, ideas, plans and rituals stores keyed by id', async () => {
     const db = await openDatabase(new IDBFactory());
     expect(db.name).toBe(databaseName);
     expect([...db.objectStoreNames].sort()).toEqual(
@@ -43,6 +44,7 @@ describe('openDatabase', () => {
         memoriesStore,
         ideasStore,
         plansStore,
+        ritualsStore,
       ].sort(),
     );
     const gratitude = db
@@ -55,6 +57,8 @@ describe('openDatabase', () => {
     expect(ideas.keyPath).toBe('id');
     const plans = db.transaction(plansStore).objectStore(plansStore);
     expect(plans.keyPath).toBe('id');
+    const rituals = db.transaction(ritualsStore).objectStore(ritualsStore);
+    expect(rituals.keyPath).toBe('id');
     const store = db.transaction(checkinsStore).objectStore(checkinsStore);
     expect(store.keyPath).toBe('id');
     db.close();
@@ -89,6 +93,7 @@ describe('openDatabase', () => {
     expect(db.objectStoreNames.contains(memoriesStore)).toBe(true);
     expect(db.objectStoreNames.contains(ideasStore)).toBe(true);
     expect(db.objectStoreNames.contains(plansStore)).toBe(true);
+    expect(db.objectStoreNames.contains(ritualsStore)).toBe(true);
     db.close();
   });
 });

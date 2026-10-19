@@ -737,3 +737,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L124 rituals IndexedDB store and migration.
 - Blockers: none
+
+## 2026-10-19 — L124: add ritual store
+- Changed: Local database version 6 adds a rituals store; older databases keep their records.
+- Verified: lint, typecheck, vitest (migration test covers rituals), build, format:check, roadmap tests.
+- Next: L125 ritual save method with repository round trip.
+- Blockers: none

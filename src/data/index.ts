@@ -9,6 +9,7 @@ export {
   memoriesStore,
   openDatabase,
   plansStore,
+  ritualsStore,
 } from './database.ts';
 export {
   createCheckInRepository,
