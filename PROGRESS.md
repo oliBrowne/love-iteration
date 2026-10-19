@@ -713,3 +713,9 @@
 - Verified: playwright e2e/ideas.spec.ts, lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L120 plans browser test (schedule and cancel flow).
 - Blockers: none
+
+## 2026-10-19 — L120: add plans browser test
+- Changed: A browser test covers scheduling an idea and cancelling the plan.
+- Verified: playwright e2e/plans.spec.ts, lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L121 ritual record type.
+- Blockers: none
