@@ -1,5 +1,6 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
-import { ritualCadences } from './ritual.ts';
+import { DomainError } from './errors.ts';
+import { parseRitualName, ritualCadences } from './ritual.ts';
 import type { Ritual, RitualCadence } from './ritual.ts';
 import type { RecordMetadata } from './record.ts';
 
@@ -18,4 +19,22 @@ describe('Ritual', () => {
     };
     expect(ritualCadences).toContain(demo.cadence);
   });
+});
+
+describe('parseRitualName', () => {
+  it('returns the trimmed name', () => {
+    expect(parseRitualName('  Evening call  ')).toBe('Evening call');
+  });
+
+  it.each(['', '   ', '\n\t', null, undefined, 42])(
+    'rejects blank or non-text input %j',
+    (value) => {
+      expect(() => parseRitualName(value)).toThrow(DomainError);
+      try {
+        parseRitualName(value);
+      } catch (error) {
+        expect((error as DomainError).code).toBe('blank-ritual-name');
+      }
+    },
+  );
 });

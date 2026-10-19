@@ -725,3 +725,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L122 reject empty ritual names.
 - Blockers: none
+
+## 2026-10-19 — L122: validate ritual name
+- Changed: Blank ritual names are rejected with a friendly message (domain only; no UI yet).
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L123 accept only daily and weekly cadence.
+- Blockers: none

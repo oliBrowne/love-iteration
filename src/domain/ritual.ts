@@ -1,3 +1,4 @@
+import { DomainError } from './errors.ts';
 import type { RecordMetadata } from './record.ts';
 
 // A small habit to do again and again. Cadence says how often.
@@ -8,3 +9,12 @@ export type Ritual = RecordMetadata & {
   name: string;
   cadence: RitualCadence;
 };
+
+// Returns the trimmed name, or throws a DomainError when it is blank.
+export function parseRitualName(value: unknown): string {
+  const name = typeof value === 'string' ? value.trim() : '';
+  if (name === '') {
+    throw new DomainError('blank-ritual-name', 'Give this ritual a name.');
+  }
+  return name;
+}
