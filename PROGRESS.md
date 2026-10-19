@@ -749,3 +749,9 @@
 - Verified: lint, typecheck, vitest (round-trip and replace tests), build, format:check, roadmap tests.
 - Next: L126 ritual list in name order.
 - Blockers: none
+
+## 2026-10-19 — L126: add ritual list method
+- Changed: Rituals list back in name order from the repository (test added; no UI yet).
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L127 render a Rituals route reachable from navigation.
+- Blockers: none

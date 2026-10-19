@@ -28,3 +28,22 @@ describe('ritual repository save', () => {
     expect(await repo.list()).toHaveLength(1);
   });
 });
+
+describe('ritual repository list', () => {
+  it('returns rituals in name order', async () => {
+    const repo = createRitualRepository(await openDatabase(new IDBFactory()));
+    await repo.put({ ...demo, id: 'r-b', name: 'Demo breakfast message' });
+    await repo.put({ ...demo, id: 'r-c', name: 'Demo weekend film' });
+    await repo.put({ ...demo, id: 'r-a', name: 'Demo anniversary letter' });
+    expect((await repo.list()).map((ritual) => ritual.name)).toEqual([
+      'Demo anniversary letter',
+      'Demo breakfast message',
+      'Demo weekend film',
+    ]);
+  });
+
+  it('returns an empty list when nothing is saved', async () => {
+    const repo = createRitualRepository(await openDatabase(new IDBFactory()));
+    expect(await repo.list()).toEqual([]);
+  });
+});
