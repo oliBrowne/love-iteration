@@ -707,3 +707,9 @@
 - Verified: lint, typecheck, vitest (full suite), build, format:check, roadmap tests.
 - Next: L119 board browser test.
 - Blockers: none
+
+## 2026-10-19 — L119: add board browser test
+- Changed: A browser test covers creating, filtering, completing, and reloading ideas.
+- Verified: playwright e2e/ideas.spec.ts, lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L120 plans browser test (schedule and cancel flow).
+- Blockers: none

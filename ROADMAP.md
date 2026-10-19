@@ -131,7 +131,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L116 Add plan edit action — Done when changed time persists.
 - [x] L117 Add plan cancellation — Done when cancelled item leaves upcoming list.
 - [x] L118 Add plans Home preview — Done when next planned date appears on Home.
-- [ ] L119 Add board browser test — Done when create, filter, complete, and reload work.
+- [x] L119 Add board browser test — Done when create, filter, complete, and reload work.
 - [ ] L120 Add plans browser test — Done when schedule and cancel flow works.
 
 ## 05 Rituals and habits
