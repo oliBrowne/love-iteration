@@ -143,7 +143,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L125 Add ritual save method — Done when repository round trip passes.
 - [x] L126 Add ritual list method — Done when active rituals return in name order.
 - [x] L127 Render Rituals route — Done when navigation opens the page.
-- [ ] L128 Add ritual creation form — Done when name and cadence create a ritual.
+- [x] L128 Add ritual creation form — Done when name and cadence create a ritual.
 - [ ] L129 Add ritual empty state — Done when first-use instructions are shown.
 - [ ] L130 Add ritual edit action — Done when name and cadence changes persist.
 - [ ] L131 Add ritual archive action — Done when archived ritual leaves active list.

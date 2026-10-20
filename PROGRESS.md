@@ -761,3 +761,9 @@
 - Verified: lint, typecheck, vitest (route and nav tests), build, format:check, roadmap tests; e2e spec added (not run).
 - Next: L128 ritual creation form.
 - Blockers: none
+
+## 2026-10-20 — L128: add ritual creation form
+- Changed: The Rituals page has a name and daily/weekly cadence form that saves a ritual and lists it.
+- Verified: lint, typecheck, vitest (create and blank-name tests), build, format:check, roadmap tests.
+- Next: L129 ritual empty state.
+- Blockers: none
