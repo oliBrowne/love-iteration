@@ -2,12 +2,13 @@ import { describe, expect, it } from 'vitest';
 import { parseRoute, routeLabels, routes, routeToHash } from './routes.ts';
 
 describe('routes', () => {
-  it('lists Home, Check-in, Gratitude, Memories, Ideas, and Settings', () => {
+  it('lists Home, Check-in, Gratitude, Memories, Rituals, Ideas, and Settings', () => {
     expect(routes.map((route) => routeLabels[route])).toEqual([
       'Home',
       'Check-in',
       'Gratitude',
       'Memories',
+      'Rituals',
       'Ideas',
       'Settings',
     ]);
@@ -19,6 +20,7 @@ describe('parseRoute', () => {
     expect(parseRoute('#/settings')).toBe('settings');
     expect(parseRoute('#/gratitude')).toBe('gratitude');
     expect(parseRoute('#/memories')).toBe('memories');
+    expect(parseRoute('#/rituals')).toBe('rituals');
     expect(parseRoute('')).toBe('home');
     expect(parseRoute('#/nowhere')).toBe('home');
     expect(routeToHash('check-in')).toBe('#/check-in');

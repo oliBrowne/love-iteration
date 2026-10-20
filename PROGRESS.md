@@ -755,3 +755,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L127 render a Rituals route reachable from navigation.
 - Blockers: none
+
+## 2026-10-20 — L127: render Rituals route
+- Changed: A Rituals page opens from the main navigation at #/rituals.
+- Verified: lint, typecheck, vitest (route and nav tests), build, format:check, roadmap tests; e2e spec added (not run).
+- Next: L128 ritual creation form.
+- Blockers: none
