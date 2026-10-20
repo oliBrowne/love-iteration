@@ -10,7 +10,13 @@ import {
   parseRitualName,
 } from '../../domain/index.ts';
 import type { Ritual } from '../../domain/index.ts';
-import { Button, InlineError, Select, TextField } from '../../ui/index.ts';
+import {
+  Button,
+  EmptyState,
+  InlineError,
+  Select,
+  TextField,
+} from '../../ui/index.ts';
 
 const cadenceOptions = [
   { value: 'daily', label: 'Daily' },
@@ -29,13 +35,17 @@ export function RitualsPage({
   const [problem, setProblem] = useState<string>();
   const [justSaved, setJustSaved] = useState(false);
   const [rituals, setRituals] = useState<Ritual[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     getRepository()
       .then((repo) => repo.list())
       .then((records) => {
-        if (!cancelled) setRituals(records);
+        if (!cancelled) {
+          setRituals(records);
+          setLoaded(true);
+        }
       })
       .catch(() => {
         if (!cancelled) setProblem('Could not load your saved rituals.');
@@ -100,6 +110,12 @@ export function RitualsPage({
         {justSaved ? <p role="status">Saved.</p> : null}
         <Button type="submit">Save ritual</Button>
       </form>
+      {loaded && rituals.length === 0 ? (
+        <EmptyState>
+          No rituals yet. Name a small habit and choose daily or weekly, like a
+          good-morning message or a Sunday call.
+        </EmptyState>
+      ) : null}
       {rituals.length > 0 ? (
         <ul className="gratitude-list">
           {rituals.map((ritual) => (

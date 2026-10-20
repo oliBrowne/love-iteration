@@ -767,3 +767,9 @@
 - Verified: lint, typecheck, vitest (create and blank-name tests), build, format:check, roadmap tests.
 - Next: L129 ritual empty state.
 - Blockers: none
+
+## 2026-10-20 — L129: add ritual empty state
+- Changed: First-use instructions show on Rituals until a ritual is saved.
+- Verified: lint, typecheck, vitest (empty-state test), build, format:check, roadmap tests.
+- Next: L130 ritual edit action.
+- Blockers: none

@@ -59,4 +59,15 @@ describe('Ritual form', () => {
     );
     expect(await repo.list()).toEqual([]);
   });
+
+  it('shows first-use copy until a ritual is saved', async () => {
+    await renderPage();
+    expect(await screen.findByText(/No rituals yet/)).toBeTruthy();
+    fireEvent.change(screen.getByLabelText('Ritual name'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save ritual' }));
+    await screen.findByRole('status');
+    expect(screen.queryByText(/No rituals yet/)).toBeNull();
+  });
 });
