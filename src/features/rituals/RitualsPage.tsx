@@ -36,6 +36,10 @@ export function RitualsPage({
   const [justSaved, setJustSaved] = useState(false);
   const [rituals, setRituals] = useState<Ritual[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [editingId, setEditingId] = useState<string>();
+  const [editName, setEditName] = useState('');
+  const [editCadence, setEditCadence] = useState('daily');
+  const [editProblem, setEditProblem] = useState<string>();
 
   useEffect(() => {
     let cancelled = false;
@@ -83,6 +87,37 @@ export function RitualsPage({
     }
   }
 
+  function startEdit(ritual: Ritual) {
+    setEditName(ritual.name);
+    setEditCadence(ritual.cadence);
+    setEditProblem(undefined);
+    setEditingId(ritual.id);
+  }
+
+  async function saveEdit(event: FormEvent, ritual: Ritual) {
+    event.preventDefault();
+    try {
+      const clean = parseRitualName(editName);
+      const repo = await getRepository();
+      await repo.put({
+        ...ritual,
+        updatedAt: nowIso(),
+        name: clean,
+        cadence: parseRitualCadence(editCadence),
+      });
+      setRituals(await repo.list());
+      setEditingId(undefined);
+    } catch (error) {
+      setEditProblem(
+        error instanceof DomainError
+          ? error.message
+          : 'Could not save this. Nothing was lost; try again.',
+      );
+    }
+  }
+
+  const editing = rituals.find((ritual) => ritual.id === editingId);
+
   return (
     <section aria-labelledby="rituals-heading">
       <h2 id="rituals-heading">Rituals</h2>
@@ -122,9 +157,35 @@ export function RitualsPage({
             <li key={ritual.id} className="gratitude-card">
               <p>{ritual.name}</p>
               <small>{ritual.cadence === 'daily' ? 'Daily' : 'Weekly'}</small>
+              <Button type="button" onClick={() => startEdit(ritual)}>
+                Edit {ritual.name}
+              </Button>
             </li>
           ))}
         </ul>
+      ) : null}
+      {editing ? (
+        <form
+          aria-label="Edit ritual"
+          onSubmit={(event) => saveEdit(event, editing)}
+        >
+          <TextField
+            label="Edit name"
+            value={editName}
+            onChange={(event) => setEditName(event.target.value)}
+          />
+          <Select
+            label="Edit cadence"
+            options={cadenceOptions}
+            value={editCadence}
+            onChange={(event) => setEditCadence(event.target.value)}
+          />
+          {editProblem ? <InlineError>{editProblem}</InlineError> : null}
+          <Button type="submit">Save changes</Button>
+          <Button type="button" onClick={() => setEditingId(undefined)}>
+            Cancel
+          </Button>
+        </form>
       ) : null}
     </section>
   );

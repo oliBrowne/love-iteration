@@ -70,4 +70,42 @@ describe('Ritual form', () => {
     await screen.findByRole('status');
     expect(screen.queryByText(/No rituals yet/)).toBeNull();
   });
+
+  async function saveDemo() {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Ritual name'), {
+      target: { value: 'Demo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save ritual' }));
+    await screen.findByRole('status');
+    fireEvent.click(screen.getByRole('button', { name: 'Edit Demo' }));
+    return repo;
+  }
+
+  it('persists edits to name and cadence', async () => {
+    const repo = await saveDemo();
+    fireEvent.change(screen.getByLabelText('Edit name'), {
+      target: { value: '  Demo: renamed  ' },
+    });
+    fireEvent.change(screen.getByLabelText('Edit cadence'), {
+      target: { value: 'weekly' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }));
+    await screen.findByText('Demo: renamed');
+    const [saved] = await repo.list();
+    expect(saved).toMatchObject({ name: 'Demo: renamed', cadence: 'weekly' });
+    cleanup();
+    render(<RitualsPage getRepository={async () => repo} />);
+    expect(await screen.findByText('Demo: renamed')).toBeTruthy();
+  });
+
+  it('refuses a blank edited name and keeps the original', async () => {
+    const repo = await saveDemo();
+    fireEvent.change(screen.getByLabelText('Edit name'), {
+      target: { value: '   ' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }));
+    await screen.findByRole('alert');
+    expect((await repo.list())[0]?.name).toBe('Demo');
+  });
 });

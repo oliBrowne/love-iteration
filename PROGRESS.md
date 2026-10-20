@@ -773,3 +773,9 @@
 - Verified: lint, typecheck, vitest (empty-state test), build, format:check, roadmap tests.
 - Next: L130 ritual edit action.
 - Blockers: none
+
+## 2026-10-20 — L130: add ritual edit action
+- Changed: Each ritual has an Edit button; name and cadence changes save and persist.
+- Verified: lint, typecheck, vitest (edit and blank-name tests), build, format:check, roadmap tests.
+- Next: L131 ritual archive action.
+- Blockers: none
