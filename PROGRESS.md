@@ -839,3 +839,9 @@
 - Verified: lint, typecheck, vitest (helper and Home tests), build, format:check, roadmap tests.
 - Next: L141 weekly ritual Home preview.
 - Blockers: none
+
+## 2026-10-21 — L141: Add weekly ritual Home preview
+- Changed: Home also lists weekly rituals not yet done this week, labelled today or this week.
+- Verified: lint, typecheck, vitest (dueRituals and Home tests), build, format:check, roadmap tests.
+- Next: L142 ritual history on a detail view.
+- Blockers: none

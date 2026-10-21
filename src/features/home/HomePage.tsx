@@ -12,7 +12,7 @@ import {
 } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
-  dueDailyRituals,
+  dueRituals,
   formatLocalTime,
   localDate,
   moodLabels,
@@ -45,7 +45,7 @@ export function HomePage({
   getRitualRepo = getRitualRepository,
   getRitualCompletionRepo = getRitualCompletionRepository,
 }: HomePageProps) {
-  const [dueRituals, setDueRituals] = useState<Ritual[]>([]);
+  const [dueList, setDueList] = useState<Ritual[]>([]);
   const [latestGratitude, setLatestGratitude] = useState<Gratitude>();
   const [activeIdea, setActiveIdea] = useState<DateIdea>();
   const [nextPlan, setNextPlan] = useState<{
@@ -162,7 +162,7 @@ export function HomePage({
           getRitualCompletionRepo().then((repo) => repo.list()),
         ]);
         if (!cancelled) {
-          setDueRituals(dueDailyRituals(rituals, completions, localDate()));
+          setDueList(dueRituals(rituals, completions));
         }
       })
       .catch(() => {
@@ -253,12 +253,15 @@ export function HomePage({
           </p>
         </section>
       ) : null}
-      {dueRituals.length > 0 ? (
+      {dueList.length > 0 ? (
         <section aria-labelledby="home-rituals-heading">
-          <h3 id="home-rituals-heading">Rituals for today</h3>
+          <h3 id="home-rituals-heading">Rituals due</h3>
           <ul data-testid="ritual-preview">
-            {dueRituals.map((ritual) => (
-              <li key={ritual.id}>{ritual.name}</li>
+            {dueList.map((ritual) => (
+              <li key={ritual.id}>
+                {ritual.name} ·{' '}
+                {ritual.cadence === 'daily' ? 'today' : 'this week'}
+              </li>
             ))}
           </ul>
           <p>

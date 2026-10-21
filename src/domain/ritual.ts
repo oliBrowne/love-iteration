@@ -1,5 +1,6 @@
 import { DomainError } from './errors.ts';
 import type { RecordMetadata } from './record.ts';
+import { localDate, weekStart } from './time.ts';
 
 // A small habit to do again and again. Cadence says how often.
 export const ritualCadences = ['daily', 'weekly'] as const;
@@ -52,18 +53,20 @@ export function lastCompletionDate(
     .at(-1);
 }
 
-// Active daily rituals with no completion for today's date.
-export function dueDailyRituals(
+// Active rituals not yet done in the current period: today's date for a daily
+// ritual, this week's Monday for a weekly one.
+export function dueRituals(
   rituals: Ritual[],
   completions: Pick<RitualCompletion, 'ritualId' | 'date'>[],
-  today: string,
+  now: Date = new Date(),
 ): Ritual[] {
-  return rituals.filter(
-    (ritual) =>
-      ritual.archivedAt === undefined &&
-      ritual.cadence === 'daily' &&
-      !completions.some(
-        (item) => item.ritualId === ritual.id && item.date === today,
-      ),
-  );
+  const today = localDate(now);
+  const monday = weekStart(now);
+  return rituals.filter((ritual) => {
+    if (ritual.archivedAt !== undefined) return false;
+    const period = ritual.cadence === 'daily' ? today : monday;
+    return !completions.some(
+      (item) => item.ritualId === ritual.id && item.date === period,
+    );
+  });
 }

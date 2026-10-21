@@ -1,7 +1,7 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import { DomainError } from './errors.ts';
 import {
-  dueDailyRituals,
+  dueRituals,
   lastCompletionDate,
   parseRitualCadence,
   parseRitualName,
@@ -98,7 +98,7 @@ describe('lastCompletionDate', () => {
   });
 });
 
-describe('dueDailyRituals', () => {
+describe('dueRituals', () => {
   const base = {
     schemaVersion: 1,
     createdAt: '2026-01-01T00:00:00.000Z',
@@ -116,18 +116,24 @@ describe('dueDailyRituals', () => {
       archivedAt: '2026-01-02T00:00:00.000Z',
     },
   ];
+  // Monday 2026-01-05 is the start of this week.
+  const wednesday = new Date(2026, 0, 7);
+  const ids = (list: Ritual[]) => list.map((r) => r.id);
 
   it('lists active daily rituals not yet done today', () => {
-    const done = [{ ritualId: 'a', date: '2026-01-05' }];
-    expect(
-      dueDailyRituals(rituals, done, '2026-01-05').map((r) => r.id),
-    ).toEqual(['b']);
+    const done = [{ ritualId: 'a', date: '2026-01-07' }];
+    expect(ids(dueRituals(rituals, done, wednesday))).toEqual(['b', 'c']);
   });
 
-  it('ignores completions from other days', () => {
-    const done = [{ ritualId: 'a', date: '2026-01-04' }];
-    expect(
-      dueDailyRituals(rituals, done, '2026-01-05').map((r) => r.id),
-    ).toEqual(['a', 'b']);
+  it('ignores daily completions from other days', () => {
+    const done = [{ ritualId: 'a', date: '2026-01-06' }];
+    expect(ids(dueRituals(rituals, done, wednesday))).toEqual(['a', 'b', 'c']);
+  });
+
+  it('lists a weekly ritual until this week is done', () => {
+    const done = [{ ritualId: 'c', date: '2026-01-05' }];
+    expect(ids(dueRituals(rituals, done, wednesday))).toEqual(['a', 'b']);
+    const lastWeek = [{ ritualId: 'c', date: '2025-12-29' }];
+    expect(ids(dueRituals(rituals, lastWeek, wednesday))).toContain('c');
   });
 });

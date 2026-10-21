@@ -301,6 +301,12 @@ describe('HomePage rituals preview', () => {
     });
     await rituals.put({
       ...base,
+      id: 'r3',
+      name: 'Demo: Sunday call',
+      cadence: 'weekly',
+    });
+    await rituals.put({
+      ...base,
       id: 'r2',
       name: 'Demo: Evening call',
       cadence: 'daily',
@@ -325,5 +331,11 @@ describe('HomePage rituals preview', () => {
     const list = await screen.findByTestId('ritual-preview');
     expect(list.textContent).toContain('Demo: Morning hello');
     expect(list.textContent).not.toContain('Demo: Evening call');
+  });
+
+  it('lists a weekly ritual as due this week', async () => {
+    await setupRituals();
+    const list = await screen.findByTestId('ritual-preview');
+    expect(list.textContent).toContain('Demo: Sunday call · this week');
   });
 });
