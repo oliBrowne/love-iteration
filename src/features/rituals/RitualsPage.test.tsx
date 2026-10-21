@@ -120,9 +120,14 @@ describe('Ritual form', () => {
       screen.getByRole('button', { name: 'Archive Demo: Morning hello' }),
     );
     await screen.findByText(/No rituals yet/);
-    expect(screen.queryByText('Demo: Morning hello')).toBeNull();
+    expect(
+      screen.queryByRole('button', { name: 'Archive Demo: Morning hello' }),
+    ).toBeNull();
     const stored = await repo.list();
     expect(stored).toHaveLength(1);
     expect(stored[0]?.archivedAt).toBeTruthy();
+    // The archived view keeps the record readable.
+    expect(screen.getByText(/Archived rituals \(1\)/)).toBeTruthy();
+    expect(screen.getByText('Demo: Morning hello')).toBeTruthy();
   });
 });

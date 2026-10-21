@@ -129,6 +129,7 @@ export function RitualsPage({
   }
 
   const active = rituals.filter((ritual) => ritual.archivedAt === undefined);
+  const archived = rituals.filter((ritual) => ritual.archivedAt !== undefined);
   const editing = active.find((ritual) => ritual.id === editingId);
 
   return (
@@ -202,6 +203,21 @@ export function RitualsPage({
             Cancel
           </Button>
         </form>
+      ) : null}
+      {archived.length > 0 ? (
+        <details>
+          <summary>Archived rituals ({archived.length})</summary>
+          <ul className="gratitude-list">
+            {archived.map((ritual) => (
+              <li key={ritual.id} className="gratitude-card">
+                <p>{ritual.name}</p>
+                <small>
+                  {ritual.cadence === 'daily' ? 'Daily' : 'Weekly'}, archived
+                </small>
+              </li>
+            ))}
+          </ul>
+        </details>
       ) : null}
     </section>
   );

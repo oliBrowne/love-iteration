@@ -147,7 +147,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L129 Add ritual empty state — Done when first-use instructions are shown.
 - [x] L130 Add ritual edit action — Done when name and cadence changes persist.
 - [x] L131 Add ritual archive action — Done when archived ritual leaves active list.
-- [ ] L132 Add archived ritual view — Done when archived records remain readable.
+- [x] L132 Add archived ritual view — Done when archived records remain readable.
 - [ ] L133 Define ritual completion record — Done when type links ritual and local date.
 - [ ] L134 Add completion store — Done when migration creates completions store.
 - [ ] L135 Add mark-today action — Done when daily ritual records today's completion.

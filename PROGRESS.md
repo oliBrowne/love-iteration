@@ -785,3 +785,9 @@
 - Verified: lint, typecheck, vitest (archive test), build, format:check, roadmap tests.
 - Next: L132 archived ritual view.
 - Blockers: none
+
+## 2026-10-21 — L132: Add archived ritual view
+- Changed: An Archived rituals section lists archived rituals read-only.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L133 ritual completion record type.
+- Blockers: none
