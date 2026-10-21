@@ -8,6 +8,8 @@ export type RitualCadence = (typeof ritualCadences)[number];
 export type Ritual = RecordMetadata & {
   name: string;
   cadence: RitualCadence;
+  // Set when the ritual is put away. Archived rituals are kept, not deleted.
+  archivedAt?: string;
 };
 
 // Returns the trimmed name, or throws a DomainError when it is blank.

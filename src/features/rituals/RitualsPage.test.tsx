@@ -108,4 +108,21 @@ describe('Ritual form', () => {
     await screen.findByRole('alert');
     expect((await repo.list())[0]?.name).toBe('Demo');
   });
+
+  it('archives a ritual out of the active list but keeps it stored', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Ritual name'), {
+      target: { value: 'Demo: Morning hello' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save ritual' }));
+    await screen.findByText('Demo: Morning hello');
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Archive Demo: Morning hello' }),
+    );
+    await screen.findByText(/No rituals yet/);
+    expect(screen.queryByText('Demo: Morning hello')).toBeNull();
+    const stored = await repo.list();
+    expect(stored).toHaveLength(1);
+    expect(stored[0]?.archivedAt).toBeTruthy();
+  });
 });

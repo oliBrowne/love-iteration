@@ -116,7 +116,20 @@ export function RitualsPage({
     }
   }
 
-  const editing = rituals.find((ritual) => ritual.id === editingId);
+  async function archive(ritual: Ritual) {
+    try {
+      const now = nowIso();
+      const repo = await getRepository();
+      await repo.put({ ...ritual, updatedAt: now, archivedAt: now });
+      setRituals(await repo.list());
+      if (editingId === ritual.id) setEditingId(undefined);
+    } catch {
+      setProblem('Could not archive this. Nothing was lost; try again.');
+    }
+  }
+
+  const active = rituals.filter((ritual) => ritual.archivedAt === undefined);
+  const editing = active.find((ritual) => ritual.id === editingId);
 
   return (
     <section aria-labelledby="rituals-heading">
@@ -145,20 +158,23 @@ export function RitualsPage({
         {justSaved ? <p role="status">Saved.</p> : null}
         <Button type="submit">Save ritual</Button>
       </form>
-      {loaded && rituals.length === 0 ? (
+      {loaded && active.length === 0 ? (
         <EmptyState>
           No rituals yet. Name a small habit and choose daily or weekly, like a
           good-morning message or a Sunday call.
         </EmptyState>
       ) : null}
-      {rituals.length > 0 ? (
+      {active.length > 0 ? (
         <ul className="gratitude-list">
-          {rituals.map((ritual) => (
+          {active.map((ritual) => (
             <li key={ritual.id} className="gratitude-card">
               <p>{ritual.name}</p>
               <small>{ritual.cadence === 'daily' ? 'Daily' : 'Weekly'}</small>
               <Button type="button" onClick={() => startEdit(ritual)}>
                 Edit {ritual.name}
+              </Button>
+              <Button type="button" onClick={() => archive(ritual)}>
+                Archive {ritual.name}
               </Button>
             </li>
           ))}

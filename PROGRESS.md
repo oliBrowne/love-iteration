@@ -779,3 +779,9 @@
 - Verified: lint, typecheck, vitest (edit and blank-name tests), build, format:check, roadmap tests.
 - Next: L131 ritual archive action.
 - Blockers: none
+
+## 2026-10-21 — L131: Add ritual archive action
+- Changed: Each ritual has an Archive button; archived rituals leave the active list but stay stored.
+- Verified: lint, typecheck, vitest (archive test), build, format:check, roadmap tests.
+- Next: L132 archived ritual view.
+- Blockers: none
