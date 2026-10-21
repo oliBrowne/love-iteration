@@ -38,3 +38,16 @@ export type RitualCompletion = RecordMetadata & {
   ritualId: string;
   date: string;
 };
+
+// The newest completion date for a ritual, or undefined if it was never done.
+export function lastCompletionDate(
+  completions: Pick<RitualCompletion, 'ritualId' | 'date'>[],
+  ritualId: string,
+): string | undefined {
+  // YYYY-MM-DD strings sort in calendar order.
+  return completions
+    .filter((item) => item.ritualId === ritualId)
+    .map((item) => item.date)
+    .sort()
+    .at(-1);
+}

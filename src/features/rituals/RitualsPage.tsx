@@ -7,7 +7,9 @@ import {
 import type { Repository } from '../../data/index.ts';
 import {
   DomainError,
+  formatDateLabel,
   generateId,
+  lastCompletionDate,
   localDate,
   nowIso,
   parseRitualCadence,
@@ -246,6 +248,12 @@ export function RitualsPage({
             <li key={ritual.id} className="gratitude-card">
               <p>{ritual.name}</p>
               <small>{ritual.cadence === 'daily' ? 'Daily' : 'Weekly'}</small>
+              {lastCompletionDate(completions, ritual.id) ? (
+                <small>
+                  Last done:{' '}
+                  {formatDateLabel(lastCompletionDate(completions, ritual.id)!)}
+                </small>
+              ) : null}
               {completions.some(
                 (item) =>
                   item.ritualId === ritual.id &&

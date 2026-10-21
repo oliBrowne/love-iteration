@@ -827,3 +827,9 @@
 - Verified: lint, typecheck, vitest (weekStart and weekly completion tests), build, format:check, roadmap tests.
 - Next: L139 last-done label on ritual cards.
 - Blockers: none
+
+## 2026-10-21 — L139: Add ritual last-done label
+- Changed: Ritual cards show a Last done label with the most recent completion.
+- Verified: lint, typecheck, vitest (helper and UI tests), build, format:check, roadmap tests.
+- Next: L140 daily ritual Home preview.
+- Blockers: none

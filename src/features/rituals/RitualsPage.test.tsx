@@ -203,6 +203,7 @@ describe('Ritual form', () => {
       }),
     );
     await screen.findByText('Done today');
+    expect(screen.getByText('Last done: Today')).toBeTruthy();
     fireEvent.click(
       screen.getByRole('button', { name: 'Undo Demo: Morning hello today' }),
     );

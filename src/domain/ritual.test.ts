@@ -1,6 +1,7 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import { DomainError } from './errors.ts';
 import {
+  lastCompletionDate,
   parseRitualCadence,
   parseRitualName,
   ritualCadences,
@@ -76,4 +77,22 @@ describe('parseRitualCadence', () => {
       }
     },
   );
+});
+
+describe('lastCompletionDate', () => {
+  const done = [
+    { ritualId: 'a', date: '2026-01-03' },
+    { ritualId: 'a', date: '2026-01-09' },
+    { ritualId: 'b', date: '2026-02-01' },
+  ];
+
+  it('returns the newest date for that ritual only', () => {
+    expect(lastCompletionDate(done, 'a')).toBe('2026-01-09');
+    expect(lastCompletionDate(done, 'b')).toBe('2026-02-01');
+  });
+
+  it('returns undefined when the ritual was never done', () => {
+    expect(lastCompletionDate(done, 'c')).toBeUndefined();
+    expect(lastCompletionDate([], 'a')).toBeUndefined();
+  });
 });
