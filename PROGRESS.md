@@ -821,3 +821,9 @@
 - Verified: lint, typecheck, vitest (undo test), build, format:check, roadmap tests.
 - Next: L138 weekly completion action recording week start.
 - Blockers: none
+
+## 2026-10-21 — L138: Add weekly completion action
+- Changed: Weekly rituals have a Mark done this week button that records the week's Monday; undo works too.
+- Verified: lint, typecheck, vitest (weekStart and weekly completion tests), build, format:check, roadmap tests.
+- Next: L139 last-done label on ritual cards.
+- Blockers: none

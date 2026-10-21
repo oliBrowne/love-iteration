@@ -1,5 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { formatDateLabel, formatLocalTime, localDate, nowIso } from './time.ts';
+import {
+  formatDateLabel,
+  formatLocalTime,
+  localDate,
+  nowIso,
+  weekStart,
+} from './time.ts';
 
 describe('nowIso', () => {
   afterEach(() => {
@@ -37,5 +43,17 @@ describe('formatDateLabel', () => {
 
   it('shows a readable date for older days', () => {
     expect(formatDateLabel('2026-01-03', now, 'en-US')).toBe('Jan 3, 2026');
+  });
+});
+
+describe('weekStart', () => {
+  it('returns the Monday of the week', () => {
+    expect(weekStart(new Date(2026, 0, 7))).toBe('2026-01-05');
+    expect(weekStart(new Date(2026, 0, 5))).toBe('2026-01-05');
+    expect(weekStart(new Date(2026, 0, 11, 23, 59))).toBe('2026-01-05');
+  });
+
+  it('crosses month and year boundaries', () => {
+    expect(weekStart(new Date(2026, 0, 1))).toBe('2025-12-29');
   });
 });

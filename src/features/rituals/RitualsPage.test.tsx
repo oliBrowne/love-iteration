@@ -15,7 +15,7 @@ import {
   createRitualRepository,
   openDatabase,
 } from '../../data/index.ts';
-import { localDate } from '../../domain/index.ts';
+import { localDate, weekStart } from '../../domain/index.ts';
 import { RitualsPage } from './RitualsPage.tsx';
 
 afterEach(cleanup);
@@ -208,5 +208,28 @@ describe('Ritual form', () => {
     );
     await waitFor(() => expect(screen.queryByText('Done today')).toBeNull());
     expect(await completions.list()).toHaveLength(0);
+  });
+
+  it("records the week's start for a weekly ritual", async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Ritual name'), {
+      target: { value: 'Demo: Sunday call' },
+    });
+    fireEvent.change(screen.getByLabelText('Cadence'), {
+      target: { value: 'weekly' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save ritual' }));
+    await screen.findByText('Demo: Sunday call');
+    const ritual = (await repo.list())[0];
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'Mark Demo: Sunday call done this week',
+      }),
+    );
+    expect(await screen.findByText('Done this week')).toBeTruthy();
+    expect((await completions.list())[0]).toMatchObject({
+      ritualId: ritual?.id,
+      date: weekStart(),
+    });
   });
 });

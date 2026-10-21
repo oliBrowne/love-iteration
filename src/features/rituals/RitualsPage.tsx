@@ -12,6 +12,7 @@ import {
   nowIso,
   parseRitualCadence,
   parseRitualName,
+  weekStart,
 } from '../../domain/index.ts';
 import type { Ritual, RitualCompletion } from '../../domain/index.ts';
 import {
@@ -26,6 +27,11 @@ const cadenceOptions = [
   { value: 'daily', label: 'Daily' },
   { value: 'weekly', label: 'Weekly' },
 ];
+
+// Daily rituals record the day; weekly rituals record the week's Monday.
+function periodDate(ritual: Ritual): string {
+  return ritual.cadence === 'daily' ? localDate() : weekStart();
+}
 
 type RitualsPageProps = {
   getRepository?: () => Promise<Repository<Ritual>>;
@@ -156,7 +162,7 @@ export function RitualsPage({
     marking.current = true;
     try {
       const now = nowIso();
-      const today = localDate();
+      const today = periodDate(ritual);
       const repo = await getCompletionRepository();
       const existing = await repo.list();
       if (
@@ -185,7 +191,7 @@ export function RitualsPage({
 
   async function undoToday(ritual: Ritual) {
     try {
-      const today = localDate();
+      const today = periodDate(ritual);
       const repo = await getCompletionRepository();
       const todays = (await repo.list()).filter(
         (item) => item.ritualId === ritual.id && item.date === today,
@@ -242,20 +248,26 @@ export function RitualsPage({
               <small>{ritual.cadence === 'daily' ? 'Daily' : 'Weekly'}</small>
               {completions.some(
                 (item) =>
-                  item.ritualId === ritual.id && item.date === localDate(),
+                  item.ritualId === ritual.id &&
+                  item.date === periodDate(ritual),
               ) ? (
                 <>
-                  <small>Done today</small>
+                  <small>
+                    {ritual.cadence === 'daily'
+                      ? 'Done today'
+                      : 'Done this week'}
+                  </small>
                   <Button type="button" onClick={() => undoToday(ritual)}>
-                    Undo {ritual.name} today
+                    Undo {ritual.name}{' '}
+                    {ritual.cadence === 'daily' ? 'today' : 'this week'}
                   </Button>
                 </>
-              ) : null}
-              {ritual.cadence === 'daily' ? (
+              ) : (
                 <Button type="button" onClick={() => markToday(ritual)}>
-                  Mark {ritual.name} done today
+                  Mark {ritual.name} done{' '}
+                  {ritual.cadence === 'daily' ? 'today' : 'this week'}
                 </Button>
-              ) : null}
+              )}
               <Button type="button" onClick={() => startEdit(ritual)}>
                 Edit {ritual.name}
               </Button>

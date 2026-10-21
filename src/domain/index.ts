@@ -3,7 +3,13 @@ export type { Route } from './routes.ts';
 export { parseRoute, routeLabels, routes, routeToHash } from './routes.ts';
 export type { RecordMetadata } from './record.ts';
 export { generateId, isValidId } from './id.ts';
-export { formatDateLabel, formatLocalTime, localDate, nowIso } from './time.ts';
+export {
+  formatDateLabel,
+  formatLocalTime,
+  localDate,
+  nowIso,
+  weekStart,
+} from './time.ts';
 export type { CheckIn, Mood } from './checkin.ts';
 export { moods } from './checkin.ts';
 export { isMood, parseMood } from './checkin.ts';

@@ -36,3 +36,15 @@ export function formatDateLabel(
     day: 'numeric',
   });
 }
+
+// The Monday that starts the calendar week containing `now`, as YYYY-MM-DD.
+export function weekStart(now: Date = new Date()): string {
+  const daysSinceMonday = (now.getDay() + 6) % 7;
+  return localDate(
+    new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate() - daysSinceMonday,
+    ),
+  );
+}
