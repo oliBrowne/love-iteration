@@ -32,3 +32,9 @@ export function parseRitualCadence(value: unknown): RitualCadence {
   }
   return cadence;
 }
+
+// One time a ritual was done. For a weekly ritual, date is the week's start day.
+export type RitualCompletion = RecordMetadata & {
+  ritualId: string;
+  date: string;
+};

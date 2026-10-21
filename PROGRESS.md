@@ -791,3 +791,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L133 ritual completion record type.
 - Blockers: none
+
+## 2026-10-21 — L133: Define ritual completion record
+- Changed: No visible change: a RitualCompletion type now links a ritual id to a local date.
+- Verified: lint, typecheck, vitest (type test), build, format:check, roadmap tests.
+- Next: L134 completions store with migration.
+- Blockers: none

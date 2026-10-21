@@ -39,7 +39,7 @@ export {
   plannedDateStatuses,
   upcomingPlans,
 } from './plannedDate.ts';
-export type { Ritual, RitualCadence } from './ritual.ts';
+export type { Ritual, RitualCadence, RitualCompletion } from './ritual.ts';
 export {
   parseRitualCadence,
   parseRitualName,

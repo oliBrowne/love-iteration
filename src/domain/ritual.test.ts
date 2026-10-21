@@ -5,7 +5,7 @@ import {
   parseRitualName,
   ritualCadences,
 } from './ritual.ts';
-import type { Ritual, RitualCadence } from './ritual.ts';
+import type { Ritual, RitualCadence, RitualCompletion } from './ritual.ts';
 import type { RecordMetadata } from './record.ts';
 
 describe('Ritual', () => {
@@ -22,6 +22,23 @@ describe('Ritual', () => {
       cadence: 'weekly',
     };
     expect(ritualCadences).toContain(demo.cadence);
+  });
+});
+
+describe('RitualCompletion', () => {
+  it('links a ritual to a local date', () => {
+    expectTypeOf<RitualCompletion>().toMatchTypeOf<RecordMetadata>();
+    expectTypeOf<RitualCompletion['ritualId']>().toEqualTypeOf<string>();
+    expectTypeOf<RitualCompletion['date']>().toEqualTypeOf<string>();
+    const demo: RitualCompletion = {
+      id: 'demo-completion-1',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      ritualId: 'demo-ritual-1',
+      date: '2026-01-01',
+    };
+    expect(demo.date).toBe('2026-01-01');
   });
 });
 
