@@ -13,6 +13,8 @@ import {
   createGratitudeRepository,
   createIdeaRepository,
   createPlanRepository,
+  createRitualCompletionRepository,
+  createRitualRepository,
   openDatabase,
 } from '../../data/index.ts';
 import { formatLocalTime, localDate } from '../../domain/index.ts';
@@ -280,5 +282,48 @@ describe('HomePage plan preview', () => {
     await waitFor(() =>
       expect(screen.queryByTestId('plan-preview')).toBeNull(),
     );
+  });
+});
+
+describe('HomePage rituals preview', () => {
+  const stamp = '2026-01-01T00:00:00.000Z';
+  const base = { schemaVersion: 1, createdAt: stamp, updatedAt: stamp };
+
+  async function setupRituals() {
+    const db = await openDatabase(new IDBFactory());
+    const rituals = createRitualRepository(db);
+    const completions = createRitualCompletionRepository(db);
+    await rituals.put({
+      ...base,
+      id: 'r1',
+      name: 'Demo: Morning hello',
+      cadence: 'daily',
+    });
+    await rituals.put({
+      ...base,
+      id: 'r2',
+      name: 'Demo: Evening call',
+      cadence: 'daily',
+    });
+    await completions.put({
+      ...base,
+      id: 'c1',
+      ritualId: 'r2',
+      date: localDate(),
+    });
+    render(
+      <HomePage
+        getRepository={async () => createCheckInRepository(db)}
+        getRitualRepo={async () => rituals}
+        getRitualCompletionRepo={async () => completions}
+      />,
+    );
+  }
+
+  it('lists daily rituals that are not done today', async () => {
+    await setupRituals();
+    const list = await screen.findByTestId('ritual-preview');
+    expect(list.textContent).toContain('Demo: Morning hello');
+    expect(list.textContent).not.toContain('Demo: Evening call');
   });
 });

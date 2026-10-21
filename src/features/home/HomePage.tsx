@@ -7,9 +7,12 @@ import {
   getGratitudeRepository,
   getIdeaRepository,
   getPlanRepository,
+  getRitualCompletionRepository,
+  getRitualRepository,
 } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
+  dueDailyRituals,
   formatLocalTime,
   localDate,
   moodLabels,
@@ -21,6 +24,8 @@ import type {
   DateIdea,
   Gratitude,
   PlannedDate,
+  Ritual,
+  RitualCompletion,
 } from '../../domain/index.ts';
 
 type HomePageProps = {
@@ -28,6 +33,8 @@ type HomePageProps = {
   getGratitudeRepo?: () => Promise<Repository<Gratitude>>;
   getIdeaRepo?: () => Promise<Repository<DateIdea>>;
   getPlanRepo?: () => Promise<Repository<PlannedDate>>;
+  getRitualRepo?: () => Promise<Repository<Ritual>>;
+  getRitualCompletionRepo?: () => Promise<Repository<RitualCompletion>>;
 };
 
 export function HomePage({
@@ -35,7 +42,10 @@ export function HomePage({
   getGratitudeRepo = getGratitudeRepository,
   getIdeaRepo = getIdeaRepository,
   getPlanRepo = getPlanRepository,
+  getRitualRepo = getRitualRepository,
+  getRitualCompletionRepo = getRitualCompletionRepository,
 }: HomePageProps) {
+  const [dueRituals, setDueRituals] = useState<Ritual[]>([]);
   const [latestGratitude, setLatestGratitude] = useState<Gratitude>();
   const [activeIdea, setActiveIdea] = useState<DateIdea>();
   const [nextPlan, setNextPlan] = useState<{
@@ -143,6 +153,26 @@ export function HomePage({
     };
   }, [getPlanRepo, getIdeaRepo]);
 
+  useEffect(() => {
+    let cancelled = false;
+    Promise.resolve()
+      .then(async () => {
+        const [rituals, completions] = await Promise.all([
+          getRitualRepo().then((repo) => repo.list()),
+          getRitualCompletionRepo().then((repo) => repo.list()),
+        ]);
+        if (!cancelled) {
+          setDueRituals(dueDailyRituals(rituals, completions, localDate()));
+        }
+      })
+      .catch(() => {
+        // The preview is optional; Home still works without it.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [getRitualRepo, getRitualCompletionRepo]);
+
   const earlier = records.filter((r) => r.date !== day);
   const selectedIndex = earlier.findIndex((r) => r.id === selectedId);
   const selected = earlier[selectedIndex];
@@ -220,6 +250,19 @@ export function HomePage({
           </p>
           <p>
             <a href={routeToHash('ideas')}>Open Ideas</a>
+          </p>
+        </section>
+      ) : null}
+      {dueRituals.length > 0 ? (
+        <section aria-labelledby="home-rituals-heading">
+          <h3 id="home-rituals-heading">Rituals for today</h3>
+          <ul data-testid="ritual-preview">
+            {dueRituals.map((ritual) => (
+              <li key={ritual.id}>{ritual.name}</li>
+            ))}
+          </ul>
+          <p>
+            <a href={routeToHash('rituals')}>Open Rituals</a>
           </p>
         </section>
       ) : null}

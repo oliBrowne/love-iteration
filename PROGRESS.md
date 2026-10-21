@@ -833,3 +833,9 @@
 - Verified: lint, typecheck, vitest (helper and UI tests), build, format:check, roadmap tests.
 - Next: L140 daily ritual Home preview.
 - Blockers: none
+
+## 2026-10-21 — L140: Add daily ritual Home preview
+- Changed: Home lists active daily rituals not yet done today, linking to Rituals.
+- Verified: lint, typecheck, vitest (helper and Home tests), build, format:check, roadmap tests.
+- Next: L141 weekly ritual Home preview.
+- Blockers: none

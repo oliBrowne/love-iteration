@@ -47,6 +47,7 @@ export {
 } from './plannedDate.ts';
 export type { Ritual, RitualCadence, RitualCompletion } from './ritual.ts';
 export {
+  dueDailyRituals,
   lastCompletionDate,
   parseRitualCadence,
   parseRitualName,

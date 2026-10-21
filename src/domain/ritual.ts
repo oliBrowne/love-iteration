@@ -51,3 +51,19 @@ export function lastCompletionDate(
     .sort()
     .at(-1);
 }
+
+// Active daily rituals with no completion for today's date.
+export function dueDailyRituals(
+  rituals: Ritual[],
+  completions: Pick<RitualCompletion, 'ritualId' | 'date'>[],
+  today: string,
+): Ritual[] {
+  return rituals.filter(
+    (ritual) =>
+      ritual.archivedAt === undefined &&
+      ritual.cadence === 'daily' &&
+      !completions.some(
+        (item) => item.ritualId === ritual.id && item.date === today,
+      ),
+  );
+}

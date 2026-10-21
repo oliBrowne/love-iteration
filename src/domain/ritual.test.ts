@@ -1,6 +1,7 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import { DomainError } from './errors.ts';
 import {
+  dueDailyRituals,
   lastCompletionDate,
   parseRitualCadence,
   parseRitualName,
@@ -94,5 +95,39 @@ describe('lastCompletionDate', () => {
   it('returns undefined when the ritual was never done', () => {
     expect(lastCompletionDate(done, 'c')).toBeUndefined();
     expect(lastCompletionDate([], 'a')).toBeUndefined();
+  });
+});
+
+describe('dueDailyRituals', () => {
+  const base = {
+    schemaVersion: 1,
+    createdAt: '2026-01-01T00:00:00.000Z',
+    updatedAt: '2026-01-01T00:00:00.000Z',
+  };
+  const rituals: Ritual[] = [
+    { ...base, id: 'a', name: 'Demo A', cadence: 'daily' },
+    { ...base, id: 'b', name: 'Demo B', cadence: 'daily' },
+    { ...base, id: 'c', name: 'Demo C', cadence: 'weekly' },
+    {
+      ...base,
+      id: 'd',
+      name: 'Demo D',
+      cadence: 'daily',
+      archivedAt: '2026-01-02T00:00:00.000Z',
+    },
+  ];
+
+  it('lists active daily rituals not yet done today', () => {
+    const done = [{ ritualId: 'a', date: '2026-01-05' }];
+    expect(
+      dueDailyRituals(rituals, done, '2026-01-05').map((r) => r.id),
+    ).toEqual(['b']);
+  });
+
+  it('ignores completions from other days', () => {
+    const done = [{ ritualId: 'a', date: '2026-01-04' }];
+    expect(
+      dueDailyRituals(rituals, done, '2026-01-05').map((r) => r.id),
+    ).toEqual(['a', 'b']);
   });
 });

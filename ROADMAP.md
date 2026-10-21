@@ -155,7 +155,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L137 Add undo-today action — Done when today's completion can be removed.
 - [x] L138 Add weekly completion action — Done when weekly ritual records week start.
 - [x] L139 Add ritual last-done label — Done when card shows most recent completion.
-- [ ] L140 Add daily ritual Home preview — Done when due rituals appear on Home.
+- [x] L140 Add daily ritual Home preview — Done when due rituals appear on Home.
 - [ ] L141 Add weekly ritual Home preview — Done when due weekly ritual appears on Home.
 - [ ] L142 Add ritual history — Done when detail lists completion dates.
 - [ ] L143 Add ritual streak helper — Done when pure function counts consecutive periods.
