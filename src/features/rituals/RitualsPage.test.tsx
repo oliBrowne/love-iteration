@@ -189,4 +189,24 @@ describe('Ritual form', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
     expect(await completions.list()).toHaveLength(1);
   });
+
+  it("removes today's completion with undo", async () => {
+    await renderPage();
+    fireEvent.change(screen.getByLabelText('Ritual name'), {
+      target: { value: 'Demo: Morning hello' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save ritual' }));
+    await screen.findByText('Demo: Morning hello');
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'Mark Demo: Morning hello done today',
+      }),
+    );
+    await screen.findByText('Done today');
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Undo Demo: Morning hello today' }),
+    );
+    await waitFor(() => expect(screen.queryByText('Done today')).toBeNull());
+    expect(await completions.list()).toHaveLength(0);
+  });
 });

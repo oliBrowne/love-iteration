@@ -815,3 +815,9 @@
 - Verified: lint, typecheck, vitest (double-click test), build, format:check, roadmap tests.
 - Next: L137 undo-today action.
 - Blockers: none
+
+## 2026-10-21 — L137: Add undo-today action
+- Changed: A ritual done today shows an Undo button that removes today's completion.
+- Verified: lint, typecheck, vitest (undo test), build, format:check, roadmap tests.
+- Next: L138 weekly completion action recording week start.
+- Blockers: none

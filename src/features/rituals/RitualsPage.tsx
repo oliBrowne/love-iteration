@@ -183,6 +183,20 @@ export function RitualsPage({
     }
   }
 
+  async function undoToday(ritual: Ritual) {
+    try {
+      const today = localDate();
+      const repo = await getCompletionRepository();
+      const todays = (await repo.list()).filter(
+        (item) => item.ritualId === ritual.id && item.date === today,
+      );
+      await Promise.all(todays.map((item) => repo.delete(item.id)));
+      setCompletions(await repo.list());
+    } catch {
+      setProblem('Could not undo this. Nothing was lost; try again.');
+    }
+  }
+
   const active = rituals.filter((ritual) => ritual.archivedAt === undefined);
   const archived = rituals.filter((ritual) => ritual.archivedAt !== undefined);
   const editing = active.find((ritual) => ritual.id === editingId);
@@ -230,7 +244,12 @@ export function RitualsPage({
                 (item) =>
                   item.ritualId === ritual.id && item.date === localDate(),
               ) ? (
-                <small>Done today</small>
+                <>
+                  <small>Done today</small>
+                  <Button type="button" onClick={() => undoToday(ritual)}>
+                    Undo {ritual.name} today
+                  </Button>
+                </>
               ) : null}
               {ritual.cadence === 'daily' ? (
                 <Button type="button" onClick={() => markToday(ritual)}>
