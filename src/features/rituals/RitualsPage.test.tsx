@@ -1,10 +1,21 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
 import App from '../../App.tsx';
-import { createRitualRepository, openDatabase } from '../../data/index.ts';
+import {
+  createRitualCompletionRepository,
+  createRitualRepository,
+  openDatabase,
+} from '../../data/index.ts';
+import { localDate } from '../../domain/index.ts';
 import { RitualsPage } from './RitualsPage.tsx';
 
 afterEach(cleanup);
@@ -26,9 +37,18 @@ describe('Rituals route', () => {
 });
 
 describe('Ritual form', () => {
+  let completions: ReturnType<typeof createRitualCompletionRepository>;
+
   async function renderPage() {
-    const repo = createRitualRepository(await openDatabase(new IDBFactory()));
-    render(<RitualsPage getRepository={async () => repo} />);
+    const db = await openDatabase(new IDBFactory());
+    const repo = createRitualRepository(db);
+    completions = createRitualCompletionRepository(db);
+    render(
+      <RitualsPage
+        getRepository={async () => repo}
+        getCompletionRepository={async () => completions}
+      />,
+    );
     return repo;
   }
 
@@ -129,5 +149,26 @@ describe('Ritual form', () => {
     // The archived view keeps the record readable.
     expect(screen.getByText(/Archived rituals \(1\)/)).toBeTruthy();
     expect(screen.getByText('Demo: Morning hello')).toBeTruthy();
+  });
+
+  it("records today's completion for a daily ritual", async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Ritual name'), {
+      target: { value: 'Demo: Morning hello' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save ritual' }));
+    await screen.findByText('Demo: Morning hello');
+    const ritual = (await repo.list())[0];
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'Mark Demo: Morning hello done today',
+      }),
+    );
+    await waitFor(async () => expect(await completions.list()).toHaveLength(1));
+    expect((await completions.list())[0]).toMatchObject({
+      ritualId: ritual?.id,
+      date: localDate(),
+    });
+    expect(await screen.findByText('Done today')).toBeTruthy();
   });
 });

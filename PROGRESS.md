@@ -803,3 +803,9 @@
 - Verified: lint, typecheck, vitest (migration and repository tests), build, format:check, roadmap tests.
 - Next: L135 mark-today action for daily rituals.
 - Blockers: none
+
+## 2026-10-21 — L135: Add mark-today action
+- Changed: Daily rituals have a Mark done today button that records today's completion and shows Done today.
+- Verified: lint, typecheck, vitest (completion test), build, format:check, roadmap tests.
+- Next: L136 prevent duplicate completion on a second click.
+- Blockers: none

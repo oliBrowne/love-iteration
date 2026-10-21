@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
-import { getRitualRepository } from '../../data/index.ts';
+import {
+  getRitualCompletionRepository,
+  getRitualRepository,
+} from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
   DomainError,
   generateId,
+  localDate,
   nowIso,
   parseRitualCadence,
   parseRitualName,
 } from '../../domain/index.ts';
-import type { Ritual } from '../../domain/index.ts';
+import type { Ritual, RitualCompletion } from '../../domain/index.ts';
 import {
   Button,
   EmptyState,
@@ -25,10 +29,12 @@ const cadenceOptions = [
 
 type RitualsPageProps = {
   getRepository?: () => Promise<Repository<Ritual>>;
+  getCompletionRepository?: () => Promise<Repository<RitualCompletion>>;
 };
 
 export function RitualsPage({
   getRepository = getRitualRepository,
+  getCompletionRepository = getRitualCompletionRepository,
 }: RitualsPageProps) {
   const [name, setName] = useState('');
   const [cadence, setCadence] = useState('daily');
@@ -36,6 +42,7 @@ export function RitualsPage({
   const [justSaved, setJustSaved] = useState(false);
   const [rituals, setRituals] = useState<Ritual[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [completions, setCompletions] = useState<RitualCompletion[]>([]);
   const [editingId, setEditingId] = useState<string>();
   const [editName, setEditName] = useState('');
   const [editCadence, setEditCadence] = useState('daily');
@@ -58,6 +65,21 @@ export function RitualsPage({
       cancelled = true;
     };
   }, [getRepository]);
+
+  useEffect(() => {
+    let cancelled = false;
+    getCompletionRepository()
+      .then((repo) => repo.list())
+      .then((records) => {
+        if (!cancelled) setCompletions(records);
+      })
+      .catch(() => {
+        if (!cancelled) setProblem('Could not load your saved rituals.');
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [getCompletionRepository]);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -128,6 +150,24 @@ export function RitualsPage({
     }
   }
 
+  async function markToday(ritual: Ritual) {
+    try {
+      const now = nowIso();
+      const repo = await getCompletionRepository();
+      await repo.put({
+        id: generateId(),
+        schemaVersion: 1,
+        createdAt: now,
+        updatedAt: now,
+        ritualId: ritual.id,
+        date: localDate(),
+      });
+      setCompletions(await repo.list());
+    } catch {
+      setProblem('Could not save this. Nothing was lost; try again.');
+    }
+  }
+
   const active = rituals.filter((ritual) => ritual.archivedAt === undefined);
   const archived = rituals.filter((ritual) => ritual.archivedAt !== undefined);
   const editing = active.find((ritual) => ritual.id === editingId);
@@ -171,6 +211,17 @@ export function RitualsPage({
             <li key={ritual.id} className="gratitude-card">
               <p>{ritual.name}</p>
               <small>{ritual.cadence === 'daily' ? 'Daily' : 'Weekly'}</small>
+              {completions.some(
+                (item) =>
+                  item.ritualId === ritual.id && item.date === localDate(),
+              ) ? (
+                <small>Done today</small>
+              ) : null}
+              {ritual.cadence === 'daily' ? (
+                <Button type="button" onClick={() => markToday(ritual)}>
+                  Mark {ritual.name} done today
+                </Button>
+              ) : null}
               <Button type="button" onClick={() => startEdit(ritual)}>
                 Edit {ritual.name}
               </Button>
