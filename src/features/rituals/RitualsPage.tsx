@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import {
   getRitualCompletionRepository,
@@ -43,6 +43,7 @@ export function RitualsPage({
   const [rituals, setRituals] = useState<Ritual[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [completions, setCompletions] = useState<RitualCompletion[]>([]);
+  const marking = useRef(false);
   const [editingId, setEditingId] = useState<string>();
   const [editName, setEditName] = useState('');
   const [editCadence, setEditCadence] = useState('daily');
@@ -151,20 +152,34 @@ export function RitualsPage({
   }
 
   async function markToday(ritual: Ritual) {
+    if (marking.current) return;
+    marking.current = true;
     try {
       const now = nowIso();
+      const today = localDate();
       const repo = await getCompletionRepository();
+      const existing = await repo.list();
+      if (
+        existing.some(
+          (item) => item.ritualId === ritual.id && item.date === today,
+        )
+      ) {
+        setCompletions(existing);
+        return;
+      }
       await repo.put({
         id: generateId(),
         schemaVersion: 1,
         createdAt: now,
         updatedAt: now,
         ritualId: ritual.id,
-        date: localDate(),
+        date: today,
       });
       setCompletions(await repo.list());
     } catch {
       setProblem('Could not save this. Nothing was lost; try again.');
+    } finally {
+      marking.current = false;
     }
   }
 

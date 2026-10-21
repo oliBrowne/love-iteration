@@ -151,7 +151,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L133 Define ritual completion record — Done when type links ritual and local date.
 - [x] L134 Add completion store — Done when migration creates completions store.
 - [x] L135 Add mark-today action — Done when daily ritual records today's completion.
-- [ ] L136 Prevent duplicate completion — Done when second click does not create another record.
+- [x] L136 Prevent duplicate completion — Done when second click does not create another record.
 - [ ] L137 Add undo-today action — Done when today's completion can be removed.
 - [ ] L138 Add weekly completion action — Done when weekly ritual records week start.
 - [ ] L139 Add ritual last-done label — Done when card shows most recent completion.

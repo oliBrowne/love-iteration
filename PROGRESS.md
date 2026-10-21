@@ -809,3 +809,9 @@
 - Verified: lint, typecheck, vitest (completion test), build, format:check, roadmap tests.
 - Next: L136 prevent duplicate completion on a second click.
 - Blockers: none
+
+## 2026-10-21 — L136: Prevent duplicate completion
+- Changed: Clicking Mark done today again no longer adds a second completion for the same day.
+- Verified: lint, typecheck, vitest (double-click test), build, format:check, roadmap tests.
+- Next: L137 undo-today action.
+- Blockers: none

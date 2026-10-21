@@ -171,4 +171,22 @@ describe('Ritual form', () => {
     });
     expect(await screen.findByText('Done today')).toBeTruthy();
   });
+
+  it('does not record a second completion for the same day', async () => {
+    await renderPage();
+    fireEvent.change(screen.getByLabelText('Ritual name'), {
+      target: { value: 'Demo: Morning hello' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save ritual' }));
+    await screen.findByText('Demo: Morning hello');
+    const mark = screen.getByRole('button', {
+      name: 'Mark Demo: Morning hello done today',
+    });
+    fireEvent.click(mark);
+    fireEvent.click(mark);
+    await screen.findByText('Done today');
+    fireEvent.click(mark);
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(await completions.list()).toHaveLength(1);
+  });
 });
