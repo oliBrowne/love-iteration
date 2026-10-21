@@ -52,6 +52,7 @@ export function RitualsPage({
   const [loaded, setLoaded] = useState(false);
   const [completions, setCompletions] = useState<RitualCompletion[]>([]);
   const marking = useRef(false);
+  const [historyId, setHistoryId] = useState<string>();
   const [editingId, setEditingId] = useState<string>();
   const [editName, setEditName] = useState('');
   const [editCadence, setEditCadence] = useState('daily');
@@ -207,6 +208,7 @@ export function RitualsPage({
 
   const active = rituals.filter((ritual) => ritual.archivedAt === undefined);
   const archived = rituals.filter((ritual) => ritual.archivedAt !== undefined);
+  const historyRitual = active.find((ritual) => ritual.id === historyId);
   const editing = active.find((ritual) => ritual.id === editingId);
 
   return (
@@ -276,6 +278,9 @@ export function RitualsPage({
                   {ritual.cadence === 'daily' ? 'today' : 'this week'}
                 </Button>
               )}
+              <Button type="button" onClick={() => setHistoryId(ritual.id)}>
+                History of {ritual.name}
+              </Button>
               <Button type="button" onClick={() => startEdit(ritual)}>
                 Edit {ritual.name}
               </Button>
@@ -285,6 +290,28 @@ export function RitualsPage({
             </li>
           ))}
         </ul>
+      ) : null}
+      {historyRitual ? (
+        <section aria-label="Ritual history">
+          <h3>History: {historyRitual.name}</h3>
+          {completions.some((item) => item.ritualId === historyRitual.id) ? (
+            <ul>
+              {completions
+                .filter((item) => item.ritualId === historyRitual.id)
+                .map((item) => (
+                  <li key={item.id}>
+                    {historyRitual.cadence === 'weekly' ? 'Week of ' : ''}
+                    {formatDateLabel(item.date)}
+                  </li>
+                ))}
+            </ul>
+          ) : (
+            <p>Not done yet.</p>
+          )}
+          <Button type="button" onClick={() => setHistoryId(undefined)}>
+            Close history
+          </Button>
+        </section>
       ) : null}
       {editing ? (
         <form

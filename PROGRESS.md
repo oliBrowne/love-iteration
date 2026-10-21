@@ -845,3 +845,9 @@
 - Verified: lint, typecheck, vitest (dueRituals and Home tests), build, format:check, roadmap tests.
 - Next: L142 ritual history on a detail view.
 - Blockers: none
+
+## 2026-10-21 — L142: Add ritual history
+- Changed: Each ritual has a History button listing its completion dates (weekly ones as Week of).
+- Verified: lint, typecheck, vitest (history test; full suite passed twice after one unrelated CheckInPage flake), build, format:check, roadmap tests.
+- Next: L143 pure ritual streak helper.
+- Blockers: none

@@ -233,4 +233,43 @@ describe('Ritual form', () => {
       date: weekStart(),
     });
   });
+
+  it('lists completion dates in the ritual history', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Ritual name'), {
+      target: { value: 'Demo: Morning hello' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save ritual' }));
+    await screen.findByText('Demo: Morning hello');
+    const ritual = (await repo.list())[0]!;
+    const stamp = '2026-01-01T00:00:00.000Z';
+    for (const date of ['2026-01-03', '2026-01-02']) {
+      await completions.put({
+        id: `c-${date}`,
+        schemaVersion: 1,
+        createdAt: stamp,
+        updatedAt: stamp,
+        ritualId: ritual.id,
+        date,
+      });
+    }
+    cleanup();
+    render(
+      <RitualsPage
+        getRepository={async () => repo}
+        getCompletionRepository={async () => completions}
+      />,
+    );
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'History of Demo: Morning hello',
+      }),
+    );
+    const history = await screen.findByRole('region', {
+      name: 'Ritual history',
+    });
+    await waitFor(() => expect(history.querySelectorAll('li')).toHaveLength(2));
+    expect(history.textContent).toContain('Jan 3, 2026');
+    expect(history.textContent).toContain('Jan 2, 2026');
+  });
 });

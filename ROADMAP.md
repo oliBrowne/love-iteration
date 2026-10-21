@@ -157,7 +157,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L139 Add ritual last-done label — Done when card shows most recent completion.
 - [x] L140 Add daily ritual Home preview — Done when due rituals appear on Home.
 - [x] L141 Add weekly ritual Home preview — Done when due weekly ritual appears on Home.
-- [ ] L142 Add ritual history — Done when detail lists completion dates.
+- [x] L142 Add ritual history — Done when detail lists completion dates.
 - [ ] L143 Add ritual streak helper — Done when pure function counts consecutive periods.
 - [ ] L144 Add ritual streak display — Done when detail shows tested streak count.
 - [ ] L145 Add ritual pause field — Done when paused ritual is not shown as due.
