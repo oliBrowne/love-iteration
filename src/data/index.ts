@@ -9,6 +9,7 @@ export {
   memoriesStore,
   openDatabase,
   plansStore,
+  ritualCompletionsStore,
   ritualsStore,
 } from './database.ts';
 export {
@@ -26,3 +27,5 @@ export { createPlanRepository } from './planRepository.ts';
 export { getPlanRepository } from './localPlans.ts';
 export { createRitualRepository } from './ritualRepository.ts';
 export { getRitualRepository } from './localRituals.ts';
+export { createRitualCompletionRepository } from './ritualCompletionRepository.ts';
+export { getRitualCompletionRepository } from './localRitualCompletions.ts';

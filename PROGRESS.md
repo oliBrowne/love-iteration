@@ -797,3 +797,9 @@
 - Verified: lint, typecheck, vitest (type test), build, format:check, roadmap tests.
 - Next: L134 completions store with migration.
 - Blockers: none
+
+## 2026-10-21 — L134: Add completion store
+- Changed: No visible change: the local database (v7) gains a ritualCompletions store with a repository.
+- Verified: lint, typecheck, vitest (migration and repository tests), build, format:check, roadmap tests.
+- Next: L135 mark-today action for daily rituals.
+- Blockers: none
