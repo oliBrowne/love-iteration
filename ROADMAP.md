@@ -163,7 +163,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L145 Add ritual pause field — Done when paused ritual is not shown as due.
 - [x] L146 Add ritual resume action — Done when resumed ritual reappears when due.
 - [x] L147 Add ritual deletion confirmation — Done when cancel preserves history.
-- [ ] L148 Add ritual browser test — Done when create, complete, undo, and reload work.
+- [x] L148 Add ritual browser test — Done when create, complete, undo, and reload work.
 - [ ] L149 Add weekly boundary test — Done when week rollover uses local dates correctly.
 - [ ] L150 Add ritual privacy copy — Done when no partner visibility is implied.
 

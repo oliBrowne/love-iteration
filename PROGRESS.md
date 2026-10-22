@@ -881,3 +881,9 @@
 - Verified: lint, typecheck, vitest (cancel and confirm delete tests), build, format:check, roadmap tests.
 - Next: L148 add a ritual browser test.
 - Blockers: none
+
+## 2026-10-22 — L148: Add ritual browser test
+- Changed: Playwright test covers creating, completing, undoing and reloading a ritual.
+- Verified: Playwright rituals spec (2 passed), lint, typecheck, build, format:check, roadmap tests.
+- Next: L149 add a weekly boundary test.
+- Blockers: none
