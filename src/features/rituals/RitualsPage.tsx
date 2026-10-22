@@ -54,6 +54,7 @@ export function RitualsPage({
   const [completions, setCompletions] = useState<RitualCompletion[]>([]);
   const marking = useRef(false);
   const [historyId, setHistoryId] = useState<string>();
+  const [deletingId, setDeletingId] = useState<string>();
   const [editingId, setEditingId] = useState<string>();
   const [editName, setEditName] = useState('');
   const [editCadence, setEditCadence] = useState('daily');
@@ -161,6 +162,25 @@ export function RitualsPage({
     }
   }
 
+  async function remove(ritual: Ritual) {
+    try {
+      const repo = await getRepository();
+      const completionRepo = await getCompletionRepository();
+      const own = (await completionRepo.list()).filter(
+        (item) => item.ritualId === ritual.id,
+      );
+      await Promise.all(own.map((item) => completionRepo.delete(item.id)));
+      await repo.delete(ritual.id);
+      setRituals(await repo.list());
+      setCompletions(await completionRepo.list());
+      if (historyId === ritual.id) setHistoryId(undefined);
+      if (editingId === ritual.id) setEditingId(undefined);
+      setDeletingId(undefined);
+    } catch {
+      setProblem('Could not delete this. Nothing was lost; try again.');
+    }
+  }
+
   async function setPaused(ritual: Ritual, paused: boolean) {
     try {
       const now = nowIso();
@@ -223,6 +243,7 @@ export function RitualsPage({
   const active = rituals.filter((ritual) => ritual.archivedAt === undefined);
   const archived = rituals.filter((ritual) => ritual.archivedAt !== undefined);
   const historyRitual = active.find((ritual) => ritual.id === historyId);
+  const deletingRitual = active.find((ritual) => ritual.id === deletingId);
   const editing = active.find((ritual) => ritual.id === editingId);
 
   return (
@@ -316,9 +337,25 @@ export function RitualsPage({
               <Button type="button" onClick={() => archive(ritual)}>
                 Archive {ritual.name}
               </Button>
+              <Button type="button" onClick={() => setDeletingId(ritual.id)}>
+                Delete {ritual.name}
+              </Button>
             </li>
           ))}
         </ul>
+      ) : null}
+      {deletingRitual ? (
+        <div role="group" aria-label="Confirm delete ritual">
+          <p>
+            Delete {deletingRitual.name} and its history? This cannot be undone.
+          </p>
+          <Button type="button" onClick={() => remove(deletingRitual)}>
+            Yes, delete
+          </Button>
+          <Button type="button" onClick={() => setDeletingId(undefined)}>
+            Cancel
+          </Button>
+        </div>
       ) : null}
       {historyRitual ? (
         <section aria-label="Ritual history">

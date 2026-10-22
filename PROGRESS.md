@@ -875,3 +875,9 @@
 - Verified: lint, typecheck, vitest (pause/resume UI + dueRituals tests; one unrelated Gratitude flake passed on rerun), build, format:check, roadmap tests.
 - Next: L147 add ritual deletion confirmation.
 - Blockers: none
+
+## 2026-10-22 — L147: Add ritual deletion confirmation
+- Changed: Rituals can be deleted after a confirmation; Cancel keeps the ritual and its history.
+- Verified: lint, typecheck, vitest (cancel and confirm delete tests), build, format:check, roadmap tests.
+- Next: L148 add a ritual browser test.
+- Blockers: none

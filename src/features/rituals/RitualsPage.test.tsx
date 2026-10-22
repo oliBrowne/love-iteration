@@ -343,4 +343,49 @@ describe('Ritual form', () => {
     ).toBeTruthy();
     expect(screen.queryByText('Paused')).toBeNull();
   });
+
+  it('keeps the ritual and its history when delete is cancelled', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Ritual name'), {
+      target: { value: 'Demo: Morning hello' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save ritual' }));
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'Mark Demo: Morning hello done today',
+      }),
+    );
+    await screen.findByText('Done today');
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Delete Demo: Morning hello' }),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    expect(
+      screen.queryByRole('group', { name: 'Confirm delete ritual' }),
+    ).toBeNull();
+    expect(screen.getByText('Done today')).toBeTruthy();
+    expect(await repo.list()).toHaveLength(1);
+    expect(await completions.list()).toHaveLength(1);
+  });
+
+  it('deletes the ritual and its history after confirming', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Ritual name'), {
+      target: { value: 'Demo: Morning hello' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save ritual' }));
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'Mark Demo: Morning hello done today',
+      }),
+    );
+    await screen.findByText('Done today');
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Delete Demo: Morning hello' }),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Yes, delete' }));
+    await waitFor(async () => expect(await repo.list()).toHaveLength(0));
+    expect(await completions.list()).toHaveLength(0);
+    expect(screen.queryByText('Demo: Morning hello')).toBeNull();
+  });
 });
