@@ -388,4 +388,13 @@ describe('Ritual form', () => {
     expect(await completions.list()).toHaveLength(0);
     expect(screen.queryByText('Demo: Morning hello')).toBeNull();
   });
+
+  it('says rituals are private and not shared', async () => {
+    await renderPage();
+    expect(
+      screen.getByText(
+        /private to you\. Nothing here is shared with a partner/,
+      ),
+    ).toBeTruthy();
+  });
 });

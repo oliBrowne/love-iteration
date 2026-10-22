@@ -249,7 +249,10 @@ export function RitualsPage({
   return (
     <section aria-labelledby="rituals-heading">
       <h2 id="rituals-heading">Rituals</h2>
-      <p>Small habits worth repeating. Rituals stay on this device.</p>
+      <p>
+        Small habits worth repeating. Rituals stay on this device and are
+        private to you. Nothing here is shared with a partner.
+      </p>
       <form onSubmit={submit}>
         <TextField
           label="Ritual name"

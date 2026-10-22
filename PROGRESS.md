@@ -893,3 +893,9 @@
 - Verified: lint, typecheck, vitest (boundary tests, also under TZ=Pacific/Auckland), build, format:check, roadmap tests.
 - Next: L150 add ritual privacy copy.
 - Blockers: none
+
+## 2026-10-22 — L150: Add ritual privacy copy
+- Changed: The Rituals page says rituals are private to you and not shared with a partner.
+- Verified: lint, typecheck, vitest (copy test), build, format:check, roadmap tests.
+- Next: L151 define the reflection record type.
+- Blockers: none
