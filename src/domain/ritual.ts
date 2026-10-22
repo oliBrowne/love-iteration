@@ -70,3 +70,41 @@ export function dueRituals(
     );
   });
 }
+
+// How many periods in a row a ritual was done, counting back from the current
+// one. A current period not yet done does not break the streak, so a daily
+// ritual still shows yesterday's run until today passes without a completion.
+export function ritualStreak(
+  completions: Pick<RitualCompletion, 'ritualId' | 'date'>[],
+  ritual: Pick<Ritual, 'id' | 'cadence'>,
+  now: Date = new Date(),
+): number {
+  const done = new Set(
+    completions
+      .filter((item) => item.ritualId === ritual.id)
+      .map((item) => item.date),
+  );
+  const step = ritual.cadence === 'daily' ? 1 : 7;
+  const firstDay = ritual.cadence === 'daily' ? now : parseWeekStart(now);
+  // Build each earlier period from calendar parts so daylight saving is safe.
+  const periodAt = (back: number): string =>
+    localDate(
+      new Date(
+        firstDay.getFullYear(),
+        firstDay.getMonth(),
+        firstDay.getDate() - back * step,
+      ),
+    );
+  let back = done.has(periodAt(0)) ? 0 : 1;
+  let streak = 0;
+  while (done.has(periodAt(back))) {
+    streak += 1;
+    back += 1;
+  }
+  return streak;
+}
+
+function parseWeekStart(now: Date): Date {
+  const [year = 0, month = 1, day = 1] = weekStart(now).split('-').map(Number);
+  return new Date(year, month - 1, day);
+}

@@ -6,6 +6,7 @@ import {
   parseRitualCadence,
   parseRitualName,
   ritualCadences,
+  ritualStreak,
 } from './ritual.ts';
 import type { Ritual, RitualCadence, RitualCompletion } from './ritual.ts';
 import type { RecordMetadata } from './record.ts';
@@ -135,5 +136,45 @@ describe('dueRituals', () => {
     expect(ids(dueRituals(rituals, done, wednesday))).toEqual(['a', 'b']);
     const lastWeek = [{ ritualId: 'c', date: '2025-12-29' }];
     expect(ids(dueRituals(rituals, lastWeek, wednesday))).toContain('c');
+  });
+});
+
+describe('ritualStreak', () => {
+  const daily = { id: 'r1', cadence: 'daily' } as const;
+  const weekly = { id: 'r2', cadence: 'weekly' } as const;
+  // Thursday 2026-01-15; its week starts Monday 2026-01-12.
+  const now = new Date(2026, 0, 15, 12);
+  const done = (ritualId: string, dates: string[]) =>
+    dates.map((date) => ({ ritualId, date }));
+
+  it('is 0 with no completions', () => {
+    expect(ritualStreak([], daily, now)).toBe(0);
+  });
+
+  it('counts consecutive days ending today', () => {
+    const items = done('r1', ['2026-01-15', '2026-01-14', '2026-01-13']);
+    expect(ritualStreak(items, daily, now)).toBe(3);
+  });
+
+  it("keeps yesterday's run when today is not done yet", () => {
+    expect(ritualStreak(done('r1', ['2026-01-14']), daily, now)).toBe(1);
+  });
+
+  it('stops at a missed day and ignores other rituals', () => {
+    const items = [
+      ...done('r1', ['2026-01-15', '2026-01-13']),
+      ...done('r2', ['2026-01-14']),
+    ];
+    expect(ritualStreak(items, daily, now)).toBe(1);
+  });
+
+  it('is 0 when the last completion is older than yesterday', () => {
+    expect(ritualStreak(done('r1', ['2026-01-13']), daily, now)).toBe(0);
+  });
+
+  it('counts consecutive weeks across a month boundary', () => {
+    const items = done('r2', ['2026-01-12', '2026-01-05', '2025-12-29']);
+    expect(ritualStreak(items, weekly, now)).toBe(3);
+    expect(ritualStreak(done('r2', ['2026-01-05']), weekly, now)).toBe(1);
   });
 });

@@ -52,4 +52,5 @@ export {
   parseRitualCadence,
   parseRitualName,
   ritualCadences,
+  ritualStreak,
 } from './ritual.ts';

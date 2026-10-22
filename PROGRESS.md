@@ -851,3 +851,9 @@
 - Verified: lint, typecheck, vitest (history test; full suite passed twice after one unrelated CheckInPage flake), build, format:check, roadmap tests.
 - Next: L143 pure ritual streak helper.
 - Blockers: none
+
+## 2026-10-22 — L143: Add ritual streak helper
+- Changed: Pure ritualStreak counts consecutive daily or weekly periods (no UI yet).
+- Verified: lint, typecheck, vitest (streak tests), build, format:check, roadmap tests.
+- Next: L144 show the streak on the ritual detail.
+- Blockers: none
