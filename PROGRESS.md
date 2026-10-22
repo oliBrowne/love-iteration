@@ -857,3 +857,9 @@
 - Verified: lint, typecheck, vitest (streak tests), build, format:check, roadmap tests.
 - Next: L144 show the streak on the ritual detail.
 - Blockers: none
+
+## 2026-10-22 — L144: Add ritual streak display
+- Changed: Ritual history shows a Streak count in days or weeks.
+- Verified: lint, typecheck, vitest (streak UI test), build, format:check, roadmap tests.
+- Next: L145 add a ritual pause field.
+- Blockers: none

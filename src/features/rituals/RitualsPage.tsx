@@ -14,6 +14,7 @@ import {
   nowIso,
   parseRitualCadence,
   parseRitualName,
+  ritualStreak,
   weekStart,
 } from '../../domain/index.ts';
 import type { Ritual, RitualCompletion } from '../../domain/index.ts';
@@ -294,6 +295,10 @@ export function RitualsPage({
       {historyRitual ? (
         <section aria-label="Ritual history">
           <h3>History: {historyRitual.name}</h3>
+          <p>
+            Streak: {ritualStreak(completions, historyRitual)}{' '}
+            {historyRitual.cadence === 'daily' ? 'days' : 'weeks'}
+          </p>
           {completions.some((item) => item.ritualId === historyRitual.id) ? (
             <ul>
               {completions

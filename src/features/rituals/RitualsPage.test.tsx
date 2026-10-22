@@ -272,4 +272,49 @@ describe('Ritual form', () => {
     expect(history.textContent).toContain('Jan 3, 2026');
     expect(history.textContent).toContain('Jan 2, 2026');
   });
+
+  it('shows the ritual streak in the history', async () => {
+    const repo = await renderPage();
+    fireEvent.change(screen.getByLabelText('Ritual name'), {
+      target: { value: 'Demo: Morning hello' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save ritual' }));
+    await screen.findByText('Demo: Morning hello');
+    const ritual = (await repo.list())[0]!;
+    const stamp = '2026-01-01T00:00:00.000Z';
+    const today = new Date();
+    const yesterday = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - 1,
+    );
+    for (const date of [localDate(today), localDate(yesterday)]) {
+      await completions.put({
+        id: `c-${date}`,
+        schemaVersion: 1,
+        createdAt: stamp,
+        updatedAt: stamp,
+        ritualId: ritual.id,
+        date,
+      });
+    }
+    cleanup();
+    render(
+      <RitualsPage
+        getRepository={async () => repo}
+        getCompletionRepository={async () => completions}
+      />,
+    );
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'History of Demo: Morning hello',
+      }),
+    );
+    const history = await screen.findByRole('region', {
+      name: 'Ritual history',
+    });
+    await waitFor(() =>
+      expect(history.textContent).toContain('Streak: 2 days'),
+    );
+  });
 });
