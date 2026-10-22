@@ -11,6 +11,8 @@ export type Ritual = RecordMetadata & {
   cadence: RitualCadence;
   // Set when the ritual is put away. Archived rituals are kept, not deleted.
   archivedAt?: string;
+  // Set while the ritual is paused. A paused ritual is never due.
+  pausedAt?: string;
 };
 
 // Returns the trimmed name, or throws a DomainError when it is blank.
@@ -63,7 +65,9 @@ export function dueRituals(
   const today = localDate(now);
   const monday = weekStart(now);
   return rituals.filter((ritual) => {
-    if (ritual.archivedAt !== undefined) return false;
+    if (ritual.archivedAt !== undefined || ritual.pausedAt !== undefined) {
+      return false;
+    }
     const period = ritual.cadence === 'daily' ? today : monday;
     return !completions.some(
       (item) => item.ritualId === ritual.id && item.date === period,

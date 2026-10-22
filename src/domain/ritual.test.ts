@@ -126,6 +126,21 @@ describe('dueRituals', () => {
     expect(ids(dueRituals(rituals, done, wednesday))).toEqual(['b', 'c']);
   });
 
+  it('leaves out a paused ritual', () => {
+    const paused: Ritual = {
+      ...base,
+      id: 'e',
+      name: 'Demo E',
+      cadence: 'daily',
+      pausedAt: '2026-01-03T00:00:00.000Z',
+    };
+    expect(ids(dueRituals([...rituals, paused], [], wednesday))).toEqual([
+      'a',
+      'b',
+      'c',
+    ]);
+  });
+
   it('ignores daily completions from other days', () => {
     const done = [{ ritualId: 'a', date: '2026-01-06' }];
     expect(ids(dueRituals(rituals, done, wednesday))).toEqual(['a', 'b', 'c']);

@@ -160,7 +160,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L142 Add ritual history — Done when detail lists completion dates.
 - [x] L143 Add ritual streak helper — Done when pure function counts consecutive periods.
 - [x] L144 Add ritual streak display — Done when detail shows tested streak count.
-- [ ] L145 Add ritual pause field — Done when paused ritual is not shown as due.
+- [x] L145 Add ritual pause field — Done when paused ritual is not shown as due.
 - [ ] L146 Add ritual resume action — Done when resumed ritual reappears when due.
 - [ ] L147 Add ritual deletion confirmation — Done when cancel preserves history.
 - [ ] L148 Add ritual browser test — Done when create, complete, undo, and reload work.

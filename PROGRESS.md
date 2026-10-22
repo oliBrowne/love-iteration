@@ -863,3 +863,9 @@
 - Verified: lint, typecheck, vitest (streak UI test), build, format:check, roadmap tests.
 - Next: L145 add a ritual pause field.
 - Blockers: none
+
+## 2026-10-22 — L145: Add ritual pause field
+- Changed: Rituals can carry pausedAt; paused rituals no longer appear as due on Home.
+- Verified: lint, typecheck, vitest (paused dueRituals test), build, format:check, roadmap tests.
+- Next: L146 add a resume action.
+- Blockers: none
