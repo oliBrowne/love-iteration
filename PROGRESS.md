@@ -869,3 +869,9 @@
 - Verified: lint, typecheck, vitest (paused dueRituals test), build, format:check, roadmap tests.
 - Next: L146 add a resume action.
 - Blockers: none
+
+## 2026-10-22 — L146: Add ritual resume action
+- Changed: Rituals have Pause and Resume buttons; a paused ritual shows Paused and a resumed one is due again.
+- Verified: lint, typecheck, vitest (pause/resume UI + dueRituals tests; one unrelated Gratitude flake passed on rerun), build, format:check, roadmap tests.
+- Next: L147 add ritual deletion confirmation.
+- Blockers: none

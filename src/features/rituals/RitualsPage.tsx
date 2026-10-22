@@ -161,6 +161,19 @@ export function RitualsPage({
     }
   }
 
+  async function setPaused(ritual: Ritual, paused: boolean) {
+    try {
+      const now = nowIso();
+      const repo = await getRepository();
+      const next: Ritual = { ...ritual, updatedAt: now, pausedAt: now };
+      if (!paused) delete next.pausedAt;
+      await repo.put(next);
+      setRituals(await repo.list());
+    } catch {
+      setProblem('Could not change this. Nothing was lost; try again.');
+    }
+  }
+
   async function markToday(ritual: Ritual) {
     if (marking.current) return;
     marking.current = true;
@@ -257,11 +270,21 @@ export function RitualsPage({
                   {formatDateLabel(lastCompletionDate(completions, ritual.id)!)}
                 </small>
               ) : null}
-              {completions.some(
-                (item) =>
-                  item.ritualId === ritual.id &&
-                  item.date === periodDate(ritual),
-              ) ? (
+              {ritual.pausedAt !== undefined ? (
+                <>
+                  <small>Paused</small>
+                  <Button
+                    type="button"
+                    onClick={() => setPaused(ritual, false)}
+                  >
+                    Resume {ritual.name}
+                  </Button>
+                </>
+              ) : completions.some(
+                  (item) =>
+                    item.ritualId === ritual.id &&
+                    item.date === periodDate(ritual),
+                ) ? (
                 <>
                   <small>
                     {ritual.cadence === 'daily'
@@ -279,6 +302,11 @@ export function RitualsPage({
                   {ritual.cadence === 'daily' ? 'today' : 'this week'}
                 </Button>
               )}
+              {ritual.pausedAt === undefined ? (
+                <Button type="button" onClick={() => setPaused(ritual, true)}>
+                  Pause {ritual.name}
+                </Button>
+              ) : null}
               <Button type="button" onClick={() => setHistoryId(ritual.id)}>
                 History of {ritual.name}
               </Button>

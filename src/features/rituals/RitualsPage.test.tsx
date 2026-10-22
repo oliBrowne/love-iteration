@@ -317,4 +317,30 @@ describe('Ritual form', () => {
       expect(history.textContent).toContain('Streak: 2 days'),
     );
   });
+
+  it('pauses a ritual and resumes it', async () => {
+    await renderPage();
+    fireEvent.change(screen.getByLabelText('Ritual name'), {
+      target: { value: 'Demo: Morning hello' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save ritual' }));
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Pause Demo: Morning hello' }),
+    );
+    expect(await screen.findByText('Paused')).toBeTruthy();
+    expect(
+      screen.queryByRole('button', {
+        name: 'Mark Demo: Morning hello done today',
+      }),
+    ).toBeNull();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Resume Demo: Morning hello' }),
+    );
+    expect(
+      await screen.findByRole('button', {
+        name: 'Mark Demo: Morning hello done today',
+      }),
+    ).toBeTruthy();
+    expect(screen.queryByText('Paused')).toBeNull();
+  });
 });
