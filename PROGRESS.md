@@ -887,3 +887,9 @@
 - Verified: Playwright rituals spec (2 passed), lint, typecheck, build, format:check, roadmap tests.
 - Next: L149 add a weekly boundary test.
 - Blockers: none
+
+## 2026-10-22 — L149: Add weekly boundary test
+- Changed: Tests prove weekly due state and streaks roll over at local midnight Sunday to Monday and across month and year ends.
+- Verified: lint, typecheck, vitest (boundary tests, also under TZ=Pacific/Auckland), build, format:check, roadmap tests.
+- Next: L150 add ritual privacy copy.
+- Blockers: none

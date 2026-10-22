@@ -203,3 +203,44 @@ describe('ritualStreak', () => {
     expect(ritualStreak(done('r2', ['2026-01-05']), weekly, now)).toBe(1);
   });
 });
+
+describe('weekly rollover uses local dates', () => {
+  const base = {
+    schemaVersion: 1,
+    createdAt: '2026-01-01T00:00:00.000Z',
+    updatedAt: '2026-01-01T00:00:00.000Z',
+  };
+  const weekly: Ritual = {
+    ...base,
+    id: 'w',
+    name: 'Demo W',
+    cadence: 'weekly',
+  };
+  // Done in the week starting Monday 2026-01-05.
+  const done = [{ ritualId: 'w', date: '2026-01-05' }];
+
+  it('is still done at 23:59 on Sunday', () => {
+    const sunday = new Date(2026, 0, 11, 23, 59);
+    expect(dueRituals([weekly], done, sunday)).toEqual([]);
+  });
+
+  it('is due again at 00:00 on Monday', () => {
+    const monday = new Date(2026, 0, 12, 0, 0);
+    expect(dueRituals([weekly], done, monday)).toEqual([weekly]);
+  });
+
+  it('keeps the streak through the new week until it is missed', () => {
+    const monday = new Date(2026, 0, 12, 0, 0);
+    expect(ritualStreak(done, weekly, monday)).toBe(1);
+    const nextMonday = new Date(2026, 0, 19, 0, 0);
+    expect(ritualStreak(done, weekly, nextMonday)).toBe(0);
+  });
+
+  it('rolls over a month and a year boundary', () => {
+    // Monday 2025-12-29 starts the week that contains Thursday 2026-01-01.
+    const newYear = new Date(2026, 0, 1, 9, 0);
+    const lastWeek = [{ ritualId: 'w', date: '2025-12-29' }];
+    expect(dueRituals([weekly], lastWeek, newYear)).toEqual([]);
+    expect(ritualStreak(lastWeek, weekly, newYear)).toBe(1);
+  });
+});
