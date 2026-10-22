@@ -899,3 +899,9 @@
 - Verified: lint, typecheck, vitest (copy test), build, format:check, roadmap tests.
 - Next: L151 define the reflection record type.
 - Blockers: none
+
+## 2026-10-22 — L151: Define reflection record
+- Changed: Added the Reflection type: weekStart plus four optional prompts (no UI yet).
+- Verified: lint, typecheck, vitest (type tests), build, format:check, roadmap tests.
+- Next: L152 validate the reflection week.
+- Blockers: none

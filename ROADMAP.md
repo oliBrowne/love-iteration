@@ -169,7 +169,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 
 ## 06 Weekly reflection
 
-- [ ] L151 Define reflection record — Done when type contains weekStart and four optional prompts.
+- [x] L151 Define reflection record — Done when type contains weekStart and four optional prompts.
 - [ ] L152 Validate reflection week — Done when malformed weekStart is rejected.
 - [ ] L153 Add reflection store — Done when migration creates reflections store.
 - [ ] L154 Add reflection save method — Done when repository round trip passes.
