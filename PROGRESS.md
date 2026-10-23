@@ -941,3 +941,9 @@
 - Verified: lint, typecheck, vitest (en-US, de-DE and year-boundary range tests, page test), build, format:check, roadmap tests. The week always starts Monday, matching the Reflection record; locale controls formatting.
 - Next: L158 add the what-worked prompt that saves on submit.
 - Blockers: none
+
+## 2026-10-23 — L158: Add what-worked prompt
+- Changed: The Reflection page has a "What worked this week?" prompt that saves for the current week on submit; blank answers are refused for now.
+- Verified: lint, typecheck, vitest (save and blank tests), build, format:check, roadmap tests.
+- Next: L159 add the what-was-hard prompt.
+- Blockers: none
