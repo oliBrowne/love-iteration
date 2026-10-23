@@ -9,6 +9,7 @@ export {
   memoriesStore,
   openDatabase,
   plansStore,
+  reflectionsStore,
   ritualCompletionsStore,
   ritualsStore,
 } from './database.ts';

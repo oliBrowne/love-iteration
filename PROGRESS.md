@@ -911,3 +911,9 @@
 - Verified: lint, typecheck, vitest (parse tests), build, format:check, roadmap tests.
 - Next: L153 add the reflections store via migration.
 - Blockers: none
+
+## 2026-10-23 — L153: Add reflection store
+- Changed: Database schema v8 adds a reflections object store keyed by id; older data is kept.
+- Verified: lint, typecheck, vitest (store and upgrade tests), build, format:check, roadmap tests.
+- Next: L154 add the reflection save method.
+- Blockers: none

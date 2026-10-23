@@ -10,6 +10,7 @@ import {
   memoriesStore,
   openDatabase,
   plansStore,
+  reflectionsStore,
   ritualCompletionsStore,
   ritualsStore,
 } from './database.ts';
@@ -35,7 +36,7 @@ function seedOlderDatabase(factory: IDBFactory, record: object) {
 }
 
 describe('openDatabase', () => {
-  it('creates the checkins, gratitude, memories, ideas, plans, rituals and ritual completions stores keyed by id', async () => {
+  it('creates the checkins, gratitude, memories, ideas, plans, rituals and ritual completions and reflections stores keyed by id', async () => {
     const db = await openDatabase(new IDBFactory());
     expect(db.name).toBe(databaseName);
     expect([...db.objectStoreNames].sort()).toEqual(
@@ -47,6 +48,7 @@ describe('openDatabase', () => {
         plansStore,
         ritualsStore,
         ritualCompletionsStore,
+        reflectionsStore,
       ].sort(),
     );
     const gratitude = db
@@ -65,6 +67,10 @@ describe('openDatabase', () => {
       .transaction(ritualCompletionsStore)
       .objectStore(ritualCompletionsStore);
     expect(completions.keyPath).toBe('id');
+    const reflections = db
+      .transaction(reflectionsStore)
+      .objectStore(reflectionsStore);
+    expect(reflections.keyPath).toBe('id');
     const store = db.transaction(checkinsStore).objectStore(checkinsStore);
     expect(store.keyPath).toBe('id');
     db.close();
@@ -101,6 +107,7 @@ describe('openDatabase', () => {
     expect(db.objectStoreNames.contains(plansStore)).toBe(true);
     expect(db.objectStoreNames.contains(ritualsStore)).toBe(true);
     expect(db.objectStoreNames.contains(ritualCompletionsStore)).toBe(true);
+    expect(db.objectStoreNames.contains(reflectionsStore)).toBe(true);
     db.close();
   });
 });
