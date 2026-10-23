@@ -16,10 +16,21 @@ type ReflectionPageProps = {
   getRepository?: () => Promise<Repository<Reflection>>;
 };
 
+// Each prompt maps to one optional field on the Reflection record.
+const prompts = [
+  { field: 'whatWorked', label: 'What worked this week?' },
+  { field: 'whatWasHard', label: 'What was hard this week?' },
+] as const;
+
+type PromptField = (typeof prompts)[number]['field'];
+
 export function ReflectionPage({
   getRepository = getReflectionRepository,
 }: ReflectionPageProps) {
-  const [whatWorked, setWhatWorked] = useState('');
+  const [answers, setAnswers] = useState<Record<PromptField, string>>({
+    whatWorked: '',
+    whatWasHard: '',
+  });
   const [problem, setProblem] = useState<string>();
   const [justSaved, setJustSaved] = useState(false);
 
@@ -27,8 +38,9 @@ export function ReflectionPage({
     event.preventDefault();
     setJustSaved(false);
     try {
-      const answer = whatWorked.trim();
-      if (answer === '') {
+      const whatWorked = answers.whatWorked.trim();
+      const whatWasHard = answers.whatWasHard.trim();
+      if (whatWorked === '' && whatWasHard === '') {
         throw new DomainError(
           'blank-reflection',
           'Write a few words before saving.',
@@ -42,7 +54,8 @@ export function ReflectionPage({
         createdAt: now,
         updatedAt: now,
         weekStart: weekStart(),
-        whatWorked: answer,
+        ...(whatWorked === '' ? {} : { whatWorked }),
+        ...(whatWasHard === '' ? {} : { whatWasHard }),
       });
       setProblem(undefined);
       setJustSaved(true);
@@ -66,15 +79,18 @@ export function ReflectionPage({
         This week: <strong>{formatWeekRange(weekStart())}</strong>
       </p>
       <form onSubmit={submit}>
-        <TextArea
-          label="What worked this week?"
-          value={whatWorked}
-          onChange={(event) => {
-            setWhatWorked(event.target.value);
-            setProblem(undefined);
-            setJustSaved(false);
-          }}
-        />
+        {prompts.map(({ field, label }) => (
+          <TextArea
+            key={field}
+            label={label}
+            value={answers[field]}
+            onChange={(event) => {
+              setAnswers({ ...answers, [field]: event.target.value });
+              setProblem(undefined);
+              setJustSaved(false);
+            }}
+          />
+        ))}
         <Button type="submit">Save reflection</Button>
         {problem ? <InlineError>{problem}</InlineError> : null}
         {justSaved ? <p role="status">Saved.</p> : null}

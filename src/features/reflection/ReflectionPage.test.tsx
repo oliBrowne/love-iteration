@@ -66,3 +66,20 @@ describe('Reflection what-worked prompt', () => {
     expect(await repo.list()).toEqual([]);
   });
 });
+
+describe('Reflection what-was-hard prompt', () => {
+  it('saves the response on submit', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    render(<ReflectionPage getRepository={async () => repo} />);
+    fireEvent.change(screen.getByLabelText('What was hard this week?'), {
+      target: { value: ' Demo: the time difference ' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save reflection' }));
+    expect((await screen.findByRole('status')).textContent).toBe('Saved.');
+    const stored = await repo.list();
+    expect(stored[0]?.whatWasHard).toBe('Demo: the time difference');
+    expect(stored[0]?.whatWorked).toBeUndefined();
+  });
+});

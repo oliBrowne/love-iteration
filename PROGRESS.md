@@ -947,3 +947,9 @@
 - Verified: lint, typecheck, vitest (save and blank tests), build, format:check, roadmap tests.
 - Next: L159 add the what-was-hard prompt.
 - Blockers: none
+
+## 2026-10-23 — L159: Add what-was-hard prompt
+- Changed: A "What was hard this week?" prompt now sits beside the first; either response saves on submit.
+- Verified: lint, typecheck, vitest (what-was-hard save test), build, format:check, roadmap tests.
+- Next: L160 add the what-to-try prompt.
+- Blockers: none
