@@ -117,3 +117,22 @@ describe('Reflection appreciation prompt', () => {
     expect(stored[0]?.appreciation).toBe('Demo: the surprise postcard');
   });
 });
+
+describe('Partial reflection', () => {
+  it('saves with one prompt answered and leaves the others unset', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    render(<ReflectionPage getRepository={async () => repo} />);
+    fireEvent.change(screen.getByLabelText('What worked this week?'), {
+      target: { value: 'Demo: an early night' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save reflection' }));
+    expect((await screen.findByRole('status')).textContent).toBe('Saved.');
+    const [saved] = await repo.list();
+    expect(saved?.whatWorked).toBe('Demo: an early night');
+    expect('whatWasHard' in (saved ?? {})).toBe(false);
+    expect('whatToTry' in (saved ?? {})).toBe(false);
+    expect('appreciation' in (saved ?? {})).toBe(false);
+  });
+});

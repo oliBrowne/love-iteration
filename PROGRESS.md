@@ -965,3 +965,9 @@
 - Verified: lint, typecheck, vitest (appreciation save test), build, format:check, roadmap tests.
 - Next: L162 prove a partly answered reflection saves.
 - Blockers: none
+
+## 2026-10-23 — L162: Allow partial reflection
+- Changed: A reflection with only one prompt answered saves; unanswered prompts stay unset.
+- Verified: lint, typecheck, vitest (partial save test), build, format:check, roadmap tests.
+- Next: L163 refill the form with this week's saved responses for editing.
+- Blockers: none
