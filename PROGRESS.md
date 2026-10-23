@@ -923,3 +923,9 @@
 - Verified: lint, typecheck, vitest (round trip and replace tests), build, format:check, roadmap tests.
 - Next: L155 prove newest week lists first and add the app's local reflection getter.
 - Blockers: none
+
+## 2026-10-23 — L155: Add reflection list method
+- Changed: Reflections list newest week first; added the app's local reflection repository getter.
+- Verified: lint, typecheck, vitest (order and empty-list tests), build, format:check, roadmap tests.
+- Next: L156 render a Reflection route reachable from navigation.
+- Blockers: none

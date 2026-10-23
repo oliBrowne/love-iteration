@@ -33,3 +33,26 @@ describe('reflection repository save', () => {
     expect(await repo.list()).toHaveLength(1);
   });
 });
+
+describe('reflection repository list', () => {
+  it('returns the newest week first', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put({ ...demo, id: 'w-b', weekStart: '2026-01-12' });
+    await repo.put({ ...demo, id: 'w-c', weekStart: '2026-01-19' });
+    await repo.put({ ...demo, id: 'w-a', weekStart: '2026-01-05' });
+    expect((await repo.list()).map((item) => item.weekStart)).toEqual([
+      '2026-01-19',
+      '2026-01-12',
+      '2026-01-05',
+    ]);
+  });
+
+  it('returns an empty list when nothing is saved', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    expect(await repo.list()).toEqual([]);
+  });
+});

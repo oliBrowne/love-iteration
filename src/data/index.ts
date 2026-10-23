@@ -31,3 +31,4 @@ export { getRitualRepository } from './localRituals.ts';
 export { createRitualCompletionRepository } from './ritualCompletionRepository.ts';
 export { getRitualCompletionRepository } from './localRitualCompletions.ts';
 export { createReflectionRepository } from './reflectionRepository.ts';
+export { getReflectionRepository } from './localReflections.ts';

@@ -173,7 +173,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L152 Validate reflection week — Done when malformed weekStart is rejected.
 - [x] L153 Add reflection store — Done when migration creates reflections store.
 - [x] L154 Add reflection save method — Done when repository round trip passes.
-- [ ] L155 Add reflection list method — Done when newest week appears first.
+- [x] L155 Add reflection list method — Done when newest week appears first.
 - [ ] L156 Render Reflection route — Done when navigation opens the page.
 - [ ] L157 Show current week dates — Done when range follows locale week setting.
 - [ ] L158 Add what-worked prompt — Done when response saves on submit.
