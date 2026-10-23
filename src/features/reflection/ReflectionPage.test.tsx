@@ -100,3 +100,20 @@ describe('Reflection what-to-try prompt', () => {
     expect(stored[0]?.whatToTry).toBe('Demo: a shared playlist');
   });
 });
+
+describe('Reflection appreciation prompt', () => {
+  it('saves the response on submit', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    render(<ReflectionPage getRepository={async () => repo} />);
+    fireEvent.change(
+      screen.getByLabelText('What do you appreciate about the week?'),
+      { target: { value: ' Demo: the surprise postcard ' } },
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Save reflection' }));
+    expect((await screen.findByRole('status')).textContent).toBe('Saved.');
+    const stored = await repo.list();
+    expect(stored[0]?.appreciation).toBe('Demo: the surprise postcard');
+  });
+});

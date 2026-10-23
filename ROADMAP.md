@@ -179,7 +179,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L158 Add what-worked prompt — Done when response saves on submit.
 - [x] L159 Add what-was-hard prompt — Done when response saves on submit.
 - [x] L160 Add what-to-try prompt — Done when response saves on submit.
-- [ ] L161 Add appreciation prompt — Done when response saves on submit.
+- [x] L161 Add appreciation prompt — Done when response saves on submit.
 - [ ] L162 Allow partial reflection — Done when one answered prompt can save.
 - [ ] L163 Add current-week edit — Done when saved responses refill the form.
 - [ ] L164 Prevent duplicate week record — Done when save updates the existing week.

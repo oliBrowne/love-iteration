@@ -21,6 +21,7 @@ const prompts = [
   { field: 'whatWorked', label: 'What worked this week?' },
   { field: 'whatWasHard', label: 'What was hard this week?' },
   { field: 'whatToTry', label: 'What would you like to try next week?' },
+  { field: 'appreciation', label: 'What do you appreciate about the week?' },
 ] as const;
 
 type PromptField = (typeof prompts)[number]['field'];
@@ -32,6 +33,7 @@ export function ReflectionPage({
     whatWorked: '',
     whatWasHard: '',
     whatToTry: '',
+    appreciation: '',
   });
   const [problem, setProblem] = useState<string>();
   const [justSaved, setJustSaved] = useState(false);
@@ -43,7 +45,13 @@ export function ReflectionPage({
       const whatWorked = answers.whatWorked.trim();
       const whatWasHard = answers.whatWasHard.trim();
       const whatToTry = answers.whatToTry.trim();
-      if (whatWorked === '' && whatWasHard === '' && whatToTry === '') {
+      const appreciation = answers.appreciation.trim();
+      if (
+        whatWorked === '' &&
+        whatWasHard === '' &&
+        whatToTry === '' &&
+        appreciation === ''
+      ) {
         throw new DomainError(
           'blank-reflection',
           'Write a few words before saving.',
@@ -60,6 +68,7 @@ export function ReflectionPage({
         ...(whatWorked === '' ? {} : { whatWorked }),
         ...(whatWasHard === '' ? {} : { whatWasHard }),
         ...(whatToTry === '' ? {} : { whatToTry }),
+        ...(appreciation === '' ? {} : { appreciation }),
       });
       setProblem(undefined);
       setJustSaved(true);
