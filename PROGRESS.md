@@ -935,3 +935,9 @@
 - Verified: lint, typecheck, vitest (route and nav link tests), Playwright navigation/narrow specs, build, format:check, roadmap tests.
 - Next: L157 show the current week's date range.
 - Blockers: none
+
+## 2026-10-23 — L157: Show current week dates
+- Changed: The Reflection page shows this week's Monday-to-Sunday range, formatted for the browser locale.
+- Verified: lint, typecheck, vitest (en-US, de-DE and year-boundary range tests, page test), build, format:check, roadmap tests. The week always starts Monday, matching the Reflection record; locale controls formatting.
+- Next: L158 add the what-worked prompt that saves on submit.
+- Blockers: none

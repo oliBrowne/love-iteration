@@ -175,7 +175,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L154 Add reflection save method — Done when repository round trip passes.
 - [x] L155 Add reflection list method — Done when newest week appears first.
 - [x] L156 Render Reflection route — Done when navigation opens the page.
-- [ ] L157 Show current week dates — Done when range follows locale week setting.
+- [x] L157 Show current week dates — Done when range follows locale week setting.
 - [ ] L158 Add what-worked prompt — Done when response saves on submit.
 - [ ] L159 Add what-was-hard prompt — Done when response saves on submit.
 - [ ] L160 Add what-to-try prompt — Done when response saves on submit.

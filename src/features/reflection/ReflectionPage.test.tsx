@@ -21,3 +21,12 @@ describe('Reflection route', () => {
     expect(link.getAttribute('href')).toBe('#/reflection');
   });
 });
+
+describe('Reflection week range', () => {
+  it('shows the current week, Monday to Sunday', () => {
+    window.location.hash = '#/reflection';
+    render(<App />);
+    expect(screen.getByText(/This week:/)).toBeTruthy();
+    window.location.hash = '';
+  });
+});

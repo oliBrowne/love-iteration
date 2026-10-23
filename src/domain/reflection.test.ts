@@ -1,6 +1,6 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import { DomainError } from './errors.ts';
-import { parseReflectionWeek } from './reflection.ts';
+import { formatWeekRange, parseReflectionWeek } from './reflection.ts';
 import type { Reflection } from './reflection.ts';
 import type { RecordMetadata } from './record.ts';
 
@@ -47,5 +47,26 @@ describe('parseReflectionWeek', () => {
     null,
   ])('rejects %j', (value) => {
     expect(() => parseReflectionWeek(value)).toThrow(DomainError);
+  });
+});
+
+// ICU may use thin spaces around the dash; compare with plain spaces.
+const plain = (text: string) => text.replace(/[\u2009\u202f\u00a0]/g, ' ');
+
+describe('formatWeekRange', () => {
+  it('shows Monday to Sunday in the given locale', () => {
+    expect(plain(formatWeekRange('2026-01-05', 'en-US'))).toBe(
+      'Jan 5 – 11, 2026',
+    );
+    // Day-before-month order in German, not "Jan 5".
+    expect(plain(formatWeekRange('2026-01-05', 'de-DE'))).toMatch(
+      /^5\.\D+11\./,
+    );
+  });
+
+  it('crosses a month and year end', () => {
+    expect(plain(formatWeekRange('2025-12-29', 'en-US'))).toBe(
+      'Dec 29, 2025 – Jan 4, 2026',
+    );
   });
 });

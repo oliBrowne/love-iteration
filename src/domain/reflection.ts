@@ -23,3 +23,16 @@ export function parseReflectionWeek(value: unknown): string {
   }
   return value;
 }
+
+// The week starting on `start` (a Monday, YYYY-MM-DD) as a readable range in
+// the given locale, e.g. "Jan 5 – Jan 11, 2026".
+export function formatWeekRange(start: string, locale?: string): string {
+  const [year = 0, month = 1, day = 1] = start.split('-').map(Number);
+  const first = new Date(year, month - 1, day);
+  const last = new Date(year, month - 1, day + 6);
+  return new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  }).formatRange(first, last);
+}

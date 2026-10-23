@@ -55,4 +55,4 @@ export {
   ritualStreak,
 } from './ritual.ts';
 export type { Reflection } from './reflection.ts';
-export { parseReflectionWeek } from './reflection.ts';
+export { formatWeekRange, parseReflectionWeek } from './reflection.ts';
