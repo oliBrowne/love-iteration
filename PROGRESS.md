@@ -929,3 +929,9 @@
 - Verified: lint, typecheck, vitest (order and empty-list tests), build, format:check, roadmap tests.
 - Next: L156 render a Reflection route reachable from navigation.
 - Blockers: none
+
+## 2026-10-23 — L156: Render Reflection route
+- Changed: A Reflection link in the navigation opens a Reflection page with private-to-you copy.
+- Verified: lint, typecheck, vitest (route and nav link tests), Playwright navigation/narrow specs, build, format:check, roadmap tests.
+- Next: L157 show the current week's date range.
+- Blockers: none
