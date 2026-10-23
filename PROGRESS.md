@@ -905,3 +905,9 @@
 - Verified: lint, typecheck, vitest (type tests), build, format:check, roadmap tests.
 - Next: L152 validate the reflection week.
 - Blockers: none
+
+## 2026-10-23 — L152: Validate reflection week
+- Changed: Added parseReflectionWeek, which rejects a weekStart that is not a real Monday date (no UI yet).
+- Verified: lint, typecheck, vitest (parse tests), build, format:check, roadmap tests.
+- Next: L153 add the reflections store via migration.
+- Blockers: none
