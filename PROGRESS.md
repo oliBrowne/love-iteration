@@ -917,3 +917,9 @@
 - Verified: lint, typecheck, vitest (store and upgrade tests), build, format:check, roadmap tests.
 - Next: L154 add the reflection save method.
 - Blockers: none
+
+## 2026-10-23 — L154: Add reflection save method
+- Changed: Added a reflection repository; reflections can be saved and read back (data layer only).
+- Verified: lint, typecheck, vitest (round trip and replace tests), build, format:check, roadmap tests.
+- Next: L155 prove newest week lists first and add the app's local reflection getter.
+- Blockers: none
