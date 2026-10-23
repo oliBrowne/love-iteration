@@ -953,3 +953,9 @@
 - Verified: lint, typecheck, vitest (what-was-hard save test), build, format:check, roadmap tests.
 - Next: L160 add the what-to-try prompt.
 - Blockers: none
+
+## 2026-10-23 — L160: Add what-to-try prompt
+- Changed: A "What would you like to try next week?" prompt saves with the others on submit.
+- Verified: lint, typecheck, vitest (what-to-try save test), build, format:check, roadmap tests.
+- Next: L161 add the appreciation prompt.
+- Blockers: none

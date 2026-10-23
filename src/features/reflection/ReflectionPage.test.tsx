@@ -83,3 +83,20 @@ describe('Reflection what-was-hard prompt', () => {
     expect(stored[0]?.whatWorked).toBeUndefined();
   });
 });
+
+describe('Reflection what-to-try prompt', () => {
+  it('saves the response on submit', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    render(<ReflectionPage getRepository={async () => repo} />);
+    fireEvent.change(
+      screen.getByLabelText('What would you like to try next week?'),
+      { target: { value: ' Demo: a shared playlist ' } },
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Save reflection' }));
+    expect((await screen.findByRole('status')).textContent).toBe('Saved.');
+    const stored = await repo.list();
+    expect(stored[0]?.whatToTry).toBe('Demo: a shared playlist');
+  });
+});
