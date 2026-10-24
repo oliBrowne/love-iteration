@@ -983,3 +983,9 @@
 - Verified: lint, typecheck, vitest (update-in-place test), build, format:check, roadmap tests.
 - Next: L165 show current week reflection status on Home.
 - Blockers: none
+
+## 2026-10-24 — L165: Add reflection preview
+- Changed: Home shows whether this week's reflection is done, with a link to Reflection.
+- Verified: lint, typecheck, vitest (reflected and not-started tests), build, format:check, roadmap tests.
+- Next: L166 add a browsable list of prior weeks' reflections.
+- Blockers: none

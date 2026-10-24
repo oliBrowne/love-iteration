@@ -13,11 +13,12 @@ import {
   createGratitudeRepository,
   createIdeaRepository,
   createPlanRepository,
+  createReflectionRepository,
   createRitualCompletionRepository,
   createRitualRepository,
   openDatabase,
 } from '../../data/index.ts';
-import { formatLocalTime, localDate } from '../../domain/index.ts';
+import { formatLocalTime, localDate, weekStart } from '../../domain/index.ts';
 import type { CheckIn } from '../../domain/index.ts';
 import { HomePage } from './HomePage.tsx';
 
@@ -337,5 +338,48 @@ describe('HomePage rituals preview', () => {
     await setupRituals();
     const list = await screen.findByTestId('ritual-preview');
     expect(list.textContent).toContain('Demo: Sunday call · this week');
+  });
+});
+
+describe('HomePage reflection preview', () => {
+  const stamp = '2026-01-01T00:00:00.000Z';
+
+  async function setupReflections(week: string | undefined) {
+    const db = await openDatabase(new IDBFactory());
+    const reflections = createReflectionRepository(db);
+    if (week)
+      await reflections.put({
+        id: 'f1',
+        schemaVersion: 1,
+        createdAt: stamp,
+        updatedAt: stamp,
+        weekStart: week,
+        whatWorked: 'Demo: a slow morning',
+      });
+    render(
+      <HomePage
+        getRepository={async () => createCheckInRepository(db)}
+        getReflectionRepo={async () => reflections}
+      />,
+    );
+  }
+
+  it('says the week is reflected when a record exists', async () => {
+    await setupReflections(weekStart());
+    expect((await screen.findByTestId('reflection-preview')).textContent).toBe(
+      'You have reflected this week.',
+    );
+    expect(
+      screen
+        .getByRole('link', { name: 'Open Reflection' })
+        .getAttribute('href'),
+    ).toBe('#/reflection');
+  });
+
+  it('says it is not started when only other weeks exist', async () => {
+    await setupReflections('2000-01-03');
+    expect((await screen.findByTestId('reflection-preview')).textContent).toBe(
+      'Not started yet.',
+    );
   });
 });

@@ -8,6 +8,7 @@ import {
   getIdeaRepository,
   getPlanRepository,
   getRitualCompletionRepository,
+  getReflectionRepository,
   getRitualRepository,
 } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
@@ -18,12 +19,14 @@ import {
   moodLabels,
   routeToHash,
   upcomingPlans,
+  weekStart,
 } from '../../domain/index.ts';
 import type {
   CheckIn,
   DateIdea,
   Gratitude,
   PlannedDate,
+  Reflection,
   Ritual,
   RitualCompletion,
 } from '../../domain/index.ts';
@@ -33,6 +36,7 @@ type HomePageProps = {
   getGratitudeRepo?: () => Promise<Repository<Gratitude>>;
   getIdeaRepo?: () => Promise<Repository<DateIdea>>;
   getPlanRepo?: () => Promise<Repository<PlannedDate>>;
+  getReflectionRepo?: () => Promise<Repository<Reflection>>;
   getRitualRepo?: () => Promise<Repository<Ritual>>;
   getRitualCompletionRepo?: () => Promise<Repository<RitualCompletion>>;
 };
@@ -42,6 +46,7 @@ export function HomePage({
   getGratitudeRepo = getGratitudeRepository,
   getIdeaRepo = getIdeaRepository,
   getPlanRepo = getPlanRepository,
+  getReflectionRepo = getReflectionRepository,
   getRitualRepo = getRitualRepository,
   getRitualCompletionRepo = getRitualCompletionRepository,
 }: HomePageProps) {
@@ -52,6 +57,7 @@ export function HomePage({
     title: string;
     startsAt: string;
   }>();
+  const [reflected, setReflected] = useState<boolean>();
   const [records, setRecords] = useState<CheckIn[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [selectedId, setSelectedId] = useState<string>();
@@ -152,6 +158,23 @@ export function HomePage({
       cancelled = true;
     };
   }, [getPlanRepo, getIdeaRepo]);
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.resolve()
+      .then(getReflectionRepo)
+      .then((repo) => repo.list())
+      .then((saved) => {
+        if (!cancelled)
+          setReflected(saved.some((r) => r.weekStart === weekStart()));
+      })
+      .catch(() => {
+        // The preview is optional; Home still works without it.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [getReflectionRepo]);
 
   useEffect(() => {
     let cancelled = false;
@@ -266,6 +289,17 @@ export function HomePage({
           </ul>
           <p>
             <a href={routeToHash('rituals')}>Open Rituals</a>
+          </p>
+        </section>
+      ) : null}
+      {reflected !== undefined ? (
+        <section aria-labelledby="home-reflection-heading">
+          <h3 id="home-reflection-heading">This week&rsquo;s reflection</h3>
+          <p data-testid="reflection-preview">
+            {reflected ? 'You have reflected this week.' : 'Not started yet.'}
+          </p>
+          <p>
+            <a href={routeToHash('reflection')}>Open Reflection</a>
           </p>
         </section>
       ) : null}
