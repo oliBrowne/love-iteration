@@ -1,5 +1,11 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -134,5 +140,40 @@ describe('Partial reflection', () => {
     expect('whatWasHard' in (saved ?? {})).toBe(false);
     expect('whatToTry' in (saved ?? {})).toBe(false);
     expect('appreciation' in (saved ?? {})).toBe(false);
+  });
+});
+
+describe('Reflection edit', () => {
+  it('refills the form with the saved responses for this week', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put({
+      id: 'r1',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      weekStart: weekStart(),
+      whatWorked: 'Demo: a long walk',
+      appreciation: 'Demo: a kind note',
+    });
+    render(<ReflectionPage getRepository={async () => repo} />);
+    await waitFor(() =>
+      expect(
+        (screen.getByLabelText('What worked this week?') as HTMLTextAreaElement)
+          .value,
+      ).toBe('Demo: a long walk'),
+    );
+    expect(
+      (
+        screen.getByLabelText(
+          'What do you appreciate about the week?',
+        ) as HTMLTextAreaElement
+      ).value,
+    ).toBe('Demo: a kind note');
+    expect(
+      (screen.getByLabelText('What was hard this week?') as HTMLTextAreaElement)
+        .value,
+    ).toBe('');
   });
 });

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { getReflectionRepository } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
@@ -37,6 +37,34 @@ export function ReflectionPage({
   });
   const [problem, setProblem] = useState<string>();
   const [justSaved, setJustSaved] = useState(false);
+
+  // Only the first getRepository is used to refill, so a new function on a
+  // later render cannot overwrite what is being typed.
+  const loadRepository = useRef(getRepository);
+
+  // Refill the form with this week's saved responses, if any.
+  useEffect(() => {
+    let current = true;
+    loadRepository
+      .current()
+      .then((repo) => repo.list())
+      .then((saved) => {
+        const existing = saved.find((r) => r.weekStart === weekStart());
+        if (!current || !existing) return;
+        setAnswers({
+          whatWorked: existing.whatWorked ?? '',
+          whatWasHard: existing.whatWasHard ?? '',
+          whatToTry: existing.whatToTry ?? '',
+          appreciation: existing.appreciation ?? '',
+        });
+      })
+      .catch(() => {
+        // Nothing to refill; the form stays empty and can still save.
+      });
+    return () => {
+      current = false;
+    };
+  }, []);
 
   async function submit(event: FormEvent) {
     event.preventDefault();

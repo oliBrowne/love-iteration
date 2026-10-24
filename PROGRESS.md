@@ -971,3 +971,9 @@
 - Verified: lint, typecheck, vitest (partial save test), build, format:check, roadmap tests.
 - Next: L163 refill the form with this week's saved responses for editing.
 - Blockers: none
+
+## 2026-10-24 — L163: Add current-week edit
+- Changed: Opening Reflection refills the form with this week's saved responses.
+- Verified: lint, typecheck, vitest (refill test), build, format:check, roadmap tests.
+- Next: L164 make saving update the existing week record instead of adding one.
+- Blockers: none
