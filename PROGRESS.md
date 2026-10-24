@@ -977,3 +977,9 @@
 - Verified: lint, typecheck, vitest (refill test), build, format:check, roadmap tests.
 - Next: L164 make saving update the existing week record instead of adding one.
 - Blockers: none
+
+## 2026-10-24 — L164: Prevent duplicate week record
+- Changed: Saving a reflection again in the same week updates that week's record instead of adding another.
+- Verified: lint, typecheck, vitest (update-in-place test), build, format:check, roadmap tests.
+- Next: L165 show current week reflection status on Home.
+- Blockers: none

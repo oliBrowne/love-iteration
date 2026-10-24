@@ -37,6 +37,8 @@ export function ReflectionPage({
   });
   const [problem, setProblem] = useState<string>();
   const [justSaved, setJustSaved] = useState(false);
+  // The saved record for this week, so saving again updates it.
+  const [existing, setExisting] = useState<Reflection>();
 
   // Only the first getRepository is used to refill, so a new function on a
   // later render cannot overwrite what is being typed.
@@ -49,13 +51,14 @@ export function ReflectionPage({
       .current()
       .then((repo) => repo.list())
       .then((saved) => {
-        const existing = saved.find((r) => r.weekStart === weekStart());
-        if (!current || !existing) return;
+        const found = saved.find((r) => r.weekStart === weekStart());
+        if (!current || !found) return;
+        setExisting(found);
         setAnswers({
-          whatWorked: existing.whatWorked ?? '',
-          whatWasHard: existing.whatWasHard ?? '',
-          whatToTry: existing.whatToTry ?? '',
-          appreciation: existing.appreciation ?? '',
+          whatWorked: found.whatWorked ?? '',
+          whatWasHard: found.whatWasHard ?? '',
+          whatToTry: found.whatToTry ?? '',
+          appreciation: found.appreciation ?? '',
         });
       })
       .catch(() => {
@@ -87,17 +90,19 @@ export function ReflectionPage({
       }
       const now = nowIso();
       const repo = await getRepository();
-      await repo.put({
-        id: generateId(),
+      const record: Reflection = {
+        id: existing?.id ?? generateId(),
         schemaVersion: 1,
-        createdAt: now,
+        createdAt: existing?.createdAt ?? now,
         updatedAt: now,
         weekStart: weekStart(),
         ...(whatWorked === '' ? {} : { whatWorked }),
         ...(whatWasHard === '' ? {} : { whatWasHard }),
         ...(whatToTry === '' ? {} : { whatToTry }),
         ...(appreciation === '' ? {} : { appreciation }),
-      });
+      };
+      await repo.put(record);
+      setExisting(record);
       setProblem(undefined);
       setJustSaved(true);
     } catch (error) {

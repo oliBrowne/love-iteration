@@ -182,7 +182,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L161 Add appreciation prompt — Done when response saves on submit.
 - [x] L162 Allow partial reflection — Done when one answered prompt can save.
 - [x] L163 Add current-week edit — Done when saved responses refill the form.
-- [ ] L164 Prevent duplicate week record — Done when save updates the existing week.
+- [x] L164 Prevent duplicate week record — Done when save updates the existing week.
 - [ ] L165 Add reflection preview — Done when Home shows current week status.
 - [ ] L166 Add reflection history list — Done when prior weeks are browsable.
 - [ ] L167 Add reflection detail — Done when selected week shows all responses.

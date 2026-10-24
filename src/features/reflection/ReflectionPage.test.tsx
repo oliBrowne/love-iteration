@@ -176,4 +176,31 @@ describe('Reflection edit', () => {
         .value,
     ).toBe('');
   });
+
+  it('updates the existing week record instead of adding another', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put({
+      id: 'r1',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      weekStart: weekStart(),
+      whatWorked: 'Demo: a long walk',
+    });
+    render(<ReflectionPage getRepository={async () => repo} />);
+    const box = screen.getByLabelText('What worked this week?');
+    await waitFor(() =>
+      expect((box as HTMLTextAreaElement).value).toBe('Demo: a long walk'),
+    );
+    fireEvent.change(box, { target: { value: 'Demo: a slow morning' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save reflection' }));
+    await screen.findByRole('status');
+    const stored = await repo.list();
+    expect(stored).toHaveLength(1);
+    expect(stored[0]?.id).toBe('r1');
+    expect(stored[0]?.createdAt).toBe('2026-01-01T00:00:00.000Z');
+    expect(stored[0]?.whatWorked).toBe('Demo: a slow morning');
+  });
 });
