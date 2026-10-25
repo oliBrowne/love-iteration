@@ -1007,3 +1007,9 @@
 - Verified: lint, typecheck, vitest (cancel and confirm tests), build, format:check, roadmap tests.
 - Next: L169 show the week's check-in mood labels in Reflection.
 - Blockers: none
+
+## 2026-10-25 — L169: Add optional check-in summary
+- Changed: Reflection shows the week's check-in mood labels when there are any.
+- Verified: lint, typecheck, vitest (summary and isInWeek tests), build, format:check, roadmap tests.
+- Next: L170 show this week's gratitude entry count in Reflection.
+- Blockers: none

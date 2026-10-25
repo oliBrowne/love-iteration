@@ -36,3 +36,17 @@ export function formatWeekRange(start: string, locale?: string): string {
     day: 'numeric',
   }).formatRange(first, last);
 }
+
+// True when the YYYY-MM-DD `date` falls in the Monday-to-Sunday week that
+// starts on `start`. Plain strings sort in calendar order, so no time zones
+// are involved.
+export function isInWeek(date: string, start: string): boolean {
+  const [year = 0, month = 1, day = 1] = start.split('-').map(Number);
+  const end = new Date(year, month - 1, day + 6);
+  const last = [
+    end.getFullYear(),
+    String(end.getMonth() + 1).padStart(2, '0'),
+    String(end.getDate()).padStart(2, '0'),
+  ].join('-');
+  return date >= start && date <= last;
+}

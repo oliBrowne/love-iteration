@@ -1,6 +1,10 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import { DomainError } from './errors.ts';
-import { formatWeekRange, parseReflectionWeek } from './reflection.ts';
+import {
+  formatWeekRange,
+  isInWeek,
+  parseReflectionWeek,
+} from './reflection.ts';
 import type { Reflection } from './reflection.ts';
 import type { RecordMetadata } from './record.ts';
 
@@ -68,5 +72,19 @@ describe('formatWeekRange', () => {
     expect(plain(formatWeekRange('2025-12-29', 'en-US'))).toBe(
       'Dec 29, 2025 – Jan 4, 2026',
     );
+  });
+});
+
+describe('isInWeek', () => {
+  it('includes Monday through Sunday and excludes the neighbours', () => {
+    expect(isInWeek('2026-01-05', '2026-01-05')).toBe(true);
+    expect(isInWeek('2026-01-11', '2026-01-05')).toBe(true);
+    expect(isInWeek('2026-01-04', '2026-01-05')).toBe(false);
+    expect(isInWeek('2026-01-12', '2026-01-05')).toBe(false);
+  });
+
+  it('crosses a month boundary', () => {
+    expect(isInWeek('2026-02-01', '2026-01-26')).toBe(true);
+    expect(isInWeek('2026-02-02', '2026-01-26')).toBe(false);
   });
 });

@@ -10,7 +10,11 @@ import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
 import App from '../../App.tsx';
-import { createReflectionRepository, openDatabase } from '../../data/index.ts';
+import {
+  createCheckInRepository,
+  createReflectionRepository,
+  openDatabase,
+} from '../../data/index.ts';
 import { weekStart } from '../../domain/index.ts';
 import { ReflectionPage } from './ReflectionPage.tsx';
 
@@ -309,5 +313,49 @@ describe('Reflection delete confirmation', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Yes, delete' }));
     await waitFor(() => expect(screen.queryByText('Earlier weeks')).toBeNull());
     expect(await repo.list()).toEqual([]);
+  });
+});
+
+describe('Reflection check-in summary', () => {
+  const base = {
+    schemaVersion: 1 as const,
+    createdAt: '2026-01-01T00:00:00.000Z',
+    updatedAt: '2026-01-01T00:00:00.000Z',
+    note: '',
+  };
+
+  it("shows this week's mood labels and ignores other weeks", async () => {
+    const db = await openDatabase(new IDBFactory());
+    const checkIns = createCheckInRepository(db);
+    const start = weekStart();
+    await checkIns.put({ ...base, id: 'c1', date: start, mood: 'good' });
+    await checkIns.put({
+      ...base,
+      id: 'c2',
+      date: '2020-01-01',
+      mood: 'rough',
+    });
+    const reflections = createReflectionRepository(db);
+    render(
+      <ReflectionPage
+        getRepository={async () => reflections}
+        getCheckInRepo={async () => checkIns}
+      />,
+    );
+    const line = await screen.findByText(/Check-in moods this week/);
+    expect(line.textContent).toContain('Good');
+    expect(line.textContent).not.toContain('Rough');
+  });
+
+  it('leaves the summary out when there are no check-ins', async () => {
+    const db = await openDatabase(new IDBFactory());
+    render(
+      <ReflectionPage
+        getRepository={async () => createReflectionRepository(db)}
+        getCheckInRepo={async () => createCheckInRepository(db)}
+      />,
+    );
+    await Promise.resolve();
+    expect(screen.queryByText(/Check-in moods/)).toBeNull();
   });
 });
