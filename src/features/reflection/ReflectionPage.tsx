@@ -11,6 +11,7 @@ import {
   DomainError,
   formatWeekRange,
   generateId,
+  NEXT_ACTION_MAX_LENGTH,
   nowIso,
   weekStart,
 } from '../../domain/index.ts';
@@ -20,7 +21,7 @@ import type {
   Reflection,
   RitualCompletion,
 } from '../../domain/index.ts';
-import { Button, InlineError, TextArea } from '../../ui/index.ts';
+import { Button, InlineError, TextArea, TextField } from '../../ui/index.ts';
 import { WeekSummary } from './WeekSummary.tsx';
 import { ReflectionHistory } from './ReflectionHistory.tsx';
 import { prompts } from './reflectionPrompts.ts';
@@ -39,11 +40,14 @@ export function ReflectionPage({
   getGratitudeRepo = getGratitudeRepository,
   getCompletionRepo = getRitualCompletionRepository,
 }: ReflectionPageProps) {
-  const [answers, setAnswers] = useState<Record<PromptField, string>>({
+  const [answers, setAnswers] = useState<
+    Record<PromptField | 'nextAction', string>
+  >({
     whatWorked: '',
     whatWasHard: '',
     whatToTry: '',
     appreciation: '',
+    nextAction: '',
   });
   const [problem, setProblem] = useState<string>();
   const [justSaved, setJustSaved] = useState(false);
@@ -104,6 +108,7 @@ export function ReflectionPage({
           whatWasHard: found.whatWasHard ?? '',
           whatToTry: found.whatToTry ?? '',
           appreciation: found.appreciation ?? '',
+          nextAction: found.nextAction ?? '',
         });
       })
       .catch(() => {
@@ -132,11 +137,13 @@ export function ReflectionPage({
       const whatWasHard = answers.whatWasHard.trim();
       const whatToTry = answers.whatToTry.trim();
       const appreciation = answers.appreciation.trim();
+      const nextAction = answers.nextAction.trim();
       if (
         whatWorked === '' &&
         whatWasHard === '' &&
         whatToTry === '' &&
-        appreciation === ''
+        appreciation === '' &&
+        nextAction === ''
       ) {
         throw new DomainError(
           'blank-reflection',
@@ -155,6 +162,7 @@ export function ReflectionPage({
         ...(whatWasHard === '' ? {} : { whatWasHard }),
         ...(whatToTry === '' ? {} : { whatToTry }),
         ...(appreciation === '' ? {} : { appreciation }),
+        ...(nextAction === '' ? {} : { nextAction }),
       };
       await repo.put(record);
       setExisting(record);
@@ -198,6 +206,16 @@ export function ReflectionPage({
             }}
           />
         ))}
+        <TextField
+          label="One small next step"
+          maxLength={NEXT_ACTION_MAX_LENGTH}
+          value={answers.nextAction}
+          onChange={(event) => {
+            setAnswers({ ...answers, nextAction: event.target.value });
+            setProblem(undefined);
+            setJustSaved(false);
+          }}
+        />
         <Button type="submit">Save reflection</Button>
         {problem ? <InlineError>{problem}</InlineError> : null}
         {justSaved ? <p role="status">Saved.</p> : null}

@@ -58,5 +58,6 @@ export type { Reflection } from './reflection.ts';
 export {
   formatWeekRange,
   isInWeek,
+  NEXT_ACTION_MAX_LENGTH,
   parseReflectionWeek,
 } from './reflection.ts';

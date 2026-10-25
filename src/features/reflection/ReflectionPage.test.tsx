@@ -442,3 +442,38 @@ describe('Reflection ritual summary', () => {
     expect(screen.queryByText(/Rituals completed/)).toBeNull();
   });
 });
+
+describe('Reflection next action', () => {
+  it('saves one short next step and refills it later', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    const { unmount } = render(
+      <ReflectionPage getRepository={async () => repo} />,
+    );
+    fireEvent.change(screen.getByLabelText('One small next step'), {
+      target: { value: '  Demo: plan a call  ' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Save reflection' }));
+    await screen.findByRole('status');
+    const [saved] = await repo.list();
+    expect(saved?.nextAction).toBe('Demo: plan a call');
+    unmount();
+    render(<ReflectionPage getRepository={async () => repo} />);
+    await waitFor(() =>
+      expect(
+        (screen.getByLabelText('One small next step') as HTMLInputElement)
+          .value,
+      ).toBe('Demo: plan a call'),
+    );
+  });
+
+  it('limits the length of the next step', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    render(<ReflectionPage getRepository={async () => repo} />);
+    const field = screen.getByLabelText('One small next step');
+    expect(field.getAttribute('maxlength')).toBe('140');
+  });
+});

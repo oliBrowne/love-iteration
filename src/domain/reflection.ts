@@ -10,7 +10,11 @@ export type Reflection = RecordMetadata & {
   whatWasHard?: string;
   whatToTry?: string;
   appreciation?: string;
+  // One short next step chosen at the end of the week.
+  nextAction?: string;
 };
+
+export const NEXT_ACTION_MAX_LENGTH = 140;
 
 // Returns the week start, or throws a DomainError unless it is a real
 // YYYY-MM-DD date that falls on a Monday.

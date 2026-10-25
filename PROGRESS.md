@@ -1025,3 +1025,9 @@
 - Verified: lint, typecheck, vitest (count tests), build, format:check, roadmap tests.
 - Next: L172 add a one-line next-step text saved with the reflection.
 - Blockers: none
+
+## 2026-10-25 — L172: Add selected next action
+- Changed: Reflection has a 'One small next step' field (max 140 characters) saved with the week and refilled on return.
+- Verified: lint, typecheck, vitest (save, refill, maxlength tests), build, format:check, roadmap tests.
+- Next: L173 show the saved next step on Home until next week.
+- Blockers: none
