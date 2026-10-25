@@ -558,3 +558,47 @@ describe('Reflection print layout', () => {
     expect(detail.closest('.print-hide')).toBeNull();
   });
 });
+
+describe('Reflection keyboard use', () => {
+  it('reaches every prompt and Save in a natural tab order', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    render(<ReflectionPage getRepository={async () => repo} />);
+    const form = screen
+      .getByRole('button', { name: 'Save reflection' })
+      .closest('form') as HTMLFormElement;
+    const stops = Array.from(
+      form.querySelectorAll<
+        HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement
+      >('input, textarea, button, select'),
+    );
+    // Native controls, none skipped from the tab order, in reading order.
+    expect(stops.every((el) => el.tabIndex === 0)).toBe(true);
+    expect(
+      stops.map((el) => el.labels?.[0]?.textContent ?? el.textContent),
+    ).toEqual([
+      'What worked this week?',
+      'What was hard this week?',
+      'What would you like to try next week?',
+      'What do you appreciate about the week?',
+      'One small next step',
+      'Save reflection',
+    ]);
+    expect((stops.at(-1) as HTMLButtonElement).type).toBe('submit');
+  });
+
+  it('saves with the form submit that Enter or Space on Save triggers', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    render(<ReflectionPage getRepository={async () => repo} />);
+    const field = screen.getByLabelText('What worked this week?');
+    field.focus();
+    expect(document.activeElement).toBe(field);
+    fireEvent.change(field, { target: { value: 'Demo: typed by keyboard' } });
+    fireEvent.submit(field.closest('form') as HTMLFormElement);
+    expect((await screen.findByRole('status')).textContent).toBe('Saved.');
+    expect((await repo.list())[0]?.whatWorked).toBe('Demo: typed by keyboard');
+  });
+});

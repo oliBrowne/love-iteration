@@ -1049,3 +1049,9 @@
 - Verified: lint, typecheck, vitest (print CSS and markup tests; one unrelated timing flake passed on re-run), build, format:check, roadmap tests. Not checked in a real print preview.
 - Next: L176 prove the reflection prompts and save work from the keyboard.
 - Blockers: none
+
+## 2026-10-25 — L176: Add reflection keyboard test
+- Changed: No visible change; a test now proves the prompts and Save are native, labelled, in tab order, and Save submits.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests. jsdom cannot press keys, so the browser test (L177) covers real key presses.
+- Next: L177 add a browser test that a partial save survives reload.
+- Blockers: none
