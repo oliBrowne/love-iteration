@@ -534,3 +534,27 @@ describe('Reflection copy previous', () => {
     ).toBe('Demo: today\nDemo: a slow morning');
   });
 });
+
+describe('Reflection print layout', () => {
+  it('marks the intro and form as hidden when printing, not the detail', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put({
+      id: 'a',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      weekStart: '2026-01-05',
+      whatWorked: 'Demo: a slow morning',
+    });
+    render(<ReflectionPage getRepository={async () => repo} />);
+    fireEvent.click(await screen.findByRole('button', { name: /Jan 5/ }));
+    const hidden = document.querySelector('.print-hide');
+    expect(
+      hidden?.contains(screen.getByLabelText('What worked this week?')),
+    ).toBe(true);
+    const detail = screen.getByText('Demo: a slow morning');
+    expect(detail.closest('.print-hide')).toBeNull();
+  });
+});

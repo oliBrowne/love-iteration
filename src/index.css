@@ -201,3 +201,13 @@ button:focus-visible,
 .gratitude-card p {
   margin: 0 0 0.25rem;
 }
+
+/* Printing keeps just the page content: no navigation, controls or forms. */
+@media print {
+  .skip-link,
+  header,
+  button,
+  .print-hide {
+    display: none;
+  }
+}

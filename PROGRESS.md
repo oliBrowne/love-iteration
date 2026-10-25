@@ -1043,3 +1043,9 @@
 - Verified: lint, typecheck, vitest (copy and no-overwrite tests), build, format:check, roadmap tests.
 - Next: L175 add a print layout for reflection detail.
 - Blockers: none
+
+## 2026-10-25 — L175: Add reflection print layout
+- Changed: Printing hides navigation, buttons, intro and the form so a week's saved responses print on their own.
+- Verified: lint, typecheck, vitest (print CSS and markup tests; one unrelated timing flake passed on re-run), build, format:check, roadmap tests. Not checked in a real print preview.
+- Next: L176 prove the reflection prompts and save work from the keyboard.
+- Blockers: none

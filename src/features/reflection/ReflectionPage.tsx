@@ -192,50 +192,53 @@ export function ReflectionPage({
   return (
     <section aria-labelledby="reflection-heading">
       <h2 id="reflection-heading">Reflection</h2>
-      <p>
-        A quiet look back at your week. Reflections stay on this device and are
-        private to you.
-      </p>
-      <p>
-        This week: <strong>{formatWeekRange(weekStart())}</strong>
-      </p>
-      <WeekSummary
-        weekStart={weekStart()}
-        checkIns={checkIns}
-        gratitude={gratitude}
-        completions={completions}
-      />
-      <form onSubmit={submit}>
-        {prompts.map(({ field, label }) => (
-          <TextArea
-            key={field}
-            label={label}
-            value={answers[field]}
+      {/* Printing a week should show only its saved responses. */}
+      <div className="print-hide">
+        <p>
+          A quiet look back at your week. Reflections stay on this device and
+          are private to you.
+        </p>
+        <p>
+          This week: <strong>{formatWeekRange(weekStart())}</strong>
+        </p>
+        <WeekSummary
+          weekStart={weekStart()}
+          checkIns={checkIns}
+          gratitude={gratitude}
+          completions={completions}
+        />
+        <form onSubmit={submit}>
+          {prompts.map(({ field, label }) => (
+            <TextArea
+              key={field}
+              label={label}
+              value={answers[field]}
+              onChange={(event) => {
+                setAnswers({ ...answers, [field]: event.target.value });
+                setProblem(undefined);
+                setJustSaved(false);
+                setCopied(false);
+              }}
+            />
+          ))}
+          <TextField
+            label="One small next step"
+            maxLength={NEXT_ACTION_MAX_LENGTH}
+            value={answers.nextAction}
             onChange={(event) => {
-              setAnswers({ ...answers, [field]: event.target.value });
+              setAnswers({ ...answers, nextAction: event.target.value });
               setProblem(undefined);
               setJustSaved(false);
-              setCopied(false);
             }}
           />
-        ))}
-        <TextField
-          label="One small next step"
-          maxLength={NEXT_ACTION_MAX_LENGTH}
-          value={answers.nextAction}
-          onChange={(event) => {
-            setAnswers({ ...answers, nextAction: event.target.value });
-            setProblem(undefined);
-            setJustSaved(false);
-          }}
-        />
-        <Button type="submit">Save reflection</Button>
-        {problem ? <InlineError>{problem}</InlineError> : null}
-        {justSaved ? <p role="status">Saved.</p> : null}
-        {copied ? (
-          <p role="status">Copied into this week. Save to keep it.</p>
-        ) : null}
-      </form>
+          <Button type="submit">Save reflection</Button>
+          {problem ? <InlineError>{problem}</InlineError> : null}
+          {justSaved ? <p role="status">Saved.</p> : null}
+          {copied ? (
+            <p role="status">Copied into this week. Save to keep it.</p>
+          ) : null}
+        </form>
+      </div>
       <ReflectionHistory
         reflections={earlier}
         onDelete={remove}
