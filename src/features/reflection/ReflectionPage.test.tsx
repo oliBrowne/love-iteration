@@ -204,3 +204,49 @@ describe('Reflection edit', () => {
     expect(stored[0]?.whatWorked).toBe('Demo: a slow morning');
   });
 });
+
+describe('Reflection history list', () => {
+  const base = {
+    schemaVersion: 1 as const,
+    createdAt: '2026-01-01T00:00:00.000Z',
+    updatedAt: '2026-01-01T00:00:00.000Z',
+  };
+
+  it('lists prior weeks, newest first, without this week', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put({
+      ...base,
+      id: 'a',
+      weekStart: '2025-12-29',
+      whatWorked: 'x',
+    });
+    await repo.put({
+      ...base,
+      id: 'b',
+      weekStart: '2026-01-05',
+      whatWorked: 'y',
+    });
+    await repo.put({
+      ...base,
+      id: 'c',
+      weekStart: weekStart(),
+      whatWorked: 'z',
+    });
+    render(<ReflectionPage getRepository={async () => repo} />);
+    const items = await screen.findAllByRole('listitem');
+    expect(items).toHaveLength(2);
+    expect(items[0]?.textContent).toContain('Jan 5');
+    expect(items[1]?.textContent).toContain('Dec 29');
+  });
+
+  it('shows no history section when there are no prior weeks', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    render(<ReflectionPage getRepository={async () => repo} />);
+    await Promise.resolve();
+    expect(screen.queryByText('Earlier weeks')).toBeNull();
+  });
+});

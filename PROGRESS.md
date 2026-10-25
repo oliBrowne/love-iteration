@@ -989,3 +989,9 @@
 - Verified: lint, typecheck, vitest (reflected and not-started tests), build, format:check, roadmap tests.
 - Next: L166 add a browsable list of prior weeks' reflections.
 - Blockers: none
+
+## 2026-10-25 — L166: Add reflection history list
+- Changed: Reflection lists earlier weeks (newest first) under the form.
+- Verified: lint, typecheck, vitest (history list tests), build, format:check, roadmap tests.
+- Next: L167 show a selected week's full responses.
+- Blockers: none

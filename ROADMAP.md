@@ -184,7 +184,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L163 Add current-week edit — Done when saved responses refill the form.
 - [x] L164 Prevent duplicate week record — Done when save updates the existing week.
 - [x] L165 Add reflection preview — Done when Home shows current week status.
-- [ ] L166 Add reflection history list — Done when prior weeks are browsable.
+- [x] L166 Add reflection history list — Done when prior weeks are browsable.
 - [ ] L167 Add reflection detail — Done when selected week shows all responses.
 - [ ] L168 Add reflection delete confirmation — Done when cancel preserves entry.
 - [ ] L169 Add optional check-in summary — Done when reflection shows week's mood labels.

@@ -11,6 +11,7 @@ import {
 } from '../../domain/index.ts';
 import type { Reflection } from '../../domain/index.ts';
 import { Button, InlineError, TextArea } from '../../ui/index.ts';
+import { ReflectionHistory } from './ReflectionHistory.tsx';
 
 type ReflectionPageProps = {
   getRepository?: () => Promise<Repository<Reflection>>;
@@ -39,6 +40,8 @@ export function ReflectionPage({
   const [justSaved, setJustSaved] = useState(false);
   // The saved record for this week, so saving again updates it.
   const [existing, setExisting] = useState<Reflection>();
+  // Reflections from earlier weeks, newest first.
+  const [earlier, setEarlier] = useState<Reflection[]>([]);
 
   // Only the first getRepository is used to refill, so a new function on a
   // later render cannot overwrite what is being typed.
@@ -51,8 +54,10 @@ export function ReflectionPage({
       .current()
       .then((repo) => repo.list())
       .then((saved) => {
+        if (!current) return;
+        setEarlier(saved.filter((r) => r.weekStart !== weekStart()));
         const found = saved.find((r) => r.weekStart === weekStart());
-        if (!current || !found) return;
+        if (!found) return;
         setExisting(found);
         setAnswers({
           whatWorked: found.whatWorked ?? '',
@@ -141,6 +146,7 @@ export function ReflectionPage({
         {problem ? <InlineError>{problem}</InlineError> : null}
         {justSaved ? <p role="status">Saved.</p> : null}
       </form>
+      <ReflectionHistory reflections={earlier} />
     </section>
   );
 }
