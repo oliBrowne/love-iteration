@@ -995,3 +995,9 @@
 - Verified: lint, typecheck, vitest (history list tests), build, format:check, roadmap tests.
 - Next: L167 show a selected week's full responses.
 - Blockers: none
+
+## 2026-10-25 — L167: Add reflection detail
+- Changed: Choosing an earlier week shows all four responses, with a way back.
+- Verified: lint, typecheck, vitest (detail test), build, format:check, roadmap tests.
+- Next: L168 confirm before deleting a reflection.
+- Blockers: none

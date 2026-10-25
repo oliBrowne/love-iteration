@@ -12,20 +12,12 @@ import {
 import type { Reflection } from '../../domain/index.ts';
 import { Button, InlineError, TextArea } from '../../ui/index.ts';
 import { ReflectionHistory } from './ReflectionHistory.tsx';
+import { prompts } from './reflectionPrompts.ts';
+import type { PromptField } from './reflectionPrompts.ts';
 
 type ReflectionPageProps = {
   getRepository?: () => Promise<Repository<Reflection>>;
 };
-
-// Each prompt maps to one optional field on the Reflection record.
-const prompts = [
-  { field: 'whatWorked', label: 'What worked this week?' },
-  { field: 'whatWasHard', label: 'What was hard this week?' },
-  { field: 'whatToTry', label: 'What would you like to try next week?' },
-  { field: 'appreciation', label: 'What do you appreciate about the week?' },
-] as const;
-
-type PromptField = (typeof prompts)[number]['field'];
 
 export function ReflectionPage({
   getRepository = getReflectionRepository,

@@ -250,3 +250,29 @@ describe('Reflection history list', () => {
     expect(screen.queryByText('Earlier weeks')).toBeNull();
   });
 });
+
+describe('Reflection detail', () => {
+  it('shows all responses for the selected week and can go back', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put({
+      id: 'a',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      weekStart: '2026-01-05',
+      whatWorked: 'Demo: a slow morning',
+      appreciation: 'Demo: a kind note',
+    });
+    render(<ReflectionPage getRepository={async () => repo} />);
+    fireEvent.click(await screen.findByRole('button', { name: /Jan 5/ }));
+    expect(screen.getByText('Demo: a slow morning')).toBeTruthy();
+    expect(screen.getByText('Demo: a kind note')).toBeTruthy();
+    expect(screen.getAllByText('Not answered.')).toHaveLength(2);
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Back to earlier weeks' }),
+    );
+    expect(screen.getByText('Earlier weeks')).toBeTruthy();
+  });
+});
