@@ -1055,3 +1055,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests. jsdom cannot press keys, so the browser test (L177) covers real key presses.
 - Next: L177 add a browser test that a partial save survives reload.
 - Blockers: none
+
+## 2026-10-25 — L177: Add reflection browser test
+- Changed: No visible change; a Playwright test saves a one-prompt reflection, reloads, and sees it refilled.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests, Playwright e2e/reflection.spec.ts (2 passed).
+- Next: L178 prove week selection stays stable near midnight across time zones.
+- Blockers: none
