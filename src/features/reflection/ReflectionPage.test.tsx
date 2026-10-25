@@ -13,6 +13,7 @@ import App from '../../App.tsx';
 import {
   createCheckInRepository,
   createGratitudeRepository,
+  createRitualCompletionRepository,
   createReflectionRepository,
   openDatabase,
 } from '../../data/index.ts';
@@ -399,5 +400,45 @@ describe('Reflection gratitude summary', () => {
     );
     await Promise.resolve();
     expect(screen.queryByText(/Appreciations written/)).toBeNull();
+  });
+});
+
+describe('Reflection ritual summary', () => {
+  it('shows how many rituals were completed this week', async () => {
+    const db = await openDatabase(new IDBFactory());
+    const completions = createRitualCompletionRepository(db);
+    const meta = {
+      schemaVersion: 1 as const,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+    };
+    const start = weekStart();
+    await completions.put({ ...meta, id: 'x1', ritualId: 'r', date: start });
+    await completions.put({
+      ...meta,
+      id: 'x2',
+      ritualId: 'r',
+      date: '2020-01-01',
+    });
+    render(
+      <ReflectionPage
+        getRepository={async () => createReflectionRepository(db)}
+        getCompletionRepo={async () => completions}
+      />,
+    );
+    const line = await screen.findByText(/Rituals completed this week/);
+    expect(line.textContent).toContain('1');
+  });
+
+  it('leaves the count out when none were completed', async () => {
+    const db = await openDatabase(new IDBFactory());
+    render(
+      <ReflectionPage
+        getRepository={async () => createReflectionRepository(db)}
+        getCompletionRepo={async () => createRitualCompletionRepository(db)}
+      />,
+    );
+    await Promise.resolve();
+    expect(screen.queryByText(/Rituals completed/)).toBeNull();
   });
 });

@@ -4,6 +4,7 @@ import {
   getCheckInRepository,
   getGratitudeRepository,
   getReflectionRepository,
+  getRitualCompletionRepository,
 } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
@@ -13,7 +14,12 @@ import {
   nowIso,
   weekStart,
 } from '../../domain/index.ts';
-import type { CheckIn, Gratitude, Reflection } from '../../domain/index.ts';
+import type {
+  CheckIn,
+  Gratitude,
+  Reflection,
+  RitualCompletion,
+} from '../../domain/index.ts';
 import { Button, InlineError, TextArea } from '../../ui/index.ts';
 import { WeekSummary } from './WeekSummary.tsx';
 import { ReflectionHistory } from './ReflectionHistory.tsx';
@@ -24,12 +30,14 @@ type ReflectionPageProps = {
   getRepository?: () => Promise<Repository<Reflection>>;
   getCheckInRepo?: () => Promise<Repository<CheckIn>>;
   getGratitudeRepo?: () => Promise<Repository<Gratitude>>;
+  getCompletionRepo?: () => Promise<Repository<RitualCompletion>>;
 };
 
 export function ReflectionPage({
   getRepository = getReflectionRepository,
   getCheckInRepo = getCheckInRepository,
   getGratitudeRepo = getGratitudeRepository,
+  getCompletionRepo = getRitualCompletionRepository,
 }: ReflectionPageProps) {
   const [answers, setAnswers] = useState<Record<PromptField, string>>({
     whatWorked: '',
@@ -45,6 +53,7 @@ export function ReflectionPage({
   // This week's check-ins, for the optional summary.
   const [checkIns, setCheckIns] = useState<CheckIn[]>([]);
   const [gratitude, setGratitude] = useState<Gratitude[]>([]);
+  const [completions, setCompletions] = useState<RitualCompletion[]>([]);
   const [earlier, setEarlier] = useState<Reflection[]>([]);
 
   // Only the first getRepository is used to refill, so a new function on a
@@ -64,6 +73,12 @@ export function ReflectionPage({
       .then((repo) => repo.list())
       .then((saved) => {
         if (current) setGratitude(saved);
+      })
+      .catch(() => {});
+    getCompletionRepo()
+      .then((repo) => repo.list())
+      .then((saved) => {
+        if (current) setCompletions(saved);
       })
       .catch(() => {});
     return () => {
@@ -168,6 +183,7 @@ export function ReflectionPage({
         weekStart={weekStart()}
         checkIns={checkIns}
         gratitude={gratitude}
+        completions={completions}
       />
       <form onSubmit={submit}>
         {prompts.map(({ field, label }) => (

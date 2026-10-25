@@ -1019,3 +1019,9 @@
 - Verified: lint, typecheck, vitest (count tests), build, format:check, roadmap tests.
 - Next: L171 show this week's completed ritual count in Reflection.
 - Blockers: none
+
+## 2026-10-25 — L171: Add optional ritual summary
+- Changed: Reflection shows how many rituals were completed this week (hidden when zero).
+- Verified: lint, typecheck, vitest (count tests), build, format:check, roadmap tests.
+- Next: L172 add a one-line next-step text saved with the reflection.
+- Blockers: none

@@ -1,10 +1,15 @@
 import { isInWeek, moodLabels } from '../../domain/index.ts';
-import type { CheckIn, Gratitude } from '../../domain/index.ts';
+import type {
+  CheckIn,
+  Gratitude,
+  RitualCompletion,
+} from '../../domain/index.ts';
 
 type WeekSummaryProps = {
   weekStart: string;
   checkIns: CheckIn[];
   gratitude: Gratitude[];
+  completions: RitualCompletion[];
 };
 
 // A quiet recap of the week, shown above the prompts. Each part is optional
@@ -13,6 +18,7 @@ export function WeekSummary({
   weekStart,
   checkIns,
   gratitude,
+  completions,
 }: WeekSummaryProps) {
   // Oldest first reads like the week unfolding.
   const moods = checkIns
@@ -21,6 +27,9 @@ export function WeekSummary({
     .map((c) => moodLabels[c.mood]);
   const appreciations = gratitude.filter((g) =>
     isInWeek(g.date, weekStart),
+  ).length;
+  const ritualsDone = completions.filter((c) =>
+    isInWeek(c.date, weekStart),
   ).length;
   return (
     <>
@@ -32,6 +41,11 @@ export function WeekSummary({
       {appreciations > 0 ? (
         <p>
           Appreciations written this week: <strong>{appreciations}</strong>
+        </p>
+      ) : null}
+      {ritualsDone > 0 ? (
+        <p>
+          Rituals completed this week: <strong>{ritualsDone}</strong>
         </p>
       ) : null}
     </>

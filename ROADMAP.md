@@ -189,7 +189,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L168 Add reflection delete confirmation — Done when cancel preserves entry.
 - [x] L169 Add optional check-in summary — Done when reflection shows week's mood labels.
 - [x] L170 Add optional gratitude summary — Done when reflection shows week's entries count.
-- [ ] L171 Add optional ritual summary — Done when reflection shows completed count.
+- [x] L171 Add optional ritual summary — Done when reflection shows completed count.
 - [ ] L172 Add selected next action — Done when user can save one short next-step text.
 - [ ] L173 Show next action on Home — Done when saved action is visible until next week.
 - [ ] L174 Add copy-previous action — Done when selected prior response is copied explicitly.
