@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import {
   getCheckInRepository,
+  getGratitudeRepository,
   getReflectionRepository,
 } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
@@ -12,7 +13,7 @@ import {
   nowIso,
   weekStart,
 } from '../../domain/index.ts';
-import type { CheckIn, Reflection } from '../../domain/index.ts';
+import type { CheckIn, Gratitude, Reflection } from '../../domain/index.ts';
 import { Button, InlineError, TextArea } from '../../ui/index.ts';
 import { WeekSummary } from './WeekSummary.tsx';
 import { ReflectionHistory } from './ReflectionHistory.tsx';
@@ -22,11 +23,13 @@ import type { PromptField } from './reflectionPrompts.ts';
 type ReflectionPageProps = {
   getRepository?: () => Promise<Repository<Reflection>>;
   getCheckInRepo?: () => Promise<Repository<CheckIn>>;
+  getGratitudeRepo?: () => Promise<Repository<Gratitude>>;
 };
 
 export function ReflectionPage({
   getRepository = getReflectionRepository,
   getCheckInRepo = getCheckInRepository,
+  getGratitudeRepo = getGratitudeRepository,
 }: ReflectionPageProps) {
   const [answers, setAnswers] = useState<Record<PromptField, string>>({
     whatWorked: '',
@@ -41,6 +44,7 @@ export function ReflectionPage({
   // Reflections from earlier weeks, newest first.
   // This week's check-ins, for the optional summary.
   const [checkIns, setCheckIns] = useState<CheckIn[]>([]);
+  const [gratitude, setGratitude] = useState<Gratitude[]>([]);
   const [earlier, setEarlier] = useState<Reflection[]>([]);
 
   // Only the first getRepository is used to refill, so a new function on a
@@ -49,14 +53,19 @@ export function ReflectionPage({
 
   useEffect(() => {
     let current = true;
+    // The summary is optional; reflecting works without it.
     getCheckInRepo()
       .then((repo) => repo.list())
       .then((saved) => {
         if (current) setCheckIns(saved);
       })
-      .catch(() => {
-        // The summary is optional; reflecting works without it.
-      });
+      .catch(() => {});
+    getGratitudeRepo()
+      .then((repo) => repo.list())
+      .then((saved) => {
+        if (current) setGratitude(saved);
+      })
+      .catch(() => {});
     return () => {
       current = false;
     };
@@ -155,7 +164,11 @@ export function ReflectionPage({
       <p>
         This week: <strong>{formatWeekRange(weekStart())}</strong>
       </p>
-      <WeekSummary weekStart={weekStart()} checkIns={checkIns} />
+      <WeekSummary
+        weekStart={weekStart()}
+        checkIns={checkIns}
+        gratitude={gratitude}
+      />
       <form onSubmit={submit}>
         {prompts.map(({ field, label }) => (
           <TextArea

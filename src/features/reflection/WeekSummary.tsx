@@ -1,23 +1,39 @@
 import { isInWeek, moodLabels } from '../../domain/index.ts';
-import type { CheckIn } from '../../domain/index.ts';
+import type { CheckIn, Gratitude } from '../../domain/index.ts';
 
 type WeekSummaryProps = {
   weekStart: string;
   checkIns: CheckIn[];
+  gratitude: Gratitude[];
 };
 
 // A quiet recap of the week, shown above the prompts. Each part is optional
 // and simply left out when there is nothing to say.
-export function WeekSummary({ weekStart, checkIns }: WeekSummaryProps) {
+export function WeekSummary({
+  weekStart,
+  checkIns,
+  gratitude,
+}: WeekSummaryProps) {
   // Oldest first reads like the week unfolding.
   const moods = checkIns
     .filter((c) => isInWeek(c.date, weekStart))
     .sort((a, b) => a.date.localeCompare(b.date))
     .map((c) => moodLabels[c.mood]);
-  if (moods.length === 0) return null;
+  const appreciations = gratitude.filter((g) =>
+    isInWeek(g.date, weekStart),
+  ).length;
   return (
-    <p>
-      Check-in moods this week: <strong>{moods.join(', ')}</strong>
-    </p>
+    <>
+      {moods.length > 0 ? (
+        <p>
+          Check-in moods this week: <strong>{moods.join(', ')}</strong>
+        </p>
+      ) : null}
+      {appreciations > 0 ? (
+        <p>
+          Appreciations written this week: <strong>{appreciations}</strong>
+        </p>
+      ) : null}
+    </>
   );
 }

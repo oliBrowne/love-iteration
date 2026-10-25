@@ -12,6 +12,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import App from '../../App.tsx';
 import {
   createCheckInRepository,
+  createGratitudeRepository,
   createReflectionRepository,
   openDatabase,
 } from '../../data/index.ts';
@@ -357,5 +358,46 @@ describe('Reflection check-in summary', () => {
     );
     await Promise.resolve();
     expect(screen.queryByText(/Check-in moods/)).toBeNull();
+  });
+});
+
+describe('Reflection gratitude summary', () => {
+  it('shows how many appreciations were written this week', async () => {
+    const db = await openDatabase(new IDBFactory());
+    const gratitude = createGratitudeRepository(db);
+    const meta = {
+      schemaVersion: 1 as const,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+    };
+    const start = weekStart();
+    await gratitude.put({ ...meta, id: 'g1', date: start, text: 'Demo: one' });
+    await gratitude.put({ ...meta, id: 'g2', date: start, text: 'Demo: two' });
+    await gratitude.put({
+      ...meta,
+      id: 'g3',
+      date: '2020-01-01',
+      text: 'Demo: old',
+    });
+    render(
+      <ReflectionPage
+        getRepository={async () => createReflectionRepository(db)}
+        getGratitudeRepo={async () => gratitude}
+      />,
+    );
+    const line = await screen.findByText(/Appreciations written this week/);
+    expect(line.textContent).toContain('2');
+  });
+
+  it('leaves the count out when nothing was written', async () => {
+    const db = await openDatabase(new IDBFactory());
+    render(
+      <ReflectionPage
+        getRepository={async () => createReflectionRepository(db)}
+        getGratitudeRepo={async () => createGratitudeRepository(db)}
+      />,
+    );
+    await Promise.resolve();
+    expect(screen.queryByText(/Appreciations written/)).toBeNull();
   });
 });

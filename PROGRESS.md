@@ -1013,3 +1013,9 @@
 - Verified: lint, typecheck, vitest (summary and isInWeek tests), build, format:check, roadmap tests.
 - Next: L170 show this week's gratitude entry count in Reflection.
 - Blockers: none
+
+## 2026-10-25 — L170: Add optional gratitude summary
+- Changed: Reflection shows how many appreciations were written this week (hidden when zero).
+- Verified: lint, typecheck, vitest (count tests), build, format:check, roadmap tests.
+- Next: L171 show this week's completed ritual count in Reflection.
+- Blockers: none
