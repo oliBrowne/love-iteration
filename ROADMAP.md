@@ -191,7 +191,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L170 Add optional gratitude summary — Done when reflection shows week's entries count.
 - [x] L171 Add optional ritual summary — Done when reflection shows completed count.
 - [x] L172 Add selected next action — Done when user can save one short next-step text.
-- [ ] L173 Show next action on Home — Done when saved action is visible until next week.
+- [x] L173 Show next action on Home — Done when saved action is visible until next week.
 - [ ] L174 Add copy-previous action — Done when selected prior response is copied explicitly.
 - [ ] L175 Add reflection print layout — Done when printed detail omits controls.
 - [ ] L176 Add reflection keyboard test — Done when prompts and save work with keyboard.

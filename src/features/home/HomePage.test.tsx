@@ -344,7 +344,10 @@ describe('HomePage rituals preview', () => {
 describe('HomePage reflection preview', () => {
   const stamp = '2026-01-01T00:00:00.000Z';
 
-  async function setupReflections(week: string | undefined) {
+  async function setupReflections(
+    week: string | undefined,
+    nextAction?: string,
+  ) {
     const db = await openDatabase(new IDBFactory());
     const reflections = createReflectionRepository(db);
     if (week)
@@ -355,6 +358,7 @@ describe('HomePage reflection preview', () => {
         updatedAt: stamp,
         weekStart: week,
         whatWorked: 'Demo: a slow morning',
+        ...(nextAction ? { nextAction } : {}),
       });
     render(
       <HomePage
@@ -381,5 +385,18 @@ describe('HomePage reflection preview', () => {
     expect((await screen.findByTestId('reflection-preview')).textContent).toBe(
       'Not started yet.',
     );
+  });
+
+  it("shows this week's saved next step", async () => {
+    await setupReflections(weekStart(), 'Demo: plan a call');
+    expect((await screen.findByTestId('next-action')).textContent).toContain(
+      'Demo: plan a call',
+    );
+  });
+
+  it('shows no next step from another week or when none was saved', async () => {
+    await setupReflections('2000-01-03', 'Demo: old step');
+    await screen.findByTestId('reflection-preview');
+    expect(screen.queryByTestId('next-action')).toBeNull();
   });
 });

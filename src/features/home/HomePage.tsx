@@ -58,6 +58,7 @@ export function HomePage({
     startsAt: string;
   }>();
   const [reflected, setReflected] = useState<boolean>();
+  const [nextAction, setNextAction] = useState<string>();
   const [records, setRecords] = useState<CheckIn[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [selectedId, setSelectedId] = useState<string>();
@@ -165,8 +166,10 @@ export function HomePage({
       .then(getReflectionRepo)
       .then((repo) => repo.list())
       .then((saved) => {
-        if (!cancelled)
-          setReflected(saved.some((r) => r.weekStart === weekStart()));
+        if (cancelled) return;
+        const thisWeek = saved.find((r) => r.weekStart === weekStart());
+        setReflected(thisWeek !== undefined);
+        setNextAction(thisWeek?.nextAction);
       })
       .catch(() => {
         // The preview is optional; Home still works without it.
@@ -298,6 +301,11 @@ export function HomePage({
           <p data-testid="reflection-preview">
             {reflected ? 'You have reflected this week.' : 'Not started yet.'}
           </p>
+          {nextAction ? (
+            <p data-testid="next-action">
+              Your next step: <strong>{nextAction}</strong>
+            </p>
+          ) : null}
           <p>
             <a href={routeToHash('reflection')}>Open Reflection</a>
           </p>

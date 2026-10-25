@@ -1031,3 +1031,9 @@
 - Verified: lint, typecheck, vitest (save, refill, maxlength tests), build, format:check, roadmap tests.
 - Next: L173 show the saved next step on Home until next week.
 - Blockers: none
+
+## 2026-10-25 — L173: Show next action on Home
+- Changed: Home's reflection card shows this week's saved next step until the week changes.
+- Verified: lint, typecheck, vitest (shown / not shown tests), build, format:check, roadmap tests.
+- Next: L174 add an explicit copy-previous-response action.
+- Blockers: none
