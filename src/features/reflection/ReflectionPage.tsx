@@ -66,6 +66,16 @@ export function ReflectionPage({
     };
   }, []);
 
+  async function remove(reflection: Reflection) {
+    try {
+      const repo = await getRepository();
+      await repo.delete(reflection.id);
+      setEarlier((list) => list.filter((r) => r.id !== reflection.id));
+    } catch {
+      setProblem('Could not delete this. Nothing was removed; try again.');
+    }
+  }
+
   async function submit(event: FormEvent) {
     event.preventDefault();
     setJustSaved(false);
@@ -138,7 +148,7 @@ export function ReflectionPage({
         {problem ? <InlineError>{problem}</InlineError> : null}
         {justSaved ? <p role="status">Saved.</p> : null}
       </form>
-      <ReflectionHistory reflections={earlier} />
+      <ReflectionHistory reflections={earlier} onDelete={remove} />
     </section>
   );
 }

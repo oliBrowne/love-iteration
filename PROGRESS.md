@@ -1001,3 +1001,9 @@
 - Verified: lint, typecheck, vitest (detail test), build, format:check, roadmap tests.
 - Next: L168 confirm before deleting a reflection.
 - Blockers: none
+
+## 2026-10-25 — L168: Add reflection delete confirmation
+- Changed: Deleting an earlier week's reflection asks first; Cancel keeps it.
+- Verified: lint, typecheck, vitest (cancel and confirm tests), build, format:check, roadmap tests.
+- Next: L169 show the week's check-in mood labels in Reflection.
+- Blockers: none

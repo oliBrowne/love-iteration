@@ -7,11 +7,17 @@ import { prompts } from './reflectionPrompts.ts';
 type ReflectionHistoryProps = {
   // Prior weeks, newest first.
   reflections: Reflection[];
+  // Removes one reflection after the person confirms.
+  onDelete?: (reflection: Reflection) => Promise<void>;
 };
 
 // A browsable list of earlier weeks; choosing one shows all its responses.
-export function ReflectionHistory({ reflections }: ReflectionHistoryProps) {
+export function ReflectionHistory({
+  reflections,
+  onDelete,
+}: ReflectionHistoryProps) {
   const [selectedId, setSelectedId] = useState<string>();
+  const [confirming, setConfirming] = useState(false);
   if (reflections.length === 0) return null;
   const selected = reflections.find((r) => r.id === selectedId);
 
@@ -27,9 +33,30 @@ export function ReflectionHistory({ reflections }: ReflectionHistoryProps) {
             <p className="note-text">{selected[field] ?? 'Not answered.'}</p>
           </div>
         ))}
-        <Button onClick={() => setSelectedId(undefined)}>
-          Back to earlier weeks
-        </Button>
+        {confirming ? (
+          <>
+            <p>Delete this reflection? This cannot be undone.</p>
+            <Button
+              onClick={async () => {
+                await onDelete?.(selected);
+                setConfirming(false);
+                setSelectedId(undefined);
+              }}
+            >
+              Yes, delete
+            </Button>
+            <Button onClick={() => setConfirming(false)}>Cancel</Button>
+          </>
+        ) : (
+          <>
+            <Button onClick={() => setSelectedId(undefined)}>
+              Back to earlier weeks
+            </Button>
+            {onDelete ? (
+              <Button onClick={() => setConfirming(true)}>Delete</Button>
+            ) : null}
+          </>
+        )}
       </section>
     );
   }

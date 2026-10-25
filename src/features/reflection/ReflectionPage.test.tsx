@@ -276,3 +276,38 @@ describe('Reflection detail', () => {
     expect(screen.getByText('Earlier weeks')).toBeTruthy();
   });
 });
+
+describe('Reflection delete confirmation', () => {
+  async function setup() {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put({
+      id: 'a',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      weekStart: '2026-01-05',
+      whatWorked: 'Demo: a slow morning',
+    });
+    render(<ReflectionPage getRepository={async () => repo} />);
+    fireEvent.click(await screen.findByRole('button', { name: /Jan 5/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+    return repo;
+  }
+
+  it('keeps the entry when the person cancels', async () => {
+    const repo = await setup();
+    expect(screen.getByText(/This cannot be undone/)).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    expect(screen.getByText('Demo: a slow morning')).toBeTruthy();
+    expect(await repo.list()).toHaveLength(1);
+  });
+
+  it('removes the entry once confirmed', async () => {
+    const repo = await setup();
+    fireEvent.click(screen.getByRole('button', { name: 'Yes, delete' }));
+    await waitFor(() => expect(screen.queryByText('Earlier weeks')).toBeNull());
+    expect(await repo.list()).toEqual([]);
+  });
+});
