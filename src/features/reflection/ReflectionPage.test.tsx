@@ -477,3 +477,60 @@ describe('Reflection next action', () => {
     expect(field.getAttribute('maxlength')).toBe('140');
   });
 });
+
+describe('Reflection copy previous', () => {
+  async function setup(current?: string) {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put({
+      id: 'a',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      weekStart: '2026-01-05',
+      whatWorked: 'Demo: a slow morning',
+      whatToTry: 'Demo: a postcard',
+    });
+    render(<ReflectionPage getRepository={async () => repo} />);
+    if (current)
+      fireEvent.change(screen.getByLabelText('What worked this week?'), {
+        target: { value: current },
+      });
+    fireEvent.click(await screen.findByRole('button', { name: /Jan 5/ }));
+    return repo;
+  }
+
+  it('copies only the response the person picks, and does not save', async () => {
+    const repo = await setup();
+    // Two answered prompts, two unanswered: only answered ones get a button.
+    const copies = screen.getAllByRole('button', { name: /Copy to this week/ });
+    expect(copies).toHaveLength(2);
+    fireEvent.click(copies[0] as HTMLElement);
+    expect(
+      (screen.getByLabelText('What worked this week?') as HTMLTextAreaElement)
+        .value,
+    ).toBe('Demo: a slow morning');
+    expect(
+      (
+        screen.getByLabelText(
+          'What would you like to try next week?',
+        ) as HTMLTextAreaElement
+      ).value,
+    ).toBe('');
+    expect(await repo.list()).toHaveLength(1);
+  });
+
+  it('keeps text already typed this week', async () => {
+    await setup('Demo: today');
+    fireEvent.click(
+      screen.getAllByRole('button', {
+        name: /Copy to this week/,
+      })[0] as HTMLElement,
+    );
+    expect(
+      (screen.getByLabelText('What worked this week?') as HTMLTextAreaElement)
+        .value,
+    ).toBe('Demo: today\nDemo: a slow morning');
+  });
+});

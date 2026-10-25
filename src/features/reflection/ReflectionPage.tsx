@@ -51,6 +51,7 @@ export function ReflectionPage({
   });
   const [problem, setProblem] = useState<string>();
   const [justSaved, setJustSaved] = useState(false);
+  const [copied, setCopied] = useState(false);
   // The saved record for this week, so saving again updates it.
   const [existing, setExisting] = useState<Reflection>();
   // Reflections from earlier weeks, newest first.
@@ -118,6 +119,17 @@ export function ReflectionPage({
       current = false;
     };
   }, []);
+
+  // Adds an earlier response to this week's answer without erasing anything
+  // already typed there.
+  function copyEarlier(field: PromptField, text: string) {
+    setAnswers((current) => ({
+      ...current,
+      [field]: current[field] === '' ? text : `${current[field]}\n${text}`,
+    }));
+    setJustSaved(false);
+    setCopied(true);
+  }
 
   async function remove(reflection: Reflection) {
     try {
@@ -203,6 +215,7 @@ export function ReflectionPage({
               setAnswers({ ...answers, [field]: event.target.value });
               setProblem(undefined);
               setJustSaved(false);
+              setCopied(false);
             }}
           />
         ))}
@@ -219,8 +232,15 @@ export function ReflectionPage({
         <Button type="submit">Save reflection</Button>
         {problem ? <InlineError>{problem}</InlineError> : null}
         {justSaved ? <p role="status">Saved.</p> : null}
+        {copied ? (
+          <p role="status">Copied into this week. Save to keep it.</p>
+        ) : null}
       </form>
-      <ReflectionHistory reflections={earlier} onDelete={remove} />
+      <ReflectionHistory
+        reflections={earlier}
+        onDelete={remove}
+        onCopy={copyEarlier}
+      />
     </section>
   );
 }

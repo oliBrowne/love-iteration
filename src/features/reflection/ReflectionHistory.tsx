@@ -3,18 +3,22 @@ import { formatWeekRange } from '../../domain/index.ts';
 import type { Reflection } from '../../domain/index.ts';
 import { Button } from '../../ui/index.ts';
 import { prompts } from './reflectionPrompts.ts';
+import type { PromptField } from './reflectionPrompts.ts';
 
 type ReflectionHistoryProps = {
   // Prior weeks, newest first.
   reflections: Reflection[];
   // Removes one reflection after the person confirms.
   onDelete?: (reflection: Reflection) => Promise<void>;
+  // Copies one earlier response into this week's form.
+  onCopy?: (field: PromptField, text: string) => void;
 };
 
 // A browsable list of earlier weeks; choosing one shows all its responses.
 export function ReflectionHistory({
   reflections,
   onDelete,
+  onCopy,
 }: ReflectionHistoryProps) {
   const [selectedId, setSelectedId] = useState<string>();
   const [confirming, setConfirming] = useState(false);
@@ -31,6 +35,12 @@ export function ReflectionHistory({
           <div key={field}>
             <h4>{label}</h4>
             <p className="note-text">{selected[field] ?? 'Not answered.'}</p>
+            {onCopy && selected[field] ? (
+              <Button onClick={() => onCopy(field, selected[field] ?? '')}>
+                Copy to this week
+                <span className="visually-hidden"> — {label}</span>
+              </Button>
+            ) : null}
           </div>
         ))}
         {confirming ? (

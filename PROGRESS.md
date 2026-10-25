@@ -1037,3 +1037,9 @@
 - Verified: lint, typecheck, vitest (shown / not shown tests), build, format:check, roadmap tests.
 - Next: L174 add an explicit copy-previous-response action.
 - Blockers: none
+
+## 2026-10-25 — L174: Add copy-previous action
+- Changed: An earlier week's detail has a 'Copy to this week' button per answered response; it adds the text to the form (never overwrites) and does not save.
+- Verified: lint, typecheck, vitest (copy and no-overwrite tests), build, format:check, roadmap tests.
+- Next: L175 add a print layout for reflection detail.
+- Blockers: none
