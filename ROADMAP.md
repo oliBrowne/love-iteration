@@ -206,7 +206,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L182 Map check-in to timeline — Done when date and summary match source record.
 - [x] L183 Map gratitude to timeline — Done when date and summary match source record.
 - [x] L184 Map memory to timeline — Done when date and summary match source record.
-- [ ] L185 Map plan to timeline — Done when date and summary match source record.
+- [x] L185 Map plan to timeline — Done when date and summary match source record.
 - [ ] L186 Map ritual completion to timeline — Done when date and summary match source record.
 - [ ] L187 Map reflection to timeline — Done when week and summary match source record.
 - [ ] L188 Merge timeline sources — Done when pure function orders entries newest first.

@@ -2,6 +2,8 @@ import { moodLabels } from './checkin.ts';
 import type { CheckIn } from './checkin.ts';
 import type { Gratitude } from './gratitude.ts';
 import type { Memory } from './memory.ts';
+import type { PlannedDate } from './plannedDate.ts';
+import { localDate } from './time.ts';
 
 // The kinds of local record that appear as dated moments in the timeline.
 // Date ideas and rituals are lists of things to do rather than moments that
@@ -73,5 +75,26 @@ export function memoryToTimelineEntry(memory: Memory): TimelineEntry {
     date: memory.date,
     summary: shorten(note ? `${memory.title}: ${note}` : memory.title),
     createdAt: memory.createdAt,
+  };
+}
+
+const planPrefix = {
+  planned: 'Planned',
+  done: 'Enjoyed',
+  cancelled: 'Cancelled',
+} as const;
+
+// A plan reads as its status and the idea's title, on the local day it starts.
+// The title lives on the date idea, so the caller passes it in.
+export function planToTimelineEntry(
+  plan: PlannedDate,
+  ideaTitle: string,
+): TimelineEntry {
+  return {
+    id: plan.id,
+    kind: 'plan',
+    date: localDate(new Date(plan.startsAt)),
+    summary: shorten(`${planPrefix[plan.status]}: ${ideaTitle}`),
+    createdAt: plan.createdAt,
   };
 }

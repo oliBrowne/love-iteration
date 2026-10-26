@@ -2,11 +2,13 @@ import { describe, expect, it } from 'vitest';
 import type { CheckIn } from './checkin.ts';
 import type { Gratitude } from './gratitude.ts';
 import type { Memory } from './memory.ts';
+import type { PlannedDate } from './plannedDate.ts';
 import {
   SUMMARY_MAX_LENGTH,
   checkInToTimelineEntry,
   gratitudeToTimelineEntry,
   memoryToTimelineEntry,
+  planToTimelineEntry,
   timelineKinds,
 } from './timeline.ts';
 import type { TimelineEntry, TimelineKind } from './timeline.ts';
@@ -157,5 +159,40 @@ describe('memoryToTimelineEntry', () => {
       note: 'z'.repeat(300),
     });
     expect(summary).toHaveLength(SUMMARY_MAX_LENGTH);
+  });
+});
+
+describe('planToTimelineEntry', () => {
+  const startsAt = new Date(2026, 1, 14, 18, 30).toISOString();
+  const plan: PlannedDate = {
+    id: 'demo-plan',
+    schemaVersion: 1,
+    createdAt: '2026-02-01T10:00:00.000Z',
+    updatedAt: '2026-02-01T10:00:00.000Z',
+    ideaId: 'demo-idea',
+    startsAt,
+    status: 'planned',
+  };
+
+  it('lands on the local day the plan starts', () => {
+    const entry = planToTimelineEntry(plan, 'Demo: movie night');
+    expect(entry.date).toBe('2026-02-14');
+    expect(entry.id).toBe('demo-plan');
+    expect(entry.kind).toBe('plan');
+    expect(entry.createdAt).toBe('2026-02-01T10:00:00.000Z');
+  });
+
+  it('puts the status and idea title in the summary', () => {
+    expect(planToTimelineEntry(plan, 'Demo: movie night').summary).toBe(
+      'Planned: Demo: movie night',
+    );
+    expect(
+      planToTimelineEntry({ ...plan, status: 'done' }, 'Demo: movie night')
+        .summary,
+    ).toBe('Enjoyed: Demo: movie night');
+    expect(
+      planToTimelineEntry({ ...plan, status: 'cancelled' }, 'Demo: movie night')
+        .summary,
+    ).toBe('Cancelled: Demo: movie night');
   });
 });

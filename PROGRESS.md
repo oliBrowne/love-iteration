@@ -1103,3 +1103,9 @@
 - Verified: lint, typecheck, vitest (4 new tests), build, format:check, roadmap tests.
 - Next: L185 map a planned date to a timeline entry.
 - Blockers: none
+
+## 2026-10-26 — L185: Map plan to timeline
+- Changed: No visible change; a pure function turns a planned date into a timeline entry on its local start day, with status and idea title in the summary.
+- Verified: lint, typecheck, vitest (2 new tests), build, format:check, roadmap tests.
+- Next: L186 map a ritual completion to a timeline entry.
+- Blockers: none

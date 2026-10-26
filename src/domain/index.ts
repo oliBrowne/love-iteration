@@ -66,5 +66,6 @@ export {
   checkInToTimelineEntry,
   gratitudeToTimelineEntry,
   memoryToTimelineEntry,
+  planToTimelineEntry,
   timelineKinds,
 } from './timeline.ts';
