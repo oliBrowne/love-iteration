@@ -1,3 +1,6 @@
+import { moodLabels } from './checkin.ts';
+import type { CheckIn } from './checkin.ts';
+
 // The kinds of local record that appear as dated moments in the timeline.
 // Date ideas and rituals are lists of things to do rather than moments that
 // happened, so they are found in their own pages instead.
@@ -24,3 +27,26 @@ export type TimelineEntry = {
   // The source record's createdAt, used to order entries on the same day.
   createdAt: string;
 };
+
+// Longest summary line. Longer text is cut with an ellipsis.
+export const SUMMARY_MAX_LENGTH = 120;
+
+function shorten(text: string): string {
+  const oneLine = text.replace(/\s+/g, ' ').trim();
+  return oneLine.length > SUMMARY_MAX_LENGTH
+    ? `${oneLine.slice(0, SUMMARY_MAX_LENGTH - 1)}…`
+    : oneLine;
+}
+
+// A check-in reads as its mood, followed by the note when there is one.
+export function checkInToTimelineEntry(checkIn: CheckIn): TimelineEntry {
+  const note = shorten(checkIn.note);
+  const mood = `Feeling ${moodLabels[checkIn.mood].toLowerCase()}`;
+  return {
+    id: checkIn.id,
+    kind: 'checkin',
+    date: checkIn.date,
+    summary: note ? `${mood}: ${note}` : mood,
+    createdAt: checkIn.createdAt,
+  };
+}

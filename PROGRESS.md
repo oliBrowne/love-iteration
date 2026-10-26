@@ -1085,3 +1085,9 @@
 - Verified: lint, typecheck, vitest (2 new tests), build, format:check, roadmap tests.
 - Next: L182 map a check-in to a timeline entry.
 - Blockers: none
+
+## 2026-10-26 — L182: Map check-in to timeline
+- Changed: No visible change; a pure function turns a check-in into a timeline entry with the same id, day, and a one-line mood-and-note summary.
+- Verified: lint, typecheck, vitest (4 new tests), build, format:check, roadmap tests.
+- Next: L183 map gratitude to a timeline entry.
+- Blockers: none
