@@ -3,6 +3,7 @@ import type { CheckIn } from './checkin.ts';
 import type { Gratitude } from './gratitude.ts';
 import type { Memory } from './memory.ts';
 import type { PlannedDate } from './plannedDate.ts';
+import type { Reflection } from './reflection.ts';
 import type { RitualCompletion } from './ritual.ts';
 import {
   SUMMARY_MAX_LENGTH,
@@ -10,6 +11,7 @@ import {
   gratitudeToTimelineEntry,
   memoryToTimelineEntry,
   planToTimelineEntry,
+  reflectionToTimelineEntry,
   ritualCompletionToTimelineEntry,
   timelineKinds,
 } from './timeline.ts';
@@ -223,5 +225,38 @@ describe('ritualCompletionToTimelineEntry', () => {
     expect(
       ritualCompletionToTimelineEntry(completion, 'Demo: Sunday call').summary,
     ).toBe('Ritual: Demo: Sunday call');
+  });
+});
+
+describe('reflectionToTimelineEntry', () => {
+  const reflection: Reflection = {
+    id: 'demo-reflection',
+    schemaVersion: 1,
+    createdAt: '2026-01-11T20:00:00.000Z',
+    updatedAt: '2026-01-11T20:00:00.000Z',
+    weekStart: '2026-01-05',
+    whatWasHard: 'Demo: a busy Tuesday',
+    appreciation: 'Demo: a kind note',
+  };
+
+  it('sits on the Monday that starts the week', () => {
+    const entry = reflectionToTimelineEntry(reflection);
+    expect(entry.date).toBe('2026-01-05');
+    expect(entry.id).toBe('demo-reflection');
+    expect(entry.kind).toBe('reflection');
+    expect(entry.createdAt).toBe('2026-01-11T20:00:00.000Z');
+  });
+
+  it('summarizes the first prompt that was answered', () => {
+    expect(reflectionToTimelineEntry(reflection).summary).toBe(
+      'Weekly reflection: Demo: a busy Tuesday',
+    );
+  });
+
+  it('still reads well when no prompt was answered', () => {
+    const empty: Reflection = { ...reflection };
+    delete empty.whatWasHard;
+    delete empty.appreciation;
+    expect(reflectionToTimelineEntry(empty).summary).toBe('Weekly reflection');
   });
 });

@@ -1115,3 +1115,9 @@
 - Verified: lint, typecheck, vitest (2 new tests), build, format:check, roadmap tests.
 - Next: L187 map a reflection to a timeline entry.
 - Blockers: none
+
+## 2026-10-26 — L187: Map reflection to timeline
+- Changed: No visible change; a pure function turns a weekly reflection into a timeline entry on its week start, summarizing the first answered prompt.
+- Verified: lint, typecheck, vitest (3 new tests), build, format:check, roadmap tests.
+- Next: L188 merge all timeline sources newest first.
+- Blockers: none

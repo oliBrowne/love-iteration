@@ -3,6 +3,7 @@ import type { CheckIn } from './checkin.ts';
 import type { Gratitude } from './gratitude.ts';
 import type { Memory } from './memory.ts';
 import type { PlannedDate } from './plannedDate.ts';
+import type { Reflection } from './reflection.ts';
 import type { RitualCompletion } from './ritual.ts';
 import { localDate } from './time.ts';
 
@@ -112,5 +113,30 @@ export function ritualCompletionToTimelineEntry(
     date: completion.date,
     summary: shorten(`Ritual: ${ritualName}`),
     createdAt: completion.createdAt,
+  };
+}
+
+// A reflection sits on the Monday that starts its week. It reads as the first
+// prompt that was answered, or just "Weekly reflection" if none were.
+export function reflectionToTimelineEntry(
+  reflection: Reflection,
+): TimelineEntry {
+  const first = [
+    reflection.whatWorked,
+    reflection.whatWasHard,
+    reflection.whatToTry,
+    reflection.appreciation,
+    reflection.nextAction,
+  ]
+    .map((text) => shorten(text ?? ''))
+    .find((text) => text !== '');
+  return {
+    id: reflection.id,
+    kind: 'reflection',
+    date: reflection.weekStart,
+    summary: shorten(
+      first ? `Weekly reflection: ${first}` : 'Weekly reflection',
+    ),
+    createdAt: reflection.createdAt,
   };
 }
