@@ -1091,3 +1091,9 @@
 - Verified: lint, typecheck, vitest (4 new tests), build, format:check, roadmap tests.
 - Next: L183 map gratitude to a timeline entry.
 - Blockers: none
+
+## 2026-10-26 — L183: Map gratitude to timeline
+- Changed: No visible change; a pure function turns a gratitude entry into a timeline entry with the same id, day, and text as a one-line summary.
+- Verified: lint, typecheck, vitest (2 new tests), build, format:check, roadmap tests.
+- Next: L184 map memory to a timeline entry.
+- Blockers: none

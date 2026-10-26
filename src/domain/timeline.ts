@@ -1,5 +1,6 @@
 import { moodLabels } from './checkin.ts';
 import type { CheckIn } from './checkin.ts';
+import type { Gratitude } from './gratitude.ts';
 
 // The kinds of local record that appear as dated moments in the timeline.
 // Date ideas and rituals are lists of things to do rather than moments that
@@ -48,5 +49,16 @@ export function checkInToTimelineEntry(checkIn: CheckIn): TimelineEntry {
     date: checkIn.date,
     summary: note ? `${mood}: ${note}` : mood,
     createdAt: checkIn.createdAt,
+  };
+}
+
+// A gratitude entry reads as its text.
+export function gratitudeToTimelineEntry(gratitude: Gratitude): TimelineEntry {
+  return {
+    id: gratitude.id,
+    kind: 'gratitude',
+    date: gratitude.date,
+    summary: shorten(gratitude.text),
+    createdAt: gratitude.createdAt,
   };
 }

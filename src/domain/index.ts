@@ -62,4 +62,8 @@ export {
   parseReflectionWeek,
 } from './reflection.ts';
 export type { TimelineEntry, TimelineKind } from './timeline.ts';
-export { checkInToTimelineEntry, timelineKinds } from './timeline.ts';
+export {
+  checkInToTimelineEntry,
+  gratitudeToTimelineEntry,
+  timelineKinds,
+} from './timeline.ts';

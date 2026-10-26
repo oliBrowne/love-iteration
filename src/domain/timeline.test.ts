@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import type { CheckIn } from './checkin.ts';
+import type { Gratitude } from './gratitude.ts';
 import {
   SUMMARY_MAX_LENGTH,
   checkInToTimelineEntry,
+  gratitudeToTimelineEntry,
   timelineKinds,
 } from './timeline.ts';
 import type { TimelineEntry, TimelineKind } from './timeline.ts';
@@ -83,5 +85,35 @@ describe('checkInToTimelineEntry', () => {
     expect(summary.length).toBeLessThanOrEqual(
       'Feeling good: '.length + SUMMARY_MAX_LENGTH,
     );
+  });
+});
+
+describe('gratitudeToTimelineEntry', () => {
+  const gratitude: Gratitude = {
+    id: 'demo-gratitude',
+    schemaVersion: 1,
+    createdAt: '2026-01-06T20:00:00.000Z',
+    updatedAt: '2026-01-06T20:00:00.000Z',
+    date: '2026-01-06',
+    text: 'Demo: a kind message',
+  };
+
+  it('keeps the source id, day, and creation time', () => {
+    expect(gratitudeToTimelineEntry(gratitude)).toEqual({
+      id: 'demo-gratitude',
+      kind: 'gratitude',
+      date: '2026-01-06',
+      summary: 'Demo: a kind message',
+      createdAt: '2026-01-06T20:00:00.000Z',
+    });
+  });
+
+  it('cuts a long text to one short line', () => {
+    const { summary } = gratitudeToTimelineEntry({
+      ...gratitude,
+      text: 'y'.repeat(300),
+    });
+    expect(summary).toHaveLength(SUMMARY_MAX_LENGTH);
+    expect(summary.endsWith('…')).toBe(true);
   });
 });
