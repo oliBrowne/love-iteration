@@ -1,10 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import type { CheckIn } from './checkin.ts';
 import type { Gratitude } from './gratitude.ts';
+import type { Memory } from './memory.ts';
 import {
   SUMMARY_MAX_LENGTH,
   checkInToTimelineEntry,
   gratitudeToTimelineEntry,
+  memoryToTimelineEntry,
   timelineKinds,
 } from './timeline.ts';
 import type { TimelineEntry, TimelineKind } from './timeline.ts';
@@ -115,5 +117,45 @@ describe('gratitudeToTimelineEntry', () => {
     });
     expect(summary).toHaveLength(SUMMARY_MAX_LENGTH);
     expect(summary.endsWith('…')).toBe(true);
+  });
+});
+
+describe('memoryToTimelineEntry', () => {
+  const memory: Memory = {
+    id: 'demo-memory',
+    schemaVersion: 1,
+    createdAt: '2026-01-07T10:00:00.000Z',
+    updatedAt: '2026-01-07T10:00:00.000Z',
+    title: 'Demo: first video call',
+    date: '2025-12-20',
+    note: 'We talked until the battery died',
+  };
+
+  it('uses the memory day, not the day it was saved', () => {
+    const entry = memoryToTimelineEntry(memory);
+    expect(entry.date).toBe('2025-12-20');
+    expect(entry.createdAt).toBe('2026-01-07T10:00:00.000Z');
+    expect(entry.id).toBe('demo-memory');
+    expect(entry.kind).toBe('memory');
+  });
+
+  it('summarizes the title and the note', () => {
+    expect(memoryToTimelineEntry(memory).summary).toBe(
+      'Demo: first video call: We talked until the battery died',
+    );
+  });
+
+  it('shows only the title when there is no note', () => {
+    expect(memoryToTimelineEntry({ ...memory, note: '' }).summary).toBe(
+      'Demo: first video call',
+    );
+  });
+
+  it('keeps the summary to one short line', () => {
+    const { summary } = memoryToTimelineEntry({
+      ...memory,
+      note: 'z'.repeat(300),
+    });
+    expect(summary).toHaveLength(SUMMARY_MAX_LENGTH);
   });
 });

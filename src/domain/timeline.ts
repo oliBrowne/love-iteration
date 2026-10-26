@@ -1,6 +1,7 @@
 import { moodLabels } from './checkin.ts';
 import type { CheckIn } from './checkin.ts';
 import type { Gratitude } from './gratitude.ts';
+import type { Memory } from './memory.ts';
 
 // The kinds of local record that appear as dated moments in the timeline.
 // Date ideas and rituals are lists of things to do rather than moments that
@@ -60,5 +61,17 @@ export function gratitudeToTimelineEntry(gratitude: Gratitude): TimelineEntry {
     date: gratitude.date,
     summary: shorten(gratitude.text),
     createdAt: gratitude.createdAt,
+  };
+}
+
+// A memory reads as its title, followed by the note when there is one.
+export function memoryToTimelineEntry(memory: Memory): TimelineEntry {
+  const note = shorten(memory.note);
+  return {
+    id: memory.id,
+    kind: 'memory',
+    date: memory.date,
+    summary: shorten(note ? `${memory.title}: ${note}` : memory.title),
+    createdAt: memory.createdAt,
   };
 }

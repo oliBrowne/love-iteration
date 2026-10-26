@@ -1097,3 +1097,9 @@
 - Verified: lint, typecheck, vitest (2 new tests), build, format:check, roadmap tests.
 - Next: L184 map memory to a timeline entry.
 - Blockers: none
+
+## 2026-10-26 — L184: Map memory to timeline
+- Changed: No visible change; a pure function turns a memory into a timeline entry on the memory's own day with its title and note as the summary.
+- Verified: lint, typecheck, vitest (4 new tests), build, format:check, roadmap tests.
+- Next: L185 map a planned date to a timeline entry.
+- Blockers: none
