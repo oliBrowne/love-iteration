@@ -57,3 +57,31 @@ describe('weekStart', () => {
     expect(weekStart(new Date(2026, 0, 1))).toBe('2025-12-29');
   });
 });
+
+describe('weekStart near midnight', () => {
+  const originalTz = process.env.TZ;
+
+  afterEach(() => {
+    if (originalTz === undefined) delete process.env.TZ;
+    else process.env.TZ = originalTz;
+  });
+
+  // Sunday 23:59 and Monday 00:00 local time sit on either side of the week edge.
+  it.each(['UTC', 'America/Denver', 'Pacific/Auckland', 'Pacific/Kiritimati'])(
+    'keeps Sunday night in the old week and Monday morning in the new one (%s)',
+    (tz) => {
+      process.env.TZ = tz;
+      expect(weekStart(new Date(2026, 0, 11, 23, 59, 59))).toBe('2026-01-05');
+      expect(weekStart(new Date(2026, 0, 12, 0, 0, 0))).toBe('2026-01-12');
+    },
+  );
+
+  it('follows the local day, not the UTC day', () => {
+    process.env.TZ = 'Pacific/Auckland';
+    // 2026-01-11T12:30Z is already Monday 01:30 in Auckland (UTC+13 in January).
+    expect(weekStart(new Date('2026-01-11T12:30:00Z'))).toBe('2026-01-12');
+    process.env.TZ = 'America/Denver';
+    // The same instant is still Sunday 05:30 in Denver.
+    expect(weekStart(new Date('2026-01-11T12:30:00Z'))).toBe('2026-01-05');
+  });
+});

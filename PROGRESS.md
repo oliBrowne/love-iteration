@@ -1061,3 +1061,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests, Playwright e2e/reflection.spec.ts (2 passed).
 - Next: L178 prove week selection stays stable near midnight across time zones.
 - Blockers: none
+
+## 2026-10-26 — L178: Add timezone boundary test
+- Changed: No visible change; tests prove the week start stays stable at Sunday 23:59 and Monday 00:00 in four time zones, and follows the local day rather than the UTC day.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L179 add a calm empty state for the first reflection week.
+- Blockers: none
