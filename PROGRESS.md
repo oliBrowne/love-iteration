@@ -1121,3 +1121,9 @@
 - Verified: lint, typecheck, vitest (3 new tests), build, format:check, roadmap tests.
 - Next: L188 merge all timeline sources newest first.
 - Blockers: none
+
+## 2026-10-26 — L188: Merge timeline sources
+- Changed: No visible change; a pure function merges timeline entries from all sources into one feed, newest day first.
+- Verified: lint, typecheck, vitest (4 new tests), build, format:check, roadmap tests.
+- Next: L189 make same-time ordering deterministic by ID.
+- Blockers: none

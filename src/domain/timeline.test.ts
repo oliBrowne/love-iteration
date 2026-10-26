@@ -10,6 +10,7 @@ import {
   checkInToTimelineEntry,
   gratitudeToTimelineEntry,
   memoryToTimelineEntry,
+  mergeTimeline,
   planToTimelineEntry,
   reflectionToTimelineEntry,
   ritualCompletionToTimelineEntry,
@@ -258,5 +259,54 @@ describe('reflectionToTimelineEntry', () => {
     delete empty.whatWasHard;
     delete empty.appreciation;
     expect(reflectionToTimelineEntry(empty).summary).toBe('Weekly reflection');
+  });
+});
+
+describe('mergeTimeline', () => {
+  const entry = (
+    id: string,
+    kind: TimelineKind,
+    date: string,
+    createdAt: string,
+  ): TimelineEntry => ({ id, kind, date, summary: id, createdAt });
+
+  it('orders entries from every source newest day first', () => {
+    const merged = mergeTimeline(
+      [entry('c1', 'checkin', '2026-01-05', '2026-01-05T09:00:00.000Z')],
+      [entry('g1', 'gratitude', '2026-01-07', '2026-01-07T09:00:00.000Z')],
+      [entry('m1', 'memory', '2025-12-20', '2026-01-08T09:00:00.000Z')],
+    );
+    expect(merged.map((e) => e.id)).toEqual(['g1', 'c1', 'm1']);
+  });
+
+  it('puts the later-created entry first on the same day', () => {
+    const merged = mergeTimeline([
+      entry('morning', 'checkin', '2026-01-05', '2026-01-05T08:00:00.000Z'),
+      entry('evening', 'gratitude', '2026-01-05', '2026-01-05T20:00:00.000Z'),
+    ]);
+    expect(merged.map((e) => e.id)).toEqual(['evening', 'morning']);
+  });
+
+  it('returns an empty feed for no sources or empty sources', () => {
+    expect(mergeTimeline()).toEqual([]);
+    expect(mergeTimeline([], [])).toEqual([]);
+  });
+
+  it('does not change the lists it is given', () => {
+    const older = entry(
+      'a',
+      'checkin',
+      '2026-01-01',
+      '2026-01-01T00:00:00.000Z',
+    );
+    const newer = entry(
+      'b',
+      'checkin',
+      '2026-01-02',
+      '2026-01-02T00:00:00.000Z',
+    );
+    const source = [older, newer];
+    mergeTimeline(source);
+    expect(source).toEqual([older, newer]);
   });
 });

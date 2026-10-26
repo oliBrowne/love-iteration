@@ -140,3 +140,15 @@ export function reflectionToTimelineEntry(
     createdAt: reflection.createdAt,
   };
 }
+
+// Combines entries from every source into one feed, newest day first. On the
+// same day the most recently created entry comes first. Does not change the
+// lists it is given.
+export function mergeTimeline(...sources: TimelineEntry[][]): TimelineEntry[] {
+  return sources
+    .flat()
+    .sort(
+      (a, b) =>
+        b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt),
+    );
+}

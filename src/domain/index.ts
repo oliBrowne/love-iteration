@@ -66,6 +66,7 @@ export {
   checkInToTimelineEntry,
   gratitudeToTimelineEntry,
   memoryToTimelineEntry,
+  mergeTimeline,
   planToTimelineEntry,
   reflectionToTimelineEntry,
   ritualCompletionToTimelineEntry,
