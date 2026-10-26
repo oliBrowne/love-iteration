@@ -309,4 +309,29 @@ describe('mergeTimeline', () => {
     mergeTimeline(source);
     expect(source).toEqual([older, newer]);
   });
+
+  it('breaks exact ties by ID so the order is the same for any input order', () => {
+    const at = '2026-01-05T09:00:00.000Z';
+    const a = entry('a', 'checkin', '2026-01-05', at);
+    const b = entry('b', 'gratitude', '2026-01-05', at);
+    const c = entry('c', 'memory', '2026-01-05', at);
+    const expected = ['a', 'b', 'c'];
+    expect(mergeTimeline([c, a], [b]).map((e) => e.id)).toEqual(expected);
+    expect(mergeTimeline([b], [a, c]).map((e) => e.id)).toEqual(expected);
+    expect(mergeTimeline([a, b, c]).map((e) => e.id)).toEqual(expected);
+  });
+
+  it('uses kind when two kinds share an ID and time', () => {
+    const at = '2026-01-05T09:00:00.000Z';
+    const memory = entry('same', 'memory', '2026-01-05', at);
+    const checkin = entry('same', 'checkin', '2026-01-05', at);
+    expect(mergeTimeline([memory, checkin]).map((e) => e.kind)).toEqual([
+      'checkin',
+      'memory',
+    ]);
+    expect(mergeTimeline([checkin, memory]).map((e) => e.kind)).toEqual([
+      'checkin',
+      'memory',
+    ]);
+  });
 });

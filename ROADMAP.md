@@ -210,7 +210,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L186 Map ritual completion to timeline — Done when date and summary match source record.
 - [x] L187 Map reflection to timeline — Done when week and summary match source record.
 - [x] L188 Merge timeline sources — Done when pure function orders entries newest first.
-- [ ] L189 Resolve same-time ties — Done when stable ID order makes output deterministic.
+- [x] L189 Resolve same-time ties — Done when stable ID order makes output deterministic.
 - [ ] L190 Render Timeline route — Done when navigation opens the feed.
 - [ ] L191 Add timeline empty state — Done when new account sees explanation.
 - [ ] L192 Add timeline card links — Done when card opens its source detail.

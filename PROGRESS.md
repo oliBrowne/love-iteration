@@ -1127,3 +1127,9 @@
 - Verified: lint, typecheck, vitest (4 new tests), build, format:check, roadmap tests.
 - Next: L189 make same-time ordering deterministic by ID.
 - Blockers: none
+
+## 2026-10-26 — L189: Resolve same-time ties
+- Changed: No visible change; entries with the same day and creation time now sort by ID (then kind), so the timeline order never depends on source order.
+- Verified: lint, typecheck, vitest (2 new tests), build, format:check, roadmap tests.
+- Next: L190 render a Timeline route in the navigation.
+- Blockers: none
