@@ -202,7 +202,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 
 ## 07 Timeline and discovery
 
-- [ ] L181 Define timeline entry shape — Done when type covers every local record kind.
+- [x] L181 Define timeline entry shape — Done when type covers every local record kind.
 - [ ] L182 Map check-in to timeline — Done when date and summary match source record.
 - [ ] L183 Map gratitude to timeline — Done when date and summary match source record.
 - [ ] L184 Map memory to timeline — Done when date and summary match source record.

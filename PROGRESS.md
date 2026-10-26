@@ -1079,3 +1079,9 @@
 - Verified: lint, typecheck, vitest (9 new tests), build, format:check, roadmap tests; manual grep of src for score/rating/blame wording.
 - Next: L181 define the timeline entry type covering every local record kind.
 - Blockers: none
+
+## 2026-10-26 — L181: Define timeline entry shape
+- Changed: No visible change; the domain now has a `TimelineEntry` type and six kinds (check-in, gratitude, memory, plan, ritual completion, reflection). Date ideas and rituals are lists, not dated moments, so they are left out on purpose.
+- Verified: lint, typecheck, vitest (2 new tests), build, format:check, roadmap tests.
+- Next: L182 map a check-in to a timeline entry.
+- Blockers: none

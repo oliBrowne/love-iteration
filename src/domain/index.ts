@@ -61,3 +61,5 @@ export {
   NEXT_ACTION_MAX_LENGTH,
   parseReflectionWeek,
 } from './reflection.ts';
+export type { TimelineEntry, TimelineKind } from './timeline.ts';
+export { timelineKinds } from './timeline.ts';
