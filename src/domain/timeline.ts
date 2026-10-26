@@ -3,6 +3,7 @@ import type { CheckIn } from './checkin.ts';
 import type { Gratitude } from './gratitude.ts';
 import type { Memory } from './memory.ts';
 import type { PlannedDate } from './plannedDate.ts';
+import type { RitualCompletion } from './ritual.ts';
 import { localDate } from './time.ts';
 
 // The kinds of local record that appear as dated moments in the timeline.
@@ -96,5 +97,20 @@ export function planToTimelineEntry(
     date: localDate(new Date(plan.startsAt)),
     summary: shorten(`${planPrefix[plan.status]}: ${ideaTitle}`),
     createdAt: plan.createdAt,
+  };
+}
+
+// A completion reads as the ritual's name, which the caller passes in because
+// the completion only stores the ritual's id.
+export function ritualCompletionToTimelineEntry(
+  completion: RitualCompletion,
+  ritualName: string,
+): TimelineEntry {
+  return {
+    id: completion.id,
+    kind: 'ritual-completion',
+    date: completion.date,
+    summary: shorten(`Ritual: ${ritualName}`),
+    createdAt: completion.createdAt,
   };
 }

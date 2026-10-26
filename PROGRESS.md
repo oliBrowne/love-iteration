@@ -1109,3 +1109,9 @@
 - Verified: lint, typecheck, vitest (2 new tests), build, format:check, roadmap tests.
 - Next: L186 map a ritual completion to a timeline entry.
 - Blockers: none
+
+## 2026-10-26 — L186: Map ritual completion to timeline
+- Changed: No visible change; a pure function turns a ritual completion into a timeline entry with the ritual's name in the summary.
+- Verified: lint, typecheck, vitest (2 new tests), build, format:check, roadmap tests.
+- Next: L187 map a reflection to a timeline entry.
+- Blockers: none

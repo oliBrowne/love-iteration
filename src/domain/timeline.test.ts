@@ -3,12 +3,14 @@ import type { CheckIn } from './checkin.ts';
 import type { Gratitude } from './gratitude.ts';
 import type { Memory } from './memory.ts';
 import type { PlannedDate } from './plannedDate.ts';
+import type { RitualCompletion } from './ritual.ts';
 import {
   SUMMARY_MAX_LENGTH,
   checkInToTimelineEntry,
   gratitudeToTimelineEntry,
   memoryToTimelineEntry,
   planToTimelineEntry,
+  ritualCompletionToTimelineEntry,
   timelineKinds,
 } from './timeline.ts';
 import type { TimelineEntry, TimelineKind } from './timeline.ts';
@@ -194,5 +196,32 @@ describe('planToTimelineEntry', () => {
       planToTimelineEntry({ ...plan, status: 'cancelled' }, 'Demo: movie night')
         .summary,
     ).toBe('Cancelled: Demo: movie night');
+  });
+});
+
+describe('ritualCompletionToTimelineEntry', () => {
+  const completion: RitualCompletion = {
+    id: 'demo-completion',
+    schemaVersion: 1,
+    createdAt: '2026-01-08T21:00:00.000Z',
+    updatedAt: '2026-01-08T21:00:00.000Z',
+    ritualId: 'demo-ritual',
+    date: '2026-01-08',
+  };
+
+  it('keeps the source id, day, and creation time', () => {
+    const entry = ritualCompletionToTimelineEntry(completion, 'Demo: tea');
+    expect(entry).toMatchObject({
+      id: 'demo-completion',
+      kind: 'ritual-completion',
+      date: '2026-01-08',
+      createdAt: '2026-01-08T21:00:00.000Z',
+    });
+  });
+
+  it('names the ritual in the summary', () => {
+    expect(
+      ritualCompletionToTimelineEntry(completion, 'Demo: Sunday call').summary,
+    ).toBe('Ritual: Demo: Sunday call');
   });
 });
