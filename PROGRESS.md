@@ -1073,3 +1073,9 @@
 - Verified: lint, typecheck, vitest (2 new tests), build, format:check, roadmap tests. Reused the shared EmptyState; text wraps naturally on a narrow phone.
 - Next: L180 review UI copy so nothing makes partner performance claims.
 - Blockers: none
+
+## 2026-10-26 — L180: Add no-judgment copy review
+- Changed: No visible change; I searched all UI copy for scoring or partner-judging language (none found) and added a test that fails if such phrases are ever shipped.
+- Verified: lint, typecheck, vitest (9 new tests), build, format:check, roadmap tests; manual grep of src for score/rating/blame wording.
+- Next: L181 define the timeline entry type covering every local record kind.
+- Blockers: none
