@@ -21,7 +21,13 @@ import type {
   Reflection,
   RitualCompletion,
 } from '../../domain/index.ts';
-import { Button, InlineError, TextArea, TextField } from '../../ui/index.ts';
+import {
+  Button,
+  EmptyState,
+  InlineError,
+  TextArea,
+  TextField,
+} from '../../ui/index.ts';
 import { WeekSummary } from './WeekSummary.tsx';
 import { ReflectionHistory } from './ReflectionHistory.tsx';
 import { prompts } from './reflectionPrompts.ts';
@@ -60,6 +66,9 @@ export function ReflectionPage({
   const [gratitude, setGratitude] = useState<Gratitude[]>([]);
   const [completions, setCompletions] = useState<RitualCompletion[]>([]);
   const [earlier, setEarlier] = useState<Reflection[]>([]);
+  // True once saved reflections have been read, so the first-week note does
+  // not flash before they arrive.
+  const [loaded, setLoaded] = useState(false);
 
   // Only the first getRepository is used to refill, so a new function on a
   // later render cannot overwrite what is being typed.
@@ -100,6 +109,7 @@ export function ReflectionPage({
       .then((repo) => repo.list())
       .then((saved) => {
         if (!current) return;
+        setLoaded(true);
         setEarlier(saved.filter((r) => r.weekStart !== weekStart()));
         const found = saved.find((r) => r.weekStart === weekStart());
         if (!found) return;
@@ -201,6 +211,12 @@ export function ReflectionPage({
         <p>
           This week: <strong>{formatWeekRange(weekStart())}</strong>
         </p>
+        {loaded && !existing && earlier.length === 0 ? (
+          <EmptyState>
+            This is your first week here. There is no right way to begin: answer
+            one prompt, or all of them, and leave the rest blank.
+          </EmptyState>
+        ) : null}
         <WeekSummary
           weekStart={weekStart()}
           checkIns={checkIns}

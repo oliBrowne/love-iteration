@@ -197,7 +197,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L176 Add reflection keyboard test — Done when prompts and save work with keyboard.
 - [x] L177 Add reflection browser test — Done when partial save survives reload.
 - [x] L178 Add timezone boundary test — Done when week selection stays stable near midnight.
-- [ ] L179 Add reflection empty state — Done when first week has calm guidance.
+- [x] L179 Add reflection empty state — Done when first week has calm guidance.
 - [ ] L180 Add no-judgment copy review — Done when UI makes no partner performance claims.
 
 ## 07 Timeline and discovery

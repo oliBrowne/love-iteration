@@ -1067,3 +1067,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L179 add a calm empty state for the first reflection week.
 - Blockers: none
+
+## 2026-10-26 — L179: Add reflection empty state
+- Changed: The first time someone opens Reflection, a gentle note says there is no right way to begin and any prompt can be left blank. It disappears once a week is saved.
+- Verified: lint, typecheck, vitest (2 new tests), build, format:check, roadmap tests. Reused the shared EmptyState; text wraps naturally on a narrow phone.
+- Next: L180 review UI copy so nothing makes partner performance claims.
+- Blockers: none

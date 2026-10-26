@@ -257,6 +257,33 @@ describe('Reflection history list', () => {
   });
 });
 
+describe('Reflection first week', () => {
+  it('shows calm guidance when nothing has been saved yet', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    render(<ReflectionPage getRepository={async () => repo} />);
+    expect(await screen.findByText(/your first week here/)).toBeTruthy();
+  });
+
+  it('hides the guidance once this week has a saved reflection', async () => {
+    const repo = createReflectionRepository(
+      await openDatabase(new IDBFactory()),
+    );
+    await repo.put({
+      id: 'now',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      weekStart: weekStart(),
+      whatWorked: 'Demo: a slow morning',
+    });
+    render(<ReflectionPage getRepository={async () => repo} />);
+    await screen.findByDisplayValue('Demo: a slow morning');
+    expect(screen.queryByText(/your first week here/)).toBeNull();
+  });
+});
+
 describe('Reflection detail', () => {
   it('shows all responses for the selected week and can go back', async () => {
     const repo = createReflectionRepository(
