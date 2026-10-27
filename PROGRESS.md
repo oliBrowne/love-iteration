@@ -1169,3 +1169,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L196 paginate the timeline 30 at a time.
 - Blockers: none
+
+## 2026-10-27 — L196: Add timeline pagination
+- Changed: The timeline loads 30 entries at a time with a Show more button.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L197 add month headings.
+- Blockers: none

@@ -13,6 +13,9 @@ import type { TimelineEntry, TimelineKind } from '../../domain/index.ts';
 import { loadTimeline, localTimelineSources } from './loadTimeline.ts';
 import type { TimelineSources } from './loadTimeline.ts';
 
+// How many entries load at a time.
+export const TIMELINE_PAGE_SIZE = 30;
+
 type TimelinePageProps = {
   sources?: TimelineSources;
 };
@@ -25,6 +28,7 @@ export function TimelinePage({
   const [kinds, setKinds] = useState<TimelineKind[]>([]);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
+  const [visible, setVisible] = useState(TIMELINE_PAGE_SIZE);
   const [problem, setProblem] = useState<string>();
 
   useEffect(() => {
@@ -45,6 +49,7 @@ export function TimelinePage({
   }, [sources]);
 
   function toggleKind(kind: TimelineKind) {
+    setVisible(TIMELINE_PAGE_SIZE);
     setKinds((current) =>
       current.includes(kind)
         ? current.filter((k) => k !== kind)
@@ -79,13 +84,19 @@ export function TimelinePage({
         label="From"
         type="date"
         value={from}
-        onChange={(event) => setFrom(event.target.value)}
+        onChange={(event) => {
+          setFrom(event.target.value);
+          setVisible(TIMELINE_PAGE_SIZE);
+        }}
       />
       <TextField
         label="To"
         type="date"
         value={to}
-        onChange={(event) => setTo(event.target.value)}
+        onChange={(event) => {
+          setTo(event.target.value);
+          setVisible(TIMELINE_PAGE_SIZE);
+        }}
       />
       <Button
         type="button"
@@ -93,6 +104,7 @@ export function TimelinePage({
           setKinds([]);
           setFrom('');
           setTo('');
+          setVisible(TIMELINE_PAGE_SIZE);
         }}
       >
         Clear filters
@@ -105,7 +117,7 @@ export function TimelinePage({
         </EmptyState>
       ) : null}
       <ul className="gratitude-list">
-        {shown.map((entry) => (
+        {shown.slice(0, visible).map((entry) => (
           <li key={`${entry.kind}-${entry.id}`} className="gratitude-card">
             <p>
               <a href={routeToHash(timelineKindRoutes[entry.kind])}>
@@ -116,6 +128,14 @@ export function TimelinePage({
           </li>
         ))}
       </ul>
+      {shown.length > visible ? (
+        <Button
+          type="button"
+          onClick={() => setVisible(visible + TIMELINE_PAGE_SIZE)}
+        >
+          Show more
+        </Button>
+      ) : null}
     </section>
   );
 }

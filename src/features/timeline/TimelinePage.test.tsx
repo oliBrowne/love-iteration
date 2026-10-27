@@ -195,4 +195,27 @@ describe('Timeline feed', () => {
     ).toBe(false);
     expect((screen.getByLabelText('From') as HTMLInputElement).value).toBe('');
   });
+
+  it('loads 30 entries at a time', async () => {
+    const sources = await makeSources();
+    const gratitude = await sources.gratitude();
+    for (let i = 0; i < 31; i += 1) {
+      const stamp = `2026-01-01T10:00:${String(i).padStart(2, '0')}.000Z`;
+      await gratitude.put({
+        id: `g${String(i).padStart(2, '0')}`,
+        schemaVersion: 1,
+        createdAt: stamp,
+        updatedAt: stamp,
+        text: `Demo thanks ${i}`,
+        date: '2026-01-01',
+      });
+    }
+    render(<TimelinePage sources={sources} />);
+    await screen.findByText('Demo thanks 30');
+    expect(screen.getAllByRole('listitem')).toHaveLength(30);
+    expect(screen.queryByText('Demo thanks 0')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Show more' }));
+    expect(screen.getAllByRole('listitem')).toHaveLength(31);
+    expect(screen.queryByRole('button', { name: 'Show more' })).toBeNull();
+  });
 });
