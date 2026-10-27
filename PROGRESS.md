@@ -1163,3 +1163,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L195 add a clear-filters action.
 - Blockers: none
+
+## 2026-10-27 — L195: Add timeline clear filters
+- Changed: A Clear filters button resets kinds and dates so every entry returns.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L196 paginate the timeline 30 at a time.
+- Blockers: none

@@ -166,4 +166,33 @@ describe('Timeline feed', () => {
     });
     expect(screen.queryByText('Demo b')).toBeNull();
   });
+
+  it('brings every entry back when filters are cleared', async () => {
+    const sources = await makeSources();
+    const stamp = '2026-01-01T10:00:00.000Z';
+    await (
+      await sources.gratitude()
+    ).put({
+      id: 'g',
+      schemaVersion: 1,
+      createdAt: stamp,
+      updatedAt: stamp,
+      text: 'Demo thanks',
+      date: '2026-01-01',
+    });
+    render(<TimelinePage sources={sources} />);
+    await screen.findByText('Demo thanks');
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Memories' }));
+    fireEvent.change(screen.getByLabelText('From'), {
+      target: { value: '2026-05-01' },
+    });
+    expect(screen.queryByText('Demo thanks')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Clear filters' }));
+    expect(screen.getByText('Demo thanks')).toBeTruthy();
+    expect(
+      (screen.getByRole('checkbox', { name: 'Memories' }) as HTMLInputElement)
+        .checked,
+    ).toBe(false);
+    expect((screen.getByLabelText('From') as HTMLInputElement).value).toBe('');
+  });
 });

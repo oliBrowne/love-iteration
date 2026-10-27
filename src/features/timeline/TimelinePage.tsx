@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { EmptyState, TextField } from '../../ui/index.ts';
+import { Button, EmptyState, TextField } from '../../ui/index.ts';
 import {
   filterTimelineByDateRange,
   filterTimelineByKinds,
@@ -87,6 +87,16 @@ export function TimelinePage({
         value={to}
         onChange={(event) => setTo(event.target.value)}
       />
+      <Button
+        type="button"
+        onClick={() => {
+          setKinds([]);
+          setFrom('');
+          setTo('');
+        }}
+      >
+        Clear filters
+      </Button>
       {problem ? <p role="alert">{problem}</p> : null}
       {loaded && entries.length === 0 ? (
         <EmptyState>
