@@ -167,3 +167,23 @@ export function mergeTimeline(...sources: TimelineEntry[][]): TimelineEntry[] {
         a.kind.localeCompare(b.kind),
     );
 }
+
+export const timelineKindLabels: Record<TimelineKind, string> = {
+  checkin: 'Check-ins',
+  gratitude: 'Gratitude',
+  memory: 'Memories',
+  plan: 'Plans',
+  'ritual-completion': 'Rituals',
+  reflection: 'Reflections',
+};
+
+// Keeps only entries of the chosen kinds. An empty choice means no filter, so
+// the whole feed is shown. Does not change the list it is given.
+export function filterTimelineByKinds(
+  entries: TimelineEntry[],
+  kinds: TimelineKind[],
+): TimelineEntry[] {
+  return kinds.length === 0
+    ? entries
+    : entries.filter((entry) => kinds.includes(entry.kind));
+}

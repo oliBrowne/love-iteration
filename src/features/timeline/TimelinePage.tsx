@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { EmptyState } from '../../ui/index.ts';
 import {
+  filterTimelineByKinds,
   formatDateLabel,
   routeToHash,
+  timelineKindLabels,
   timelineKindRoutes,
+  timelineKinds,
 } from '../../domain/index.ts';
-import type { TimelineEntry } from '../../domain/index.ts';
+import type { TimelineEntry, TimelineKind } from '../../domain/index.ts';
 import { loadTimeline, localTimelineSources } from './loadTimeline.ts';
 import type { TimelineSources } from './loadTimeline.ts';
 
@@ -18,6 +21,7 @@ export function TimelinePage({
 }: TimelinePageProps) {
   const [entries, setEntries] = useState<TimelineEntry[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [kinds, setKinds] = useState<TimelineKind[]>([]);
   const [problem, setProblem] = useState<string>();
 
   useEffect(() => {
@@ -37,10 +41,33 @@ export function TimelinePage({
     };
   }, [sources]);
 
+  function toggleKind(kind: TimelineKind) {
+    setKinds((current) =>
+      current.includes(kind)
+        ? current.filter((k) => k !== kind)
+        : [...current, kind],
+    );
+  }
+
+  const shown = filterTimelineByKinds(entries, kinds);
+
   return (
     <section aria-labelledby="timeline-heading">
       <h2 id="timeline-heading">Timeline</h2>
       <p>Everything you have saved, newest first. It stays on this device.</p>
+      <fieldset>
+        <legend>Show</legend>
+        {timelineKinds.map((kind) => (
+          <label key={kind}>
+            <input
+              type="checkbox"
+              checked={kinds.includes(kind)}
+              onChange={() => toggleKind(kind)}
+            />{' '}
+            {timelineKindLabels[kind]}{' '}
+          </label>
+        ))}
+      </fieldset>
       {problem ? <p role="alert">{problem}</p> : null}
       {loaded && entries.length === 0 ? (
         <EmptyState>
@@ -49,7 +76,7 @@ export function TimelinePage({
         </EmptyState>
       ) : null}
       <ul className="gratitude-list">
-        {entries.map((entry) => (
+        {shown.map((entry) => (
           <li key={`${entry.kind}-${entry.id}`} className="gratitude-card">
             <p>
               <a href={routeToHash(timelineKindRoutes[entry.kind])}>

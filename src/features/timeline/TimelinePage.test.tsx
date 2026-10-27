@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -102,5 +102,38 @@ describe('Timeline feed', () => {
     const items = screen.getAllByRole('listitem').map((li) => li.textContent);
     expect(items[0]).toContain('Demo: newer');
     expect(items[1]).toContain('Demo: older');
+  });
+
+  it('limits the feed to the selected kinds', async () => {
+    const sources = await makeSources();
+    const stamp = '2026-01-01T10:00:00.000Z';
+    await (
+      await sources.gratitude()
+    ).put({
+      id: 'g',
+      schemaVersion: 1,
+      createdAt: stamp,
+      updatedAt: stamp,
+      text: 'Demo thanks',
+      date: '2026-01-01',
+    });
+    await (
+      await sources.memories()
+    ).put({
+      id: 'm',
+      schemaVersion: 1,
+      createdAt: stamp,
+      updatedAt: stamp,
+      title: 'Demo memory',
+      note: '',
+      date: '2026-01-01',
+    });
+    render(<TimelinePage sources={sources} />);
+    await screen.findByText('Demo thanks');
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Memories' }));
+    expect(screen.queryByText('Demo thanks')).toBeNull();
+    expect(screen.getByText('Demo memory')).toBeTruthy();
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Memories' }));
+    expect(screen.getByText('Demo thanks')).toBeTruthy();
   });
 });

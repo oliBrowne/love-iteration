@@ -1151,3 +1151,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L193 add a kind filter to the timeline.
 - Blockers: none
+
+## 2026-10-27 — L193: Add timeline kind filter
+- Changed: Timeline checkboxes limit the feed to the chosen kinds of record; none chosen shows all.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L194 add a date range to the timeline.
+- Blockers: none

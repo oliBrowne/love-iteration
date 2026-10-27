@@ -14,6 +14,7 @@ import {
   planToTimelineEntry,
   reflectionToTimelineEntry,
   ritualCompletionToTimelineEntry,
+  filterTimelineByKinds,
   timelineKindRoutes,
   timelineKinds,
 } from './timeline.ts';
@@ -342,5 +343,27 @@ describe('timelineKindRoutes', () => {
     expect(Object.keys(timelineKindRoutes).sort()).toEqual(
       [...timelineKinds].sort(),
     );
+  });
+});
+
+describe('filterTimelineByKinds', () => {
+  const entry = (id: string, kind: TimelineKind): TimelineEntry => ({
+    id,
+    kind,
+    date: '2026-01-01',
+    summary: id,
+    createdAt: '2026-01-01T00:00:00.000Z',
+  });
+  const all = [entry('a', 'checkin'), entry('b', 'memory'), entry('c', 'plan')];
+
+  it('keeps only the chosen kinds', () => {
+    expect(filterTimelineByKinds(all, ['memory', 'plan'])).toEqual([
+      all[1],
+      all[2],
+    ]);
+  });
+
+  it('shows everything when no kind is chosen', () => {
+    expect(filterTimelineByKinds(all, [])).toEqual(all);
   });
 });

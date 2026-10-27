@@ -66,10 +66,12 @@ export {
   checkInToTimelineEntry,
   gratitudeToTimelineEntry,
   memoryToTimelineEntry,
+  filterTimelineByKinds,
   mergeTimeline,
   planToTimelineEntry,
   reflectionToTimelineEntry,
   ritualCompletionToTimelineEntry,
+  timelineKindLabels,
   timelineKindRoutes,
   timelineKinds,
 } from './timeline.ts';
