@@ -66,6 +66,7 @@ export {
   checkInToTimelineEntry,
   gratitudeToTimelineEntry,
   memoryToTimelineEntry,
+  filterTimelineByDateRange,
   filterTimelineByKinds,
   mergeTimeline,
   planToTimelineEntry,

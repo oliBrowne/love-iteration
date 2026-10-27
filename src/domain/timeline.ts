@@ -187,3 +187,16 @@ export function filterTimelineByKinds(
     ? entries
     : entries.filter((entry) => kinds.includes(entry.kind));
 }
+
+// Keeps entries whose day is within from..to, both ends included. A blank
+// bound is open. Dates are YYYY-MM-DD, so plain string comparison orders them.
+export function filterTimelineByDateRange(
+  entries: TimelineEntry[],
+  from: string,
+  to: string,
+): TimelineEntry[] {
+  return entries.filter(
+    (entry) =>
+      (from === '' || entry.date >= from) && (to === '' || entry.date <= to),
+  );
+}

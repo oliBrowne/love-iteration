@@ -14,6 +14,7 @@ import {
   planToTimelineEntry,
   reflectionToTimelineEntry,
   ritualCompletionToTimelineEntry,
+  filterTimelineByDateRange,
   filterTimelineByKinds,
   timelineKindRoutes,
   timelineKinds,
@@ -365,5 +366,33 @@ describe('filterTimelineByKinds', () => {
 
   it('shows everything when no kind is chosen', () => {
     expect(filterTimelineByKinds(all, [])).toEqual(all);
+  });
+});
+
+describe('filterTimelineByDateRange', () => {
+  const onDay = (date: string): TimelineEntry => ({
+    id: date,
+    kind: 'memory',
+    date,
+    summary: date,
+    createdAt: `${date}T00:00:00.000Z`,
+  });
+  const days = ['2026-01-01', '2026-01-02', '2026-01-03'].map(onDay);
+
+  it('excludes dates outside the range and includes both ends', () => {
+    expect(
+      filterTimelineByDateRange(days, '2026-01-02', '2026-01-02').map(
+        (e) => e.date,
+      ),
+    ).toEqual(['2026-01-02']);
+    expect(
+      filterTimelineByDateRange(days, '2026-01-02', '2026-01-03'),
+    ).toHaveLength(2);
+  });
+
+  it('treats a blank bound as open', () => {
+    expect(filterTimelineByDateRange(days, '', '')).toHaveLength(3);
+    expect(filterTimelineByDateRange(days, '2026-01-03', '')).toHaveLength(1);
+    expect(filterTimelineByDateRange(days, '', '2026-01-01')).toHaveLength(1);
   });
 });

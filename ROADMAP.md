@@ -215,7 +215,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L191 Add timeline empty state — Done when new account sees explanation.
 - [x] L192 Add timeline card links — Done when card opens its source detail.
 - [x] L193 Add timeline kind filter — Done when selected kinds limit results.
-- [ ] L194 Add timeline date range — Done when outside dates are excluded.
+- [x] L194 Add timeline date range — Done when outside dates are excluded.
 - [ ] L195 Add timeline clear filters — Done when all entries return.
 - [ ] L196 Add timeline pagination — Done when feed loads 30 items at a time.
 - [ ] L197 Add timeline month headings — Done when month groups are labeled.

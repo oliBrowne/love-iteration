@@ -1157,3 +1157,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L194 add a date range to the timeline.
 - Blockers: none
+
+## 2026-10-27 — L194: Add timeline date range
+- Changed: Timeline From and To dates exclude entries outside the range; both ends are included.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L195 add a clear-filters action.
+- Blockers: none

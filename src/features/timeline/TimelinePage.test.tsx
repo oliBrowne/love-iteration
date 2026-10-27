@@ -136,4 +136,34 @@ describe('Timeline feed', () => {
     fireEvent.click(screen.getByRole('checkbox', { name: 'Memories' }));
     expect(screen.getByText('Demo thanks')).toBeTruthy();
   });
+
+  it('hides entries outside the chosen dates', async () => {
+    const sources = await makeSources();
+    const memories = await sources.memories();
+    for (const [id, date] of [
+      ['a', '2026-01-01'],
+      ['b', '2026-02-01'],
+    ] as const) {
+      await memories.put({
+        id,
+        schemaVersion: 1,
+        createdAt: `${date}T10:00:00.000Z`,
+        updatedAt: `${date}T10:00:00.000Z`,
+        title: `Demo ${id}`,
+        note: '',
+        date,
+      });
+    }
+    render(<TimelinePage sources={sources} />);
+    await screen.findByText('Demo a');
+    fireEvent.change(screen.getByLabelText('From'), {
+      target: { value: '2026-02-01' },
+    });
+    expect(screen.queryByText('Demo a')).toBeNull();
+    expect(screen.getByText('Demo b')).toBeTruthy();
+    fireEvent.change(screen.getByLabelText('To'), {
+      target: { value: '2026-01-15' },
+    });
+    expect(screen.queryByText('Demo b')).toBeNull();
+  });
 });

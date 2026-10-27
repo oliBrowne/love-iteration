@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { EmptyState } from '../../ui/index.ts';
+import { EmptyState, TextField } from '../../ui/index.ts';
 import {
+  filterTimelineByDateRange,
   filterTimelineByKinds,
   formatDateLabel,
   routeToHash,
@@ -22,6 +23,8 @@ export function TimelinePage({
   const [entries, setEntries] = useState<TimelineEntry[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [kinds, setKinds] = useState<TimelineKind[]>([]);
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
   const [problem, setProblem] = useState<string>();
 
   useEffect(() => {
@@ -49,7 +52,11 @@ export function TimelinePage({
     );
   }
 
-  const shown = filterTimelineByKinds(entries, kinds);
+  const shown = filterTimelineByDateRange(
+    filterTimelineByKinds(entries, kinds),
+    from,
+    to,
+  );
 
   return (
     <section aria-labelledby="timeline-heading">
@@ -68,6 +75,18 @@ export function TimelinePage({
           </label>
         ))}
       </fieldset>
+      <TextField
+        label="From"
+        type="date"
+        value={from}
+        onChange={(event) => setFrom(event.target.value)}
+      />
+      <TextField
+        label="To"
+        type="date"
+        value={to}
+        onChange={(event) => setTo(event.target.value)}
+      />
       {problem ? <p role="alert">{problem}</p> : null}
       {loaded && entries.length === 0 ? (
         <EmptyState>
