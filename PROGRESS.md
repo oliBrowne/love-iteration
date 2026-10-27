@@ -1139,3 +1139,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L191 explain the empty timeline for a new account.
 - Blockers: none
+
+## 2026-10-27 — L191: Add timeline empty state
+- Changed: A new account sees a short explanation of what will appear on the Timeline.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L192 link each card to its source page.
+- Blockers: none

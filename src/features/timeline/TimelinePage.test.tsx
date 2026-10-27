@@ -52,6 +52,28 @@ describe('Timeline route', () => {
 });
 
 describe('Timeline feed', () => {
+  it('explains the timeline when nothing is saved yet', async () => {
+    render(<TimelinePage sources={await makeSources()} />);
+    expect(await screen.findByText(/Nothing here yet/)).toBeTruthy();
+  });
+
+  it('hides the explanation once there is an entry', async () => {
+    const sources = await makeSources();
+    await (
+      await sources.gratitude()
+    ).put({
+      id: 'g',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T10:00:00.000Z',
+      updatedAt: '2026-01-01T10:00:00.000Z',
+      text: 'Demo thanks',
+      date: '2026-01-01',
+    });
+    render(<TimelinePage sources={sources} />);
+    await screen.findByText('Demo thanks');
+    expect(screen.queryByText(/Nothing here yet/)).toBeNull();
+  });
+
   it('lists saved records newest first', async () => {
     const sources = await makeSources();
     const memories = await sources.memories();

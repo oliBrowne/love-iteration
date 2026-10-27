@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { EmptyState } from '../../ui/index.ts';
 import { formatDateLabel } from '../../domain/index.ts';
 import type { TimelineEntry } from '../../domain/index.ts';
 import { loadTimeline, localTimelineSources } from './loadTimeline.ts';
@@ -12,13 +13,17 @@ export function TimelinePage({
   sources = localTimelineSources,
 }: TimelinePageProps) {
   const [entries, setEntries] = useState<TimelineEntry[]>([]);
+  const [loaded, setLoaded] = useState(false);
   const [problem, setProblem] = useState<string>();
 
   useEffect(() => {
     let cancelled = false;
     loadTimeline(sources)
       .then((feed) => {
-        if (!cancelled) setEntries(feed);
+        if (!cancelled) {
+          setEntries(feed);
+          setLoaded(true);
+        }
       })
       .catch(() => {
         if (!cancelled) setProblem('Could not load your timeline.');
@@ -33,6 +38,12 @@ export function TimelinePage({
       <h2 id="timeline-heading">Timeline</h2>
       <p>Everything you have saved, newest first. It stays on this device.</p>
       {problem ? <p role="alert">{problem}</p> : null}
+      {loaded && entries.length === 0 ? (
+        <EmptyState>
+          Nothing here yet. As you save check-ins, gratitude, memories, plans,
+          rituals, and reflections, they will appear here in order.
+        </EmptyState>
+      ) : null}
       <ul className="gratitude-list">
         {entries.map((entry) => (
           <li key={`${entry.kind}-${entry.id}`} className="gratitude-card">

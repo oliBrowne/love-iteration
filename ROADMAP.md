@@ -212,7 +212,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L188 Merge timeline sources — Done when pure function orders entries newest first.
 - [x] L189 Resolve same-time ties — Done when stable ID order makes output deterministic.
 - [x] L190 Render Timeline route — Done when navigation opens the feed.
-- [ ] L191 Add timeline empty state — Done when new account sees explanation.
+- [x] L191 Add timeline empty state — Done when new account sees explanation.
 - [ ] L192 Add timeline card links — Done when card opens its source detail.
 - [ ] L193 Add timeline kind filter — Done when selected kinds limit results.
 - [ ] L194 Add timeline date range — Done when outside dates are excluded.
