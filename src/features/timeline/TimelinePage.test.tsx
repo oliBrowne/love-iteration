@@ -96,6 +96,9 @@ describe('Timeline feed', () => {
     });
     render(<TimelinePage sources={sources} />);
     await screen.findByText('Demo: newer');
+    expect(
+      screen.getByRole('link', { name: 'Demo: newer' }).getAttribute('href'),
+    ).toBe('#/memories');
     const items = screen.getAllByRole('listitem').map((li) => li.textContent);
     expect(items[0]).toContain('Demo: newer');
     expect(items[1]).toContain('Demo: older');

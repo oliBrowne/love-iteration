@@ -14,6 +14,7 @@ import {
   planToTimelineEntry,
   reflectionToTimelineEntry,
   ritualCompletionToTimelineEntry,
+  timelineKindRoutes,
   timelineKinds,
 } from './timeline.ts';
 import type { TimelineEntry, TimelineKind } from './timeline.ts';
@@ -333,5 +334,13 @@ describe('mergeTimeline', () => {
       'checkin',
       'memory',
     ]);
+  });
+});
+
+describe('timelineKindRoutes', () => {
+  it('names a page for every kind of entry', () => {
+    expect(Object.keys(timelineKindRoutes).sort()).toEqual(
+      [...timelineKinds].sort(),
+    );
   });
 });

@@ -70,5 +70,6 @@ export {
   planToTimelineEntry,
   reflectionToTimelineEntry,
   ritualCompletionToTimelineEntry,
+  timelineKindRoutes,
   timelineKinds,
 } from './timeline.ts';

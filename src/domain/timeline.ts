@@ -5,6 +5,7 @@ import type { Memory } from './memory.ts';
 import type { PlannedDate } from './plannedDate.ts';
 import type { Reflection } from './reflection.ts';
 import type { RitualCompletion } from './ritual.ts';
+import type { Route } from './routes.ts';
 import { localDate } from './time.ts';
 
 // The kinds of local record that appear as dated moments in the timeline.
@@ -20,6 +21,16 @@ export const timelineKinds = [
 ] as const;
 
 export type TimelineKind = (typeof timelineKinds)[number];
+
+// The page where each kind of record can be opened and edited.
+export const timelineKindRoutes: Record<TimelineKind, Route> = {
+  checkin: 'home',
+  gratitude: 'gratitude',
+  memory: 'memories',
+  plan: 'ideas',
+  'ritual-completion': 'rituals',
+  reflection: 'reflection',
+};
 
 // One line in the timeline feed, built from a single stored record.
 export type TimelineEntry = {

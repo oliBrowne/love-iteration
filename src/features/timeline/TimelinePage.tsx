@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { EmptyState } from '../../ui/index.ts';
-import { formatDateLabel } from '../../domain/index.ts';
+import {
+  formatDateLabel,
+  routeToHash,
+  timelineKindRoutes,
+} from '../../domain/index.ts';
 import type { TimelineEntry } from '../../domain/index.ts';
 import { loadTimeline, localTimelineSources } from './loadTimeline.ts';
 import type { TimelineSources } from './loadTimeline.ts';
@@ -47,7 +51,11 @@ export function TimelinePage({
       <ul className="gratitude-list">
         {entries.map((entry) => (
           <li key={`${entry.kind}-${entry.id}`} className="gratitude-card">
-            <p>{entry.summary}</p>
+            <p>
+              <a href={routeToHash(timelineKindRoutes[entry.kind])}>
+                {entry.summary}
+              </a>
+            </p>
             <small>{formatDateLabel(entry.date)}</small>
           </li>
         ))}

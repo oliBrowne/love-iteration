@@ -1145,3 +1145,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L192 link each card to its source page.
 - Blockers: none
+
+## 2026-10-27 — L192: Add timeline card links
+- Changed: Each timeline card links to the page where its record can be opened (per-record detail views do not exist yet, so it opens the source page).
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L193 add a kind filter to the timeline.
+- Blockers: none
