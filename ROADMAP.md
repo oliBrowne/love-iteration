@@ -218,7 +218,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L194 Add timeline date range — Done when outside dates are excluded.
 - [x] L195 Add timeline clear filters — Done when all entries return.
 - [x] L196 Add timeline pagination — Done when feed loads 30 items at a time.
-- [ ] L197 Add timeline month headings — Done when month groups are labeled.
+- [x] L197 Add timeline month headings — Done when month groups are labeled.
 - [ ] L198 Add timeline keyboard navigation — Done when cards are reachable in order.
 - [ ] L199 Add search index helper — Done when records produce normalized search text.
 - [ ] L200 Add global search input — Done when query matches supported record text.

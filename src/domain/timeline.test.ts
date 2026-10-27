@@ -16,6 +16,7 @@ import {
   ritualCompletionToTimelineEntry,
   filterTimelineByDateRange,
   filterTimelineByKinds,
+  groupTimelineByMonth,
   timelineKindRoutes,
   timelineKinds,
 } from './timeline.ts';
@@ -394,5 +395,29 @@ describe('filterTimelineByDateRange', () => {
     expect(filterTimelineByDateRange(days, '', '')).toHaveLength(3);
     expect(filterTimelineByDateRange(days, '2026-01-03', '')).toHaveLength(1);
     expect(filterTimelineByDateRange(days, '', '2026-01-01')).toHaveLength(1);
+  });
+});
+
+describe('groupTimelineByMonth', () => {
+  const onDay = (date: string): TimelineEntry => ({
+    id: date,
+    kind: 'memory',
+    date,
+    summary: date,
+    createdAt: `${date}T00:00:00.000Z`,
+  });
+
+  it('groups consecutive entries by month in feed order', () => {
+    const feed = ['2026-03-02', '2026-03-01', '2026-02-20'].map(onDay);
+    expect(
+      groupTimelineByMonth(feed).map((g) => [g.month, g.entries.length]),
+    ).toEqual([
+      ['2026-03', 2],
+      ['2026-02', 1],
+    ]);
+  });
+
+  it('returns no groups for an empty feed', () => {
+    expect(groupTimelineByMonth([])).toEqual([]);
   });
 });

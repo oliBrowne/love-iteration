@@ -218,4 +218,29 @@ describe('Timeline feed', () => {
     expect(screen.getAllByRole('listitem')).toHaveLength(31);
     expect(screen.queryByRole('button', { name: 'Show more' })).toBeNull();
   });
+
+  it('labels each month group with a heading', async () => {
+    const sources = await makeSources();
+    const memories = await sources.memories();
+    for (const [id, date] of [
+      ['a', '2026-01-10'],
+      ['b', '2026-03-05'],
+    ] as const) {
+      await memories.put({
+        id,
+        schemaVersion: 1,
+        createdAt: `${date}T10:00:00.000Z`,
+        updatedAt: `${date}T10:00:00.000Z`,
+        title: `Demo ${id}`,
+        note: '',
+        date,
+      });
+    }
+    render(<TimelinePage sources={sources} />);
+    await screen.findByText('Demo a');
+    const headings = screen
+      .getAllByRole('heading', { level: 3 })
+      .map((h) => h.textContent);
+    expect(headings).toEqual(['March 2026', 'January 2026']);
+  });
 });

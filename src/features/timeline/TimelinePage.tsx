@@ -4,6 +4,8 @@ import {
   filterTimelineByDateRange,
   filterTimelineByKinds,
   formatDateLabel,
+  formatMonthLabel,
+  groupTimelineByMonth,
   routeToHash,
   timelineKindLabels,
   timelineKindRoutes,
@@ -116,18 +118,23 @@ export function TimelinePage({
           rituals, and reflections, they will appear here in order.
         </EmptyState>
       ) : null}
-      <ul className="gratitude-list">
-        {shown.slice(0, visible).map((entry) => (
-          <li key={`${entry.kind}-${entry.id}`} className="gratitude-card">
-            <p>
-              <a href={routeToHash(timelineKindRoutes[entry.kind])}>
-                {entry.summary}
-              </a>
-            </p>
-            <small>{formatDateLabel(entry.date)}</small>
-          </li>
-        ))}
-      </ul>
+      {groupTimelineByMonth(shown.slice(0, visible)).map((group) => (
+        <section key={group.month} aria-label={formatMonthLabel(group.month)}>
+          <h3>{formatMonthLabel(group.month)}</h3>
+          <ul className="gratitude-list">
+            {group.entries.map((entry) => (
+              <li key={`${entry.kind}-${entry.id}`} className="gratitude-card">
+                <p>
+                  <a href={routeToHash(timelineKindRoutes[entry.kind])}>
+                    {entry.summary}
+                  </a>
+                </p>
+                <small>{formatDateLabel(entry.date)}</small>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
       {shown.length > visible ? (
         <Button
           type="button"

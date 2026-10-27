@@ -200,3 +200,20 @@ export function filterTimelineByDateRange(
       (from === '' || entry.date >= from) && (to === '' || entry.date <= to),
   );
 }
+
+// A run of entries from the same calendar month. `month` is YYYY-MM.
+export type TimelineMonth = { month: string; entries: TimelineEntry[] };
+
+// Splits a feed into consecutive month groups, keeping the feed's order.
+export function groupTimelineByMonth(
+  entries: TimelineEntry[],
+): TimelineMonth[] {
+  const groups: TimelineMonth[] = [];
+  for (const entry of entries) {
+    const month = entry.date.slice(0, 7);
+    const last = groups[groups.length - 1];
+    if (last?.month === month) last.entries.push(entry);
+    else groups.push({ month, entries: [entry] });
+  }
+  return groups;
+}

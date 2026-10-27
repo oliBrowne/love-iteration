@@ -1175,3 +1175,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L197 add month headings.
 - Blockers: none
+
+## 2026-10-27 — L197: Add timeline month headings
+- Changed: The timeline groups entries under month headings such as March 2026.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L198 make timeline cards keyboard navigable in order.
+- Blockers: none

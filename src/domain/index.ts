@@ -61,13 +61,14 @@ export {
   NEXT_ACTION_MAX_LENGTH,
   parseReflectionWeek,
 } from './reflection.ts';
-export type { TimelineEntry, TimelineKind } from './timeline.ts';
+export type { TimelineEntry, TimelineKind, TimelineMonth } from './timeline.ts';
 export {
   checkInToTimelineEntry,
   gratitudeToTimelineEntry,
   memoryToTimelineEntry,
   filterTimelineByDateRange,
   filterTimelineByKinds,
+  groupTimelineByMonth,
   mergeTimeline,
   planToTimelineEntry,
   reflectionToTimelineEntry,
