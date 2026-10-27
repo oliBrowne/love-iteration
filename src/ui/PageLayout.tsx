@@ -25,6 +25,7 @@ export function PageLayout({ children }: { children: ReactNode }) {
           <a href={routeToHash('rituals')}>{routeLabels.rituals}</a>{' '}
           <a href={routeToHash('reflection')}>{routeLabels.reflection}</a>{' '}
           <a href={routeToHash('ideas')}>{routeLabels.ideas}</a>{' '}
+          <a href={routeToHash('timeline')}>{routeLabels.timeline}</a>{' '}
           <a href={routeToHash('settings')}>{routeLabels.settings}</a>
         </nav>
       </header>

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { parseRoute, routeLabels, routes, routeToHash } from './routes.ts';
 
 describe('routes', () => {
-  it('lists Home, Check-in, Gratitude, Memories, Rituals, Reflection, Ideas, and Settings', () => {
+  it('lists Home, Check-in, Gratitude, Memories, Rituals, Reflection, Ideas, Timeline, and Settings', () => {
     expect(routes.map((route) => routeLabels[route])).toEqual([
       'Home',
       'Check-in',
@@ -11,6 +11,7 @@ describe('routes', () => {
       'Rituals',
       'Reflection',
       'Ideas',
+      'Timeline',
       'Settings',
     ]);
   });
@@ -22,6 +23,7 @@ describe('parseRoute', () => {
     expect(parseRoute('#/gratitude')).toBe('gratitude');
     expect(parseRoute('#/memories')).toBe('memories');
     expect(parseRoute('#/rituals')).toBe('rituals');
+    expect(parseRoute('#/timeline')).toBe('timeline');
     expect(parseRoute('')).toBe('home');
     expect(parseRoute('#/nowhere')).toBe('home');
     expect(routeToHash('check-in')).toBe('#/check-in');

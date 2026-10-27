@@ -1133,3 +1133,9 @@
 - Verified: lint, typecheck, vitest (2 new tests), build, format:check, roadmap tests.
 - Next: L190 render a Timeline route in the navigation.
 - Blockers: none
+
+## 2026-10-27 — L190: Render Timeline route
+- Changed: A Timeline link in the navigation opens a feed of saved records, newest first.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L191 explain the empty timeline for a new account.
+- Blockers: none
