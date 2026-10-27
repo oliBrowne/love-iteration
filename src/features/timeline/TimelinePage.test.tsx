@@ -243,4 +243,33 @@ describe('Timeline feed', () => {
       .map((h) => h.textContent);
     expect(headings).toEqual(['March 2026', 'January 2026']);
   });
+
+  it('puts card links in feed order, all reachable by Tab', async () => {
+    const sources = await makeSources();
+    const memories = await sources.memories();
+    for (const [id, date] of [
+      ['a', '2026-01-10'],
+      ['b', '2026-03-05'],
+      ['c', '2026-02-01'],
+    ] as const) {
+      await memories.put({
+        id,
+        schemaVersion: 1,
+        createdAt: `${date}T10:00:00.000Z`,
+        updatedAt: `${date}T10:00:00.000Z`,
+        title: `Demo ${id}`,
+        note: '',
+        date,
+      });
+    }
+    render(<TimelinePage sources={sources} />);
+    await screen.findByText('Demo a');
+    const links = screen.getAllByRole('link');
+    expect(links.map((link) => link.textContent)).toEqual([
+      'Demo b',
+      'Demo c',
+      'Demo a',
+    ]);
+    expect(links.every((link) => link.tabIndex >= 0)).toBe(true);
+  });
 });

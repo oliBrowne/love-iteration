@@ -1181,3 +1181,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L198 make timeline cards keyboard navigable in order.
 - Blockers: none
+
+## 2026-10-27 — L198: Add timeline keyboard navigation
+- Changed: Timeline cards are real links in feed order, reachable with Tab; filter checkboxes now show a visible focus ring.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L199 add a search index helper.
+- Blockers: none
