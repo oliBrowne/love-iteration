@@ -140,4 +140,12 @@ describe('Search results', () => {
     expect(input.value).toBe('');
     expect(screen.queryByText('Demo: lake day')).toBeNull();
   });
+
+  it('focuses the search box when "/" is pressed outside a field', async () => {
+    render(<SearchPage sources={await makeSources()} />);
+    const input = screen.getByLabelText('Search your entries');
+    expect(document.activeElement).not.toBe(input);
+    fireEvent.keyDown(document.body, { key: '/' });
+    expect(document.activeElement).toBe(input);
+  });
 });

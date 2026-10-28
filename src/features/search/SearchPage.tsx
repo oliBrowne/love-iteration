@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, EmptyState, TextField } from '../../ui/index.ts';
 import {
   formatDateLabel,
   groupSearchResults,
+  isSearchShortcut,
   routeToHash,
   timelineKindLabels,
   searchEntries,
@@ -40,14 +41,29 @@ export function SearchPage({
     };
   }, [sources]);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (isSearchShortcut(event)) {
+        event.preventDefault();
+        inputRef.current?.focus();
+      }
+    }
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, []);
+
   const results = searchEntries(entries, query);
 
   return (
     <section aria-labelledby="search-heading">
       <h2 id="search-heading">Search</h2>
+      <p>Press / to jump to the search box.</p>
       <TextField
         label="Search your entries"
         type="search"
+        ref={inputRef}
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />

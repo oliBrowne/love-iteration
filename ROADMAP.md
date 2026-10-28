@@ -225,7 +225,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L201 Add search result grouping — Done when results are labeled by kind.
 - [x] L202 Add search no-results state — Done when query feedback is shown.
 - [x] L203 Add search clear action — Done when query and results reset.
-- [ ] L204 Add search keyboard shortcut — Done when slash focuses search outside inputs.
+- [x] L204 Add search keyboard shortcut — Done when slash focuses search outside inputs.
 - [ ] L205 Add search privacy note — Done when query stays local to the device.
 - [ ] L206 Add date-range boundary test — Done when endpoints are included correctly.
 - [ ] L207 Add timeline merge test — Done when six source kinds order correctly.

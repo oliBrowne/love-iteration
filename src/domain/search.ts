@@ -47,3 +47,23 @@ export function groupSearchResults(entries: TimelineEntry[]): SearchGroup[] {
     }))
     .filter((group) => group.entries.length > 0);
 }
+
+// True when a key press should jump to the search box: a plain "/" that is not
+// being typed into a field, so it never steals the character from a note.
+export function isSearchShortcut(event: {
+  key: string;
+  ctrlKey: boolean;
+  metaKey: boolean;
+  altKey: boolean;
+  target: EventTarget | null;
+}): boolean {
+  if (event.key !== '/' || event.ctrlKey || event.metaKey || event.altKey) {
+    return false;
+  }
+  const target = event.target as HTMLElement | null;
+  if (!target) return true;
+  return !(
+    target.isContentEditable ||
+    ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)
+  );
+}

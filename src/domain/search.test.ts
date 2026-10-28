@@ -1,6 +1,8 @@
+// @vitest-environment jsdom
 import { describe, expect, it } from 'vitest';
 import {
   groupSearchResults,
+  isSearchShortcut,
   normalizeSearchText,
   searchEntries,
   searchTextForEntry,
@@ -66,5 +68,36 @@ describe('groupSearchResults', () => {
     ]);
     expect(groups.map((g) => g.kind)).toEqual(['gratitude', 'memory']);
     expect(groups[1]?.entries.map((e) => e.id)).toEqual(['m1', 'm2']);
+  });
+});
+
+describe('isSearchShortcut', () => {
+  const press = (key: string, target: EventTarget | null, extra = {}) => ({
+    key,
+    ctrlKey: false,
+    metaKey: false,
+    altKey: false,
+    target,
+    ...extra,
+  });
+
+  it('accepts a plain slash on the page', () => {
+    expect(isSearchShortcut(press('/', document.body))).toBe(true);
+  });
+
+  it('ignores slash typed into fields', () => {
+    expect(isSearchShortcut(press('/', document.createElement('input')))).toBe(
+      false,
+    );
+    expect(
+      isSearchShortcut(press('/', document.createElement('textarea'))),
+    ).toBe(false);
+  });
+
+  it('ignores other keys and modified slashes', () => {
+    expect(isSearchShortcut(press('a', document.body))).toBe(false);
+    expect(isSearchShortcut(press('/', document.body, { ctrlKey: true }))).toBe(
+      false,
+    );
   });
 });

@@ -1217,3 +1217,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L204 add a "/" shortcut to focus search.
 - Blockers: none
+
+## 2026-10-28 — L204: Add search keyboard shortcut
+- Changed: On the Search page, pressing "/" outside a text field focuses the search box; typing "/" inside a field still types it.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L205 add a search privacy note.
+- Blockers: none

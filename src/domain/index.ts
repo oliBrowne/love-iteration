@@ -80,6 +80,7 @@ export {
 export type { SearchGroup } from './search.ts';
 export {
   groupSearchResults,
+  isSearchShortcut,
   normalizeSearchText,
   searchEntries,
   searchTextForEntry,
