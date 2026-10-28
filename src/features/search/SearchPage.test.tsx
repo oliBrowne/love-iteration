@@ -79,4 +79,33 @@ describe('Search results', () => {
     expect(await screen.findByText('Demo: a Sunny walk')).toBeTruthy();
     expect(screen.queryByText('Demo: quiet tea')).toBeNull();
   });
+
+  it('labels results by their kind', async () => {
+    const sources = await makeSources();
+    const base = {
+      schemaVersion: 1,
+      createdAt: '2026-03-02T10:00:00.000Z',
+      updatedAt: '2026-03-02T10:00:00.000Z',
+    };
+    await (
+      await sources.gratitude()
+    ).put({ ...base, id: 'g', date: '2026-03-02', text: 'Demo: lake day' });
+    await (
+      await sources.memories()
+    ).put({
+      ...base,
+      id: 'm',
+      date: '2026-03-01',
+      title: 'Demo lake trip',
+      note: '',
+    });
+    render(<SearchPage sources={sources} />);
+    fireEvent.change(screen.getByLabelText('Search your entries'), {
+      target: { value: 'lake' },
+    });
+    expect(
+      await screen.findByRole('heading', { name: 'Gratitude' }),
+    ).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'Memories' })).toBeTruthy();
+  });
 });

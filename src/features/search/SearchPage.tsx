@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { TextField } from '../../ui/index.ts';
 import {
   formatDateLabel,
+  groupSearchResults,
   routeToHash,
+  timelineKindLabels,
   searchEntries,
   timelineKindRoutes,
 } from '../../domain/index.ts';
@@ -50,18 +52,23 @@ export function SearchPage({
         onChange={(event) => setQuery(event.target.value)}
       />
       {problem ? <p role="alert">{problem}</p> : null}
-      <ul className="gratitude-list">
-        {results.map((entry) => (
-          <li key={`${entry.kind}-${entry.id}`} className="gratitude-card">
-            <p>
-              <a href={routeToHash(timelineKindRoutes[entry.kind])}>
-                {entry.summary}
-              </a>
-            </p>
-            <small>{formatDateLabel(entry.date)}</small>
-          </li>
-        ))}
-      </ul>
+      {groupSearchResults(results).map((group) => (
+        <section key={group.kind} aria-label={timelineKindLabels[group.kind]}>
+          <h3>{timelineKindLabels[group.kind]}</h3>
+          <ul className="gratitude-list">
+            {group.entries.map((entry) => (
+              <li key={entry.id} className="gratitude-card">
+                <p>
+                  <a href={routeToHash(timelineKindRoutes[entry.kind])}>
+                    {entry.summary}
+                  </a>
+                </p>
+                <small>{formatDateLabel(entry.date)}</small>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
     </section>
   );
 }

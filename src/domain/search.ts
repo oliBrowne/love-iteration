@@ -1,5 +1,5 @@
-import { timelineKindLabels } from './timeline.ts';
-import type { TimelineEntry } from './timeline.ts';
+import { timelineKindLabels, timelineKinds } from './timeline.ts';
+import type { TimelineEntry, TimelineKind } from './timeline.ts';
 
 // Lower-cases text, drops accents, and collapses any run of whitespace to one
 // space, so matching ignores case, accents, and spacing.
@@ -32,4 +32,18 @@ export function searchTextForEntry(entry: TimelineEntry): string {
   return normalizeSearchText(
     `${timelineKindLabels[entry.kind]} ${entry.summary}`,
   );
+}
+
+// A run of search results of the same kind.
+export type SearchGroup = { kind: TimelineKind; entries: TimelineEntry[] };
+
+// Splits results into one group per kind, in the order of `timelineKinds`,
+// keeping each group's result order. Kinds with no results are left out.
+export function groupSearchResults(entries: TimelineEntry[]): SearchGroup[] {
+  return timelineKinds
+    .map((kind) => ({
+      kind,
+      entries: entries.filter((entry) => entry.kind === kind),
+    }))
+    .filter((group) => group.entries.length > 0);
 }

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  groupSearchResults,
   normalizeSearchText,
   searchEntries,
   searchTextForEntry,
@@ -45,5 +46,25 @@ describe('searchEntries', () => {
 
   it('matches nothing for a blank query', () => {
     expect(searchEntries(entries, '   ')).toEqual([]);
+  });
+});
+
+describe('groupSearchResults', () => {
+  const entry = (id: string, kind: TimelineEntry['kind']): TimelineEntry => ({
+    id,
+    kind,
+    date: '2026-01-05',
+    summary: id,
+    createdAt: '2026-01-05T09:00:00.000Z',
+  });
+
+  it('groups by kind in timeline kind order and skips empty kinds', () => {
+    const groups = groupSearchResults([
+      entry('m1', 'memory'),
+      entry('g1', 'gratitude'),
+      entry('m2', 'memory'),
+    ]);
+    expect(groups.map((g) => g.kind)).toEqual(['gratitude', 'memory']);
+    expect(groups[1]?.entries.map((e) => e.id)).toEqual(['m1', 'm2']);
   });
 });

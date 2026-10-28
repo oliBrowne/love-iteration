@@ -222,7 +222,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L198 Add timeline keyboard navigation — Done when cards are reachable in order.
 - [x] L199 Add search index helper — Done when records produce normalized search text.
 - [x] L200 Add global search input — Done when query matches supported record text.
-- [ ] L201 Add search result grouping — Done when results are labeled by kind.
+- [x] L201 Add search result grouping — Done when results are labeled by kind.
 - [ ] L202 Add search no-results state — Done when query feedback is shown.
 - [ ] L203 Add search clear action — Done when query and results reset.
 - [ ] L204 Add search keyboard shortcut — Done when slash focuses search outside inputs.

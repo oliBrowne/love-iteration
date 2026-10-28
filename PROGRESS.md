@@ -1199,3 +1199,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L201 group search results by kind.
 - Blockers: none
+
+## 2026-10-28 — L201: Add search result grouping
+- Changed: Search results are grouped under headings by kind (Check-ins, Gratitude, Memories, and so on).
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L202 show a no-results message.
+- Blockers: none
