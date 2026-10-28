@@ -108,4 +108,13 @@ describe('Search results', () => {
     ).toBeTruthy();
     expect(screen.getByRole('heading', { name: 'Memories' })).toBeTruthy();
   });
+
+  it('says so when nothing matches, and not before typing', async () => {
+    render(<SearchPage sources={await makeSources()} />);
+    expect(screen.queryByText(/Nothing matches/)).toBeNull();
+    fireEvent.change(screen.getByLabelText('Search your entries'), {
+      target: { value: 'zzz' },
+    });
+    expect(screen.getByText(/Nothing matches/)).toBeTruthy();
+  });
 });

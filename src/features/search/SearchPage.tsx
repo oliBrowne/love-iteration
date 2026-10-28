@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { TextField } from '../../ui/index.ts';
+import { EmptyState, TextField } from '../../ui/index.ts';
 import {
   formatDateLabel,
   groupSearchResults,
@@ -52,6 +52,11 @@ export function SearchPage({
         onChange={(event) => setQuery(event.target.value)}
       />
       {problem ? <p role="alert">{problem}</p> : null}
+      {query.trim() !== '' && results.length === 0 ? (
+        <EmptyState>
+          Nothing matches &ldquo;{query.trim()}&rdquo;. Try a different word.
+        </EmptyState>
+      ) : null}
       {groupSearchResults(results).map((group) => (
         <section key={group.kind} aria-label={timelineKindLabels[group.kind]}>
           <h3>{timelineKindLabels[group.kind]}</h3>

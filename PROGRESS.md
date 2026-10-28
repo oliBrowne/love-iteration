@@ -1205,3 +1205,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L202 show a no-results message.
 - Blockers: none
+
+## 2026-10-28 — L202: Add search no-results state
+- Changed: Searching for something that matches nothing shows a gentle "Nothing matches" message with the query; it stays hidden until you type.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L203 add a clear-search action.
+- Blockers: none
