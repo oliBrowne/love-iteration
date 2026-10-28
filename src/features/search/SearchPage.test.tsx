@@ -148,4 +148,9 @@ describe('Search results', () => {
     fireEvent.keyDown(document.body, { key: '/' });
     expect(document.activeElement).toBe(input);
   });
+
+  it('tells you the search stays on this device', async () => {
+    render(<SearchPage sources={await makeSources()} />);
+    expect(screen.getByText(/stays on this device/)).toBeTruthy();
+  });
 });

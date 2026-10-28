@@ -60,6 +60,9 @@ export function SearchPage({
     <section aria-labelledby="search-heading">
       <h2 id="search-heading">Search</h2>
       <p>Press / to jump to the search box.</p>
+      <p>
+        Your search stays on this device. It is never sent anywhere or saved.
+      </p>
       <TextField
         label="Search your entries"
         type="search"

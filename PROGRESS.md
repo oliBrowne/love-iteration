@@ -1223,3 +1223,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L205 add a search privacy note.
 - Blockers: none
+
+## 2026-10-28 — L205: Add search privacy note
+- Changed: The Search page says the query stays on this device and is never sent or saved (it is held only in the page, not in the URL or storage).
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L206 add a date-range boundary test.
+- Blockers: none
