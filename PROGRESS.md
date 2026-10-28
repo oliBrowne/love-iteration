@@ -1187,3 +1187,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L199 add a search index helper.
 - Blockers: none
+
+## 2026-10-28 — L199: Add search index helper
+- Changed: Records now produce normalized search text (lower-case, accent-free, single-spaced) that includes their kind label.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L200 add a global search input.
+- Blockers: none

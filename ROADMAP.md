@@ -220,7 +220,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L196 Add timeline pagination — Done when feed loads 30 items at a time.
 - [x] L197 Add timeline month headings — Done when month groups are labeled.
 - [x] L198 Add timeline keyboard navigation — Done when cards are reachable in order.
-- [ ] L199 Add search index helper — Done when records produce normalized search text.
+- [x] L199 Add search index helper — Done when records produce normalized search text.
 - [ ] L200 Add global search input — Done when query matches supported record text.
 - [ ] L201 Add search result grouping — Done when results are labeled by kind.
 - [ ] L202 Add search no-results state — Done when query feedback is shown.
