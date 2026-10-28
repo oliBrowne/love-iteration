@@ -224,7 +224,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L200 Add global search input — Done when query matches supported record text.
 - [x] L201 Add search result grouping — Done when results are labeled by kind.
 - [x] L202 Add search no-results state — Done when query feedback is shown.
-- [ ] L203 Add search clear action — Done when query and results reset.
+- [x] L203 Add search clear action — Done when query and results reset.
 - [ ] L204 Add search keyboard shortcut — Done when slash focuses search outside inputs.
 - [ ] L205 Add search privacy note — Done when query stays local to the device.
 - [ ] L206 Add date-range boundary test — Done when endpoints are included correctly.

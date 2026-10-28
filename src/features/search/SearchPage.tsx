@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { EmptyState, TextField } from '../../ui/index.ts';
+import { Button, EmptyState, TextField } from '../../ui/index.ts';
 import {
   formatDateLabel,
   groupSearchResults,
@@ -51,6 +51,9 @@ export function SearchPage({
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
+      <Button type="button" onClick={() => setQuery('')}>
+        Clear search
+      </Button>
       {problem ? <p role="alert">{problem}</p> : null}
       {query.trim() !== '' && results.length === 0 ? (
         <EmptyState>

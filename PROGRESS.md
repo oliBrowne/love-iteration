@@ -1211,3 +1211,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L203 add a clear-search action.
 - Blockers: none
+
+## 2026-10-28 — L203: Add search clear action
+- Changed: A Clear search button empties the search box and its results.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L204 add a "/" shortcut to focus search.
+- Blockers: none

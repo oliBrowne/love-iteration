@@ -117,4 +117,27 @@ describe('Search results', () => {
     });
     expect(screen.getByText(/Nothing matches/)).toBeTruthy();
   });
+
+  it('clears the query and the results', async () => {
+    const sources = await makeSources();
+    await (
+      await sources.gratitude()
+    ).put({
+      schemaVersion: 1,
+      createdAt: '2026-03-02T10:00:00.000Z',
+      updatedAt: '2026-03-02T10:00:00.000Z',
+      id: 'g',
+      date: '2026-03-02',
+      text: 'Demo: lake day',
+    });
+    render(<SearchPage sources={sources} />);
+    const input = screen.getByLabelText<HTMLInputElement>(
+      'Search your entries',
+    );
+    fireEvent.change(input, { target: { value: 'lake' } });
+    await screen.findByText('Demo: lake day');
+    fireEvent.click(screen.getByRole('button', { name: 'Clear search' }));
+    expect(input.value).toBe('');
+    expect(screen.queryByText('Demo: lake day')).toBeNull();
+  });
 });
