@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { normalizeSearchText, searchTextForEntry } from './search.ts';
+import {
+  normalizeSearchText,
+  searchEntries,
+  searchTextForEntry,
+} from './search.ts';
 import type { TimelineEntry } from './timeline.ts';
 
 describe('normalizeSearchText', () => {
@@ -22,5 +26,24 @@ describe('searchTextForEntry', () => {
       createdAt: '2026-01-05T09:00:00.000Z',
     };
     expect(searchTextForEntry(entry)).toBe('gratitude demo: a kind message');
+  });
+});
+
+describe('searchEntries', () => {
+  const entry = (id: string, summary: string): TimelineEntry => ({
+    id,
+    kind: 'memory',
+    date: '2026-01-05',
+    summary,
+    createdAt: '2026-01-05T09:00:00.000Z',
+  });
+  const entries = [entry('a', 'Demo: sunny walk'), entry('b', 'Demo: tea')];
+
+  it('matches entries containing every word, in any order', () => {
+    expect(searchEntries(entries, 'WALK  sunny')).toEqual([entries[0]]);
+  });
+
+  it('matches nothing for a blank query', () => {
+    expect(searchEntries(entries, '   ')).toEqual([]);
   });
 });

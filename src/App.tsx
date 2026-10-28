@@ -6,6 +6,7 @@ import { IdeasPage } from './features/ideas/IdeasPage.tsx';
 import { MemoriesPage } from './features/memories/MemoriesPage.tsx';
 import { ReflectionPage } from './features/reflection/ReflectionPage.tsx';
 import { RitualsPage } from './features/rituals/RitualsPage.tsx';
+import { SearchPage } from './features/search/SearchPage.tsx';
 import { TimelinePage } from './features/timeline/TimelinePage.tsx';
 import { PageLayout } from './ui/index.ts';
 import { useRoute } from './useRoute.ts';
@@ -28,6 +29,8 @@ function App() {
         <IdeasPage />
       ) : route === 'timeline' ? (
         <TimelinePage />
+      ) : route === 'search' ? (
+        <SearchPage />
       ) : route === 'check-in' ? (
         <CheckInPage />
       ) : (

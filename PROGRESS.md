@@ -1193,3 +1193,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L200 add a global search input.
 - Blockers: none
+
+## 2026-10-28 — L200: Add global search input
+- Changed: A Search page (linked in the main navigation) has a search box; typing shows entries from every record kind whose text contains all the words, ignoring case and accents. All text stays on the device.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L201 group search results by kind.
+- Blockers: none

@@ -77,4 +77,8 @@ export {
   timelineKindRoutes,
   timelineKinds,
 } from './timeline.ts';
-export { normalizeSearchText, searchTextForEntry } from './search.ts';
+export {
+  normalizeSearchText,
+  searchEntries,
+  searchTextForEntry,
+} from './search.ts';

@@ -7,6 +7,7 @@ export const routes = [
   'reflection',
   'ideas',
   'timeline',
+  'search',
   'settings',
 ] as const;
 
@@ -21,6 +22,7 @@ export const routeLabels: Record<Route, string> = {
   reflection: 'Reflection',
   ideas: 'Ideas',
   timeline: 'Timeline',
+  search: 'Search',
   settings: 'Settings',
 };
 
