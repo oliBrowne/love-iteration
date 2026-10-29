@@ -1295,3 +1295,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L217 add an import schema validator rejecting a malformed root object.
 - Blockers: none
+
+## 2026-10-29 — L217: Add import schema validator
+- Changed: An import validator checks the outer shape of a parsed export file (app name, version, time, record lists) and rejects malformed roots with plain messages; not yet connected to the UI.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L218 report missing or duplicate IDs in imported records.
+- Blockers: none
