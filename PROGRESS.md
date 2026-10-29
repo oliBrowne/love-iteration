@@ -1253,3 +1253,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L210 add a search browser test: query opens the right detail.
 - Blockers: none
+
+## 2026-10-29 — L210: Add search browser test
+- Changed: Browser test saves a demo entry, searches for it, and confirms the result opens the page that shows it; no visible change.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L211 define an export schema version and timestamp envelope.
+- Blockers: none
