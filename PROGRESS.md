@@ -1247,3 +1247,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L209 add a timeline browser test for filters surviving back navigation.
 - Blockers: none
+
+## 2026-10-29 — L209: Add timeline browser test
+- Changed: Timeline filters (kinds and dates) are now kept in memory while you visit another page and press Back; a reload still starts fresh and nothing is stored. Verified in the browser test.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L210 add a search browser test: query opens the right detail.
+- Blockers: none

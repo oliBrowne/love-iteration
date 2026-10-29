@@ -17,8 +17,12 @@ import {
 } from '../../data/index.ts';
 import { TimelinePage } from './TimelinePage.tsx';
 import type { TimelineSources } from './loadTimeline.ts';
+import { rememberTimelineFilters } from './timelineFilters.ts';
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  rememberTimelineFilters({ kinds: [], from: '', to: '' });
+});
 
 async function makeSources() {
   const db = await openDatabase(new IDBFactory());
@@ -271,5 +275,26 @@ describe('Timeline feed', () => {
       'Demo a',
     ]);
     expect(links.every((link) => link.tabIndex >= 0)).toBe(true);
+  });
+});
+
+describe('Timeline filters', () => {
+  it('are kept when the page is closed and opened again', async () => {
+    const sources = await makeSources();
+    const first = render(<TimelinePage sources={sources} />);
+    fireEvent.click(screen.getByRole('checkbox', { name: /Memories/ }));
+    fireEvent.change(screen.getByLabelText('From'), {
+      target: { value: '2026-01-01' },
+    });
+    first.unmount();
+
+    render(<TimelinePage sources={sources} />);
+    expect(
+      (screen.getByRole('checkbox', { name: /Memories/ }) as HTMLInputElement)
+        .checked,
+    ).toBe(true);
+    expect((screen.getByLabelText('From') as HTMLInputElement).value).toBe(
+      '2026-01-01',
+    );
   });
 });

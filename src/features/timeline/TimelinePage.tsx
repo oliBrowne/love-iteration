@@ -14,6 +14,10 @@ import {
 import type { TimelineEntry, TimelineKind } from '../../domain/index.ts';
 import { loadTimeline, localTimelineSources } from './loadTimeline.ts';
 import type { TimelineSources } from './loadTimeline.ts';
+import {
+  rememberTimelineFilters,
+  rememberedTimelineFilters,
+} from './timelineFilters.ts';
 
 // How many entries load at a time.
 export const TIMELINE_PAGE_SIZE = 30;
@@ -27,9 +31,10 @@ export function TimelinePage({
 }: TimelinePageProps) {
   const [entries, setEntries] = useState<TimelineEntry[]>([]);
   const [loaded, setLoaded] = useState(false);
-  const [kinds, setKinds] = useState<TimelineKind[]>([]);
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
+  const [initial] = useState(rememberedTimelineFilters);
+  const [kinds, setKinds] = useState<TimelineKind[]>(initial.kinds);
+  const [from, setFrom] = useState(initial.from);
+  const [to, setTo] = useState(initial.to);
   const [visible, setVisible] = useState(TIMELINE_PAGE_SIZE);
   const [problem, setProblem] = useState<string>();
 
@@ -49,6 +54,10 @@ export function TimelinePage({
       cancelled = true;
     };
   }, [sources]);
+
+  useEffect(() => {
+    rememberTimelineFilters({ kinds, from, to });
+  }, [kinds, from, to]);
 
   function toggleKind(kind: TimelineKind) {
     setVisible(TIMELINE_PAGE_SIZE);
