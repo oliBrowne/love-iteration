@@ -1265,3 +1265,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L212 add an export serializer that includes every record kind.
 - Blockers: none
+
+## 2026-10-29 — L212: Add export serializer
+- Changed: An export serializer reads all saved record kinds (check-ins, gratitude, memories, plans, ideas, rituals, ritual completions, reflections) into versioned JSON; not yet wired to a button.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L213 make sure the export excludes search and draft state.
+- Blockers: none
