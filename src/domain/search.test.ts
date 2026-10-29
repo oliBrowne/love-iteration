@@ -46,6 +46,19 @@ describe('searchEntries', () => {
     expect(searchEntries(entries, 'WALK  sunny')).toEqual([entries[0]]);
   });
 
+  it('gives the same matches whatever the case or whitespace of the query', () => {
+    const expected = [entries[0]];
+    for (const query of ['sunny walk', 'SUNNY WALK', '  sunny\t\nwalk  ']) {
+      expect(searchEntries(entries, query)).toEqual(expected);
+    }
+  });
+
+  it('matches regardless of case, accents, and spacing in the entry text', () => {
+    const messy = [entry('c', 'Demo:  CAFÉ\n  au   lait')];
+    expect(searchEntries(messy, 'cafe AU lait')).toEqual(messy);
+    expect(searchEntries(messy, 'café')).toEqual(messy);
+  });
+
   it('matches nothing for a blank query', () => {
     expect(searchEntries(entries, '   ')).toEqual([]);
   });

@@ -1241,3 +1241,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L208 add a search normalization test.
 - Blockers: none
+
+## 2026-10-29 — L208: Add search normalization test
+- Changed: Tests now show search ignores case and whitespace differences; no visible change.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L209 add a timeline browser test for filters surviving back navigation.
+- Blockers: none
