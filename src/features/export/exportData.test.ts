@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
 import { describe, expect, it } from 'vitest';
@@ -13,6 +14,7 @@ import {
   openDatabase,
 } from '../../data/index.ts';
 import type { TimelineSources } from '../timeline/loadTimeline.ts';
+import { rememberTimelineFilters } from '../timeline/timelineFilters.ts';
 import { buildExport, serializeExport } from './exportData.ts';
 
 async function makeSources(): Promise<TimelineSources> {
@@ -81,5 +83,30 @@ describe('serializeExport', () => {
     expect(parsed.app).toBe('love-iteration');
     expect(parsed.exportedAt).toBe(now.toISOString());
     expect(parsed.data.checkIns).toEqual([]);
+  });
+});
+
+describe('transient UI state', () => {
+  it('is left out of the export', async () => {
+    rememberTimelineFilters({ kinds: ['memory'], from: '2026-01-01', to: '' });
+    sessionStorage.setItem('draft', 'Demo unsaved draft text');
+    localStorage.setItem('search', 'Demo search query');
+    try {
+      const envelope = await buildExport(await makeSources(), now);
+      expect(Object.keys(envelope).sort()).toEqual([
+        'app',
+        'data',
+        'exportedAt',
+        'schemaVersion',
+      ]);
+      const text = JSON.stringify(envelope);
+      for (const leaked of ['unsaved draft', 'search query', 'filters']) {
+        expect(text).not.toContain(leaked);
+      }
+    } finally {
+      sessionStorage.clear();
+      localStorage.clear();
+      rememberTimelineFilters({ kinds: [], from: '', to: '' });
+    }
   });
 });

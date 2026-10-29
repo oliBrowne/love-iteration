@@ -1271,3 +1271,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L213 make sure the export excludes search and draft state.
 - Blockers: none
+
+## 2026-10-29 — L213: Exclude transient UI state
+- Changed: A test confirms the export holds only saved records: timeline filters, search text, and unsaved drafts never appear in it.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L214 add an export JSON download with a named file.
+- Blockers: none
