@@ -1289,3 +1289,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L216 add an export browser test: downloaded file parses as expected.
 - Blockers: none
+
+## 2026-10-29 — L216: Add export browser test
+- Changed: Browser test saves a demo entry, downloads the export, and checks the file name and parsed contents; no visible change.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L217 add an import schema validator rejecting a malformed root object.
+- Blockers: none
