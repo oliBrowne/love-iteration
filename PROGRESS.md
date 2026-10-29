@@ -1229,3 +1229,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L206 add a date-range boundary test.
 - Blockers: none
+
+## 2026-10-29 — L206: Add date-range boundary test
+- Changed: Date-range filter boundaries (endpoints, month/year edges, inverted range) are now covered by tests; no visible change.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L207 add a timeline merge test for six source kinds.
+- Blockers: none

@@ -396,6 +396,26 @@ describe('filterTimelineByDateRange', () => {
     expect(filterTimelineByDateRange(days, '2026-01-03', '')).toHaveLength(1);
     expect(filterTimelineByDateRange(days, '', '2026-01-01')).toHaveLength(1);
   });
+
+  it('includes both endpoints across month and year boundaries', () => {
+    const edge = ['2025-12-31', '2026-01-01', '2026-01-31', '2026-02-01'].map(
+      onDay,
+    );
+    expect(
+      filterTimelineByDateRange(edge, '2025-12-31', '2026-01-31').map(
+        (e) => e.date,
+      ),
+    ).toEqual(['2025-12-31', '2026-01-01', '2026-01-31']);
+  });
+
+  it('excludes the days just outside each end and an inverted range', () => {
+    expect(
+      filterTimelineByDateRange(days, '2026-01-02', '2026-01-02'),
+    ).toHaveLength(1);
+    expect(filterTimelineByDateRange(days, '2026-01-03', '2026-01-02')).toEqual(
+      [],
+    );
+  });
 });
 
 describe('groupTimelineByMonth', () => {
