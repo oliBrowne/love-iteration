@@ -52,3 +52,23 @@ describe('Export download', () => {
     expect(savedAs).toMatch(/^love-iteration-export-\d{4}-\d{2}-\d{2}\.json$/);
   });
 });
+
+describe('Export preview', () => {
+  it('lists a count for each record kind', async () => {
+    const sources = await makeSources();
+    await (
+      await sources.gratitude()
+    ).put({
+      id: 'g1',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T10:00:00.000Z',
+      updatedAt: '2026-01-01T10:00:00.000Z',
+      text: 'Demo thanks',
+      date: '2026-01-01',
+    });
+    render(<SettingsPage sources={sources} />);
+    expect(await screen.findByText('Gratitude: 1')).toBeTruthy();
+    expect(screen.getByText('Check-ins: 0')).toBeTruthy();
+    expect(screen.getAllByRole('listitem')).toHaveLength(8);
+  });
+});

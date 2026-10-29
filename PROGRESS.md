@@ -1283,3 +1283,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L215 show per-kind counts in the export dialog.
 - Blockers: none
+
+## 2026-10-29 — L215: Add export preview counts
+- Changed: Settings lists how many records of each kind the export will include (check-ins, gratitude, memories, plans, ideas, rituals, completions, reflections) before you download.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L216 add an export browser test: downloaded file parses as expected.
+- Blockers: none

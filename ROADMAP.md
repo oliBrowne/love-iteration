@@ -239,7 +239,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L212 Add export serializer — Done when all six record kinds are included.
 - [x] L213 Exclude transient UI state — Done when export has no search or draft state.
 - [x] L214 Add export JSON download — Done when user gets a named local file.
-- [ ] L215 Add export preview counts — Done when dialog lists per-kind counts.
+- [x] L215 Add export preview counts — Done when dialog lists per-kind counts.
 - [ ] L216 Add export browser test — Done when downloaded file parses as expected.
 - [ ] L217 Add import schema validator — Done when malformed root object is rejected.
 - [ ] L218 Validate imported IDs — Done when missing or duplicate IDs are reported.
