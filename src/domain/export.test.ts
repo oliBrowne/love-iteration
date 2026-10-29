@@ -3,6 +3,7 @@ import {
   EXPORT_APP_NAME,
   EXPORT_SCHEMA_VERSION,
   createExportEnvelope,
+  exportFileName,
 } from './export.ts';
 
 describe('createExportEnvelope', () => {
@@ -28,5 +29,13 @@ describe('createExportEnvelope', () => {
     const before = Date.now();
     const { exportedAt } = createExportEnvelope({});
     expect(Date.parse(exportedAt)).toBeGreaterThanOrEqual(before);
+  });
+});
+
+describe('exportFileName', () => {
+  it('names the file by local day with a .json ending', () => {
+    expect(exportFileName(new Date(2026, 2, 4, 12))).toBe(
+      'love-iteration-export-2026-03-04.json',
+    );
   });
 });

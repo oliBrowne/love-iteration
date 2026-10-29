@@ -25,3 +25,11 @@ export function createExportEnvelope<Data>(
     data,
   };
 }
+
+// The name offered when saving an export, e.g. love-iteration-export-2026-03-04.json.
+// Uses the person's local day and contains no personal details.
+export function exportFileName(now: Date = new Date()): string {
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const day = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  return `${EXPORT_APP_NAME}-export-${day}.json`;
+}

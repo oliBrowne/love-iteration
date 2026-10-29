@@ -1277,3 +1277,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L214 add an export JSON download with a named file.
 - Blockers: none
+
+## 2026-10-29 — L214: Add export JSON download
+- Changed: Settings now has a Download export button that saves everything as love-iteration-export-YYYY-MM-DD.json on this device; nothing is uploaded.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L215 show per-kind counts in the export dialog.
+- Blockers: none

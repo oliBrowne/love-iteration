@@ -90,4 +90,5 @@ export {
   createExportEnvelope,
   EXPORT_APP_NAME,
   EXPORT_SCHEMA_VERSION,
+  exportFileName,
 } from './export.ts';
