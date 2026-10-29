@@ -1235,3 +1235,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L207 add a timeline merge test for six source kinds.
 - Blockers: none
+
+## 2026-10-29 — L207: Add timeline merge test
+- Changed: Timeline merge ordering across all six source kinds is now covered by a test; no visible change.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L208 add a search normalization test.
+- Blockers: none

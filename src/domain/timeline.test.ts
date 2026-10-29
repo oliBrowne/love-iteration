@@ -283,6 +283,33 @@ describe('mergeTimeline', () => {
     expect(merged.map((e) => e.id)).toEqual(['g1', 'c1', 'm1']);
   });
 
+  it('orders all six source kinds, one source per kind, newest first', () => {
+    const merged = mergeTimeline(
+      [entry('rf', 'reflection', '2026-01-01', '2026-01-01T00:00:00.000Z')],
+      [
+        entry(
+          'rc',
+          'ritual-completion',
+          '2026-01-02',
+          '2026-01-02T00:00:00.000Z',
+        ),
+      ],
+      [entry('pl', 'plan', '2026-01-03', '2026-01-03T00:00:00.000Z')],
+      [entry('mm', 'memory', '2026-01-04', '2026-01-04T00:00:00.000Z')],
+      [entry('gr', 'gratitude', '2026-01-05', '2026-01-05T00:00:00.000Z')],
+      [entry('ck', 'checkin', '2026-01-06', '2026-01-06T00:00:00.000Z')],
+    );
+    expect(merged.map((e) => e.kind)).toEqual([
+      'checkin',
+      'gratitude',
+      'memory',
+      'plan',
+      'ritual-completion',
+      'reflection',
+    ]);
+    expect(new Set(merged.map((e) => e.kind))).toEqual(new Set(timelineKinds));
+  });
+
   it('puts the later-created entry first on the same day', () => {
     const merged = mergeTimeline([
       entry('morning', 'checkin', '2026-01-05', '2026-01-05T08:00:00.000Z'),

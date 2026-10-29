@@ -228,7 +228,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L204 Add search keyboard shortcut — Done when slash focuses search outside inputs.
 - [x] L205 Add search privacy note — Done when query stays local to the device.
 - [x] L206 Add date-range boundary test — Done when endpoints are included correctly.
-- [ ] L207 Add timeline merge test — Done when six source kinds order correctly.
+- [x] L207 Add timeline merge test — Done when six source kinds order correctly.
 - [ ] L208 Add search normalization test — Done when case and whitespace do not alter matches.
 - [ ] L209 Add timeline browser test — Done when filters survive back navigation.
 - [ ] L210 Add search browser test — Done when query opens the right detail.
