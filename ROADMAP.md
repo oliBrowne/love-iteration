@@ -235,7 +235,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 
 ## 08 Portability and privacy
 
-- [ ] L211 Define export schema version — Done when export envelope has a version and timestamp.
+- [x] L211 Define export schema version — Done when export envelope has a version and timestamp.
 - [ ] L212 Add export serializer — Done when all six record kinds are included.
 - [ ] L213 Exclude transient UI state — Done when export has no search or draft state.
 - [ ] L214 Add export JSON download — Done when user gets a named local file.

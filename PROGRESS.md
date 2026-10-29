@@ -1259,3 +1259,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L211 define an export schema version and timestamp envelope.
 - Blockers: none
+
+## 2026-10-29 — L211: Define export schema version
+- Changed: An export envelope (app name, schema version, ISO timestamp, data) is defined and tested; no visible change yet.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L212 add an export serializer that includes every record kind.
+- Blockers: none

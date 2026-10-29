@@ -85,3 +85,9 @@ export {
   searchEntries,
   searchTextForEntry,
 } from './search.ts';
+export type { ExportEnvelope } from './export.ts';
+export {
+  createExportEnvelope,
+  EXPORT_APP_NAME,
+  EXPORT_SCHEMA_VERSION,
+} from './export.ts';
