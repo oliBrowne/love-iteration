@@ -1355,3 +1355,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L227 add a browser test: export then re-import restores records.
 - Blockers: none
+
+## 2026-10-30 — L227: Add import browser test
+- Changed: Browser test exports a demo entry, imports the file into a fresh browser context, and checks the record is restored; no visible change.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L228 add a full data delete action with a confirmation explaining local removal.
+- Blockers: none
