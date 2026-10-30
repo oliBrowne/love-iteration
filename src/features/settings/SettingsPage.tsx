@@ -73,8 +73,10 @@ export function SettingsPage({ sources }: SettingsPageProps) {
     if (!preview?.ok) return;
     setConfirming(false);
     try {
-      await applyImport(preview.data, sources);
-      setMessage('Your file was imported.');
+      const done = await applyImport(preview.data, sources);
+      setMessage(
+        `Your file was imported: ${done.added} new, ${done.updated} updated, ${done.skipped} skipped.`,
+      );
       setPreview(undefined);
     } catch {
       setProblem('Could not import your file.');

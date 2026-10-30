@@ -1349,3 +1349,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L226 show final counts after a successful import.
 - Blockers: none
+
+## 2026-10-30 — L226: Add import success message
+- Changed: After a successful import, Settings reports the final counts of new, updated, and skipped records.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L227 add a browser test: export then re-import restores records.
+- Blockers: none
