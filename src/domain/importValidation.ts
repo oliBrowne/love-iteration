@@ -57,3 +57,33 @@ export function validateImportRoot(root: unknown): ImportCheck {
   if (errors.length > 0 || !isObject(data)) return { ok: false, errors };
   return { ok: true, data: data as Extract<ImportCheck, { ok: true }>['data'] };
 }
+
+// Checks that every record in every list has a non-empty string ID and that no
+// ID repeats within its list. Problems are plain sentences naming the list.
+export function validateImportIds(
+  data: Record<(typeof exportDataKeys)[number], unknown[]>,
+): string[] {
+  const errors: string[] = [];
+  for (const key of exportDataKeys) {
+    const seen = new Set<string>();
+    let missing = 0;
+    const duplicates = new Set<string>();
+    for (const record of data[key]) {
+      const id = isObject(record) ? record.id : undefined;
+      if (typeof id !== 'string' || id === '') {
+        missing += 1;
+      } else if (seen.has(id)) {
+        duplicates.add(id);
+      } else {
+        seen.add(id);
+      }
+    }
+    if (missing > 0) {
+      errors.push(`The "${key}" list has ${missing} record(s) without an ID.`);
+    }
+    for (const id of duplicates) {
+      errors.push(`The "${key}" list repeats the ID "${id}".`);
+    }
+  }
+  return errors;
+}

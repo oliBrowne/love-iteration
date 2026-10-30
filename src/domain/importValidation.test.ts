@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { createExportEnvelope } from './export.ts';
-import { exportDataKeys, validateImportRoot } from './importValidation.ts';
+import {
+  exportDataKeys,
+  validateImportIds,
+  validateImportRoot,
+} from './importValidation.ts';
 
 const emptyData = Object.fromEntries(exportDataKeys.map((k) => [k, []]));
 const valid = () => JSON.parse(JSON.stringify(createExportEnvelope(emptyData)));
@@ -62,5 +66,28 @@ describe('validateImportRoot', () => {
       ok: false,
       errors: ['The file has no data section.'],
     });
+  });
+});
+
+describe('validateImportIds', () => {
+  const lists = (over: Record<string, unknown[]> = {}) =>
+    ({ ...emptyData, ...over }) as Parameters<typeof validateImportIds>[0];
+
+  it('accepts unique IDs', () => {
+    expect(
+      validateImportIds(lists({ memories: [{ id: 'a' }, { id: 'b' }] })),
+    ).toEqual([]);
+  });
+
+  it('reports missing and duplicate IDs', () => {
+    const errors = validateImportIds(
+      lists({
+        gratitude: [{ id: 'a' }, { id: 'a' }, { id: '' }, { text: 'x' }, 5],
+      }),
+    );
+    expect(errors).toEqual([
+      'The "gratitude" list has 3 record(s) without an ID.',
+      'The "gratitude" list repeats the ID "a".',
+    ]);
   });
 });

@@ -1301,3 +1301,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L218 report missing or duplicate IDs in imported records.
 - Blockers: none
+
+## 2026-10-30 — L218: Validate imported IDs
+- Changed: Import validation now reports records with missing IDs and IDs repeated within a list; not yet connected to the UI.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L219 report invalid imported dates before writing.
+- Blockers: none

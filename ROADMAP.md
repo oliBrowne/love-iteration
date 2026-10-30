@@ -242,7 +242,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L215 Add export preview counts — Done when dialog lists per-kind counts.
 - [x] L216 Add export browser test — Done when downloaded file parses as expected.
 - [x] L217 Add import schema validator — Done when malformed root object is rejected.
-- [ ] L218 Validate imported IDs — Done when missing or duplicate IDs are reported.
+- [x] L218 Validate imported IDs — Done when missing or duplicate IDs are reported.
 - [ ] L219 Validate imported dates — Done when invalid dates are reported before writing.
 - [ ] L220 Add import dry run — Done when preview shows incoming counts without writes.
 - [ ] L221 Add import file chooser — Done when JSON file can be selected by keyboard.

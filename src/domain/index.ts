@@ -93,4 +93,8 @@ export {
   exportFileName,
 } from './export.ts';
 export type { ImportCheck } from './importValidation.ts';
-export { exportDataKeys, validateImportRoot } from './importValidation.ts';
+export {
+  exportDataKeys,
+  validateImportIds,
+  validateImportRoot,
+} from './importValidation.ts';
