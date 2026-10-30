@@ -118,8 +118,8 @@ export function SettingsPage({ sources }: SettingsPageProps) {
           {confirming ? (
             <div role="group" aria-labelledby="import-confirm">
               <p id="import-confirm">
-                Add these records to this device? Records with the same ID will
-                be replaced.
+                Add these records to this device? Stored records are replaced
+                only by a newer version of the same record.
               </p>
               <Button type="button" onClick={confirmImport}>
                 Yes, import

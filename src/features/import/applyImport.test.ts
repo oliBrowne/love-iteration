@@ -42,5 +42,25 @@ describe('applyImport', () => {
     } as unknown as ExportData;
     await applyImport(data, sources);
     expect(await memories.list()).toHaveLength(1);
+    const older = {
+      ...record,
+      title: 'Older',
+      updatedAt: '2025-01-01T00:00:00.000Z',
+    };
+    const newer = {
+      ...record,
+      title: 'Newer',
+      updatedAt: '2026-06-01T00:00:00.000Z',
+    };
+    await applyImport(
+      { ...data, memories: [older] } as unknown as ExportData,
+      sources,
+    );
+    expect((await memories.get('m1'))?.title).toBe('Demo memory');
+    await applyImport(
+      { ...data, memories: [newer] } as unknown as ExportData,
+      sources,
+    );
+    expect((await memories.get('m1'))?.title).toBe('Newer');
   });
 });

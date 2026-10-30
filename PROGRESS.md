@@ -1331,3 +1331,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L223 only replace existing records when the incoming updatedAt is newer.
 - Blockers: none
+
+## 2026-10-30 — L223: Add import merge rule
+- Changed: Importing adds new records and replaces stored ones only when the incoming updatedAt is newer; older or equal versions are kept.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L224 show added, updated, and skipped counts for an import.
+- Blockers: none
