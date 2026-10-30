@@ -1,5 +1,11 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -70,5 +76,40 @@ describe('Export preview', () => {
     expect(await screen.findByText('Gratitude: 1')).toBeTruthy();
     expect(screen.getByText('Check-ins: 0')).toBeTruthy();
     expect(screen.getAllByRole('listitem')).toHaveLength(8);
+  });
+});
+
+describe('Import preview', () => {
+  it('shows incoming counts and rejects a bad file', async () => {
+    render(<SettingsPage sources={await makeSources()} />);
+    const input = screen.getByLabelText('Import file');
+    const good = new File(
+      [
+        JSON.stringify({
+          app: 'love-iteration',
+          schemaVersion: 1,
+          exportedAt: '2026-01-01T00:00:00.000Z',
+          data: Object.fromEntries(
+            [
+              'checkIns',
+              'gratitude',
+              'memories',
+              'plans',
+              'ideas',
+              'rituals',
+              'ritualCompletions',
+              'reflections',
+            ].map((k) => [k, []]),
+          ),
+        }),
+      ],
+      'in.json',
+    );
+    fireEvent.change(input, { target: { files: [good] } });
+    expect(await screen.findByText('The file contains:')).toBeTruthy();
+    fireEvent.change(input, { target: { files: [new File(['x'], 'b.json')] } });
+    await waitFor(() =>
+      expect(screen.getByText('The file is not valid JSON.')).toBeTruthy(),
+    );
   });
 });

@@ -1313,3 +1313,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L220 add an import dry run showing incoming counts without writes.
 - Blockers: none
+
+## 2026-10-30 — L220: Add import dry run
+- Changed: Settings can preview an export file: it lists incoming counts per kind, or plain problems, and writes nothing.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L221 make the import file chooser keyboard-selectable with a clear label.
+- Blockers: none

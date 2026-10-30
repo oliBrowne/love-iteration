@@ -4,6 +4,8 @@ import { exportFileName } from '../../domain/index.ts';
 import { downloadTextFile } from '../export/downloadTextFile.ts';
 import { exportCounts } from '../export/exportCounts.ts';
 import { buildExport, serializeExport } from '../export/exportData.ts';
+import { previewImport } from '../import/previewImport.ts';
+import type { ImportPreview } from '../import/previewImport.ts';
 import type { TimelineSources } from '../timeline/loadTimeline.ts';
 
 type SettingsPageProps = {
@@ -13,6 +15,7 @@ type SettingsPageProps = {
 export function SettingsPage({ sources }: SettingsPageProps) {
   const [message, setMessage] = useState<string>();
   const [problem, setProblem] = useState<string>();
+  const [preview, setPreview] = useState<ImportPreview>();
   const [counts, setCounts] = useState<ReturnType<typeof exportCounts>>();
 
   useEffect(() => {
@@ -44,6 +47,11 @@ export function SettingsPage({ sources }: SettingsPageProps) {
     }
   }
 
+  async function choose(file: File | undefined) {
+    setPreview(undefined);
+    if (file) setPreview(previewImport(await file.text()));
+  }
+
   return (
     <section aria-labelledby="settings-heading">
       <h2 id="settings-heading">Settings</h2>
@@ -69,6 +77,39 @@ export function SettingsPage({ sources }: SettingsPageProps) {
       </Button>
       {message ? <p role="status">{message}</p> : null}
       {problem ? <p role="alert">{problem}</p> : null}
+      <h3>Import a file</h3>
+      <p>
+        Choose an export file to preview what it holds. Nothing is changed by
+        previewing.
+      </p>
+      <input
+        type="file"
+        accept="application/json,.json"
+        aria-label="Import file"
+        onChange={(event) => void choose(event.target.files?.[0])}
+      />
+      {preview?.ok ? (
+        <>
+          <p id="import-contents">The file contains:</p>
+          <ul aria-labelledby="import-contents">
+            {preview.counts.map(({ key, label, count }) => (
+              <li key={key}>
+                {label}: {count}
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : null}
+      {preview && !preview.ok ? (
+        <div role="alert">
+          <p>This file cannot be imported:</p>
+          <ul>
+            {preview.errors.map((error) => (
+              <li key={error}>{error}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </section>
   );
 }
