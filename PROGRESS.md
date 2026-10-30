@@ -1325,3 +1325,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L222 require confirmation before any imported record is written.
 - Blockers: none
+
+## 2026-10-30 — L222: Add import confirmation
+- Changed: After previewing a file, Import asks for confirmation (with Cancel) before any record is written to this device.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L223 only replace existing records when the incoming updatedAt is newer.
+- Blockers: none

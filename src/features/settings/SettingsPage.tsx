@@ -5,6 +5,7 @@ import { downloadTextFile } from '../export/downloadTextFile.ts';
 import { exportCounts } from '../export/exportCounts.ts';
 import { buildExport, serializeExport } from '../export/exportData.ts';
 import { previewImport } from '../import/previewImport.ts';
+import { applyImport } from '../import/applyImport.ts';
 import type { ImportPreview } from '../import/previewImport.ts';
 import type { TimelineSources } from '../timeline/loadTimeline.ts';
 
@@ -16,6 +17,7 @@ export function SettingsPage({ sources }: SettingsPageProps) {
   const [message, setMessage] = useState<string>();
   const [problem, setProblem] = useState<string>();
   const [preview, setPreview] = useState<ImportPreview>();
+  const [confirming, setConfirming] = useState(false);
   const [counts, setCounts] = useState<ReturnType<typeof exportCounts>>();
 
   useEffect(() => {
@@ -49,7 +51,21 @@ export function SettingsPage({ sources }: SettingsPageProps) {
 
   async function choose(file: File | undefined) {
     setPreview(undefined);
+    setConfirming(false);
+    setMessage(undefined);
     if (file) setPreview(previewImport(await file.text()));
+  }
+
+  async function confirmImport() {
+    if (!preview?.ok) return;
+    setConfirming(false);
+    try {
+      await applyImport(preview.data, sources);
+      setMessage('Your file was imported.');
+      setPreview(undefined);
+    } catch {
+      setProblem('Could not import your file.');
+    }
   }
 
   return (
@@ -99,6 +115,24 @@ export function SettingsPage({ sources }: SettingsPageProps) {
               </li>
             ))}
           </ul>
+          {confirming ? (
+            <div role="group" aria-labelledby="import-confirm">
+              <p id="import-confirm">
+                Add these records to this device? Records with the same ID will
+                be replaced.
+              </p>
+              <Button type="button" onClick={confirmImport}>
+                Yes, import
+              </Button>
+              <Button type="button" onClick={() => setConfirming(false)}>
+                Cancel
+              </Button>
+            </div>
+          ) : (
+            <Button type="button" onClick={() => setConfirming(true)}>
+              Import these records
+            </Button>
+          )}
         </>
       ) : null}
       {preview && !preview.ok ? (

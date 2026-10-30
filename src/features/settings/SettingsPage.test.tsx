@@ -123,3 +123,52 @@ describe('Import preview', () => {
     );
   });
 });
+
+describe('Import confirmation', () => {
+  it('writes nothing until the person confirms', async () => {
+    const sources = await makeSources();
+    render(<SettingsPage sources={sources} />);
+    const keys = [
+      'checkIns',
+      'gratitude',
+      'memories',
+      'plans',
+      'ideas',
+      'rituals',
+      'ritualCompletions',
+      'reflections',
+    ];
+    const memory = {
+      id: 'm1',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      title: 'Demo memory',
+      date: '2026-01-01',
+    };
+    const file = new File(
+      [
+        JSON.stringify({
+          app: 'love-iteration',
+          schemaVersion: 1,
+          exportedAt: '2026-01-01T00:00:00.000Z',
+          data: Object.fromEntries(
+            keys.map((k) => [k, k === 'memories' ? [memory] : []]),
+          ),
+        }),
+      ],
+      'in.json',
+    );
+    fireEvent.change(screen.getByLabelText('Import file (.json)'), {
+      target: { files: [file] },
+    });
+    fireEvent.click(await screen.findByText('Import these records'));
+    expect(await (await sources.memories()).list()).toHaveLength(0);
+    fireEvent.click(screen.getByText('Cancel'));
+    expect(await (await sources.memories()).list()).toHaveLength(0);
+    fireEvent.click(screen.getByText('Import these records'));
+    fireEvent.click(screen.getByText('Yes, import'));
+    expect(await screen.findByText('Your file was imported.')).toBeTruthy();
+    expect(await (await sources.memories()).list()).toHaveLength(1);
+  });
+});

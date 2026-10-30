@@ -246,7 +246,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L219 Validate imported dates — Done when invalid dates are reported before writing.
 - [x] L220 Add import dry run — Done when preview shows incoming counts without writes.
 - [x] L221 Add import file chooser — Done when JSON file can be selected by keyboard.
-- [ ] L222 Add import confirmation — Done when no records change before confirmation.
+- [x] L222 Add import confirmation — Done when no records change before confirmation.
 - [ ] L223 Add import merge rule — Done when existing IDs are updated by newer updatedAt.
 - [ ] L224 Add import conflict summary — Done when skipped or changed counts are visible.
 - [ ] L225 Add import transaction — Done when failed import leaves storage unchanged.
