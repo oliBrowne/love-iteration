@@ -1319,3 +1319,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L221 make the import file chooser keyboard-selectable with a clear label.
 - Blockers: none
+
+## 2026-10-30 — L221: Add import file chooser
+- Changed: The import file picker has a visible label and focus ring, so a JSON file can be chosen with the keyboard alone.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L222 require confirmation before any imported record is written.
+- Blockers: none

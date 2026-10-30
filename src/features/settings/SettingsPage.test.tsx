@@ -79,10 +79,20 @@ describe('Export preview', () => {
   });
 });
 
+describe('Import file chooser', () => {
+  it('is a labelled native file input a keyboard can reach', async () => {
+    render(<SettingsPage sources={await makeSources()} />);
+    const input = screen.getByLabelText('Import file (.json)');
+    expect(input.getAttribute('type')).toBe('file');
+    expect(input.getAttribute('accept')).toContain('.json');
+    expect(input.getAttribute('tabindex')).toBeNull();
+  });
+});
+
 describe('Import preview', () => {
   it('shows incoming counts and rejects a bad file', async () => {
     render(<SettingsPage sources={await makeSources()} />);
-    const input = screen.getByLabelText('Import file');
+    const input = screen.getByLabelText('Import file (.json)');
     const good = new File(
       [
         JSON.stringify({

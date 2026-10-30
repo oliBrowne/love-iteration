@@ -82,10 +82,11 @@ export function SettingsPage({ sources }: SettingsPageProps) {
         Choose an export file to preview what it holds. Nothing is changed by
         previewing.
       </p>
+      <label htmlFor="import-file">Import file (.json)</label>
       <input
+        id="import-file"
         type="file"
         accept="application/json,.json"
-        aria-label="Import file"
         onChange={(event) => void choose(event.target.files?.[0])}
       />
       {preview?.ok ? (
