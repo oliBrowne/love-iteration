@@ -5,7 +5,8 @@ import { downloadTextFile } from '../export/downloadTextFile.ts';
 import { exportCounts } from '../export/exportCounts.ts';
 import { buildExport, serializeExport } from '../export/exportData.ts';
 import { previewImport } from '../import/previewImport.ts';
-import { applyImport } from '../import/applyImport.ts';
+import { applyImport, summarizeImport } from '../import/applyImport.ts';
+import type { ImportSummary } from '../import/applyImport.ts';
 import type { ImportPreview } from '../import/previewImport.ts';
 import type { TimelineSources } from '../timeline/loadTimeline.ts';
 
@@ -18,6 +19,7 @@ export function SettingsPage({ sources }: SettingsPageProps) {
   const [problem, setProblem] = useState<string>();
   const [preview, setPreview] = useState<ImportPreview>();
   const [confirming, setConfirming] = useState(false);
+  const [summary, setSummary] = useState<ImportSummary>();
   const [counts, setCounts] = useState<ReturnType<typeof exportCounts>>();
 
   useEffect(() => {
@@ -52,8 +54,19 @@ export function SettingsPage({ sources }: SettingsPageProps) {
   async function choose(file: File | undefined) {
     setPreview(undefined);
     setConfirming(false);
+    setSummary(undefined);
     setMessage(undefined);
     if (file) setPreview(previewImport(await file.text()));
+  }
+
+  async function review() {
+    if (!preview?.ok) return;
+    try {
+      setSummary(await summarizeImport(preview.data, sources));
+      setConfirming(true);
+    } catch {
+      setProblem('Could not compare the file with your records.');
+    }
   }
 
   async function confirmImport() {
@@ -121,6 +134,12 @@ export function SettingsPage({ sources }: SettingsPageProps) {
                 Add these records to this device? Stored records are replaced
                 only by a newer version of the same record.
               </p>
+              {summary ? (
+                <p>
+                  {summary.added} new, {summary.updated} updated,{' '}
+                  {summary.skipped} skipped because yours is as new or newer.
+                </p>
+              ) : null}
               <Button type="button" onClick={confirmImport}>
                 Yes, import
               </Button>
@@ -129,7 +148,7 @@ export function SettingsPage({ sources }: SettingsPageProps) {
               </Button>
             </div>
           ) : (
-            <Button type="button" onClick={() => setConfirming(true)}>
+            <Button type="button" onClick={review}>
               Import these records
             </Button>
           )}

@@ -164,10 +164,11 @@ describe('Import confirmation', () => {
     });
     fireEvent.click(await screen.findByText('Import these records'));
     expect(await (await sources.memories()).list()).toHaveLength(0);
+    expect(await screen.findByText(/1 new, 0 updated, 0 skipped/)).toBeTruthy();
     fireEvent.click(screen.getByText('Cancel'));
     expect(await (await sources.memories()).list()).toHaveLength(0);
     fireEvent.click(screen.getByText('Import these records'));
-    fireEvent.click(screen.getByText('Yes, import'));
+    fireEvent.click(await screen.findByText('Yes, import'));
     expect(await screen.findByText('Your file was imported.')).toBeTruthy();
     expect(await (await sources.memories()).list()).toHaveLength(1);
   });

@@ -1337,3 +1337,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L224 show added, updated, and skipped counts for an import.
 - Blockers: none
+
+## 2026-10-30 — L224: Add import conflict summary
+- Changed: Before confirming, the import step says how many records are new, updated, or skipped because the stored copy is as new or newer.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L225 make an import all-or-nothing so a failure leaves storage unchanged.
+- Blockers: none

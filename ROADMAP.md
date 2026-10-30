@@ -248,7 +248,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L221 Add import file chooser — Done when JSON file can be selected by keyboard.
 - [x] L222 Add import confirmation — Done when no records change before confirmation.
 - [x] L223 Add import merge rule — Done when existing IDs are updated by newer updatedAt.
-- [ ] L224 Add import conflict summary — Done when skipped or changed counts are visible.
+- [x] L224 Add import conflict summary — Done when skipped or changed counts are visible.
 - [ ] L225 Add import transaction — Done when failed import leaves storage unchanged.
 - [ ] L226 Add import success message — Done when user sees final counts.
 - [ ] L227 Add import browser test — Done when export and re-import restore records.
