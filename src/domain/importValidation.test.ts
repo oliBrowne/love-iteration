@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { createExportEnvelope } from './export.ts';
 import {
   exportDataKeys,
+  validateImportDates,
   validateImportIds,
   validateImportRoot,
 } from './importValidation.ts';
@@ -88,6 +89,38 @@ describe('validateImportIds', () => {
     expect(errors).toEqual([
       'The "gratitude" list has 3 record(s) without an ID.',
       'The "gratitude" list repeats the ID "a".',
+    ]);
+  });
+});
+
+describe('validateImportDates', () => {
+  const stamps = {
+    createdAt: '2026-01-01T10:00:00.000Z',
+    updatedAt: '2026-01-02T10:00:00.000Z',
+  };
+  const lists = (over: Record<string, unknown[]> = {}) =>
+    ({ ...emptyData, ...over }) as Parameters<typeof validateImportDates>[0];
+
+  it('accepts real dates', () => {
+    const data = lists({
+      checkIns: [{ ...stamps, date: '2026-02-28' }],
+      plans: [{ ...stamps, startsAt: '2026-03-01T18:00' }],
+    });
+    expect(validateImportDates(data)).toEqual([]);
+  });
+
+  it('reports invalid dates and time stamps', () => {
+    const errors = validateImportDates(
+      lists({
+        checkIns: [{ ...stamps, date: '2026-02-30' }],
+        memories: [{ ...stamps, updatedAt: 'later', date: '2026-01-01' }],
+        reflections: [{ ...stamps }],
+      }),
+    );
+    expect(errors).toEqual([
+      'The "checkIns" record 1 has an invalid "date" date.',
+      'The "memories" record 1 has an invalid "updatedAt" date.',
+      'The "reflections" record 1 has an invalid "weekStart" date.',
     ]);
   });
 });

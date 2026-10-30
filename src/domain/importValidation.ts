@@ -1,3 +1,4 @@
+import { isLocalDate } from './checkin.ts';
 import { EXPORT_APP_NAME, EXPORT_SCHEMA_VERSION } from './export.ts';
 
 // The record lists an export file holds, by name.
@@ -84,6 +85,54 @@ export function validateImportIds(
     for (const id of duplicates) {
       errors.push(`The "${key}" list repeats the ID "${id}".`);
     }
+  }
+  return errors;
+}
+
+// Which fields hold dates, per list. Time stamps are ISO date-times; the rest
+// are calendar days written YYYY-MM-DD.
+const dayFields: Partial<Record<(typeof exportDataKeys)[number], string[]>> = {
+  checkIns: ['date'],
+  gratitude: ['date'],
+  memories: ['date'],
+  ritualCompletions: ['date'],
+  reflections: ['weekStart'],
+};
+const timeFields: Partial<Record<(typeof exportDataKeys)[number], string[]>> = {
+  plans: ['startsAt'],
+};
+
+// Checks the date fields of every record before anything is written. Problems
+// are plain sentences naming the list, the record position, and the field.
+export function validateImportDates(
+  data: Record<(typeof exportDataKeys)[number], unknown[]>,
+): string[] {
+  const errors: string[] = [];
+  for (const key of exportDataKeys) {
+    data[key].forEach((record, index) => {
+      if (!isObject(record)) return;
+      const check = (field: string, valid: boolean) => {
+        if (!valid) {
+          errors.push(
+            `The "${key}" record ${index + 1} has an invalid "${field}" date.`,
+          );
+        }
+      };
+      for (const field of [
+        'createdAt',
+        ...(timeFields[key] ?? []),
+        'updatedAt',
+      ]) {
+        const value = record[field];
+        check(
+          field,
+          typeof value === 'string' && !Number.isNaN(Date.parse(value)),
+        );
+      }
+      for (const field of dayFields[key] ?? []) {
+        check(field, isLocalDate(record[field]));
+      }
+    });
   }
   return errors;
 }

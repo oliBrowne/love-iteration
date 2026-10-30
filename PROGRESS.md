@@ -1307,3 +1307,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L219 report invalid imported dates before writing.
 - Blockers: none
+
+## 2026-10-30 — L219: Validate imported dates
+- Changed: Import validation now reports invalid created/updated times, calendar days, and plan start times before anything is written; not yet connected to the UI.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L220 add an import dry run showing incoming counts without writes.
+- Blockers: none

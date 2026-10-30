@@ -95,6 +95,7 @@ export {
 export type { ImportCheck } from './importValidation.ts';
 export {
   exportDataKeys,
+  validateImportDates,
   validateImportIds,
   validateImportRoot,
 } from './importValidation.ts';
