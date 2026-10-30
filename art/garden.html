@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A garden, bit by bit</title>
+<style>
+  html,body{margin:0;height:100%;background:#f7efe6}
+  body{display:grid;place-items:center}
+  canvas{width:min(94vw,94vh*0.8);aspect-ratio:4/5;border-radius:6px;box-shadow:0 10px 40px #b9826a33}
+  figcaption{font:italic 15px Georgia,serif;color:#a67c6d;margin:10px 0 0;text-align:center}
+</style>
+</head>
+<body>
+<figure style="margin:0">
+<canvas id="c" width="1200" height="1500"></canvas>
+<figcaption id="cap"></figcaption>
+</figure>
+<script>
+// Each entry is one thing planted. Add a line a day and the garden grows.
+const GARDEN = [
+  { kind:'flower', x:.50, y:.62, size:1.00, hue:345, petals:9,  seed:1 },
+  { kind:'flower', x:.27, y:.72, size:.70,  hue:20,  petals:7,  seed:2 },
+  { kind:'flower', x:.74, y:.74, size:.78,  hue:280, petals:8,  seed:3 },
+  { kind:'flower', x:.38, y:.50, size:.45,  hue:50,  petals:6,  seed:4 },
+  { kind:'flower', x:.66, y:.52, size:.50,  hue:330, petals:7,  seed:5 },
+  { kind:'heart',  x:.50, y:.20, size:1.00, hue:350, seed:6 },
+];
+
+const c = document.getElementById('c'), g = c.getContext('2d');
+const W = c.width, H = c.height;
+const rng = s => () => (s = (s*16807) % 2147483647, (s-1)/2147483646);
+const hsl = (h,s,l,a) => `hsla(${h},${s}%,${l}%,${a})`;
+
+function paper(){
+  g.fillStyle = '#fbf4ea'; g.fillRect(0,0,W,H);
+  const r = rng(99);
+  for(let i=0;i<9000;i++){            // paper grain
+    g.fillStyle = `rgba(150,110,90,${r()*0.05})`;
+    g.fillRect(r()*W, r()*H, 2, 2);
+  }
+  const v = g.createRadialGradient(W/2,H/2,H*.3,W/2,H/2,H*.8);
+  v.addColorStop(0,'#fff0'); v.addColorStop(1,'#e8c9b455');
+  g.fillStyle = v; g.fillRect(0,0,W,H);
+}
+
+// Watercolour: stack many faint, slightly wobbly layers of one shape.
+function wash(shape, hue, r, layers=7, sat=62, light=80){
+  for(let i=0;i<layers;i++){
+    g.save();
+    g.fillStyle = hsl(hue+(r()-.5)*14, sat, light+(r()-.5)*8, .13);
+    shape(1+(r()-.5)*.09, (r()-.5)*.08);
+    g.fill();
+    g.restore();
+  }
+}
+
+function stem(x,y,len,r){
+  const bend = (r()-.5)*160;
+  g.strokeStyle = hsl(140,28,62,.75); g.lineWidth = 7; g.lineCap = 'round';
+  g.beginPath(); g.moveTo(x,y);
+  g.quadraticCurveTo(x+bend, y+len*.5, x+bend*.4, y+len); g.stroke();
+  for(const t of [.4,.7]){            // two leaves
+    const lx = x+bend*t*.8, ly = y+len*t, dir = r()<.5?-1:1;
+    g.save(); g.translate(lx,ly); g.rotate(dir*.9);
+    wash(k=>{g.scale(k,k);g.beginPath();g.ellipse(dir*40,0,48,17,0,0,7);},
+         135, r, 5, 35, 72);
+    g.restore();
+  }
+}
+
+function flower(f){
+  const r = rng(f.seed*7919), R = 150*f.size;
+  const x = f.x*W, y = f.y*H;
+  stem(x, y+R*.5, 420*f.size, r);
+  g.save(); g.translate(x,y);
+  for(let ring=0; ring<2; ring++){    // two rings of petals, outer then inner
+    const n = f.petals, len = R*(ring?.62:1), wid = R*(ring?.3:.4);
+    for(let i=0;i<n;i++){
+      const a = i/n*Math.PI*2 + ring*Math.PI/n + (r()-.5)*.15;
+      g.save(); g.rotate(a);
+      wash((k,j)=>{
+        g.scale(k,k); g.rotate(j);
+        g.beginPath();
+        g.moveTo(0,0);
+        g.bezierCurveTo(wid,-len*.25, wid*.9,-len*.9, 0,-len);
+        g.bezierCurveTo(-wid*.9,-len*.9, -wid,-len*.25, 0,0);
+      }, f.hue+ring*14, r, 7, 70, ring?84:79);
+      g.restore();
+    }
+  }
+  wash(k=>{g.scale(k,k);g.beginPath();g.arc(0,0,R*.17,0,7);}, 42, r, 6, 80, 76);
+  for(let i=0;i<14;i++){              // pollen dots
+    const a = r()*7, d = r()*R*.14;
+    g.fillStyle = hsl(38,85,66,.7);
+    g.beginPath(); g.arc(Math.cos(a)*d, Math.sin(a)*d, 2+r()*2.5, 0, 7); g.fill();
+  }
+  g.restore();
+}
+
+function heart(f){
+  const r = rng(f.seed*104729), S = 9*f.size;
+  const x = f.x*W, y = f.y*H;
+  // a heart outline made of many tiny hearts, softly scattered
+  const pt = t => [16*Math.sin(t)**3,
+    -(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))];
+  for(let i=0;i<150;i++){
+    const t = i/150*Math.PI*2, [px,py] = pt(t);
+    const hx = x+px*S*2.4+(r()-.5)*14, hy = y+py*S*2.4+(r()-.5)*14;
+    const s = 6+r()*10;
+    g.save(); g.translate(hx,hy); g.rotate((r()-.5)*.6);
+    wash(k=>{
+      g.scale(k*s/10,k*s/10); g.beginPath();
+      g.moveTo(0,4); g.bezierCurveTo(-12,-6,-4,-14,0,-6);
+      g.bezierCurveTo(4,-14,12,-6,0,4);
+    }, f.hue+(r()-.5)*24, r, 3, 75, 74);
+    g.restore();
+  }
+}
+
+paper();
+GARDEN.forEach(p => p.kind==='flower' ? flower(p) : heart(p));
+document.getElementById('cap').textContent =
+  GARDEN.length + ' things planted so far';
+</script>
+</body>
+</html>
