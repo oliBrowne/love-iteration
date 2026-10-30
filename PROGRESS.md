@@ -1343,3 +1343,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L225 make an import all-or-nothing so a failure leaves storage unchanged.
 - Blockers: none
+
+## 2026-10-30 — L225: Add import transaction
+- Changed: An import that fails part-way puts back every record it wrote, so local storage stays as it was and the person sees an error.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L226 show final counts after a successful import.
+- Blockers: none
