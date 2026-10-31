@@ -120,23 +120,25 @@ export function SettingsPage({ sources }: SettingsPageProps) {
   return (
     <section aria-labelledby="settings-heading">
       <h2 id="settings-heading">Settings</h2>
+      <h3>Privacy: stored on this device</h3>
+      <p>
+        Everything you write is kept in this browser on this device. Nothing is
+        uploaded, and there are no accounts. These records are stored here now:
+      </p>
+      {counts ? (
+        <ul aria-label="Records stored on this device">
+          {counts.map(({ key, label, count }) => (
+            <li key={key}>
+              {label}: {count}
+            </li>
+          ))}
+        </ul>
+      ) : null}
       <h3>Export your data</h3>
       <p>
         Save a copy of everything you have written as one file. It is created on
         this device and is not uploaded anywhere.
       </p>
-      {counts ? (
-        <>
-          <p id="export-contents">The export will include:</p>
-          <ul aria-labelledby="export-contents">
-            {counts.map(({ key, label, count }) => (
-              <li key={key}>
-                {label}: {count}
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : null}
       <Button type="button" onClick={download}>
         Download export
       </Button>

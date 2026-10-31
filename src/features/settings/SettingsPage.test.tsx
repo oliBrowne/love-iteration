@@ -77,6 +77,16 @@ describe('Export preview', () => {
     expect(screen.getByText('Check-ins: 0')).toBeTruthy();
     expect(screen.getAllByRole('listitem')).toHaveLength(8);
   });
+
+  it('presents the counts as a privacy summary of this device', async () => {
+    render(<SettingsPage sources={await makeSources()} />);
+    expect(
+      await screen.findByRole('list', {
+        name: 'Records stored on this device',
+      }),
+    ).toBeTruthy();
+    expect(screen.getByText(/Nothing is uploaded/)).toBeTruthy();
+  });
 });
 
 describe('Import file chooser', () => {

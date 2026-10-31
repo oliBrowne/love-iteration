@@ -1379,3 +1379,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L231 add a privacy dashboard listing locally stored record counts.
 - Blockers: none
+
+## 2026-10-31 — L231: Add privacy dashboard
+- Changed: Settings opens with "Privacy: stored on this device", saying data stays in this browser and listing how many records of each kind are stored.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L232 show a clear error when the browser lacks local storage support.
+- Blockers: none
