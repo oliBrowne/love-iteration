@@ -8,11 +8,20 @@ import { ReflectionPage } from './features/reflection/ReflectionPage.tsx';
 import { RitualsPage } from './features/rituals/RitualsPage.tsx';
 import { SearchPage } from './features/search/SearchPage.tsx';
 import { TimelinePage } from './features/timeline/TimelinePage.tsx';
-import { PageLayout } from './ui/index.ts';
+import { storageSupported, storageUnsupportedMessage } from './data/index.ts';
+import { InlineError, PageLayout } from './ui/index.ts';
 import { useRoute } from './useRoute.ts';
 
 function App() {
   const route = useRoute();
+  if (!storageSupported(globalThis.indexedDB)) {
+    return (
+      <PageLayout>
+        <h2>Storage is not available</h2>
+        <InlineError>{storageUnsupportedMessage}</InlineError>
+      </PageLayout>
+    );
+  }
   return (
     <PageLayout>
       {route === 'settings' ? (

@@ -32,3 +32,7 @@ export { createRitualCompletionRepository } from './ritualCompletionRepository.t
 export { getRitualCompletionRepository } from './localRitualCompletions.ts';
 export { createReflectionRepository } from './reflectionRepository.ts';
 export { getReflectionRepository } from './localReflections.ts';
+export {
+  storageSupported,
+  storageUnsupportedMessage,
+} from './storageSupport.ts';

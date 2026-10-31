@@ -1385,3 +1385,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L232 show a clear error when the browser lacks local storage support.
 - Blockers: none
+
+## 2026-10-31 — L232: Add storage availability check
+- Changed: A browser without local database support now shows a clear "Storage is not available" error instead of a broken app.
+- Verified: lint, typecheck, vitest (new unit and App tests), build, format:check, roadmap tests.
+- Next: L233 offer export instructions when a storage write fails (quota).
+- Blockers: none
