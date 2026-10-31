@@ -177,3 +177,34 @@ describe('Import confirmation', () => {
     expect(await (await sources.memories()).list()).toHaveLength(1);
   });
 });
+
+describe('Delete all data', () => {
+  it('explains local removal and deletes only after confirming', async () => {
+    const sources = await makeSources();
+    const repository = await sources.gratitude();
+    await repository.put({
+      id: 'g1',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T10:00:00.000Z',
+      updatedAt: '2026-01-01T10:00:00.000Z',
+      text: 'Demo thanks',
+      date: '2026-01-01',
+    });
+    render(<SettingsPage sources={sources} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Delete all data' }));
+    expect(
+      screen.getByText(/Delete every record stored on this device/),
+    ).toBeTruthy();
+    expect(await repository.list()).toHaveLength(1);
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    expect(await repository.list()).toHaveLength(1);
+    fireEvent.click(screen.getByRole('button', { name: 'Delete all data' }));
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Yes, delete everything' }),
+    );
+    await waitFor(() =>
+      expect(screen.getByRole('status').textContent).toMatch(/removed/),
+    );
+    expect(await repository.list()).toHaveLength(0);
+  });
+});

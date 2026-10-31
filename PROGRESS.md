@@ -1361,3 +1361,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L228 add a full data delete action with a confirmation explaining local removal.
 - Blockers: none
+
+## 2026-10-31 — L228: Add full data delete action
+- Changed: Settings has a "Delete all data" action; it asks for confirmation, explaining that everything is removed from this device only and cannot be undone, then clears every record kind.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L229 add a test that all domain stores become empty after delete.
+- Blockers: none

@@ -5,6 +5,7 @@ import { downloadTextFile } from '../export/downloadTextFile.ts';
 import { exportCounts } from '../export/exportCounts.ts';
 import { buildExport, serializeExport } from '../export/exportData.ts';
 import { previewImport } from '../import/previewImport.ts';
+import { deleteAllData } from './deleteAllData.ts';
 import { applyImport, summarizeImport } from '../import/applyImport.ts';
 import type { ImportSummary } from '../import/applyImport.ts';
 import type { ImportPreview } from '../import/previewImport.ts';
@@ -20,6 +21,7 @@ export function SettingsPage({ sources }: SettingsPageProps) {
   const [preview, setPreview] = useState<ImportPreview>();
   const [confirming, setConfirming] = useState(false);
   const [summary, setSummary] = useState<ImportSummary>();
+  const [deleting, setDeleting] = useState(false);
   const [counts, setCounts] = useState<ReturnType<typeof exportCounts>>();
 
   useEffect(() => {
@@ -80,6 +82,19 @@ export function SettingsPage({ sources }: SettingsPageProps) {
       setPreview(undefined);
     } catch {
       setProblem('Could not import your file.');
+    }
+  }
+
+  async function confirmDelete() {
+    setDeleting(false);
+    setMessage(undefined);
+    setProblem(undefined);
+    try {
+      await deleteAllData(sources);
+      setCounts((current) => current?.map((c) => ({ ...c, count: 0 })));
+      setMessage('All data was removed from this device.');
+    } catch {
+      setProblem('Could not delete your data.');
     }
   }
 
@@ -166,6 +181,29 @@ export function SettingsPage({ sources }: SettingsPageProps) {
           </ul>
         </div>
       ) : null}
+      <h3>Delete all data</h3>
+      <p>
+        This removes everything you have written from this device. It stays only
+        on this device, so nothing is deleted anywhere else, and it cannot be
+        undone. Download an export first if you want a copy.
+      </p>
+      {deleting ? (
+        <div role="group" aria-labelledby="delete-confirm">
+          <p id="delete-confirm">
+            Delete every record stored on this device? This cannot be undone.
+          </p>
+          <Button type="button" onClick={confirmDelete}>
+            Yes, delete everything
+          </Button>
+          <Button type="button" onClick={() => setDeleting(false)}>
+            Cancel
+          </Button>
+        </div>
+      ) : (
+        <Button type="button" onClick={() => setDeleting(true)}>
+          Delete all data
+        </Button>
+      )}
     </section>
   );
 }
