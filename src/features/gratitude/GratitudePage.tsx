@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { getGratitudeRepository } from '../../data/index.ts';
+import { StorageFullError } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
   DomainError,
@@ -70,7 +71,7 @@ export function GratitudePage({
       setJustSaved(true);
     } catch (error) {
       setProblem(
-        error instanceof DomainError
+        error instanceof DomainError || error instanceof StorageFullError
           ? error.message
           : 'Could not save this. Nothing was lost; try again.',
       );

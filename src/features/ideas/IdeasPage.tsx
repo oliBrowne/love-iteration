@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { getIdeaRepository, getPlanRepository } from '../../data/index.ts';
+import { StorageFullError } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import { ScheduleIdea } from './ScheduleIdea.tsx';
 import { UpcomingPlan } from './UpcomingPlan.tsx';
@@ -140,7 +141,7 @@ export function IdeasPage({
       setProblem(undefined);
     } catch (error) {
       setProblem(
-        error instanceof DomainError
+        error instanceof DomainError || error instanceof StorageFullError
           ? error.message
           : 'Could not save this. Nothing was lost; try again.',
       );
@@ -194,7 +195,7 @@ export function IdeasPage({
       setEditingId(undefined);
     } catch (error) {
       setEditProblem(
-        error instanceof DomainError
+        error instanceof DomainError || error instanceof StorageFullError
           ? error.message
           : 'Could not save this. Nothing was lost; try again.',
       );

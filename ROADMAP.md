@@ -257,7 +257,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L230 Add per-kind delete action — Done when selected record kind alone is cleared.
 - [x] L231 Add privacy dashboard — Done when settings lists locally stored record counts.
 - [x] L232 Add storage availability check — Done when unsupported browser shows a clear error.
-- [ ] L233 Add storage quota warning — Done when write failure offers export instructions.
+- [x] L233 Add storage quota warning — Done when write failure offers export instructions.
 - [ ] L234 Add app version display — Done when Settings shows build version.
 - [ ] L235 Add privacy policy page — Done when page accurately describes local storage.
 - [ ] L236 Add data model documentation — Done when each record and export field is described.

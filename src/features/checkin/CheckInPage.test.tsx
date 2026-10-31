@@ -2,7 +2,11 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, describe, expect, it } from 'vitest';
-import { createCheckInRepository, openDatabase } from '../../data/index.ts';
+import {
+  createCheckInRepository,
+  openDatabase,
+  StorageFullError,
+} from '../../data/index.ts';
 import { localDate } from '../../domain/index.ts';
 import { CheckInPage } from './CheckInPage.tsx';
 
@@ -143,5 +147,24 @@ describe('CheckInPage privacy copy', () => {
   it('states that entries stay on this device', async () => {
     await renderPage();
     expect(screen.getByText(/entries stay on this device/i)).toBeTruthy();
+  });
+});
+
+describe('CheckInPage full storage', () => {
+  it('offers export instructions when a save fails for lack of room', async () => {
+    const repo = createCheckInRepository(await openDatabase(new IDBFactory()));
+    const full = {
+      ...repo,
+      put: async () => {
+        throw new StorageFullError();
+      },
+    };
+    render(<CheckInPage getRepository={async () => full} />);
+    await screen.findByText('Nothing saved yet.');
+    fireEvent.click(screen.getByRole('radio', { name: 'Good' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Save check-in' }));
+    expect((await screen.findByRole('alert')).textContent).toContain(
+      'Download export',
+    );
   });
 });

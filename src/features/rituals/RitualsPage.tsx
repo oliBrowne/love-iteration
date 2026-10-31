@@ -4,6 +4,7 @@ import {
   getRitualCompletionRepository,
   getRitualRepository,
 } from '../../data/index.ts';
+import { StorageFullError } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
   DomainError,
@@ -114,7 +115,7 @@ export function RitualsPage({
       setJustSaved(true);
     } catch (error) {
       setProblem(
-        error instanceof DomainError
+        error instanceof DomainError || error instanceof StorageFullError
           ? error.message
           : 'Could not save this. Nothing was lost; try again.',
       );
@@ -143,7 +144,7 @@ export function RitualsPage({
       setEditingId(undefined);
     } catch (error) {
       setEditProblem(
-        error instanceof DomainError
+        error instanceof DomainError || error instanceof StorageFullError
           ? error.message
           : 'Could not save this. Nothing was lost; try again.',
       );

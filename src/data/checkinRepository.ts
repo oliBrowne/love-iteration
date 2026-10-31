@@ -1,6 +1,7 @@
 import type { CheckIn, RecordMetadata } from '../domain/index.ts';
 import { checkinsStore } from './database.ts';
 import type { Repository } from './repository.ts';
+import { explainStorageError } from './storageFull.ts';
 
 // Wraps one IndexedDB request in a promise.
 function wrap<T>(request: IDBRequest<T>): Promise<T> {
@@ -16,9 +17,15 @@ function committed(tx: IDBTransaction): Promise<void> {
   return new Promise((resolve, reject) => {
     tx.oncomplete = () => resolve();
     tx.onerror = () =>
-      reject(tx.error ?? new Error('Local storage write failed.'));
+      reject(
+        explainStorageError(tx.error) ??
+          new Error('Local storage write failed.'),
+      );
     tx.onabort = () =>
-      reject(tx.error ?? new Error('Local storage write was cancelled.'));
+      reject(
+        explainStorageError(tx.error) ??
+          new Error('Local storage write was cancelled.'),
+      );
   });
 }
 

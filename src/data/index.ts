@@ -36,3 +36,8 @@ export {
   storageSupported,
   storageUnsupportedMessage,
 } from './storageSupport.ts';
+export {
+  explainStorageError,
+  StorageFullError,
+  storageFullMessage,
+} from './storageFull.ts';

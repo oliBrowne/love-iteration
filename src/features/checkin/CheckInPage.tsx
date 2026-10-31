@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { getCheckInRepository } from '../../data/index.ts';
+import { StorageFullError } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
   generateId,
@@ -75,8 +76,12 @@ export function CheckInPage({
       setSaved(await repo.list());
       setProblem(undefined);
       setNote('');
-    } catch {
-      setProblem('Could not save your check-in. Nothing was lost; try again.');
+    } catch (error) {
+      setProblem(
+        error instanceof StorageFullError
+          ? error.message
+          : 'Could not save your check-in. Nothing was lost; try again.',
+      );
     }
   }
 

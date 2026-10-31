@@ -1391,3 +1391,9 @@
 - Verified: lint, typecheck, vitest (new unit and App tests), build, format:check, roadmap tests.
 - Next: L233 offer export instructions when a storage write fails (quota).
 - Blockers: none
+
+## 2026-10-31 — L233: Add storage quota warning
+- Changed: When a save fails because the device is out of storage, the form says nothing was lost and tells the person to use Settings > Download export, then free up space.
+- Verified: lint, typecheck, vitest (quota conversion and check-in page tests), build, format:check, roadmap tests. A real quota failure was not reproduced in a browser.
+- Next: L234 show the build version in Settings.
+- Blockers: none

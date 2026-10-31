@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { getMemoryRepository } from '../../data/index.ts';
+import { StorageFullError } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
   DomainError,
@@ -85,7 +86,7 @@ export function MemoriesPage({
       setJustSaved(true);
     } catch (error) {
       setProblem(
-        error instanceof DomainError
+        error instanceof DomainError || error instanceof StorageFullError
           ? error.message
           : 'Could not save this. Nothing was lost; try again.',
       );
@@ -119,7 +120,7 @@ export function MemoriesPage({
       setEditing(false);
     } catch (error) {
       setEditProblem(
-        error instanceof DomainError
+        error instanceof DomainError || error instanceof StorageFullError
           ? error.message
           : 'Could not save this. Nothing was lost; try again.',
       );

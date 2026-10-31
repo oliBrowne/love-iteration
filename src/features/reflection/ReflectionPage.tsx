@@ -6,6 +6,7 @@ import {
   getReflectionRepository,
   getRitualCompletionRepository,
 } from '../../data/index.ts';
+import { StorageFullError } from '../../data/index.ts';
 import type { Repository } from '../../data/index.ts';
 import {
   DomainError,
@@ -192,7 +193,7 @@ export function ReflectionPage({
       setJustSaved(true);
     } catch (error) {
       setProblem(
-        error instanceof DomainError
+        error instanceof DomainError || error instanceof StorageFullError
           ? error.message
           : 'Could not save this. Nothing was lost; try again.',
       );
