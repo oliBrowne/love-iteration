@@ -254,3 +254,10 @@ describe('Delete one kind', () => {
     expect(screen.getByText('Memories: 1')).toBeTruthy();
   });
 });
+
+describe('Version', () => {
+  it('shows the build version', async () => {
+    render(<SettingsPage sources={await makeSources()} />);
+    expect(screen.getByText(/^Version \d+\.\d+\.\d+/)).toBeTruthy();
+  });
+});

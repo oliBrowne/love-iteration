@@ -1397,3 +1397,9 @@
 - Verified: lint, typecheck, vitest (quota conversion and check-in page tests), build, format:check, roadmap tests. A real quota failure was not reproduced in a browser.
 - Next: L234 show the build version in Settings.
 - Blockers: none
+
+## 2026-10-31 — L234: Add app version display
+- Changed: Settings ends with an "About" section showing the build version, taken from package.json at build time.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L235 add a privacy policy page that accurately describes local storage.
+- Blockers: none

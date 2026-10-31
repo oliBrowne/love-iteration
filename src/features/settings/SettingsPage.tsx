@@ -5,6 +5,7 @@ import { downloadTextFile } from '../export/downloadTextFile.ts';
 import { exportCounts } from '../export/exportCounts.ts';
 import { buildExport, serializeExport } from '../export/exportData.ts';
 import { previewImport } from '../import/previewImport.ts';
+import { appVersion } from '../../appVersion.ts';
 import { deleteAllData, deleteKind } from './deleteAllData.ts';
 import { applyImport, summarizeImport } from '../import/applyImport.ts';
 import type { ImportSummary } from '../import/applyImport.ts';
@@ -262,6 +263,8 @@ export function SettingsPage({ sources }: SettingsPageProps) {
           Delete all data
         </Button>
       )}
+      <h3>About</h3>
+      <p>Version {appVersion}</p>
     </section>
   );
 }
