@@ -253,7 +253,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L226 Add import success message — Done when user sees final counts.
 - [x] L227 Add import browser test — Done when export and re-import restore records.
 - [x] L228 Add full data delete action — Done when confirmation explains local removal.
-- [ ] L229 Add full data delete test — Done when all domain stores become empty.
+- [x] L229 Add full data delete test — Done when all domain stores become empty.
 - [ ] L230 Add per-kind delete action — Done when selected record kind alone is cleared.
 - [ ] L231 Add privacy dashboard — Done when settings lists locally stored record counts.
 - [ ] L232 Add storage availability check — Done when unsupported browser shows a clear error.

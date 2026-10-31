@@ -1367,3 +1367,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L229 add a test that all domain stores become empty after delete.
 - Blockers: none
+
+## 2026-10-31 — L229: Add full data delete test
+- Changed: A test seeds one demo record in each of the eight stores, runs the delete, and checks every store is empty; no visible change.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L230 add a per-kind delete action that clears only the selected record kind.
+- Blockers: none
