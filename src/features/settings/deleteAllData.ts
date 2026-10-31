@@ -14,14 +14,20 @@ const kinds = [
   'reflections',
 ] as const satisfies readonly (keyof TimelineSources)[];
 
+// Removes every stored record of one kind from this device.
+export async function deleteKind(
+  kind: keyof TimelineSources,
+  sources: TimelineSources = localTimelineSources,
+): Promise<void> {
+  const repository = (await sources[kind]()) as Repository<RecordMetadata>;
+  for (const record of await repository.list()) {
+    await repository.delete(record.id);
+  }
+}
+
 // Removes every stored record of every kind from this device.
 export async function deleteAllData(
   sources: TimelineSources = localTimelineSources,
 ): Promise<void> {
-  for (const kind of kinds) {
-    const repository = (await sources[kind]()) as Repository<RecordMetadata>;
-    for (const record of await repository.list()) {
-      await repository.delete(record.id);
-    }
-  }
+  for (const kind of kinds) await deleteKind(kind, sources);
 }

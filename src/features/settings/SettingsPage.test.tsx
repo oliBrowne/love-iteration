@@ -208,3 +208,39 @@ describe('Delete all data', () => {
     expect(await repository.list()).toHaveLength(0);
   });
 });
+
+describe('Delete one kind', () => {
+  it('removes the chosen kind after confirming and keeps the rest', async () => {
+    const sources = await makeSources();
+    const demo = {
+      id: 'g1',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T10:00:00.000Z',
+      updatedAt: '2026-01-01T10:00:00.000Z',
+      text: 'Demo thanks',
+      date: '2026-01-01',
+    };
+    const gratitude = await sources.gratitude();
+    await gratitude.put(demo);
+    const memories = await sources.memories();
+    await (memories.put as (record: unknown) => Promise<void>)({
+      ...demo,
+      id: 'm1',
+    });
+    render(<SettingsPage sources={sources} />);
+    await screen.findByText('Gratitude: 1');
+    fireEvent.change(screen.getByLabelText('Record kind'), {
+      target: { value: 'gratitude' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Delete this kind' }));
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Yes, delete this kind' }),
+    );
+    await waitFor(() =>
+      expect(screen.getByRole('status').textContent).toMatch(/Gratitude/),
+    );
+    expect(await gratitude.list()).toHaveLength(0);
+    expect(await memories.list()).toHaveLength(1);
+    expect(screen.getByText('Memories: 1')).toBeTruthy();
+  });
+});

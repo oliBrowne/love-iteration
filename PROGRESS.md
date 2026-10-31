@@ -1373,3 +1373,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L230 add a per-kind delete action that clears only the selected record kind.
 - Blockers: none
+
+## 2026-10-31 — L230: Add per-kind delete action
+- Changed: Settings can delete one chosen kind of record (picked from a labelled list, with confirmation); other kinds are kept.
+- Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
+- Next: L231 add a privacy dashboard listing locally stored record counts.
+- Blockers: none

@@ -13,7 +13,7 @@ import {
   openDatabase,
 } from '../../data/index.ts';
 import type { TimelineSources } from '../timeline/loadTimeline.ts';
-import { deleteAllData } from './deleteAllData.ts';
+import { deleteAllData, deleteKind } from './deleteAllData.ts';
 
 describe('deleteAllData', () => {
   it('leaves every domain store empty', async () => {
@@ -47,5 +47,30 @@ describe('deleteAllData', () => {
     for (const name of names) {
       expect(await (await sources[name]()).list()).toEqual([]);
     }
+  });
+});
+
+describe('deleteKind', () => {
+  it('clears only the selected kind', async () => {
+    const db = await openDatabase(new IDBFactory());
+    const sources = {
+      checkIns: async () => createCheckInRepository(db),
+      gratitude: async () => createGratitudeRepository(db),
+    } as unknown as TimelineSources;
+    const demo = {
+      id: 'demo-1',
+      schemaVersion: 1,
+      createdAt: '2026-01-01T10:00:00.000Z',
+      updatedAt: '2026-01-01T10:00:00.000Z',
+    };
+    for (const name of ['checkIns', 'gratitude'] as const) {
+      const repository = await sources[name]();
+      await (repository.put as (record: unknown) => Promise<void>)(demo);
+    }
+
+    await deleteKind('gratitude', sources);
+
+    expect(await (await sources.gratitude()).list()).toEqual([]);
+    expect(await (await sources.checkIns()).list()).toHaveLength(1);
   });
 });

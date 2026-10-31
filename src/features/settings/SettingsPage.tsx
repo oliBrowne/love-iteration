@@ -5,10 +5,11 @@ import { downloadTextFile } from '../export/downloadTextFile.ts';
 import { exportCounts } from '../export/exportCounts.ts';
 import { buildExport, serializeExport } from '../export/exportData.ts';
 import { previewImport } from '../import/previewImport.ts';
-import { deleteAllData } from './deleteAllData.ts';
+import { deleteAllData, deleteKind } from './deleteAllData.ts';
 import { applyImport, summarizeImport } from '../import/applyImport.ts';
 import type { ImportSummary } from '../import/applyImport.ts';
 import type { ImportPreview } from '../import/previewImport.ts';
+import type { ExportData } from '../export/exportData.ts';
 import type { TimelineSources } from '../timeline/loadTimeline.ts';
 
 type SettingsPageProps = {
@@ -22,6 +23,8 @@ export function SettingsPage({ sources }: SettingsPageProps) {
   const [confirming, setConfirming] = useState(false);
   const [summary, setSummary] = useState<ImportSummary>();
   const [deleting, setDeleting] = useState(false);
+  const [kind, setKind] = useState<keyof ExportData>('checkIns');
+  const [deletingKind, setDeletingKind] = useState(false);
   const [counts, setCounts] = useState<ReturnType<typeof exportCounts>>();
 
   useEffect(() => {
@@ -95,6 +98,22 @@ export function SettingsPage({ sources }: SettingsPageProps) {
       setMessage('All data was removed from this device.');
     } catch {
       setProblem('Could not delete your data.');
+    }
+  }
+
+  async function confirmDeleteKind() {
+    setDeletingKind(false);
+    setMessage(undefined);
+    setProblem(undefined);
+    try {
+      await deleteKind(kind, sources);
+      setCounts((current) =>
+        current?.map((c) => (c.key === kind ? { ...c, count: 0 } : c)),
+      );
+      const label = counts?.find((c) => c.key === kind)?.label ?? 'Records';
+      setMessage(`${label} were removed from this device.`);
+    } catch {
+      setProblem('Could not delete those records.');
     }
   }
 
@@ -181,6 +200,43 @@ export function SettingsPage({ sources }: SettingsPageProps) {
           </ul>
         </div>
       ) : null}
+      <h3>Delete one kind of record</h3>
+      <p>
+        Remove only one kind of record from this device. Everything else is
+        kept.
+      </p>
+      <label htmlFor="delete-kind">Record kind</label>
+      <select
+        id="delete-kind"
+        value={kind}
+        onChange={(event) => {
+          setKind(event.target.value as keyof ExportData);
+          setDeletingKind(false);
+        }}
+      >
+        {(counts ?? []).map(({ key, label }) => (
+          <option key={key} value={key}>
+            {label}
+          </option>
+        ))}
+      </select>
+      {deletingKind ? (
+        <div role="group" aria-labelledby="delete-kind-confirm">
+          <p id="delete-kind-confirm">
+            Delete these records from this device? This cannot be undone.
+          </p>
+          <Button type="button" onClick={confirmDeleteKind}>
+            Yes, delete this kind
+          </Button>
+          <Button type="button" onClick={() => setDeletingKind(false)}>
+            Cancel
+          </Button>
+        </div>
+      ) : (
+        <Button type="button" onClick={() => setDeletingKind(true)}>
+          Delete this kind
+        </Button>
+      )}
       <h3>Delete all data</h3>
       <p>
         This removes everything you have written from this device. It stays only
