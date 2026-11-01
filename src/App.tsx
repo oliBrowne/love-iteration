@@ -1,6 +1,7 @@
 import { CheckInPage } from './features/checkin/CheckInPage.tsx';
 import { GratitudePage } from './features/gratitude/GratitudePage.tsx';
 import { HomePage } from './features/home/HomePage.tsx';
+import { PrivacyPage } from './features/settings/PrivacyPage.tsx';
 import { SettingsPage } from './features/settings/SettingsPage.tsx';
 import { IdeasPage } from './features/ideas/IdeasPage.tsx';
 import { MemoriesPage } from './features/memories/MemoriesPage.tsx';
@@ -26,6 +27,8 @@ function App() {
     <PageLayout>
       {route === 'settings' ? (
         <SettingsPage />
+      ) : route === 'privacy' ? (
+        <PrivacyPage />
       ) : route === 'gratitude' ? (
         <GratitudePage />
       ) : route === 'memories' ? (

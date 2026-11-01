@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button } from '../../ui/index.ts';
-import { exportFileName } from '../../domain/index.ts';
+import { exportFileName, routeToHash } from '../../domain/index.ts';
 import { downloadTextFile } from '../export/downloadTextFile.ts';
 import { exportCounts } from '../export/exportCounts.ts';
 import { buildExport, serializeExport } from '../export/exportData.ts';
@@ -125,6 +125,9 @@ export function SettingsPage({ sources }: SettingsPageProps) {
       <p>
         Everything you write is kept in this browser on this device. Nothing is
         uploaded, and there are no accounts. These records are stored here now:
+      </p>
+      <p>
+        <a href={routeToHash('privacy')}>Read the privacy policy</a>
       </p>
       {counts ? (
         <ul aria-label="Records stored on this device">

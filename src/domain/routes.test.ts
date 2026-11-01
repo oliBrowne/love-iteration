@@ -2,8 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { parseRoute, routeLabels, routes, routeToHash } from './routes.ts';
 
 describe('routes', () => {
-  it('lists Home, Check-in, Gratitude, Memories, Rituals, Reflection, Ideas, Timeline, Search, and Settings', () => {
-    expect(routes.map((route) => routeLabels[route])).toEqual([
+  it('lists the main nav pages: Home, Check-in, Gratitude, Memories, Rituals, Reflection, Ideas, Timeline, Search, and Settings', () => {
+    expect(
+      routes
+        .filter((route) => route !== 'privacy')
+        .map((route) => routeLabels[route]),
+    ).toEqual([
       'Home',
       'Check-in',
       'Gratitude',
@@ -15,6 +19,11 @@ describe('routes', () => {
       'Search',
       'Settings',
     ]);
+  });
+
+  it('has a Privacy policy page reached from Settings', () => {
+    expect(routeLabels.privacy).toBe('Privacy policy');
+    expect(parseRoute('#/privacy')).toBe('privacy');
   });
 });
 

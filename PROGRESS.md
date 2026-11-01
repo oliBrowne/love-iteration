@@ -1403,3 +1403,9 @@
 - Verified: lint, typecheck, vitest, build, format:check, roadmap tests.
 - Next: L235 add a privacy policy page that accurately describes local storage.
 - Blockers: none
+
+## 2026-11-01 — L235: Add privacy policy page
+- Changed: Settings links to a new "Privacy policy" page (#/privacy) describing what is stored in IndexedDB on this device, that nothing is uploaded, what clearing browser data means, and the export/delete controls.
+- Verified: lint, typecheck, vitest (new page, link and route tests), build, format:check, roadmap tests. Not viewed in a real browser.
+- Next: L236 add data model documentation describing each record and export field.
+- Blockers: none

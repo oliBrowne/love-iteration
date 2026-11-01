@@ -260,4 +260,13 @@ describe('Version', () => {
     render(<SettingsPage sources={await makeSources()} />);
     expect(screen.getByText(/^Version \d+\.\d+\.\d+/)).toBeTruthy();
   });
+
+  it('links to the privacy policy', () => {
+    render(<SettingsPage />);
+    expect(
+      screen
+        .getByRole('link', { name: 'Read the privacy policy' })
+        .getAttribute('href'),
+    ).toBe('#/privacy');
+  });
 });
