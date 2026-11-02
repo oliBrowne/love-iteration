@@ -1433,3 +1433,9 @@
 - Verified: lint, typecheck, vitest (new focus-style test), build, format:check, full Playwright suite, roadmap tests/check. Reviewed that all controls are native buttons, links and inputs.
 - Next: L240 tag the offline release candidate once local-only build and checks pass.
 - Blockers: none
+
+## 2026-11-02 — L240: Tag offline release candidate
+- Changed: Added `docs/OFFLINE-RELEASE.md` and tagged the offline-only app `v0.1.0-rc.1` after all checks passed. The offline personal app is complete.
+- Verified: npm ci state, lint, typecheck, vitest (442 tests), build, format:check, full Playwright suite (36), roadmap tests/check; searched src for network calls and found none.
+- Next: L241 create the API workspace package (start of the sharing phase).
+- Blockers: none

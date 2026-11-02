@@ -264,7 +264,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L237 Add migrations rollback fixture — Done when bad migration leaves old data available.
 - [x] L238 Add screen reader pass — Done when key forms announce labels and errors.
 - [x] L239 Add keyboard-only pass — Done when every primary flow works without pointer.
-- [ ] L240 Tag offline release candidate — Done when local-only build and checks pass.
+- [x] L240 Tag offline release candidate — Done when local-only build and checks pass.
 
 ## 09 Self-hostable API foundation
 
