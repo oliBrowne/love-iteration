@@ -1451,3 +1451,9 @@
 - Verified: API build and tests (health and 404 over a real local port), root lint, typecheck, vitest, format:check, roadmap tests/check.
 - Next: L243 add an input validation helper so an invalid JSON body yields 400.
 - Blockers: none
+
+## 2026-11-02 — L243: Add API input validation helper
+- Changed: `api/src/jsonBody.ts` reads and parses a JSON request body; invalid JSON becomes a 400 reply with a fixed message that never repeats the submitted text.
+- Verified: API build and tests (parse, message check, and a real HTTP request returning 400 then 200), root lint, typecheck, vitest, format:check, roadmap tests/check. The helper is not yet wired to a route (none accepts a body yet).
+- Next: L244 give known API errors a shared code and message shape.
+- Blockers: none
