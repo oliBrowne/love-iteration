@@ -1445,3 +1445,9 @@
 - Verified: `npm run build -w love-iteration-api`, `npm test -w love-iteration-api`, typecheck, root lint, typecheck, build, vitest, format:check, `npm ci`, roadmap tests/check. Build output `api/dist` is git-ignored.
 - Next: L242 add GET /health returning version and status.
 - Blockers: none
+
+## 2026-11-02 — L242: Add API health endpoint
+- Changed: The API package has a small Node HTTP server (no dependencies). GET /health returns `{ status: "ok", name, version }` as JSON; other paths return 404.
+- Verified: API build and tests (health and 404 over a real local port), root lint, typecheck, vitest, format:check, roadmap tests/check.
+- Next: L243 add an input validation helper so an invalid JSON body yields 400.
+- Blockers: none
