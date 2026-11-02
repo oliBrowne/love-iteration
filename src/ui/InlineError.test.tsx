@@ -10,4 +10,9 @@ describe('InlineError', () => {
     render(<InlineError>Could not save.</InlineError>);
     expect(screen.getByRole('alert').textContent).toBe('Could not save.');
   });
+
+  it('can carry an id for a field to point at', () => {
+    render(<InlineError id="why">Could not save.</InlineError>);
+    expect(screen.getByRole('alert').id).toBe('why');
+  });
 });

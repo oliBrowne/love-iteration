@@ -148,6 +148,7 @@ export function MemoriesPage({
       <form onSubmit={submit}>
         <TextField
           label="Memory title"
+          aria-describedby={problem ? 'memory-error' : undefined}
           value={title}
           onChange={(event) => {
             setTitle(event.target.value);
@@ -173,7 +174,9 @@ export function MemoriesPage({
             setJustSaved(false);
           }}
         />
-        {problem ? <InlineError>{problem}</InlineError> : null}
+        {problem ? (
+          <InlineError id="memory-error">{problem}</InlineError>
+        ) : null}
         {justSaved ? <p role="status">Saved.</p> : null}
         <Button type="submit">Save memory</Button>
       </form>

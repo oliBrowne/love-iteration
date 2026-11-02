@@ -1421,3 +1421,9 @@
 - Verified: vitest for the data tests, lint, typecheck, build, format:check, roadmap tests/check.
 - Next: L238 screen reader pass so key forms announce labels and errors.
 - Blockers: none
+
+## 2026-11-02 — L238: Add screen reader pass
+- Changed: Form errors on Gratitude, Ideas and Memories now carry an id and are linked to the main field with aria-describedby; the check-in note is linked to its characters-remaining message. Labels were already tied to every field and errors already use role="alert".
+- Verified: lint, typecheck, vitest (new tests for the error link and InlineError id), build, format:check, roadmap tests/check. Not tested with an actual screen reader.
+- Next: L239 keyboard-only pass over every primary flow.
+- Blockers: none

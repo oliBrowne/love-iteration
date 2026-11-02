@@ -98,6 +98,7 @@ export function GratitudePage({
       <form onSubmit={submit}>
         <TextArea
           label="What are you grateful for?"
+          aria-describedby={problem ? 'gratitude-error' : undefined}
           value={text}
           onChange={(event) => {
             setText(event.target.value);
@@ -105,7 +106,9 @@ export function GratitudePage({
             setJustSaved(false);
           }}
         />
-        {problem ? <InlineError>{problem}</InlineError> : null}
+        {problem ? (
+          <InlineError id="gratitude-error">{problem}</InlineError>
+        ) : null}
         {justSaved ? <p role="status">Saved.</p> : null}
         <Button type="submit">Save appreciation</Button>
       </form>

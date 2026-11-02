@@ -102,6 +102,7 @@ export function CheckInPage({
         />
         <TextArea
           label="Note (optional)"
+          aria-describedby="note-remaining"
           value={note}
           onChange={(event) => setNote(event.target.value)}
         />

@@ -49,6 +49,14 @@ describe('Gratitude composer', () => {
     );
     expect(await repo.list()).toEqual([]);
   });
+
+  it('links the error to the field so a screen reader announces it', async () => {
+    await renderPage();
+    fireEvent.click(screen.getByRole('button', { name: 'Save appreciation' }));
+    const alert = await screen.findByRole('alert');
+    const field = screen.getByLabelText('What are you grateful for?');
+    expect(field.getAttribute('aria-describedby')).toBe(alert.id);
+  });
 });
 
 describe('Gratitude character limit', () => {

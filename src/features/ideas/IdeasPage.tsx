@@ -212,6 +212,7 @@ export function IdeasPage({
       <form onSubmit={submit}>
         <TextField
           label="Idea title"
+          aria-describedby={problem ? 'idea-error' : undefined}
           value={title}
           onChange={(event) => {
             setTitle(event.target.value);
@@ -231,7 +232,7 @@ export function IdeasPage({
             setCategory(event.target.value as DateIdeaCategory)
           }
         />
-        {problem ? <InlineError>{problem}</InlineError> : null}
+        {problem ? <InlineError id="idea-error">{problem}</InlineError> : null}
         <Button type="submit">Add idea</Button>
       </form>
       <TextField
