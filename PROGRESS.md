@@ -1427,3 +1427,9 @@
 - Verified: lint, typecheck, vitest (new tests for the error link and InlineError id), build, format:check, roadmap tests/check. Not tested with an actual screen reader.
 - Next: L239 keyboard-only pass over every primary flow.
 - Blockers: none
+
+## 2026-11-02 — L239: Add keyboard-only pass
+- Changed: The mood radio buttons now show the same visible focus ring as other controls. New browser tests save a memory, add an idea, and use the skip link and main navigation using only the keyboard (check-in and gratitude were already covered).
+- Verified: lint, typecheck, vitest (new focus-style test), build, format:check, full Playwright suite, roadmap tests/check. Reviewed that all controls are native buttons, links and inputs.
+- Next: L240 tag the offline release candidate once local-only build and checks pass.
+- Blockers: none
