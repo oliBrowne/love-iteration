@@ -1439,3 +1439,9 @@
 - Verified: npm ci state, lint, typecheck, vitest (442 tests), build, format:check, full Playwright suite (36), roadmap tests/check; searched src for network calls and found none.
 - Next: L241 create the API workspace package (start of the sharing phase).
 - Blockers: none
+
+## 2026-11-02 — L241: Create API workspace package
+- Changed: New `api/` npm workspace (`love-iteration-api`) with its own `build`, `typecheck` and `test` scripts, a tiny version module with a test, and a short README. The offline app does not use it.
+- Verified: `npm run build -w love-iteration-api`, `npm test -w love-iteration-api`, typecheck, root lint, typecheck, build, vitest, format:check, `npm ci`, roadmap tests/check. Build output `api/dist` is git-ignored.
+- Next: L242 add GET /health returning version and status.
+- Blockers: none

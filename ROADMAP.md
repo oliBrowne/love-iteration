@@ -268,7 +268,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 
 ## 09 Self-hostable API foundation
 
-- [ ] L241 Create API workspace package — Done when api has its own build and test scripts.
+- [x] L241 Create API workspace package — Done when api has its own build and test scripts.
 - [ ] L242 Add API health endpoint — Done when GET /health returns version and status.
 - [ ] L243 Add API input validation helper — Done when invalid JSON body yields 400.
 - [ ] L244 Add API error response shape — Done when known errors share code and message fields.

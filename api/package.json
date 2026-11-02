@@ -1,0 +1,12 @@
+{
+  "name": "love-iteration-api",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Self-hostable server for opt-in sharing. Not used by the offline app.",
+  "scripts": {
+    "build": "tsc -p tsconfig.json --outDir dist",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test \"src/**/*.test.ts\""
+  }
+}
