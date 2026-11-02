@@ -1415,3 +1415,9 @@
 - Verified: fields checked against `src/domain/*.ts`, `database.ts` and `mergeRecords.ts`; format:check and roadmap tests/check pass. Docs only, no code change.
 - Next: L237 add a migrations rollback fixture so a bad migration leaves old data available.
 - Blockers: none
+
+## 2026-11-02 — L237: Add migrations rollback fixture
+- Changed: A database test seeds a version 1 database, runs a deliberately failing upgrade, and confirms the old version, stores and saved record are still there afterwards. No app behaviour changed.
+- Verified: vitest for the data tests, lint, typecheck, build, format:check, roadmap tests/check.
+- Next: L238 screen reader pass so key forms announce labels and errors.
+- Blockers: none

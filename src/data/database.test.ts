@@ -111,3 +111,42 @@ describe('openDatabase', () => {
     db.close();
   });
 });
+
+describe('a migration that fails', () => {
+  it('leaves the old data and version available', async () => {
+    const factory = new IDBFactory();
+    const record = { id: 'old-1', date: '2026-01-01', mood: 'good', note: '' };
+    await seedOlderDatabase(factory, record);
+
+    // A deliberately bad upgrade: it adds a store, then fails and aborts.
+    const failed = await new Promise<boolean>((resolve) => {
+      const request = factory.open(databaseName, 2);
+      request.onupgradeneeded = () => {
+        request.result.createObjectStore('half-made', { keyPath: 'id' });
+        request.transaction?.abort();
+      };
+      request.onsuccess = () => resolve(false);
+      request.onerror = () => resolve(true);
+    });
+    expect(failed).toBe(true);
+
+    // The rolled-back database is still version 1, with the record and no new store.
+    const db = await new Promise<IDBDatabase>((resolve, reject) => {
+      const request = factory.open(databaseName);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    expect(db.version).toBe(1);
+    expect([...db.objectStoreNames]).toEqual([checkinsStore]);
+    const saved = await new Promise((resolve, reject) => {
+      const request = db
+        .transaction(checkinsStore)
+        .objectStore(checkinsStore)
+        .get('old-1');
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    expect(saved).toEqual(record);
+    db.close();
+  });
+});
