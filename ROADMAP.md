@@ -260,7 +260,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L233 Add storage quota warning — Done when write failure offers export instructions.
 - [x] L234 Add app version display — Done when Settings shows build version.
 - [x] L235 Add privacy policy page — Done when page accurately describes local storage.
-- [ ] L236 Add data model documentation — Done when each record and export field is described.
+- [x] L236 Add data model documentation — Done when each record and export field is described.
 - [ ] L237 Add migrations rollback fixture — Done when bad migration leaves old data available.
 - [ ] L238 Add screen reader pass — Done when key forms announce labels and errors.
 - [ ] L239 Add keyboard-only pass — Done when every primary flow works without pointer.

@@ -1409,3 +1409,9 @@
 - Verified: lint, typecheck, vitest (new page, link and route tests), build, format:check, roadmap tests. Not viewed in a real browser.
 - Next: L236 add data model documentation describing each record and export field.
 - Blockers: none
+
+## 2026-11-02 — L236: Add data model documentation
+- Changed: New `docs/DATA-MODEL.md` describes every record type, its stores and fields, the shared metadata, the export file envelope, and how records relate and merge on import.
+- Verified: fields checked against `src/domain/*.ts`, `database.ts` and `mergeRecords.ts`; format:check and roadmap tests/check pass. Docs only, no code change.
+- Next: L237 add a migrations rollback fixture so a bad migration leaves old data available.
+- Blockers: none
