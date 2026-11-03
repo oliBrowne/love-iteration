@@ -1499,3 +1499,9 @@
 - Verified: API build and tests (columns and foreign key to accounts), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
 - Next: L251 create the memberships table as migration 3.
 - Blockers: none
+
+## 2026-11-03 — L251: Create memberships table
+- Changed: Migration 3 creates memberships (space, account, owner/member role, joined time) with one row per person per space; leaving or deleting a space removes the rows.
+- Verified: API build and tests (columns, duplicate and bad-role rejected, cascade delete), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
+- Next: L252 create the invites table as migration 4.
+- Blockers: none

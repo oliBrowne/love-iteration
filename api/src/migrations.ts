@@ -26,4 +26,15 @@ export const migrations: Migration[] = [
         updated_at TEXT NOT NULL
       )`,
   },
+  {
+    version: 3,
+    sql: `
+      CREATE TABLE memberships (
+        space_id TEXT NOT NULL REFERENCES spaces(id) ON DELETE CASCADE,
+        account_id TEXT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+        role TEXT NOT NULL CHECK (role IN ('owner', 'member')),
+        joined_at TEXT NOT NULL,
+        PRIMARY KEY (space_id, account_id)
+      )`,
+  },
 ];

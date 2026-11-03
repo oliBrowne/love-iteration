@@ -52,3 +52,35 @@ test('spaces table has the expected columns and needs a real creator', () => {
   );
   db.close();
 });
+
+test('memberships link accounts to spaces, once each, with a valid role', () => {
+  const db = freshDb();
+  assert.deepEqual(columns(db, 'memberships'), [
+    'space_id',
+    'account_id',
+    'role',
+    'joined_at',
+  ]);
+  db.prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)').run(
+    'a1',
+    'demo@example.test',
+    'Demo',
+    'hash',
+    'now',
+    'now',
+  );
+  db.prepare('INSERT INTO spaces VALUES (?, ?, ?, ?, ?)').run(
+    's1',
+    'Demo space',
+    'a1',
+    'now',
+    'now',
+  );
+  const add = db.prepare('INSERT INTO memberships VALUES (?, ?, ?, ?)');
+  add.run('s1', 'a1', 'owner', 'now');
+  assert.throws(() => add.run('s1', 'a1', 'member', 'now'));
+  assert.throws(() => add.run('s1', 'a1', 'admin', 'now'));
+  db.prepare('DELETE FROM spaces WHERE id = ?').run('s1');
+  assert.equal(db.prepare('SELECT * FROM memberships').all().length, 0);
+  db.close();
+});
