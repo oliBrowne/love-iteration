@@ -1493,3 +1493,9 @@
 - Verified: API build and tests (column list and unique-email constraint), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
 - Next: L250 create the spaces table as migration 2.
 - Blockers: none
+
+## 2026-11-03 — L250: Create spaces table
+- Changed: Migration 2 creates the spaces table (id, name, creator account, timestamps).
+- Verified: API build and tests (columns and foreign key to accounts), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
+- Next: L251 create the memberships table as migration 3.
+- Blockers: none

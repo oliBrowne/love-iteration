@@ -15,4 +15,15 @@ export const migrations: Migration[] = [
         updated_at TEXT NOT NULL
       )`,
   },
+  {
+    version: 2,
+    sql: `
+      CREATE TABLE spaces (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        created_by TEXT NOT NULL REFERENCES accounts(id),
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      )`,
+  },
 ];

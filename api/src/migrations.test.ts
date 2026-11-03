@@ -35,3 +35,20 @@ test('accounts table has the expected columns and unique email', () => {
   );
   db.close();
 });
+
+test('spaces table has the expected columns and needs a real creator', () => {
+  const db = freshDb();
+  assert.deepEqual(columns(db, 'spaces'), [
+    'id',
+    'name',
+    'created_by',
+    'created_at',
+    'updated_at',
+  ]);
+  assert.throws(() =>
+    db
+      .prepare('INSERT INTO spaces VALUES (?, ?, ?, ?, ?)')
+      .run('s1', 'Demo space', 'missing', 'now', 'now'),
+  );
+  db.close();
+});
