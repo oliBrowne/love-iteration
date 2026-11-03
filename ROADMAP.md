@@ -275,7 +275,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L245 Add request ID middleware — Done when each response includes a request ID.
 - [x] L246 Add safe request logging — Done when journal text never appears in logs.
 - [x] L247 Add SQLite connection module — Done when test opens an in-memory database.
-- [ ] L248 Add migration runner — Done when schema version advances exactly once.
+- [x] L248 Add migration runner — Done when schema version advances exactly once.
 - [ ] L249 Create accounts table — Done when migration and schema test pass.
 - [ ] L250 Create spaces table — Done when migration and schema test pass.
 - [ ] L251 Create memberships table — Done when migration and schema test pass.

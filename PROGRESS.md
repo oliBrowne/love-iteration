@@ -1481,3 +1481,9 @@
 - Verified: API build and tests (in-memory open, insert, read, foreign keys on), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
 - Next: L248 add a migration runner so the schema version advances exactly once.
 - Blockers: none
+
+## 2026-11-03 — L248: Add migration runner
+- Changed: api/src/migrate.ts applies ordered SQL migrations using SQLite's user_version; each runs once in a transaction and a failure rolls back.
+- Verified: API build and tests (advances once, re-run is a no-op, failure rolls back, gaps rejected), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
+- Next: L249 create the accounts table as migration 1 with a schema test.
+- Blockers: none
