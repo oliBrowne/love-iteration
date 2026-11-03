@@ -1469,3 +1469,9 @@
 - Verified: API build and tests (IDs differ per response), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
 - Next: L246 add safe request logging that never records journal text.
 - Blockers: none
+
+## 2026-11-03 — L246: Add safe request logging
+- Changed: The API can log one line per request (id, method, path, status, time). Query strings and bodies are never logged, so journal text cannot appear.
+- Verified: API build and tests (private words in query and body absent from logs), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
+- Next: L247 add a SQLite connection module that opens an in-memory database in a test.
+- Blockers: none

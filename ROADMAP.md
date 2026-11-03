@@ -273,7 +273,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L243 Add API input validation helper — Done when invalid JSON body yields 400.
 - [x] L244 Add API error response shape — Done when known errors share code and message fields.
 - [x] L245 Add request ID middleware — Done when each response includes a request ID.
-- [ ] L246 Add safe request logging — Done when journal text never appears in logs.
+- [x] L246 Add safe request logging — Done when journal text never appears in logs.
 - [ ] L247 Add SQLite connection module — Done when test opens an in-memory database.
 - [ ] L248 Add migration runner — Done when schema version advances exactly once.
 - [ ] L249 Create accounts table — Done when migration and schema test pass.
