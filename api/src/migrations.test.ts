@@ -122,3 +122,42 @@ test('invites store only a token hash and can be revoked or accepted', () => {
   db.prepare('UPDATE invites SET revoked_at = ? WHERE id = ?').run('now', 'i1');
   db.close();
 });
+
+test('records belong to a space and start at revision 1', () => {
+  const db = freshDb();
+  assert.deepEqual(columns(db, 'records'), [
+    'id',
+    'space_id',
+    'kind',
+    'body',
+    'revision',
+    'created_by',
+    'created_at',
+    'updated_at',
+  ]);
+  db.prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)').run(
+    'a1',
+    'demo@example.test',
+    'Demo',
+    'hash',
+    'now',
+    'now',
+  );
+  db.prepare('INSERT INTO spaces VALUES (?, ?, ?, ?, ?)').run(
+    's1',
+    'Demo space',
+    'a1',
+    'now',
+    'now',
+  );
+  const add = db.prepare(
+    'INSERT INTO records (id, space_id, kind, body, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+  );
+  add.run('r1', 's1', 'memory', '{"title":"Demo"}', 'a1', 'now', 'now');
+  const row = db.prepare('SELECT revision FROM records').get();
+  assert.equal(row?.revision, 1);
+  assert.throws(() =>
+    add.run('r2', 'nope', 'memory', '{}', 'a1', 'now', 'now'),
+  );
+  db.close();
+});

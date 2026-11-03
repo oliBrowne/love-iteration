@@ -52,4 +52,19 @@ export const migrations: Migration[] = [
         revoked_at TEXT
       )`,
   },
+  {
+    version: 5,
+    sql: `
+      CREATE TABLE records (
+        id TEXT PRIMARY KEY,
+        space_id TEXT NOT NULL REFERENCES spaces(id) ON DELETE CASCADE,
+        kind TEXT NOT NULL,
+        body TEXT NOT NULL,
+        revision INTEGER NOT NULL DEFAULT 1,
+        created_by TEXT NOT NULL REFERENCES accounts(id),
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );
+      CREATE INDEX records_by_space ON records (space_id, updated_at)`,
+  },
 ];

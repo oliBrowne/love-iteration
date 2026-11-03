@@ -1511,3 +1511,9 @@
 - Verified: API build and tests (columns, unique hash, foreign key, revoke update), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
 - Next: L253 create the records table as migration 5.
 - Blockers: none
+
+## 2026-11-03 — L253: Create records table
+- Changed: Migration 5 creates the shared records table (space, kind, JSON body, revision starting at 1, author, timestamps) with an index by space.
+- Verified: API build and tests (columns, default revision, foreign key), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
+- Next: L254 create the tombstones table as migration 6.
+- Blockers: none

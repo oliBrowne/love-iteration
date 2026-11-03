@@ -280,7 +280,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L250 Create spaces table — Done when migration and schema test pass.
 - [x] L251 Create memberships table — Done when migration and schema test pass.
 - [x] L252 Create invites table — Done when migration and schema test pass.
-- [ ] L253 Create records table — Done when migration and schema test pass.
+- [x] L253 Create records table — Done when migration and schema test pass.
 - [ ] L254 Create tombstones table — Done when migration and schema test pass.
 - [ ] L255 Create sync cursors table — Done when migration and schema test pass.
 - [ ] L256 Add database backup command — Done when copied database passes integrity check.
