@@ -37,4 +37,19 @@ export const migrations: Migration[] = [
         PRIMARY KEY (space_id, account_id)
       )`,
   },
+  {
+    version: 4,
+    sql: `
+      CREATE TABLE invites (
+        id TEXT PRIMARY KEY,
+        space_id TEXT NOT NULL REFERENCES spaces(id) ON DELETE CASCADE,
+        created_by TEXT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+        token_hash TEXT NOT NULL UNIQUE,
+        created_at TEXT NOT NULL,
+        expires_at TEXT NOT NULL,
+        accepted_by TEXT REFERENCES accounts(id) ON DELETE SET NULL,
+        accepted_at TEXT,
+        revoked_at TEXT
+      )`,
+  },
 ];

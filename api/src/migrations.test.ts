@@ -84,3 +84,41 @@ test('memberships link accounts to spaces, once each, with a valid role', () => 
   assert.equal(db.prepare('SELECT * FROM memberships').all().length, 0);
   db.close();
 });
+
+test('invites store only a token hash and can be revoked or accepted', () => {
+  const db = freshDb();
+  assert.deepEqual(columns(db, 'invites'), [
+    'id',
+    'space_id',
+    'created_by',
+    'token_hash',
+    'created_at',
+    'expires_at',
+    'accepted_by',
+    'accepted_at',
+    'revoked_at',
+  ]);
+  db.prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)').run(
+    'a1',
+    'demo@example.test',
+    'Demo',
+    'hash',
+    'now',
+    'now',
+  );
+  db.prepare('INSERT INTO spaces VALUES (?, ?, ?, ?, ?)').run(
+    's1',
+    'Demo space',
+    'a1',
+    'now',
+    'now',
+  );
+  const add = db.prepare(
+    'INSERT INTO invites (id, space_id, created_by, token_hash, created_at, expires_at) VALUES (?, ?, ?, ?, ?, ?)',
+  );
+  add.run('i1', 's1', 'a1', 'hash-1', 'now', 'later');
+  assert.throws(() => add.run('i2', 's1', 'a1', 'hash-1', 'now', 'later'));
+  assert.throws(() => add.run('i3', 'nope', 'a1', 'hash-3', 'now', 'later'));
+  db.prepare('UPDATE invites SET revoked_at = ? WHERE id = ?').run('now', 'i1');
+  db.close();
+});

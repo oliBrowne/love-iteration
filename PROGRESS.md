@@ -1505,3 +1505,9 @@
 - Verified: API build and tests (columns, duplicate and bad-role rejected, cascade delete), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
 - Next: L252 create the invites table as migration 4.
 - Blockers: none
+
+## 2026-11-03 — L252: Create invites table
+- Changed: Migration 4 creates invites (space, inviter, token hash only, expiry, accepted and revoked times) so invitations can be revoked and tokens are never stored in plain form.
+- Verified: API build and tests (columns, unique hash, foreign key, revoke update), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
+- Next: L253 create the records table as migration 5.
+- Blockers: none
