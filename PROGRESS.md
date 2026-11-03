@@ -1457,3 +1457,9 @@
 - Verified: API build and tests (parse, message check, and a real HTTP request returning 400 then 200), root lint, typecheck, vitest, format:check, roadmap tests/check. The helper is not yet wired to a route (none accepts a body yet).
 - Next: L244 give known API errors a shared code and message shape.
 - Blockers: none
+
+## 2026-11-03 — L244: Add API error response shape
+- Changed: Known API errors (not found, bad JSON) now share one JSON shape with code and message fields, defined in api/src/errors.ts.
+- Verified: API build and tests, root lint, typecheck, build, vitest, format:check, roadmap tests/check.
+- Next: L245 add a request ID to every response.
+- Blockers: none

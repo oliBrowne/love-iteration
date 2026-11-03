@@ -29,6 +29,9 @@ test('an HTTP request with an invalid body gets 400, a valid one 200', async () 
   try {
     const bad = await fetch(url, { method: 'POST', body: '{nope' });
     assert.equal(bad.status, 400);
+    const body = (await bad.json()) as { code: string; message: string };
+    assert.equal(body.code, 'bad_json');
+    assert.ok(body.message.length > 0);
     const good = await fetch(url, { method: 'POST', body: '{"ok":true}' });
     assert.equal(good.status, 200);
   } finally {

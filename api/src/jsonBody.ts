@@ -1,4 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
+import { apiErrors, sendError } from './errors.ts';
 
 export type JsonBodyResult =
   { ok: true; value: unknown } | { ok: false; status: 400; message: string };
@@ -12,7 +13,7 @@ export function parseJsonBody(text: string): JsonBodyResult {
     return {
       ok: false,
       status: 400,
-      message: 'The request body is not valid JSON.',
+      message: apiErrors.bad_json.message,
     };
   }
 }
@@ -32,9 +33,6 @@ export function rejectBadJson(
   result: JsonBodyResult,
 ): boolean {
   if (result.ok) return false;
-  res.writeHead(result.status, {
-    'content-type': 'application/json; charset=utf-8',
-  });
-  res.end(JSON.stringify({ error: result.message }));
+  sendError(res, 'bad_json');
   return true;
 }

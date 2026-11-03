@@ -1,5 +1,6 @@
 import { createServer } from 'node:http';
 import type { IncomingMessage, Server, ServerResponse } from 'node:http';
+import { sendError } from './errors.ts';
 import { apiName, apiVersion } from './version.ts';
 
 function sendJson(res: ServerResponse, status: number, body: unknown): void {
@@ -14,7 +15,7 @@ export function handleRequest(req: IncomingMessage, res: ServerResponse): void {
     sendJson(res, 200, { status: 'ok', name: apiName, version: apiVersion });
     return;
   }
-  sendJson(res, 404, { error: 'Not found.' });
+  sendError(res, 'not_found');
 }
 
 export function createApiServer(): Server {

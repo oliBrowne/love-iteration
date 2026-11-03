@@ -28,6 +28,11 @@ test('GET /health returns status and version', async () => {
 
 test('an unknown path is a 404', async () => {
   await withServer(async (base) => {
-    assert.equal((await fetch(`${base}/nope`)).status, 404);
+    const res = await fetch(`${base}/nope`);
+    assert.equal(res.status, 404);
+    assert.deepEqual(await res.json(), {
+      code: 'not_found',
+      message: 'Not found.',
+    });
   });
 });
