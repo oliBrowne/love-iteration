@@ -6,3 +6,5 @@ The optional self-hostable server for sharing and sync. The offline app does not
 npm run build -w love-iteration-api   # compile to api/dist (not committed)
 npm test -w love-iteration-api        # run the API tests
 ```
+
+The server needs Node 22.5 or newer, because the database uses the built-in `node:sqlite` module.

@@ -1475,3 +1475,9 @@
 - Verified: API build and tests (private words in query and body absent from logs), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
 - Next: L247 add a SQLite connection module that opens an in-memory database in a test.
 - Blockers: none
+
+## 2026-11-03 — L247: Add SQLite connection module
+- Changed: api/src/db.ts opens a SQLite database with Node's built-in driver (no new dependency) and turns on foreign keys; documented the Node 22.5+ requirement.
+- Verified: API build and tests (in-memory open, insert, read, foreign keys on), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
+- Next: L248 add a migration runner so the schema version advances exactly once.
+- Blockers: none
