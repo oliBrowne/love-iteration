@@ -1463,3 +1463,9 @@
 - Verified: API build and tests, root lint, typecheck, build, vitest, format:check, roadmap tests/check.
 - Next: L245 add a request ID to every response.
 - Blockers: none
+
+## 2026-11-03 — L245: Add request ID middleware
+- Changed: Every API response (including errors) now carries a unique x-request-id header.
+- Verified: API build and tests (IDs differ per response), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
+- Next: L246 add safe request logging that never records journal text.
+- Blockers: none

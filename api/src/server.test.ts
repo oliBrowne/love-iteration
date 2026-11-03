@@ -36,3 +36,14 @@ test('an unknown path is a 404', async () => {
     });
   });
 });
+
+test('each response has its own request ID', async () => {
+  await withServer(async (base) => {
+    const a = await fetch(`${base}/health`);
+    const b = await fetch(`${base}/nope`);
+    const idA = a.headers.get('x-request-id');
+    const idB = b.headers.get('x-request-id');
+    assert.ok(idA && idB);
+    assert.notEqual(idA, idB);
+  });
+});
