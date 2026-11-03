@@ -1487,3 +1487,9 @@
 - Verified: API build and tests (advances once, re-run is a no-op, failure rolls back, gaps rejected), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
 - Next: L249 create the accounts table as migration 1 with a schema test.
 - Blockers: none
+
+## 2026-11-03 — L249: Create accounts table
+- Changed: Migration 1 creates the accounts table (id, unique email, display name, password hash, timestamps).
+- Verified: API build and tests (column list and unique-email constraint), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
+- Next: L250 create the spaces table as migration 2.
+- Blockers: none
