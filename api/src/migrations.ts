@@ -67,4 +67,16 @@ export const migrations: Migration[] = [
       );
       CREATE INDEX records_by_space ON records (space_id, updated_at)`,
   },
+  {
+    version: 6,
+    sql: `
+      CREATE TABLE tombstones (
+        record_id TEXT PRIMARY KEY,
+        space_id TEXT NOT NULL REFERENCES spaces(id) ON DELETE CASCADE,
+        revision INTEGER NOT NULL,
+        deleted_by TEXT NOT NULL REFERENCES accounts(id),
+        deleted_at TEXT NOT NULL
+      );
+      CREATE INDEX tombstones_by_space ON tombstones (space_id, deleted_at)`,
+  },
 ];

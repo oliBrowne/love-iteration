@@ -1517,3 +1517,9 @@
 - Verified: API build and tests (columns, default revision, foreign key), root lint, typecheck, build, vitest, format:check, roadmap tests/check.
 - Next: L254 create the tombstones table as migration 6.
 - Blockers: none
+
+## 2026-11-04 — L254: Create tombstones table
+- Changed: Migration 6 creates tombstones (record, space, last revision, deleter, deleted time) so deletions can sync as markers; removing a space clears them.
+- Verified: API build and tests (columns, duplicate record and bad-space rejected, cascade delete), root lint, typecheck, build, format:check, roadmap tests/check.
+- Next: L255 create the sync cursors table as migration 7.
+- Blockers: none

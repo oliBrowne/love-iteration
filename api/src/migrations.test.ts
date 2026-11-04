@@ -161,3 +161,36 @@ test('records belong to a space and start at revision 1', () => {
   );
   db.close();
 });
+
+test('tombstones remember deleted records per space', () => {
+  const db = freshDb();
+  assert.deepEqual(columns(db, 'tombstones'), [
+    'record_id',
+    'space_id',
+    'revision',
+    'deleted_by',
+    'deleted_at',
+  ]);
+  db.prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)').run(
+    'a1',
+    'demo@example.test',
+    'Demo',
+    'hash',
+    'now',
+    'now',
+  );
+  db.prepare('INSERT INTO spaces VALUES (?, ?, ?, ?, ?)').run(
+    's1',
+    'Demo space',
+    'a1',
+    'now',
+    'now',
+  );
+  const add = db.prepare('INSERT INTO tombstones VALUES (?, ?, ?, ?, ?)');
+  add.run('r1', 's1', 2, 'a1', 'now');
+  assert.throws(() => add.run('r1', 's1', 3, 'a1', 'now'));
+  assert.throws(() => add.run('r2', 'nope', 1, 'a1', 'now'));
+  db.prepare('DELETE FROM spaces WHERE id = ?').run('s1');
+  assert.equal(db.prepare('SELECT * FROM tombstones').all().length, 0);
+  db.close();
+});
