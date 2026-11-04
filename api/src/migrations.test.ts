@@ -194,3 +194,35 @@ test('tombstones remember deleted records per space', () => {
   assert.equal(db.prepare('SELECT * FROM tombstones').all().length, 0);
   db.close();
 });
+
+test('sync cursors keep one position per person per space', () => {
+  const db = freshDb();
+  assert.deepEqual(columns(db, 'sync_cursors'), [
+    'account_id',
+    'space_id',
+    'cursor',
+    'updated_at',
+  ]);
+  db.prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)').run(
+    'a1',
+    'demo@example.test',
+    'Demo',
+    'hash',
+    'now',
+    'now',
+  );
+  db.prepare('INSERT INTO spaces VALUES (?, ?, ?, ?, ?)').run(
+    's1',
+    'Demo space',
+    'a1',
+    'now',
+    'now',
+  );
+  const add = db.prepare('INSERT INTO sync_cursors VALUES (?, ?, ?, ?)');
+  add.run('a1', 's1', 'cursor-1', 'now');
+  assert.throws(() => add.run('a1', 's1', 'cursor-2', 'now'));
+  assert.throws(() => add.run('a1', 'nope', 'cursor-1', 'now'));
+  db.prepare('DELETE FROM spaces WHERE id = ?').run('s1');
+  assert.equal(db.prepare('SELECT * FROM sync_cursors').all().length, 0);
+  db.close();
+});

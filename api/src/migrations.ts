@@ -79,4 +79,15 @@ export const migrations: Migration[] = [
       );
       CREATE INDEX tombstones_by_space ON tombstones (space_id, deleted_at)`,
   },
+  {
+    version: 7,
+    sql: `
+      CREATE TABLE sync_cursors (
+        account_id TEXT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+        space_id TEXT NOT NULL REFERENCES spaces(id) ON DELETE CASCADE,
+        cursor TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        PRIMARY KEY (account_id, space_id)
+      )`,
+  },
 ];

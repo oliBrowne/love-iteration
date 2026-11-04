@@ -1523,3 +1523,9 @@
 - Verified: API build and tests (columns, duplicate record and bad-space rejected, cascade delete), root lint, typecheck, build, format:check, roadmap tests/check.
 - Next: L255 create the sync cursors table as migration 7.
 - Blockers: none
+
+## 2026-11-04 — L255: Create sync cursors table
+- Changed: Migration 7 creates sync_cursors (one position per person per space) so sync can resume where it left off.
+- Verified: API build and tests (columns, duplicate and bad-space rejected, cascade delete), root lint, typecheck, build, format:check, roadmap tests/check.
+- Next: L256 add a database backup command whose copy passes an integrity check.
+- Blockers: none

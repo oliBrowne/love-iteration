@@ -282,7 +282,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L252 Create invites table — Done when migration and schema test pass.
 - [x] L253 Create records table — Done when migration and schema test pass.
 - [x] L254 Create tombstones table — Done when migration and schema test pass.
-- [ ] L255 Create sync cursors table — Done when migration and schema test pass.
+- [x] L255 Create sync cursors table — Done when migration and schema test pass.
 - [ ] L256 Add database backup command — Done when copied database passes integrity check.
 - [ ] L257 Add startup migration check — Done when server refuses unsupported newer schema.
 - [ ] L258 Add config validation — Done when missing secret produces a useful startup error.
