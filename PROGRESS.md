@@ -1529,3 +1529,9 @@
 - Verified: API build and tests (columns, duplicate and bad-space rejected, cascade delete), root lint, typecheck, build, format:check, roadmap tests/check.
 - Next: L256 add a database backup command whose copy passes an integrity check.
 - Blockers: none
+
+## 2026-11-04 — L256: Add database backup command
+- Changed: `npm run backup -w love-iteration-api -- <db> <backup>` copies the server database to a new file and integrity-checks the copy; it never overwrites an existing backup.
+- Verified: API build and tests (copy passes integrity_check, keeps data, refuses overwrite), ran the CLI by hand on a temp database (success, then refusal on second run), root lint, typecheck, build, format:check, roadmap tests/check.
+- Next: L257 add a startup migration check so the server refuses a newer, unsupported schema.
+- Blockers: none
