@@ -1541,3 +1541,9 @@
 - Verified: API build and tests (new test for newer schema), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
 - Next: L258 add config validation so a missing secret gives a useful startup error.
 - Blockers: none
+
+## 2026-11-05 — L258: Add config validation
+- Changed: A new `loadConfig` reads `LOVE_SESSION_SECRET` and `LOVE_PORT`; a missing or short secret or bad port gives one clear startup error listing every problem.
+- Verified: API build and tests (missing, short, bad port, valid, default port), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
+- Next: L259 add a localhost dev config so the server does not bind publicly by default.
+- Blockers: none

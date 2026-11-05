@@ -285,7 +285,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L255 Create sync cursors table — Done when migration and schema test pass.
 - [x] L256 Add database backup command — Done when copied database passes integrity check.
 - [x] L257 Add startup migration check — Done when server refuses unsupported newer schema.
-- [ ] L258 Add config validation — Done when missing secret produces a useful startup error.
+- [x] L258 Add config validation — Done when missing secret produces a useful startup error.
 - [ ] L259 Add localhost dev config — Done when server starts without public binding by default.
 - [ ] L260 Add CORS allowlist — Done when unlisted origin receives no CORS grant.
 - [ ] L261 Add secure response headers — Done when API responses set documented headers.
