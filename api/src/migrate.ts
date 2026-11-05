@@ -19,6 +19,14 @@ export function runMigrations(db: Db, migrations: Migration[]): number[] {
       throw new Error('Migration versions must be 1, 2, 3 with no gaps.');
     }
   }
+  // A database written by a newer server must never be touched by an older one.
+  const stored = getSchemaVersion(db);
+  const latest = ordered.length;
+  if (stored > latest) {
+    throw new Error(
+      `Database schema version ${stored} is newer than this server supports (${latest}). Upgrade the server before starting it.`,
+    );
+  }
   for (const m of ordered) {
     if (m.version <= getSchemaVersion(db)) continue;
     db.exec('BEGIN');

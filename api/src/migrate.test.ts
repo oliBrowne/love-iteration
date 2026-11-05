@@ -40,3 +40,13 @@ test('gaps in version numbers are rejected', () => {
   assert.throws(() => runMigrations(db, [{ version: 2, sql: 'SELECT 1' }]));
   db.close();
 });
+
+test('a database from a newer server is refused and left untouched', () => {
+  const db = openDb(':memory:');
+  runMigrations(db, steps);
+  db.exec('CREATE TABLE future (id INTEGER)');
+  db.exec('PRAGMA user_version = 3');
+  assert.throws(() => runMigrations(db, steps), /newer than this server/);
+  assert.equal(getSchemaVersion(db), 3);
+  db.close();
+});

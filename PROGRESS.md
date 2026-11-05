@@ -1535,3 +1535,9 @@
 - Verified: API build and tests (copy passes integrity_check, keeps data, refuses overwrite), ran the CLI by hand on a temp database (success, then refusal on second run), root lint, typecheck, build, format:check, roadmap tests/check.
 - Next: L257 add a startup migration check so the server refuses a newer, unsupported schema.
 - Blockers: none
+
+## 2026-11-05 — L257: Add startup migration check
+- Changed: Running migrations now refuses a database whose schema version is newer than this server knows, with a clear "upgrade the server" error, and leaves it untouched.
+- Verified: API build and tests (new test for newer schema), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
+- Next: L258 add config validation so a missing secret gives a useful startup error.
+- Blockers: none
