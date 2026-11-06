@@ -1547,3 +1547,9 @@
 - Verified: API build and tests (missing, short, bad port, valid, default port), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
 - Next: L259 add a localhost dev config so the server does not bind publicly by default.
 - Blockers: none
+
+## 2026-11-06 — L259: Add localhost dev config
+- Changed: Server config now has a `host` that defaults to `127.0.0.1` (override with `LOVE_HOST`), and `startServer` listens on it, so nothing is exposed publicly by default.
+- Verified: API build and tests (default host, override, server binds to 127.0.0.1), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
+- Next: L260 add a CORS allowlist so an unlisted origin gets no CORS grant.
+- Blockers: none

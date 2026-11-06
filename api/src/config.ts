@@ -1,4 +1,4 @@
-export type Config = { sessionSecret: string; port: number };
+export type Config = { sessionSecret: string; port: number; host: string };
 
 // Reads server settings from environment variables and checks them all at
 // once, so a person fixing a bad setup sees every problem in one message.
@@ -27,8 +27,12 @@ export function loadConfig(env: Record<string, string | undefined>): Config {
     }
   }
 
+  // Listen on this computer only unless the owner deliberately sets LOVE_HOST
+  // (for example 0.0.0.0 inside a container).
+  const host = env.LOVE_HOST?.trim() || '127.0.0.1';
+
   if (problems.length > 0) {
     throw new Error(`Cannot start the server:\n- ${problems.join('\n- ')}`);
   }
-  return { sessionSecret, port };
+  return { sessionSecret, port, host };
 }

@@ -286,7 +286,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L256 Add database backup command — Done when copied database passes integrity check.
 - [x] L257 Add startup migration check — Done when server refuses unsupported newer schema.
 - [x] L258 Add config validation — Done when missing secret produces a useful startup error.
-- [ ] L259 Add localhost dev config — Done when server starts without public binding by default.
+- [x] L259 Add localhost dev config — Done when server starts without public binding by default.
 - [ ] L260 Add CORS allowlist — Done when unlisted origin receives no CORS grant.
 - [ ] L261 Add secure response headers — Done when API responses set documented headers.
 - [ ] L262 Add body size limit — Done when oversized JSON returns 413.

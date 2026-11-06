@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import type { AddressInfo } from 'node:net';
 import { test } from 'node:test';
-import { createApiServer } from './server.ts';
+import { loadConfig } from './config.ts';
+import { createApiServer, startServer } from './server.ts';
 import { apiVersion } from './version.ts';
 
 async function withServer(run: (base: string) => Promise<void>): Promise<void> {
@@ -46,4 +47,17 @@ test('each response has its own request ID', async () => {
     assert.ok(idA && idB);
     assert.notEqual(idA, idB);
   });
+});
+
+test('startServer binds to localhost by default config', async () => {
+  const config = loadConfig({
+    LOVE_SESSION_SECRET: 'x'.repeat(32),
+    LOVE_PORT: '',
+  });
+  const server = await startServer({ ...config, port: 0 });
+  try {
+    assert.equal((server.address() as AddressInfo).address, '127.0.0.1');
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
 });

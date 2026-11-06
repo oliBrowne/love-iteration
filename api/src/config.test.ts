@@ -8,7 +8,16 @@ test('a valid environment gives a config with the default port', () => {
   assert.deepEqual(loadConfig({ LOVE_SESSION_SECRET: secret }), {
     sessionSecret: secret,
     port: 8787,
+    host: '127.0.0.1',
   });
+});
+
+test('the host defaults to localhost and can be set on purpose', () => {
+  assert.equal(loadConfig({ LOVE_SESSION_SECRET: secret }).host, '127.0.0.1');
+  assert.equal(
+    loadConfig({ LOVE_SESSION_SECRET: secret, LOVE_HOST: '0.0.0.0' }).host,
+    '0.0.0.0',
+  );
 });
 
 test('a missing secret names the variable in the error', () => {

@@ -46,3 +46,15 @@ export function handleRequest(
 export function createApiServer(log?: LogFn): Server {
   return createServer((req, res) => handleRequest(req, res, log));
 }
+
+// Starts listening on the configured host and port (localhost by default).
+export function startServer(
+  config: { host: string; port: number },
+  log?: LogFn,
+): Promise<Server> {
+  const server = createApiServer(log);
+  return new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(config.port, config.host, () => resolve(server));
+  });
+}
