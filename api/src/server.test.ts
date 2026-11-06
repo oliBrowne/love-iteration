@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import type { AddressInfo } from 'node:net';
 import { test } from 'node:test';
 import { loadConfig } from './config.ts';
+import { createRateLimiter } from './rateLimit.ts';
 import { createApiServer, startServer } from './server.ts';
 import { apiVersion } from './version.ts';
 
@@ -103,4 +104,25 @@ test('responses carry the security headers, even errors', async () => {
       );
     }
   });
+});
+
+test('repeated requests receive 429 once the limit is passed', async () => {
+  const allow = createRateLimiter({ limit: 2, windowMs: 60_000 });
+  const server = createApiServer(undefined, [], allow);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const url = `http://127.0.0.1:${port}/health`;
+    assert.equal((await fetch(url)).status, 200);
+    assert.equal((await fetch(url)).status, 200);
+    const limited = await fetch(url);
+    assert.equal(limited.status, 429);
+    assert.equal(
+      ((await limited.json()) as { code: string }).code,
+      'rate_limited',
+    );
+    assert.equal(limited.headers.get('retry-after'), '60');
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
 });

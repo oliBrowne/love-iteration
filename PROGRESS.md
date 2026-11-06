@@ -1571,3 +1571,9 @@
 - Verified: API build and tests (oversized body 413, small body 200, error table), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
 - Next: L263 add an API rate-limit hook so repeated requests receive 429.
 - Blockers: none
+
+## 2026-11-06 — L263: Add API rate-limit hook
+- Changed: The server accepts an optional rate limiter; a client over its limit gets 429 `rate_limited` with `retry-after`. Counts stay in memory.
+- Verified: API build and tests (limiter window logic, 429 over HTTP after two requests), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
+- Next: L264 add an API test database fixture so tests use isolated temporary databases.
+- Blockers: none

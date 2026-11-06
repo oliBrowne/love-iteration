@@ -3,6 +3,7 @@ import { createServer } from 'node:http';
 import type { IncomingMessage, Server, ServerResponse } from 'node:http';
 import { corsHeaders } from './cors.ts';
 import { sendError } from './errors.ts';
+import type { RateLimiter } from './rateLimit.ts';
 import { formatLogLine } from './requestLog.ts';
 import { securityHeaders } from './securityHeaders.ts';
 import { apiName, apiVersion } from './version.ts';
@@ -20,6 +21,7 @@ export function handleRequest(
   res: ServerResponse,
   log?: LogFn,
   allowedOrigins: readonly string[] = [],
+  allowRequest?: RateLimiter,
 ): void {
   // A fresh ID per request, set first so every reply (even errors) carries it.
   const requestId = randomUUID();
@@ -43,6 +45,11 @@ export function handleRequest(
   }
   const cors = corsHeaders(req.headers.origin, allowedOrigins);
   for (const [name, value] of Object.entries(cors)) res.setHeader(name, value);
+  if (allowRequest && !allowRequest(req.socket.remoteAddress ?? 'unknown')) {
+    res.setHeader('retry-after', '60');
+    sendError(res, 'rate_limited');
+    return;
+  }
   if (req.method === 'OPTIONS') {
     res.writeHead(204);
     res.end();
@@ -59,9 +66,10 @@ export function handleRequest(
 export function createApiServer(
   log?: LogFn,
   allowedOrigins: readonly string[] = [],
+  allowRequest?: RateLimiter,
 ): Server {
   return createServer((req, res) =>
-    handleRequest(req, res, log, allowedOrigins),
+    handleRequest(req, res, log, allowedOrigins, allowRequest),
   );
 }
 

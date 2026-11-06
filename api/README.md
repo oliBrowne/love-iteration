@@ -29,3 +29,7 @@ Each response also has an `x-request-id`. Use HTTPS in front of the server outsi
 ## Request size limit
 
 JSON request bodies larger than 1 MiB are refused with `413` and the `too_large` error code.
+
+## Rate limiting
+
+`createApiServer` accepts an optional rate limiter (`createRateLimiter` in `src/rateLimit.ts`). A client over its limit gets `429` with the `rate_limited` error code and a `retry-after` header. Counts are kept in memory only.
