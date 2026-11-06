@@ -1,6 +1,6 @@
 import type { ServerResponse } from 'node:http';
 
-export type ApiErrorCode = 'not_found' | 'bad_json';
+export type ApiErrorCode = 'not_found' | 'bad_json' | 'too_large';
 
 export type ApiErrorBody = { code: ApiErrorCode; message: string };
 
@@ -12,6 +12,7 @@ export const apiErrors: Record<
 > = {
   not_found: { status: 404, message: 'Not found.' },
   bad_json: { status: 400, message: 'The request body is not valid JSON.' },
+  too_large: { status: 413, message: 'The request body is too large.' },
 };
 
 export function errorBody(code: ApiErrorCode): ApiErrorBody {

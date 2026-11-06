@@ -25,3 +25,7 @@ Every API response, including errors, sets these headers:
 - `content-security-policy`: `default-src 'none'; frame-ancestors 'none'`, so a response can never load content or be framed.
 
 Each response also has an `x-request-id`. Use HTTPS in front of the server outside local development.
+
+## Request size limit
+
+JSON request bodies larger than 1 MiB are refused with `413` and the `too_large` error code.

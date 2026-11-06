@@ -1565,3 +1565,9 @@
 - Verified: API build and tests (headers on 200 and 404, README documents each header), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
 - Next: L262 add a request body size limit that returns 413 for oversized JSON.
 - Blockers: none
+
+## 2026-11-06 — L262: Add body size limit
+- Changed: JSON request bodies over 1 MiB are refused with 413 `too_large`; reading stops early so huge uploads are not held in memory.
+- Verified: API build and tests (oversized body 413, small body 200, error table), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
+- Next: L263 add an API rate-limit hook so repeated requests receive 429.
+- Blockers: none

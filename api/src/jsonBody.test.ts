@@ -38,3 +38,26 @@ test('an HTTP request with an invalid body gets 400, a valid one 200', async () 
     await new Promise((resolve) => server.close(resolve));
   }
 });
+
+test('an oversized body gets 413 and a body at the limit is accepted', async () => {
+  const server = createServer(async (req, res) => {
+    const body = await readJsonBody(req, 20);
+    if (rejectBadJson(res, body)) return;
+    res.writeHead(200).end('ok');
+  });
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  const url = `http://127.0.0.1:${port}/`;
+  try {
+    const big = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({ text: 'x'.repeat(100) }),
+    });
+    assert.equal(big.status, 413);
+    assert.equal(((await big.json()) as { code: string }).code, 'too_large');
+    const small = await fetch(url, { method: 'POST', body: '{"a":1}' });
+    assert.equal(small.status, 200);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
