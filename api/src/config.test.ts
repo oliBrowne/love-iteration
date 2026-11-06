@@ -9,6 +9,7 @@ test('a valid environment gives a config with the default port', () => {
     sessionSecret: secret,
     port: 8787,
     host: '127.0.0.1',
+    allowedOrigins: [],
   });
 });
 
@@ -42,4 +43,15 @@ test('a bad port is rejected and all problems are listed together', () => {
     loadConfig({ LOVE_SESSION_SECRET: secret, LOVE_PORT: '9000' }).port,
     9000,
   );
+});
+
+test('allowed origins come from a comma-separated list', () => {
+  const config = loadConfig({
+    LOVE_SESSION_SECRET: secret,
+    LOVE_ALLOWED_ORIGINS: 'https://a.example, https://b.example',
+  });
+  assert.deepEqual(config.allowedOrigins, [
+    'https://a.example',
+    'https://b.example',
+  ]);
 });

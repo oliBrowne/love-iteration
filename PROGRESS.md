@@ -1553,3 +1553,9 @@
 - Verified: API build and tests (default host, override, server binds to 127.0.0.1), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
 - Next: L260 add a CORS allowlist so an unlisted origin gets no CORS grant.
 - Blockers: none
+
+## 2026-11-06 — L260: Add CORS allowlist
+- Changed: The API answers cross-origin calls only for origins in `LOVE_ALLOWED_ORIGINS`; any other origin gets no CORS grant, including on preflight.
+- Verified: API build and tests (grant for listed origin, none for unlisted/missing, preflight, config parsing), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
+- Next: L261 add documented secure response headers to API responses.
+- Blockers: none

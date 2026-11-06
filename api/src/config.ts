@@ -1,4 +1,11 @@
-export type Config = { sessionSecret: string; port: number; host: string };
+import { parseOrigins } from './cors.ts';
+
+export type Config = {
+  sessionSecret: string;
+  port: number;
+  host: string;
+  allowedOrigins: string[];
+};
 
 // Reads server settings from environment variables and checks them all at
 // once, so a person fixing a bad setup sees every problem in one message.
@@ -34,5 +41,10 @@ export function loadConfig(env: Record<string, string | undefined>): Config {
   if (problems.length > 0) {
     throw new Error(`Cannot start the server:\n- ${problems.join('\n- ')}`);
   }
-  return { sessionSecret, port, host };
+  return {
+    sessionSecret,
+    port,
+    host,
+    allowedOrigins: parseOrigins(env.LOVE_ALLOWED_ORIGINS),
+  };
 }

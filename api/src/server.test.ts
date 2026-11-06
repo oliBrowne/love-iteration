@@ -5,8 +5,11 @@ import { loadConfig } from './config.ts';
 import { createApiServer, startServer } from './server.ts';
 import { apiVersion } from './version.ts';
 
-async function withServer(run: (base: string) => Promise<void>): Promise<void> {
-  const server = createApiServer();
+async function withServer(
+  run: (base: string) => Promise<void>,
+  allowedOrigins: string[] = [],
+): Promise<void> {
+  const server = createApiServer(undefined, allowedOrigins);
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
   const { port } = server.address() as AddressInfo;
   try {
@@ -60,4 +63,29 @@ test('startServer binds to localhost by default config', async () => {
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }
+});
+
+test('only a listed origin receives a CORS grant', async () => {
+  await withServer(
+    async (base) => {
+      const listed = await fetch(`${base}/health`, {
+        headers: { origin: 'https://love.example' },
+      });
+      assert.equal(
+        listed.headers.get('access-control-allow-origin'),
+        'https://love.example',
+      );
+      const unlisted = await fetch(`${base}/health`, {
+        headers: { origin: 'https://evil.example' },
+      });
+      assert.equal(unlisted.headers.get('access-control-allow-origin'), null);
+      const preflight = await fetch(`${base}/health`, {
+        method: 'OPTIONS',
+        headers: { origin: 'https://evil.example' },
+      });
+      assert.equal(preflight.status, 204);
+      assert.equal(preflight.headers.get('access-control-allow-origin'), null);
+    },
+    ['https://love.example'],
+  );
 });
