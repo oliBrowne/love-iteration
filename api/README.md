@@ -14,3 +14,14 @@ The server listens on `127.0.0.1` only by default. Set `LOVE_HOST` (for example 
 Browsers may call the API only from origins listed in `LOVE_ALLOWED_ORIGINS` (comma-separated, for example `https://love.example`). With none listed, no origin receives a CORS grant.
 
 Back up a database with `npm run backup -w love-iteration-api -- <database-file> <backup-file>`. The copy is opened and integrity-checked, and an existing backup file is never overwritten.
+
+## Response headers
+
+Every API response, including errors, sets these headers:
+
+- `x-content-type-options`: `nosniff`, so browsers do not guess content types.
+- `cache-control`: `no-store`, so shared data is never cached.
+- `referrer-policy`: `no-referrer`, so no address is leaked to other sites.
+- `content-security-policy`: `default-src 'none'; frame-ancestors 'none'`, so a response can never load content or be framed.
+
+Each response also has an `x-request-id`. Use HTTPS in front of the server outside local development.

@@ -288,7 +288,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L258 Add config validation — Done when missing secret produces a useful startup error.
 - [x] L259 Add localhost dev config — Done when server starts without public binding by default.
 - [x] L260 Add CORS allowlist — Done when unlisted origin receives no CORS grant.
-- [ ] L261 Add secure response headers — Done when API responses set documented headers.
+- [x] L261 Add secure response headers — Done when API responses set documented headers.
 - [ ] L262 Add body size limit — Done when oversized JSON returns 413.
 - [ ] L263 Add API rate-limit hook — Done when repeated requests receive 429 in a test.
 - [ ] L264 Add API test database fixture — Done when tests use isolated temporary databases.

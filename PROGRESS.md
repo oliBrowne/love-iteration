@@ -1559,3 +1559,9 @@
 - Verified: API build and tests (grant for listed origin, none for unlisted/missing, preflight, config parsing), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
 - Next: L261 add documented secure response headers to API responses.
 - Blockers: none
+
+## 2026-11-06 — L261: Add secure response headers
+- Changed: Every API response (errors too) sets nosniff, no-store, no-referrer and a locked-down CSP; they are documented in the API README.
+- Verified: API build and tests (headers on 200 and 404, README documents each header), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
+- Next: L262 add a request body size limit that returns 413 for oversized JSON.
+- Blockers: none

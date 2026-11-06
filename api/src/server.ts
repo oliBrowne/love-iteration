@@ -4,6 +4,7 @@ import type { IncomingMessage, Server, ServerResponse } from 'node:http';
 import { corsHeaders } from './cors.ts';
 import { sendError } from './errors.ts';
 import { formatLogLine } from './requestLog.ts';
+import { securityHeaders } from './securityHeaders.ts';
 import { apiName, apiVersion } from './version.ts';
 
 function sendJson(res: ServerResponse, status: number, body: unknown): void {
@@ -23,6 +24,9 @@ export function handleRequest(
   // A fresh ID per request, set first so every reply (even errors) carries it.
   const requestId = randomUUID();
   res.setHeader('x-request-id', requestId);
+  for (const [name, value] of Object.entries(securityHeaders)) {
+    res.setHeader(name, value);
+  }
   if (log) {
     const started = Date.now();
     res.on('finish', () =>

@@ -89,3 +89,18 @@ test('only a listed origin receives a CORS grant', async () => {
     ['https://love.example'],
   );
 });
+
+test('responses carry the security headers, even errors', async () => {
+  await withServer(async (base) => {
+    for (const path of ['/health', '/nope']) {
+      const res = await fetch(`${base}${path}`);
+      assert.equal(res.headers.get('x-content-type-options'), 'nosniff');
+      assert.equal(res.headers.get('cache-control'), 'no-store');
+      assert.equal(res.headers.get('referrer-policy'), 'no-referrer');
+      assert.match(
+        res.headers.get('content-security-policy') ?? '',
+        /default-src 'none'/,
+      );
+    }
+  });
+});
