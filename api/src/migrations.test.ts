@@ -1,15 +1,11 @@
 import assert from 'node:assert/strict';
-import { test } from 'node:test';
-import { openDb } from './db.ts';
+import { after, test } from 'node:test';
 import type { Db } from './db.ts';
-import { runMigrations } from './migrate.ts';
-import { migrations } from './migrations.ts';
+import { closeTestDbs, createTestDb } from './testDb.ts';
 
-function freshDb(): Db {
-  const db = openDb(':memory:');
-  runMigrations(db, migrations);
-  return db;
-}
+after(closeTestDbs);
+
+const freshDb = createTestDb;
 
 function columns(db: Db, table: string): string[] {
   return db

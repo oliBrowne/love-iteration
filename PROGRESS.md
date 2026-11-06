@@ -1577,3 +1577,9 @@
 - Verified: API build and tests (limiter window logic, 429 over HTTP after two requests), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
 - Next: L264 add an API test database fixture so tests use isolated temporary databases.
 - Blockers: none
+
+## 2026-11-06 — L264: Add API test database fixture
+- Changed: `createTestDb()` gives each test its own migrated temporary database file and `closeTestDbs()` removes them; the migrations tests now use it.
+- Verified: API build and tests (fixture isolation and cleanup, migrations tests on temp files), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
+- Next: L265 add a /health integration test asserting status and version.
+- Blockers: none

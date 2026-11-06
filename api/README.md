@@ -33,3 +33,7 @@ JSON request bodies larger than 1 MiB are refused with `413` and the `too_large`
 ## Rate limiting
 
 `createApiServer` accepts an optional rate limiter (`createRateLimiter` in `src/rateLimit.ts`). A client over its limit gets `429` with the `rate_limited` error code and a `retry-after` header. Counts are kept in memory only.
+
+## Tests use temporary databases
+
+Database tests call `createTestDb()` from `src/testDb.ts`. Each call creates a fresh, migrated database file in its own temporary folder, and `closeTestDbs()` deletes them all. No test shares data with another, and no test touches a real database.
