@@ -1583,3 +1583,9 @@
 - Verified: API build and tests (fixture isolation and cleanup, migrations tests on temp files), root lint, typecheck, build, format:check, vitest, roadmap tests/check.
 - Next: L265 add a /health integration test asserting status and version.
 - Blockers: none
+
+## 2026-11-07 — L265: Confirm /health integration test
+- Changed: The existing /health integration test (status ok and version equal to apiVersion) is now the recorded acceptance check for L265.
+- Verified: API tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L266 add an OpenAPI base document that lists the health route.
+- Blockers: none
