@@ -293,7 +293,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L263 Add API rate-limit hook — Done when repeated requests receive 429 in a test.
 - [x] L264 Add API test database fixture — Done when tests use isolated temporary databases.
 - [x] L265 Add /health integration test — Done when status and version are asserted.
-- [ ] L266 Add API OpenAPI base document — Done when health route appears in schema.
+- [x] L266 Add API OpenAPI base document — Done when health route appears in schema.
 - [ ] L267 Add Dockerfile for API — Done when local image builds successfully.
 - [ ] L268 Add compose development file — Done when API and data volume start locally.
 - [ ] L269 Document self-host setup — Done when README gives start and backup steps.

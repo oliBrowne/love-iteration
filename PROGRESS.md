@@ -1589,3 +1589,9 @@
 - Verified: API tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L266 add an OpenAPI base document that lists the health route.
 - Blockers: none
+
+## 2026-11-07 — L266: Add API OpenAPI base document
+- Changed: api/src/openapi.ts describes the API as OpenAPI 3.0 with the /health route.
+- Verified: API tests (health route in schema), root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L267 add a Dockerfile for the API.
+- Blockers: none
