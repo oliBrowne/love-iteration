@@ -1595,3 +1595,9 @@
 - Verified: API tests (health route in schema), root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L267 add a Dockerfile for the API.
 - Blockers: none
+
+## 2026-11-08 — L267: Add Dockerfile for API
+- Changed: `api/Dockerfile` (plus `.dockerignore`) builds a small image that runs the API as a non-root user on port 8787; README shows build and run.
+- Verified: `docker build` succeeded; the container started and answered `GET /health` with status ok. Root typecheck, lint, build, format:check, vitest, API tests, roadmap tests/check (see commit).
+- Next: L268 add a compose development file so the API and a data volume start locally.
+- Blockers: none (note: in this sandbox, npm inside docker fails on a proxy certificate, so the image has no install step; Docker Hub was rate-limited, base image pulled via mirror.gcr.io and tagged locally).

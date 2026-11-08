@@ -37,3 +37,14 @@ JSON request bodies larger than 1 MiB are refused with `413` and the `too_large`
 ## Tests use temporary databases
 
 Database tests call `createTestDb()` from `src/testDb.ts`. Each call creates a fresh, migrated database file in its own temporary folder, and `closeTestDbs()` deletes them all. No test shares data with another, and no test touches a real database.
+
+## Docker image
+
+Build from the repository root and run with a secret of at least 32 characters:
+
+```sh
+docker build -f api/Dockerfile -t love-iteration-api .
+docker run --rm -p 8787:8787 -e LOVE_SESSION_SECRET=<long random string> love-iteration-api
+```
+
+The image runs as the unprivileged `node` user and listens on `0.0.0.0:8787` inside the container.
