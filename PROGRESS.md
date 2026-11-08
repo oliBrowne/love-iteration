@@ -1643,3 +1643,9 @@
 - Verified: API tests (createAccount throws on duplicate and leaves one row; POST /accounts returns 409 for "SAM" after "Sam"). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L275 add the login endpoint so valid credentials create a session.
 - Blockers: none
+
+## 2026-11-08 — L275: Add login endpoint
+- Changed: `POST /login` checks a handle and password and, when they match, starts a session and returns `{ sessionToken }`; anything else gets a 401 with one shared message. Sessions are held in memory for 7 days behind a small store interface that keeps only a hash of each token.
+- Verified: API tests (store lookup, uniqueness, expiry; checkLogin right/wrong/unknown; POST /login 200 with a token that finds the account, 401 for a wrong password and a malformed body). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L276 make failed logins reveal nothing about whether an account exists (including timing). The token is returned in the body only until L279 moves it into a cookie; L278 will back the store with the database.
+- Blockers: none

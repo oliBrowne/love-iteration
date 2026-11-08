@@ -7,6 +7,7 @@ export type ApiErrorCode =
   | 'rate_limited'
   | 'invalid_request'
   | 'conflict'
+  | 'unauthorized'
   | 'server_error';
 
 export type ApiErrorBody = { code: ApiErrorCode; message: string };
@@ -26,6 +27,10 @@ export const apiErrors: Record<
   },
   invalid_request: { status: 400, message: 'The request is not valid.' },
   conflict: { status: 409, message: 'That is already taken.' },
+  unauthorized: {
+    status: 401,
+    message: 'The handle or password is not right.',
+  },
   server_error: { status: 500, message: 'Something went wrong on the server.' },
 };
 

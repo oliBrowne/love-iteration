@@ -51,6 +51,41 @@ export const openApiDocument = {
         },
       },
     },
+    '/login': {
+      post: {
+        summary: 'Log in and start a session.',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['handle', 'password'],
+                properties: {
+                  handle: { type: 'string' },
+                  password: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          '200': {
+            description: 'A session was started.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  required: ['sessionToken'],
+                  properties: { sessionToken: { type: 'string' } },
+                },
+              },
+            },
+          },
+          '401': { description: 'The handle or password is not right.' },
+        },
+      },
+    },
     '/health': {
       get: {
         summary: 'Report that the server is running.',

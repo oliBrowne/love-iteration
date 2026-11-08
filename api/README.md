@@ -65,3 +65,5 @@ The API is reachable at `http://127.0.0.1:8787/health`. Data lives in the `love-
 `POST /accounts` with JSON `{ "handle", "password", "displayName"? }` creates one account and answers `201` with `{ id, handle, displayName }`. A handle is 3 to 32 letters, numbers, `_` or `-`, starting with a letter; a password is 10 to 200 characters. Only a salted scrypt hash of the password is stored. A handle already in use gets `409` with the `conflict` code. An invalid request gets `400` with `invalid_request` and a plain message that never repeats what was sent.
 
 The database file is set by `LOVE_DB_PATH` (default `love.db`; `/data/love.db` in the Docker image, so it lives on the volume). It is migrated when the server starts.
+
+`POST /login` with `{ "handle", "password" }` answers `200` with `{ sessionToken }` when they match, and `401` with `unauthorized` otherwise (an unknown handle and a wrong password get the same reply). Sessions last 7 days and are kept in memory for now, so they end when the server restarts; only a hash of each token is held.

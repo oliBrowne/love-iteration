@@ -3,6 +3,7 @@ import { createServer } from 'node:http';
 import type { IncomingMessage, Server, ServerResponse } from 'node:http';
 import {
   checkAccountInput,
+  checkLogin,
   createAccount,
   HandleTakenError,
 } from './accounts.ts';
@@ -13,6 +14,7 @@ import { readJsonBody, rejectBadJson } from './jsonBody.ts';
 import type { RateLimiter } from './rateLimit.ts';
 import { formatLogLine } from './requestLog.ts';
 import { securityHeaders } from './securityHeaders.ts';
+import type { SessionStore } from './sessions.ts';
 import { apiName, apiVersion } from './version.ts';
 
 function sendJson(res: ServerResponse, status: number, body: unknown): void {
@@ -30,6 +32,7 @@ export function handleRequest(
   allowedOrigins: readonly string[] = [],
   allowRequest?: RateLimiter,
   db?: Db,
+  sessions?: SessionStore,
 ): void {
   // A fresh ID per request, set first so every reply (even errors) carries it.
   const requestId = randomUUID();
@@ -74,7 +77,38 @@ export function handleRequest(
     });
     return;
   }
+  if (path === '/login' && req.method === 'POST' && db && sessions) {
+    login(req, res, db, sessions).catch(() => {
+      if (!res.headersSent) sendError(res, 'server_error');
+    });
+    return;
+  }
   sendError(res, 'not_found');
+}
+
+// POST /login: valid credentials start a session (200); anything else is 401.
+async function login(
+  req: IncomingMessage,
+  res: ServerResponse,
+  db: Db,
+  sessions: SessionStore,
+): Promise<void> {
+  const body = await readJsonBody(req);
+  if (rejectBadJson(res, body)) return;
+  const input = body.ok ? body.value : null;
+  const { handle, password } =
+    typeof input === 'object' && input !== null
+      ? (input as Record<string, unknown>)
+      : { handle: undefined, password: undefined };
+  const accountId =
+    typeof handle === 'string' && typeof password === 'string'
+      ? await checkLogin(db, handle, password)
+      : undefined;
+  if (accountId === undefined) {
+    sendError(res, 'unauthorized');
+    return;
+  }
+  sendJson(res, 200, { sessionToken: sessions.create(accountId) });
 }
 
 // POST /accounts: validates the request and stores one account (201).
@@ -108,9 +142,10 @@ export function createApiServer(
   allowedOrigins: readonly string[] = [],
   allowRequest?: RateLimiter,
   db?: Db,
+  sessions?: SessionStore,
 ): Server {
   return createServer((req, res) =>
-    handleRequest(req, res, log, allowedOrigins, allowRequest, db),
+    handleRequest(req, res, log, allowedOrigins, allowRequest, db, sessions),
   );
 }
 
@@ -119,8 +154,15 @@ export function startServer(
   config: { host: string; port: number; allowedOrigins?: readonly string[] },
   log?: LogFn,
   db?: Db,
+  sessions?: SessionStore,
 ): Promise<Server> {
-  const server = createApiServer(log, config.allowedOrigins, undefined, db);
+  const server = createApiServer(
+    log,
+    config.allowedOrigins,
+    undefined,
+    db,
+    sessions,
+  );
   return new Promise((resolve, reject) => {
     server.once('error', reject);
     server.listen(config.port, config.host, () => resolve(server));

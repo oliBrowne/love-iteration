@@ -5,6 +5,7 @@ import { after } from 'node:test';
 import { loadConfig } from './config.ts';
 import { createRateLimiter } from './rateLimit.ts';
 import { createApiServer, startServer } from './server.ts';
+import { createMemorySessionStore } from './sessions.ts';
 import { closeTestDbs, createTestDb } from './testDb.ts';
 import { apiVersion } from './version.ts';
 
@@ -184,4 +185,38 @@ test('POST /accounts is not found when the server has no database', async () => 
     const res = await postJson(`${base}/accounts`, {});
     assert.equal(res.status, 404);
   });
+});
+
+test('POST /login starts a session for valid credentials only', async () => {
+  const db = createTestDb();
+  const sessions = createMemorySessionStore();
+  const server = createApiServer(undefined, [], undefined, db, sessions);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    const made = await postJson(`${base}/accounts`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const { id } = (await made.json()) as { id: string };
+
+    const ok = await postJson(`${base}/login`, {
+      handle: 'Sam',
+      password: 'a long enough secret',
+    });
+    assert.equal(ok.status, 200);
+    const { sessionToken } = (await ok.json()) as { sessionToken: string };
+    assert.equal(sessions.find(sessionToken), id);
+
+    const wrong = await postJson(`${base}/login`, {
+      handle: 'sam',
+      password: 'not the secret!',
+    });
+    assert.equal(wrong.status, 401);
+    const missing = await postJson(`${base}/login`, { handle: 5 });
+    assert.equal(missing.status, 401);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
 });

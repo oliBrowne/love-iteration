@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import type { Db } from './db.ts';
 import { validateHandle } from './handle.ts';
-import { hashPassword } from './password.ts';
+import { hashPassword, verifyPassword } from './password.ts';
 
 // Thrown when another account already uses the handle.
 export class HandleTakenError extends Error {
@@ -78,4 +78,19 @@ export async function createAccount(
     throw error;
   }
   return { id, handle: details.handle, displayName: details.displayName };
+}
+
+// Returns the account ID when the handle and password match, otherwise
+// undefined. A missing account and a wrong password look the same to callers.
+export async function checkLogin(
+  db: Db,
+  handle: string,
+  password: string,
+): Promise<string | undefined> {
+  const row = db
+    .prepare('SELECT id, password_hash FROM accounts WHERE handle = ?')
+    .get(handle.trim().toLowerCase());
+  if (!row) return undefined;
+  const ok = await verifyPassword(password, String(row.password_hash));
+  return ok ? String(row.id) : undefined;
 }

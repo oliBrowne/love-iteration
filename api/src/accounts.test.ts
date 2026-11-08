@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { after, test } from 'node:test';
 import {
   checkAccountInput,
+  checkLogin,
   createAccount,
   HandleTakenError,
 } from './accounts.ts';
@@ -59,4 +60,19 @@ test('a second account with the same handle is refused and stores nothing', asyn
   await createAccount(db, details);
   await assert.rejects(createAccount(db, details), HandleTakenError);
   assert.equal(db.prepare('SELECT * FROM accounts').all().length, 1);
+});
+
+test('checkLogin accepts the right password in any handle case only', async () => {
+  const db = createTestDb();
+  const made = await createAccount(db, {
+    handle: 'sam',
+    password: 'a long enough secret',
+    displayName: 'Sam',
+  });
+  assert.equal(await checkLogin(db, ' SAM ', 'a long enough secret'), made.id);
+  assert.equal(await checkLogin(db, 'sam', 'the wrong secret!'), undefined);
+  assert.equal(
+    await checkLogin(db, 'nobody', 'a long enough secret'),
+    undefined,
+  );
 });
