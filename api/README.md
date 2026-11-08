@@ -48,3 +48,14 @@ docker run --rm -p 8787:8787 -e LOVE_SESSION_SECRET=<long random string> love-it
 ```
 
 The image runs as the unprivileged `node` user and listens on `0.0.0.0:8787` inside the container.
+
+## Local development with Compose
+
+From the repository root:
+
+```sh
+export LOVE_SESSION_SECRET=<long random string>
+docker compose up --build
+```
+
+The API is reachable at `http://127.0.0.1:8787/health`. Data lives in the `love-data` volume mounted at `/data`, which survives `docker compose down` (add `-v` to delete it). Compose refuses to start without `LOVE_SESSION_SECRET`.

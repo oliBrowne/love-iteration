@@ -9,6 +9,9 @@ COPY api/package.json ./
 COPY api/src ./src
 # Tests are not needed in the image.
 RUN find src -name '*.test.ts' -delete
+# A folder for the database; a mounted volume copies its owner.
+RUN mkdir /data && chown node:node /data
+VOLUME /data
 USER node
 EXPOSE 8787
 CMD ["node", "src/main.ts"]

@@ -1601,3 +1601,9 @@
 - Verified: `docker build` succeeded; the container started and answered `GET /health` with status ok. Root typecheck, lint, build, format:check, vitest, API tests, roadmap tests/check (see commit).
 - Next: L268 add a compose development file so the API and a data volume start locally.
 - Blockers: none (note: in this sandbox, npm inside docker fails on a proxy certificate, so the image has no install step; Docker Hub was rate-limited, base image pulled via mirror.gcr.io and tagged locally).
+
+## 2026-11-08 — L268: Add compose development file
+- Changed: `compose.yaml` starts the API on 127.0.0.1:8787 with a persistent `love-data` volume at `/data`; the image now has a writable `/data` folder. README documents it.
+- Verified: `docker compose up --build` started the API, `/health` answered ok, `/data` was writable by the node user, the volume remained after `down`; compose refuses to start without the secret. Root typecheck, lint, build, format:check, vitest, API tests, roadmap tests/check.
+- Next: L269 document self-host setup with start and backup steps.
+- Blockers: none

@@ -295,7 +295,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L265 Add /health integration test — Done when status and version are asserted.
 - [x] L266 Add API OpenAPI base document — Done when health route appears in schema.
 - [x] L267 Add Dockerfile for API — Done when local image builds successfully.
-- [ ] L268 Add compose development file — Done when API and data volume start locally.
+- [x] L268 Add compose development file — Done when API and data volume start locally.
 - [ ] L269 Document self-host setup — Done when README gives start and backup steps.
 - [ ] L270 Add API CI job — Done when migrations and tests run on pull requests.
 

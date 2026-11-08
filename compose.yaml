@@ -1,0 +1,18 @@
+# Local development: docker compose up --build
+# Set LOVE_SESSION_SECRET (32+ characters) in your shell or a git-ignored .env file.
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    ports:
+      - '127.0.0.1:8787:8787'
+    environment:
+      LOVE_SESSION_SECRET: ${LOVE_SESSION_SECRET:?Set LOVE_SESSION_SECRET to at least 32 characters}
+      LOVE_ALLOWED_ORIGINS: ${LOVE_ALLOWED_ORIGINS:-http://localhost:5173}
+    volumes:
+      - love-data:/data
+    restart: unless-stopped
+
+volumes:
+  love-data:
