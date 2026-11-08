@@ -6,6 +6,7 @@ export type ApiErrorCode =
   | 'too_large'
   | 'rate_limited'
   | 'invalid_request'
+  | 'conflict'
   | 'server_error';
 
 export type ApiErrorBody = { code: ApiErrorCode; message: string };
@@ -24,6 +25,7 @@ export const apiErrors: Record<
     message: 'Too many requests. Please wait a moment.',
   },
   invalid_request: { status: 400, message: 'The request is not valid.' },
+  conflict: { status: 409, message: 'That is already taken.' },
   server_error: { status: 500, message: 'Something went wrong on the server.' },
 };
 

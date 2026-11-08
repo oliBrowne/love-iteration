@@ -1637,3 +1637,9 @@
 - Verified: API tests (input checks, one stored row, hash not password, 400s store nothing, 404 without a database, migration handle uniqueness, config path); in Docker, a POST created an account on the volume and it survived a restart. API typecheck, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L274 reject a duplicate handle with a conflict response (today a duplicate returns a generic 500).
 - Blockers: none
+
+## 2026-11-08 — L274: Reject duplicate handle
+- Changed: registering a handle that is already used (any letter case) now returns 409 `conflict` with a plain message and stores nothing, instead of a generic server error. The database's unique index decides, so simultaneous requests cannot both succeed.
+- Verified: API tests (createAccount throws on duplicate and leaves one row; POST /accounts returns 409 for "SAM" after "Sam"). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L275 add the login endpoint so valid credentials create a session.
+- Blockers: none

@@ -3,6 +3,13 @@ import type { Db } from './db.ts';
 import { validateHandle } from './handle.ts';
 import { hashPassword } from './password.ts';
 
+// Thrown when another account already uses the handle.
+export class HandleTakenError extends Error {
+  constructor() {
+    super('That handle is already taken.');
+  }
+}
+
 export type NewAccount = { handle: string; displayName: string };
 export type AccountInput = Record<string, unknown>;
 export type AccountCheck =
@@ -47,7 +54,7 @@ export function checkAccountInput(input: AccountInput): AccountCheck {
   return { ok: true, handle: handle.handle, password, displayName };
 }
 
-// Stores one account. Only the password hash is kept, never the password.
+// Stores one account, or throws HandleTakenError. Only the password hash is kept, never the password.
 export async function createAccount(
   db: Db,
   details: { handle: string; password: string; displayName: string },
@@ -55,9 +62,20 @@ export async function createAccount(
   const id = randomUUID();
   const now = new Date().toISOString();
   const hash = await hashPassword(details.password);
-  db.prepare(
-    `INSERT INTO accounts (id, display_name, password_hash, created_at, updated_at, handle)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-  ).run(id, details.displayName, hash, now, now, details.handle);
+  try {
+    db.prepare(
+      `INSERT INTO accounts (id, display_name, password_hash, created_at, updated_at, handle)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+    ).run(id, details.displayName, hash, now, now, details.handle);
+  } catch (error) {
+    // The unique index decides, so two requests at once cannot both win.
+    if (
+      error instanceof Error &&
+      /UNIQUE constraint failed: accounts\.handle/.test(error.message)
+    ) {
+      throw new HandleTakenError();
+    }
+    throw error;
+  }
   return { id, handle: details.handle, displayName: details.displayName };
 }

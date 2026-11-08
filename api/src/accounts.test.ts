@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import { after, test } from 'node:test';
-import { checkAccountInput, createAccount } from './accounts.ts';
+import {
+  checkAccountInput,
+  createAccount,
+  HandleTakenError,
+} from './accounts.ts';
 import { verifyPassword } from './password.ts';
 import { closeTestDbs, createTestDb } from './testDb.ts';
 
@@ -43,4 +47,16 @@ test('createAccount stores one account with a hash, not the password', async () 
   const hash = String(rows[0]?.password_hash);
   assert.notEqual(hash, 'a long enough secret');
   assert.equal(await verifyPassword('a long enough secret', hash), true);
+});
+
+test('a second account with the same handle is refused and stores nothing', async () => {
+  const db = createTestDb();
+  const details = {
+    handle: 'sam',
+    password: 'a long enough secret',
+    displayName: 'Sam',
+  };
+  await createAccount(db, details);
+  await assert.rejects(createAccount(db, details), HandleTakenError);
+  assert.equal(db.prepare('SELECT * FROM accounts').all().length, 1);
 });

@@ -1,7 +1,11 @@
 import { randomUUID } from 'node:crypto';
 import { createServer } from 'node:http';
 import type { IncomingMessage, Server, ServerResponse } from 'node:http';
-import { checkAccountInput, createAccount } from './accounts.ts';
+import {
+  checkAccountInput,
+  createAccount,
+  HandleTakenError,
+} from './accounts.ts';
 import { corsHeaders } from './cors.ts';
 import type { Db } from './db.ts';
 import { sendError } from './errors.ts';
@@ -91,8 +95,12 @@ async function registerAccount(
     sendError(res, 'invalid_request', check.reason);
     return;
   }
-  const account = await createAccount(db, check);
-  sendJson(res, 201, account);
+  try {
+    sendJson(res, 201, await createAccount(db, check));
+  } catch (error) {
+    if (!(error instanceof HandleTakenError)) throw error;
+    sendError(res, 'conflict', 'That handle is already taken. Choose another.');
+  }
 }
 
 export function createApiServer(

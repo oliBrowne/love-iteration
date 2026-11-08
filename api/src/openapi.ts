@@ -47,6 +47,7 @@ export const openApiDocument = {
             },
           },
           '400': { description: 'The handle, password or name is not valid.' },
+          '409': { description: 'That handle is already taken.' },
         },
       },
     },

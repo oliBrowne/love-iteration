@@ -165,6 +165,12 @@ test('POST /accounts stores one account and never returns the hash', async () =>
       ((await bad.json()) as { code: string }).code,
       'invalid_request',
     );
+    const again = await postJson(`${base}/accounts`, {
+      handle: 'SAM',
+      password: 'another long secret',
+    });
+    assert.equal(again.status, 409);
+    assert.equal(((await again.json()) as { code: string }).code, 'conflict');
     const notObject = await postJson(`${base}/accounts`, [1]);
     assert.equal(notObject.status, 400);
     assert.equal(db.prepare('SELECT * FROM accounts').all().length, 1);

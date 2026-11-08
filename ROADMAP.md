@@ -304,7 +304,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L271 Validate account handle — Done when disallowed or empty handle is rejected.
 - [x] L272 Add password hash helper — Done when round trip verifies and wrong secret fails.
 - [x] L273 Add account creation endpoint — Done when valid request stores one account.
-- [ ] L274 Reject duplicate handle — Done when second registration returns conflict.
+- [x] L274 Reject duplicate handle — Done when second registration returns conflict.
 - [ ] L275 Add login endpoint — Done when valid credentials create a session.
 - [ ] L276 Add failed-login response — Done when invalid credentials reveal no account existence.
 - [ ] L277 Add login throttling — Done when repeated failures are limited.
