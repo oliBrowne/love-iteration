@@ -9,6 +9,7 @@ test('a valid environment gives a config with the default port', () => {
     sessionSecret: secret,
     port: 8787,
     host: '127.0.0.1',
+    databasePath: 'love.db',
     allowedOrigins: [],
   });
 });
@@ -54,4 +55,16 @@ test('allowed origins come from a comma-separated list', () => {
     'https://a.example',
     'https://b.example',
   ]);
+});
+
+test('the database path defaults to love.db and can be set', () => {
+  assert.equal(
+    loadConfig({ LOVE_SESSION_SECRET: secret }).databasePath,
+    'love.db',
+  );
+  assert.equal(
+    loadConfig({ LOVE_SESSION_SECRET: secret, LOVE_DB_PATH: '/data/love.db' })
+      .databasePath,
+    '/data/love.db',
+  );
 });

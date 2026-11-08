@@ -1631,3 +1631,9 @@
 - Verified: API tests (round trip, wrong/empty password, different hash each time, no plain text stored, malformed stored values). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L273 add the account creation endpoint so a valid request stores one account.
 - Blockers: none
+
+## 2026-11-08 — L273: Add account creation endpoint
+- Changed: `POST /accounts` validates a handle, password (10–200 chars) and optional display name, stores one account with a salted scrypt hash, and answers 201 without the hash. The server now opens and migrates a SQLite file at `LOVE_DB_PATH` (default `love.db`; `/data/love.db` in the Docker image). Migration 8 makes email optional and adds a unique handle (no accounts could exist before). Added `invalid_request` and `server_error` error codes; OpenAPI and API README updated.
+- Verified: API tests (input checks, one stored row, hash not password, 400s store nothing, 404 without a database, migration handle uniqueness, config path); in Docker, a POST created an account on the volume and it survived a restart. API typecheck, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L274 reject a duplicate handle with a conflict response (today a duplicate returns a generic 500).
+- Blockers: none

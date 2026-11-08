@@ -59,3 +59,9 @@ docker compose up --build
 ```
 
 The API is reachable at `http://127.0.0.1:8787/health`. Data lives in the `love-data` volume mounted at `/data`, which survives `docker compose down` (add `-v` to delete it). Compose refuses to start without `LOVE_SESSION_SECRET`.
+
+## Accounts
+
+`POST /accounts` with JSON `{ "handle", "password", "displayName"? }` creates one account and answers `201` with `{ id, handle, displayName }`. A handle is 3 to 32 letters, numbers, `_` or `-`, starting with a letter; a password is 10 to 200 characters. Only a salted scrypt hash of the password is stored. An invalid request gets `400` with `invalid_request` and a plain message that never repeats what was sent.
+
+The database file is set by `LOVE_DB_PATH` (default `love.db`; `/data/love.db` in the Docker image, so it lives on the volume). It is migrated when the server starts.

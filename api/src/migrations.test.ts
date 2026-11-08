@@ -23,8 +23,11 @@ test('accounts table has the expected columns and unique email', () => {
     'password_hash',
     'created_at',
     'updated_at',
+    'handle',
   ]);
-  const insert = db.prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)');
+  const insert = db.prepare(
+    'INSERT INTO accounts (id, email, display_name, password_hash, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
+  );
   insert.run('a1', 'demo@example.test', 'Demo', 'hash', 'now', 'now');
   assert.throws(() =>
     insert.run('a2', 'demo@example.test', 'Other', 'hash', 'now', 'now'),
@@ -57,14 +60,9 @@ test('memberships link accounts to spaces, once each, with a valid role', () => 
     'role',
     'joined_at',
   ]);
-  db.prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)').run(
-    'a1',
-    'demo@example.test',
-    'Demo',
-    'hash',
-    'now',
-    'now',
-  );
+  db.prepare(
+    'INSERT INTO accounts (id, email, display_name, password_hash, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
+  ).run('a1', 'demo@example.test', 'Demo', 'hash', 'now', 'now');
   db.prepare('INSERT INTO spaces VALUES (?, ?, ?, ?, ?)').run(
     's1',
     'Demo space',
@@ -94,14 +92,9 @@ test('invites store only a token hash and can be revoked or accepted', () => {
     'accepted_at',
     'revoked_at',
   ]);
-  db.prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)').run(
-    'a1',
-    'demo@example.test',
-    'Demo',
-    'hash',
-    'now',
-    'now',
-  );
+  db.prepare(
+    'INSERT INTO accounts (id, email, display_name, password_hash, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
+  ).run('a1', 'demo@example.test', 'Demo', 'hash', 'now', 'now');
   db.prepare('INSERT INTO spaces VALUES (?, ?, ?, ?, ?)').run(
     's1',
     'Demo space',
@@ -131,14 +124,9 @@ test('records belong to a space and start at revision 1', () => {
     'created_at',
     'updated_at',
   ]);
-  db.prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)').run(
-    'a1',
-    'demo@example.test',
-    'Demo',
-    'hash',
-    'now',
-    'now',
-  );
+  db.prepare(
+    'INSERT INTO accounts (id, email, display_name, password_hash, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
+  ).run('a1', 'demo@example.test', 'Demo', 'hash', 'now', 'now');
   db.prepare('INSERT INTO spaces VALUES (?, ?, ?, ?, ?)').run(
     's1',
     'Demo space',
@@ -167,14 +155,9 @@ test('tombstones remember deleted records per space', () => {
     'deleted_by',
     'deleted_at',
   ]);
-  db.prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)').run(
-    'a1',
-    'demo@example.test',
-    'Demo',
-    'hash',
-    'now',
-    'now',
-  );
+  db.prepare(
+    'INSERT INTO accounts (id, email, display_name, password_hash, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
+  ).run('a1', 'demo@example.test', 'Demo', 'hash', 'now', 'now');
   db.prepare('INSERT INTO spaces VALUES (?, ?, ?, ?, ?)').run(
     's1',
     'Demo space',
@@ -199,14 +182,9 @@ test('sync cursors keep one position per person per space', () => {
     'cursor',
     'updated_at',
   ]);
-  db.prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)').run(
-    'a1',
-    'demo@example.test',
-    'Demo',
-    'hash',
-    'now',
-    'now',
-  );
+  db.prepare(
+    'INSERT INTO accounts (id, email, display_name, password_hash, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
+  ).run('a1', 'demo@example.test', 'Demo', 'hash', 'now', 'now');
   db.prepare('INSERT INTO spaces VALUES (?, ?, ?, ?, ?)').run(
     's1',
     'Demo space',
@@ -221,4 +199,14 @@ test('sync cursors keep one position per person per space', () => {
   db.prepare('DELETE FROM spaces WHERE id = ?').run('s1');
   assert.equal(db.prepare('SELECT * FROM sync_cursors').all().length, 0);
   db.close();
+});
+
+test('handle is unique and email is optional for new accounts', () => {
+  const db = freshDb();
+  const insert = db.prepare(
+    'INSERT INTO accounts (id, display_name, password_hash, created_at, updated_at, handle) VALUES (?, ?, ?, ?, ?, ?)',
+  );
+  insert.run('a1', 'Demo', 'hash', 'now', 'now', 'demo');
+  insert.run('a2', 'Other', 'hash', 'now', 'now', 'other');
+  assert.throws(() => insert.run('a3', 'Again', 'hash', 'now', 'now', 'demo'));
 });

@@ -1,7 +1,12 @@
 import type { ServerResponse } from 'node:http';
 
 export type ApiErrorCode =
-  'not_found' | 'bad_json' | 'too_large' | 'rate_limited';
+  | 'not_found'
+  | 'bad_json'
+  | 'too_large'
+  | 'rate_limited'
+  | 'invalid_request'
+  | 'server_error';
 
 export type ApiErrorBody = { code: ApiErrorCode; message: string };
 
@@ -18,15 +23,23 @@ export const apiErrors: Record<
     status: 429,
     message: 'Too many requests. Please wait a moment.',
   },
+  invalid_request: { status: 400, message: 'The request is not valid.' },
+  server_error: { status: 500, message: 'Something went wrong on the server.' },
 };
 
-export function errorBody(code: ApiErrorCode): ApiErrorBody {
-  return { code, message: apiErrors[code].message };
+export function errorBody(code: ApiErrorCode, message?: string): ApiErrorBody {
+  return { code, message: message ?? apiErrors[code].message };
 }
 
-export function sendError(res: ServerResponse, code: ApiErrorCode): void {
+// A route may pass its own plain message, such as which field to fix. It must
+// never repeat submitted text.
+export function sendError(
+  res: ServerResponse,
+  code: ApiErrorCode,
+  message?: string,
+): void {
   res.writeHead(apiErrors[code].status, {
     'content-type': 'application/json; charset=utf-8',
   });
-  res.end(JSON.stringify(errorBody(code)));
+  res.end(JSON.stringify(errorBody(code, message)));
 }

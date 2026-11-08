@@ -9,6 +9,47 @@ export const openApiDocument = {
     description: 'Self-hostable server for opt-in sharing.',
   },
   paths: {
+    '/accounts': {
+      post: {
+        summary: 'Create an account.',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['handle', 'password'],
+                properties: {
+                  handle: { type: 'string', minLength: 3, maxLength: 32 },
+                  password: { type: 'string', minLength: 10, maxLength: 200 },
+                  displayName: { type: 'string', minLength: 1, maxLength: 60 },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          '201': {
+            description:
+              'The account was created. The password is never returned.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  required: ['id', 'handle', 'displayName'],
+                  properties: {
+                    id: { type: 'string' },
+                    handle: { type: 'string' },
+                    displayName: { type: 'string' },
+                  },
+                },
+              },
+            },
+          },
+          '400': { description: 'The handle, password or name is not valid.' },
+        },
+      },
+    },
     '/health': {
       get: {
         summary: 'Report that the server is running.',

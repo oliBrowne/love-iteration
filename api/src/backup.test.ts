@@ -13,14 +13,9 @@ test('backup copies the database and the copy passes the integrity check', () =>
   const db = openDb(join(dir, 'live.db'));
   try {
     runMigrations(db, migrations);
-    db.prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)').run(
-      'a1',
-      'demo@example.test',
-      'Demo',
-      'hash',
-      'now',
-      'now',
-    );
+    db.prepare(
+      'INSERT INTO accounts (id, email, display_name, password_hash, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
+    ).run('a1', 'demo@example.test', 'Demo', 'hash', 'now', 'now');
     const target = join(dir, 'copy.db');
     backupDb(db, target);
 

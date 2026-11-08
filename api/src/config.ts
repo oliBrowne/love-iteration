@@ -4,6 +4,7 @@ export type Config = {
   sessionSecret: string;
   port: number;
   host: string;
+  databasePath: string;
   allowedOrigins: string[];
 };
 
@@ -38,6 +39,9 @@ export function loadConfig(env: Record<string, string | undefined>): Config {
   // (for example 0.0.0.0 inside a container).
   const host = env.LOVE_HOST?.trim() || '127.0.0.1';
 
+  // Where the SQLite database file lives (a volume path inside a container).
+  const databasePath = env.LOVE_DB_PATH?.trim() || 'love.db';
+
   if (problems.length > 0) {
     throw new Error(`Cannot start the server:\n- ${problems.join('\n- ')}`);
   }
@@ -45,6 +49,7 @@ export function loadConfig(env: Record<string, string | undefined>): Config {
     sessionSecret,
     port,
     host,
+    databasePath,
     allowedOrigins: parseOrigins(env.LOVE_ALLOWED_ORIGINS),
   };
 }

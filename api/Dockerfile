@@ -3,6 +3,7 @@
 # (type stripping), so there is nothing to install or compile.
 FROM node:22-slim
 ENV NODE_ENV=production \
+    LOVE_DB_PATH=/data/love.db \
     LOVE_HOST=0.0.0.0
 WORKDIR /app
 COPY api/package.json ./

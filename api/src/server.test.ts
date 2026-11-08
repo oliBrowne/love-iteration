@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
 import type { AddressInfo } from 'node:net';
 import { test } from 'node:test';
+import { after } from 'node:test';
 import { loadConfig } from './config.ts';
 import { createRateLimiter } from './rateLimit.ts';
 import { createApiServer, startServer } from './server.ts';
+import { closeTestDbs, createTestDb } from './testDb.ts';
 import { apiVersion } from './version.ts';
 
 async function withServer(
@@ -125,4 +127,55 @@ test('repeated requests receive 429 once the limit is passed', async () => {
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }
+});
+
+after(closeTestDbs);
+
+async function postJson(url: string, body: unknown): Promise<Response> {
+  return fetch(url, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+}
+
+test('POST /accounts stores one account and never returns the hash', async () => {
+  const db = createTestDb();
+  const server = createApiServer(undefined, [], undefined, db);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    const res = await postJson(`${base}/accounts`, {
+      handle: 'Sam',
+      password: 'a long enough secret',
+    });
+    assert.equal(res.status, 201);
+    const body = (await res.json()) as Record<string, unknown>;
+    assert.equal(body.handle, 'sam');
+    assert.equal('password_hash' in body || 'password' in body, false);
+    assert.equal(db.prepare('SELECT * FROM accounts').all().length, 1);
+
+    const bad = await postJson(`${base}/accounts`, {
+      handle: '',
+      password: 'x',
+    });
+    assert.equal(bad.status, 400);
+    assert.equal(
+      ((await bad.json()) as { code: string }).code,
+      'invalid_request',
+    );
+    const notObject = await postJson(`${base}/accounts`, [1]);
+    assert.equal(notObject.status, 400);
+    assert.equal(db.prepare('SELECT * FROM accounts').all().length, 1);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
+
+test('POST /accounts is not found when the server has no database', async () => {
+  await withServer(async (base) => {
+    const res = await postJson(`${base}/accounts`, {});
+    assert.equal(res.status, 404);
+  });
 });

@@ -11,7 +11,9 @@ test('each test database is migrated, isolated, and removed afterwards', () => {
   assert.ok(files.every((file) => file.endsWith('test.db')));
 
   first
-    .prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)')
+    .prepare(
+      'INSERT INTO accounts (id, email, display_name, password_hash, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
+    )
     .run('a1', 'demo@example.test', 'Demo', 'hash', 'now', 'now');
   const count = (db: typeof first) =>
     db.prepare('SELECT COUNT(*) AS n FROM accounts').get()!.n;

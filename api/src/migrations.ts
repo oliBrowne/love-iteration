@@ -90,4 +90,24 @@ export const migrations: Migration[] = [
         PRIMARY KEY (account_id, space_id)
       )`,
   },
+  {
+    version: 8,
+    // People sign up with a handle, not an email, so email becomes optional and
+    // handle (unique) is added. SQLite cannot relax a column in place, so the
+    // table is rebuilt; no account could have been created before this step.
+    sql: `
+      CREATE TABLE accounts_new (
+        id TEXT PRIMARY KEY,
+        email TEXT UNIQUE,
+        display_name TEXT NOT NULL,
+        password_hash TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        handle TEXT UNIQUE
+      );
+      INSERT INTO accounts_new (id, email, display_name, password_hash, created_at, updated_at)
+        SELECT id, email, display_name, password_hash, created_at, updated_at FROM accounts;
+      DROP TABLE accounts;
+      ALTER TABLE accounts_new RENAME TO accounts`,
+  },
 ];
