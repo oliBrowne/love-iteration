@@ -1613,3 +1613,9 @@
 - Verified: the backup command was run on a temporary database and produced a copy; start steps match the compose file tested in L268. Root typecheck, lint, build, format:check, vitest, API tests, roadmap tests/check.
 - Next: L270 add an API CI job that runs migrations and tests on pull requests.
 - Blockers: none
+
+## 2026-11-08 — L270: Add API CI job
+- Changed: `.github/workflows/checks.yml` has an `api` job (Node 22) that typechecks the API and runs its tests, including the migrations tests, on pull requests and pushes to main.
+- Verified: workflow YAML parses and triggers on pull_request; the exact job commands (API typecheck and tests) pass locally. The job itself will first run on GitHub. Root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L271 validate account handles so empty or disallowed ones are rejected.
+- Blockers: none

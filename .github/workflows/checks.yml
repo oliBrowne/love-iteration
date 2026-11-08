@@ -23,3 +23,16 @@ jobs:
       - run: npm test
       - run: node --test scripts/roadmap.test.mjs
       - run: npm run build
+
+  api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck -w love-iteration-api
+      # The API tests include the migrations tests (fresh and repeated runs).
+      - run: npm test -w love-iteration-api

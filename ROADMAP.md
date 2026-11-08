@@ -297,7 +297,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L267 Add Dockerfile for API — Done when local image builds successfully.
 - [x] L268 Add compose development file — Done when API and data volume start locally.
 - [x] L269 Document self-host setup — Done when README gives start and backup steps.
-- [ ] L270 Add API CI job — Done when migrations and tests run on pull requests.
+- [x] L270 Add API CI job — Done when migrations and tests run on pull requests.
 
 ## 10 Accounts and consensual sharing
 
