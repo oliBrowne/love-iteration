@@ -301,7 +301,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 
 ## 10 Accounts and consensual sharing
 
-- [ ] L271 Validate account handle — Done when disallowed or empty handle is rejected.
+- [x] L271 Validate account handle — Done when disallowed or empty handle is rejected.
 - [ ] L272 Add password hash helper — Done when round trip verifies and wrong secret fails.
 - [ ] L273 Add account creation endpoint — Done when valid request stores one account.
 - [ ] L274 Reject duplicate handle — Done when second registration returns conflict.

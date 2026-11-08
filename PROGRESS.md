@@ -1619,3 +1619,9 @@
 - Verified: workflow YAML parses and triggers on pull_request; the exact job commands (API typecheck and tests) pass locally. The job itself will first run on GitHub. Root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L271 validate account handles so empty or disallowed ones are rejected.
 - Blockers: none
+
+## 2026-11-08 — L271: Validate account handle
+- Changed: `validateHandle` in the API trims and lowercases a handle, then rejects empty, too short/long, disallowed characters, and reserved names, with a plain reason.
+- Verified: new API tests cover accepted, empty, length, characters, and reserved cases. API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L272 add a password hash helper whose round trip verifies and wrong secret fails.
+- Blockers: none
