@@ -94,6 +94,28 @@ Open the local URL printed by the development server. Inspect `package.json` for
 
 Keep personal entries out of the public repository, fixtures, logs, and screenshots. Use explicit demo content for development. Browser storage belongs to that browser and device; describe it accurately and provide export and recovery before depending on it for irreplaceable writing. Introduce partner sharing only after the app has clear export, deletion, and sharing controls.
 
+## Self-hosting the optional API
+
+The app works fully offline. The API in `api/` is only for opt-in sharing later, and nothing talks to it unless sharing is turned on. To run it yourself you need Docker.
+
+Start it (from the repository root):
+
+```sh
+export LOVE_SESSION_SECRET=<a long random string, 32+ characters>
+docker compose up --build -d
+curl http://127.0.0.1:8787/health
+```
+
+Stop it with `docker compose down`. Your data stays in the `love-data` volume (mounted at `/data`) until you remove it with `docker compose down -v`. Keep the secret out of git; use your shell or a git-ignored `.env` file. Put HTTPS in front of it before exposing it beyond your own computer, and list allowed web origins in `LOVE_ALLOWED_ORIGINS`.
+
+Back up a database file (the copy is integrity-checked and never overwrites an existing file):
+
+```sh
+npm run backup -w love-iteration-api -- <database-file> <backup-file>
+```
+
+More detail is in [api/README.md](api/README.md).
+
 ## Prompt for the existing daily Claude run
 
 Copy this into the automation that already runs Claude in this repository:

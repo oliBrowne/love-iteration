@@ -1607,3 +1607,9 @@
 - Verified: `docker compose up --build` started the API, `/health` answered ok, `/data` was writable by the node user, the volume remained after `down`; compose refuses to start without the secret. Root typecheck, lint, build, format:check, vitest, API tests, roadmap tests/check.
 - Next: L269 document self-host setup with start and backup steps.
 - Blockers: none
+
+## 2026-11-08 — L269: Document self-host setup
+- Changed: README has a "Self-hosting the optional API" section with start, stop, data, secret, and backup steps.
+- Verified: the backup command was run on a temporary database and produced a copy; start steps match the compose file tested in L268. Root typecheck, lint, build, format:check, vitest, API tests, roadmap tests/check.
+- Next: L270 add an API CI job that runs migrations and tests on pull requests.
+- Blockers: none
