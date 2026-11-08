@@ -1625,3 +1625,9 @@
 - Verified: new API tests cover accepted, empty, length, characters, and reserved cases. API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L272 add a password hash helper whose round trip verifies and wrong secret fails.
 - Blockers: none
+
+## 2026-11-08 — L272: Add password hash helper
+- Changed: `hashPassword` and `verifyPassword` in the API use Node's built-in scrypt with a random salt per hash and a constant-time comparison; settings are stored inside each hash.
+- Verified: API tests (round trip, wrong/empty password, different hash each time, no plain text stored, malformed stored values). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L273 add the account creation endpoint so a valid request stores one account.
+- Blockers: none
