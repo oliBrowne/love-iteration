@@ -117,9 +117,11 @@ export function handleRequest(
       sendError(res, 'unauthorized', 'Please log in.');
       return;
     }
-    updatePassword(req, res, db, accountId).catch(() => {
-      if (!res.headersSent) sendError(res, 'server_error');
-    });
+    updatePassword(req, res, db, sessions, accountId, secureCookies).catch(
+      () => {
+        if (!res.headersSent) sendError(res, 'server_error');
+      },
+    );
     return;
   }
   // Everything else that changes data needs a live session, so a new write
@@ -141,12 +143,15 @@ function sessionAccount(
   return token ? sessions.find(token) : undefined;
 }
 
-// POST /password: the old password is required; the new one replaces it (200).
+// POST /password: the old password is required; the new one replaces it (200)
+// and all earlier sessions end.
 async function updatePassword(
   req: IncomingMessage,
   res: ServerResponse,
   db: Db,
+  sessions: SessionStore,
   accountId: string,
+  secureCookies: boolean,
 ): Promise<void> {
   const body = await readJsonBody(req);
   if (rejectBadJson(res, body)) return;
@@ -161,6 +166,13 @@ async function updatePassword(
   } else if (result === 'invalid_new') {
     sendError(res, 'invalid_request', passwordRule);
   } else {
+    // Every old session ends, including any a thief may hold. This device
+    // gets a fresh one so the person stays logged in.
+    sessions.revokeAll(accountId);
+    res.setHeader(
+      'set-cookie',
+      sessionCookie(sessions.create(accountId), secureCookies),
+    );
     sendJson(res, 200, { ok: true });
   }
 }

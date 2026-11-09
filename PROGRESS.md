@@ -1697,3 +1697,9 @@
 - Verified: account tests (wrong/missing old, bad new, success: old password stops working, new one works) and a server test (401 without a session; 400 cases; 200 then login with old fails and new succeeds). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L284 revoke other sessions when the password changes.
 - Blockers: none
+
+## 2026-11-09 — L284: Add password-change session revocation
+- Changed: changing the password now ends every earlier session for the account (`revokeAll`) and gives the changing device a fresh session cookie, so it stays logged in while any other device or stolen cookie stops working.
+- Verified: store test for revokeAll; server test (old cookie gets 401 from /me after the change, the new cookie gets 200). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L285 add the account deletion flow (records and sessions removed after confirmation).
+- Blockers: none

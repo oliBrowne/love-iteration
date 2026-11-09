@@ -33,3 +33,14 @@ test('a revoked session stops working; revoking an unknown token is fine', () =>
   assert.equal(store.find(other), 'acct-1');
   store.revoke('not-a-token');
 });
+
+test('revokeAll ends every session of one account and leaves others', () => {
+  const store = createMemorySessionStore();
+  const first = store.create('acct-1');
+  const second = store.create('acct-1');
+  const other = store.create('acct-2');
+  store.revokeAll('acct-1');
+  assert.equal(store.find(first), undefined);
+  assert.equal(store.find(second), undefined);
+  assert.equal(store.find(other), 'acct-2');
+});

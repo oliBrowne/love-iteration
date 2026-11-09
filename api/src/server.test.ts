@@ -448,7 +448,20 @@ test('POST /password requires login and the old password', async () => {
       400,
     );
     assert.equal((await send({ ...body, newPassword: 'short' })).status, 400);
-    assert.equal((await send(body)).status, 200);
+    const changed = await send(body);
+    assert.equal(changed.status, 200);
+
+    // The old session stops working; the cookie sent back keeps this device in.
+    assert.equal(
+      (await fetch(`${base}/me`, { headers: { cookie } })).status,
+      401,
+    );
+    const renewed =
+      (changed.headers.get('set-cookie') ?? '').split(';')[0] ?? '';
+    assert.equal(
+      (await fetch(`${base}/me`, { headers: { cookie: renewed } })).status,
+      200,
+    );
 
     const old = await postJson(`${base}/login`, {
       handle: 'sam',

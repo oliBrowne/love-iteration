@@ -10,6 +10,8 @@ export type SessionStore = {
   find(token: string): string | undefined;
   // Ends a session. Unknown tokens are ignored.
   revoke(token: string): void;
+  // Ends every session of an account.
+  revokeAll(accountId: string): void;
 };
 
 function hashToken(token: string): string {
@@ -44,6 +46,11 @@ export function createMemorySessionStore(
     },
     revoke(token) {
       sessions.delete(hashToken(token));
+    },
+    revokeAll(accountId) {
+      for (const [key, session] of sessions) {
+        if (session.accountId === accountId) sessions.delete(key);
+      }
     },
   };
 }

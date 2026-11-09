@@ -70,7 +70,7 @@ The database file is set by `LOVE_DB_PATH` (default `love.db`; `/data/love.db` i
 
 `GET /me` answers `200` with `{ accountId }` when the session cookie is live, and `401` otherwise.
 
-`POST /password` (logged in) takes `{ oldPassword, newPassword }`. It answers `400` and changes nothing unless the old password matches and the new one is 10 to 200 characters, otherwise `200`.
+`POST /password` (logged in) takes `{ oldPassword, newPassword }`. It answers `400` and changes nothing unless the old password matches and the new one is 10 to 200 characters, otherwise `200`. On success every earlier session ends and the reply carries a fresh session cookie for the device that changed it.
 
 Every other `POST`, `PUT`, `PATCH` or `DELETE` needs a live session cookie and answers `401` without one, so a new write route is protected by default. Only `/accounts`, `/login` and `/logout` are open.
 
