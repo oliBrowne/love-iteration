@@ -142,6 +142,34 @@ export const openApiDocument = {
         },
       },
     },
+    '/account': {
+      delete: {
+        summary:
+          'Delete the account, its sessions and records. Needs the password and the phrase "delete my account".',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['password', 'confirm'],
+                properties: {
+                  password: { type: 'string' },
+                  confirm: { type: 'string', enum: ['delete my account'] },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          '200': { description: 'The account was deleted.' },
+          '400': {
+            description: 'The password is wrong or the phrase was not typed.',
+          },
+          '401': { description: 'There is no live session.' },
+        },
+      },
+    },
     '/logout': {
       post: {
         summary: 'Log out: revoke the session in the cookie and clear it.',

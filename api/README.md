@@ -72,6 +72,8 @@ The database file is set by `LOVE_DB_PATH` (default `love.db`; `/data/love.db` i
 
 `POST /password` (logged in) takes `{ oldPassword, newPassword }`. It answers `400` and changes nothing unless the old password matches and the new one is 10 to 200 characters, otherwise `200`. On success every earlier session ends and the reply carries a fresh session cookie for the device that changed it.
 
+`DELETE /account` (logged in) takes `{ password, confirm }` where `confirm` is exactly `delete my account`. Both must match or it answers `400` and deletes nothing. Otherwise, in one transaction, it removes the account, its sessions, invites and sync positions, every record it wrote, and every space it was alone in. A space shared with someone else stays for them, and the longest-standing other member becomes its owner. The cookie is cleared.
+
 Every other `POST`, `PUT`, `PATCH` or `DELETE` needs a live session cookie and answers `401` without one, so a new write route is protected by default. Only `/accounts`, `/login` and `/logout` are open.
 
 `POST /logout` revokes the session named by the cookie and clears the cookie. It answers `200` even when there was no session, so it is safe to repeat.

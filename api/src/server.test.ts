@@ -477,3 +477,60 @@ test('POST /password requires login and the old password', async () => {
     await new Promise((resolve) => server.close(resolve));
   }
 });
+
+test('DELETE /account needs login, the password and the confirmation phrase', async () => {
+  const db = createTestDb();
+  const sessions = createMemorySessionStore();
+  const server = createApiServer(undefined, [], undefined, db, sessions);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    await postJson(`${base}/accounts`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const login = await postJson(`${base}/login`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const cookie = (login.headers.get('set-cookie') ?? '').split(';')[0] ?? '';
+    const send = (value: unknown, withCookie = true) =>
+      fetch(`${base}/account`, {
+        method: 'DELETE',
+        headers: {
+          ...(withCookie ? { cookie } : {}),
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(value),
+      });
+    const good = {
+      password: 'a long enough secret',
+      confirm: 'delete my account',
+    };
+
+    assert.equal((await send(good, false)).status, 401);
+    assert.equal(
+      (await send({ ...good, password: 'wrong one!!' })).status,
+      400,
+    );
+    assert.equal((await send({ ...good, confirm: 'yes' })).status, 400);
+    assert.equal(db.prepare('SELECT * FROM accounts').all().length, 1);
+
+    const done = await send(good);
+    assert.equal(done.status, 200);
+    assert.match(done.headers.get('set-cookie') ?? '', /Max-Age=0/);
+    assert.equal(db.prepare('SELECT * FROM accounts').all().length, 0);
+    assert.equal(
+      (await fetch(`${base}/me`, { headers: { cookie } })).status,
+      401,
+    );
+    const again = await postJson(`${base}/login`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    assert.equal(again.status, 401);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});

@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { createServer } from 'node:http';
 import type { IncomingMessage, Server, ServerResponse } from 'node:http';
+import { deleteAccount, deleteConfirmation } from './accountDeletion.ts';
 import {
   checkAccountInput,
   changePassword,
@@ -124,6 +125,19 @@ export function handleRequest(
     );
     return;
   }
+  if (path === '/account' && req.method === 'DELETE' && db && sessions) {
+    const accountId = sessionAccount(req, sessions);
+    if (accountId === undefined) {
+      sendError(res, 'unauthorized', 'Please log in.');
+      return;
+    }
+    removeAccount(req, res, db, sessions, accountId, secureCookies).catch(
+      () => {
+        if (!res.headersSent) sendError(res, 'server_error');
+      },
+    );
+    return;
+  }
   // Everything else that changes data needs a live session, so a new write
   // route is protected by default and only answers 404 once logged in.
   const isWrite = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method ?? '');
@@ -173,6 +187,38 @@ async function updatePassword(
       'set-cookie',
       sessionCookie(sessions.create(accountId), secureCookies),
     );
+    sendJson(res, 200, { ok: true });
+  }
+}
+
+// DELETE /account: needs the password and the confirmation phrase (200).
+async function removeAccount(
+  req: IncomingMessage,
+  res: ServerResponse,
+  db: Db,
+  sessions: SessionStore,
+  accountId: string,
+  secureCookies: boolean,
+): Promise<void> {
+  const body = await readJsonBody(req);
+  if (rejectBadJson(res, body)) return;
+  const input = body.ok ? body.value : null;
+  const { password, confirm } =
+    typeof input === 'object' && input !== null
+      ? (input as Record<string, unknown>)
+      : { password: undefined, confirm: undefined };
+  const result = await deleteAccount(db, accountId, password, confirm);
+  if (result === 'wrong_password') {
+    sendError(res, 'invalid_request', 'The password is not right.');
+  } else if (result === 'not_confirmed') {
+    sendError(
+      res,
+      'invalid_request',
+      `Type "${deleteConfirmation}" to confirm.`,
+    );
+  } else {
+    sessions.revokeAll(accountId);
+    res.setHeader('set-cookie', clearedSessionCookie(secureCookies));
     sendJson(res, 200, { ok: true });
   }
 }

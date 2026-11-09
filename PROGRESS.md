@@ -1703,3 +1703,9 @@
 - Verified: store test for revokeAll; server test (old cookie gets 401 from /me after the change, the new cookie gets 200). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L285 add the account deletion flow (records and sessions removed after confirmation).
 - Blockers: none
+
+## 2026-11-09 — L285: Add account deletion flow
+- Changed: `DELETE /account` (logged in) needs the password and the exact phrase "delete my account". It then removes, in one transaction, the account, its sessions, invites, sync positions, every record it wrote, and every space it was alone in. A space shared with someone else is kept and the longest-standing other member becomes its owner (their records stay; deletion markers are reassigned). The cookie is cleared.
+- Verified: deletion tests (nothing deleted on wrong password or phrase; solo space, records, sessions removed; shared space handed over with the other person's record and tombstone kept) and a server test (401 without session, 400 cases, 200 then session and login both fail). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L286 add the sharing opt-in screen (local data stays local until an explicit choice).
+- Blockers: none. Note: the handover rule for shared spaces is my choice; revisit if you prefer deleting shared spaces too.

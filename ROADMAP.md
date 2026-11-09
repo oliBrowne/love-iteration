@@ -315,7 +315,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L282 Reject unauthenticated write — Done when protected route returns 401.
 - [x] L283 Add password change endpoint — Done when old password is required.
 - [x] L284 Add password-change session revocation — Done when old sessions stop working.
-- [ ] L285 Add account deletion flow — Done when records and sessions are removed after confirmation.
+- [x] L285 Add account deletion flow — Done when records and sessions are removed after confirmation.
 - [ ] L286 Add sharing opt-in screen — Done when local data stays local until explicit choice.
 - [ ] L287 Create shared space endpoint — Done when authenticated creator becomes owner.
 - [ ] L288 List my spaces endpoint — Done when only memberships are returned.
