@@ -307,7 +307,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L274 Reject duplicate handle — Done when second registration returns conflict.
 - [x] L275 Add login endpoint — Done when valid credentials create a session.
 - [x] L276 Add failed-login response — Done when invalid credentials reveal no account existence.
-- [ ] L277 Add login throttling — Done when repeated failures are limited.
+- [x] L277 Add login throttling — Done when repeated failures are limited.
 - [ ] L278 Add session table — Done when migration stores hashed session token.
 - [ ] L279 Set secure session cookie — Done when production cookie is HttpOnly and Secure.
 - [ ] L280 Add logout endpoint — Done when session is revoked in a test.

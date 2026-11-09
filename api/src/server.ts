@@ -10,6 +10,8 @@ import {
 import { corsHeaders } from './cors.ts';
 import type { Db } from './db.ts';
 import { sendError } from './errors.ts';
+import { createLoginThrottle } from './loginThrottle.ts';
+import type { LoginThrottle } from './loginThrottle.ts';
 import { readJsonBody, rejectBadJson } from './jsonBody.ts';
 import type { RateLimiter } from './rateLimit.ts';
 import { formatLogLine } from './requestLog.ts';
@@ -33,6 +35,7 @@ export function handleRequest(
   allowRequest?: RateLimiter,
   db?: Db,
   sessions?: SessionStore,
+  throttle?: LoginThrottle,
 ): void {
   // A fresh ID per request, set first so every reply (even errors) carries it.
   const requestId = randomUUID();
@@ -78,7 +81,7 @@ export function handleRequest(
     return;
   }
   if (path === '/login' && req.method === 'POST' && db && sessions) {
-    login(req, res, db, sessions).catch(() => {
+    login(req, res, db, sessions, throttle).catch(() => {
       if (!res.headersSent) sendError(res, 'server_error');
     });
     return;
@@ -92,6 +95,7 @@ async function login(
   res: ServerResponse,
   db: Db,
   sessions: SessionStore,
+  throttle?: LoginThrottle,
 ): Promise<void> {
   const body = await readJsonBody(req);
   if (rejectBadJson(res, body)) return;
@@ -100,14 +104,27 @@ async function login(
     typeof input === 'object' && input !== null
       ? (input as Record<string, unknown>)
       : { handle: undefined, password: undefined };
+  // Both the client address and the handle are throttled, whether or not the
+  // handle exists, so a block says nothing about accounts.
+  const keys = [
+    `ip:${req.socket.remoteAddress ?? 'unknown'}`,
+    `handle:${typeof handle === 'string' ? handle.trim().toLowerCase() : ''}`,
+  ];
+  if (throttle?.isBlocked(keys)) {
+    res.setHeader('retry-after', '900');
+    sendError(res, 'rate_limited', 'Too many failed logins. Try again later.');
+    return;
+  }
   const accountId =
     typeof handle === 'string' && typeof password === 'string'
       ? await checkLogin(db, handle, password)
       : undefined;
   if (accountId === undefined) {
+    throttle?.recordFailure(keys);
     sendError(res, 'unauthorized');
     return;
   }
+  throttle?.clear(keys[1] as string);
   sendJson(res, 200, { sessionToken: sessions.create(accountId) });
 }
 
@@ -143,9 +160,19 @@ export function createApiServer(
   allowRequest?: RateLimiter,
   db?: Db,
   sessions?: SessionStore,
+  throttle: LoginThrottle = createLoginThrottle(),
 ): Server {
   return createServer((req, res) =>
-    handleRequest(req, res, log, allowedOrigins, allowRequest, db, sessions),
+    handleRequest(
+      req,
+      res,
+      log,
+      allowedOrigins,
+      allowRequest,
+      db,
+      sessions,
+      throttle,
+    ),
   );
 }
 

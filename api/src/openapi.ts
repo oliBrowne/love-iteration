@@ -83,6 +83,10 @@ export const openApiDocument = {
             },
           },
           '401': { description: 'The handle or password is not right.' },
+          '429': {
+            description:
+              'Too many failed logins for this handle or address; retry after 15 minutes.',
+          },
         },
       },
     },

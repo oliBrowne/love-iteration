@@ -5,6 +5,7 @@ import { after } from 'node:test';
 import { loadConfig } from './config.ts';
 import { createRateLimiter } from './rateLimit.ts';
 import { createApiServer, startServer } from './server.ts';
+import { createLoginThrottle } from './loginThrottle.ts';
 import { createMemorySessionStore } from './sessions.ts';
 import { closeTestDbs, createTestDb } from './testDb.ts';
 import { apiVersion } from './version.ts';
@@ -224,6 +225,44 @@ test('POST /login starts a session for valid credentials only', async () => {
     });
     assert.equal(unknown.status, wrong.status);
     assert.deepEqual(await unknown.json(), await wrong.json());
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
+
+test('POST /login blocks a handle after repeated failures, even a right password', async () => {
+  const db = createTestDb();
+  const sessions = createMemorySessionStore();
+  const throttle = createLoginThrottle({ limit: 3 });
+  const server = createApiServer(
+    undefined,
+    [],
+    undefined,
+    db,
+    sessions,
+    throttle,
+  );
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    await postJson(`${base}/accounts`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    for (let i = 0; i < 3; i += 1) {
+      const bad = await postJson(`${base}/login`, {
+        handle: 'sam',
+        password: 'not the secret!',
+      });
+      assert.equal(bad.status, 401);
+    }
+    const blocked = await postJson(`${base}/login`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    assert.equal(blocked.status, 429);
+    assert.equal(blocked.headers.get('retry-after'), '900');
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }

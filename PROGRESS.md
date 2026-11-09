@@ -1655,3 +1655,9 @@
 - Verified: API tests (unknown handle and wrong password return identical 401 status and body). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check. Timing equality reasoned from the shared scrypt path, not measured.
 - Next: L277 limit repeated login failures.
 - Blockers: none
+
+## 2026-11-09 — L277: Add login throttling
+- Changed: after 5 failed logins for a handle, or 5 from one client address, within 15 minutes, `POST /login` answers 429 (`retry-after: 900`) even for the right password. Unknown handles are counted too, so a block reveals nothing about accounts. A successful login clears the handle's count.
+- Verified: API tests (throttle unit tests incl. window expiry; server test: 3 failures then a correct password is blocked with 429). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L278 back sessions with a database table of hashed tokens.
+- Blockers: none
