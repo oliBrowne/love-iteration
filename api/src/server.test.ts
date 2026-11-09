@@ -408,3 +408,59 @@ test('writes to protected routes need a live session', async () => {
     await new Promise((resolve) => server.close(resolve));
   }
 });
+
+test('POST /password requires login and the old password', async () => {
+  const db = createTestDb();
+  const sessions = createMemorySessionStore();
+  const server = createApiServer(undefined, [], undefined, db, sessions);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    await postJson(`${base}/accounts`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const body = {
+      oldPassword: 'a long enough secret',
+      newPassword: 'a brand new secret',
+    };
+    assert.equal((await postJson(`${base}/password`, body)).status, 401);
+
+    const login = await postJson(`${base}/login`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const cookie = (login.headers.get('set-cookie') ?? '').split(';')[0] ?? '';
+    const send = (value: unknown) =>
+      fetch(`${base}/password`, {
+        method: 'POST',
+        headers: { cookie, 'content-type': 'application/json' },
+        body: JSON.stringify(value),
+      });
+
+    assert.equal(
+      (await send({ ...body, oldPassword: 'wrong one!!' })).status,
+      400,
+    );
+    assert.equal(
+      (await send({ newPassword: 'a brand new secret' })).status,
+      400,
+    );
+    assert.equal((await send({ ...body, newPassword: 'short' })).status, 400);
+    assert.equal((await send(body)).status, 200);
+
+    const old = await postJson(`${base}/login`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    assert.equal(old.status, 401);
+    const fresh = await postJson(`${base}/login`, {
+      handle: 'sam',
+      password: 'a brand new secret',
+    });
+    assert.equal(fresh.status, 200);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});

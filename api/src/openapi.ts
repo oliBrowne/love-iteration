@@ -114,6 +114,34 @@ export const openApiDocument = {
         },
       },
     },
+    '/password': {
+      post: {
+        summary: 'Change the password. The current password is required.',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['oldPassword', 'newPassword'],
+                properties: {
+                  oldPassword: { type: 'string' },
+                  newPassword: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          '200': { description: 'The password was changed.' },
+          '400': {
+            description:
+              'The current password is not right, or the new one is not acceptable.',
+          },
+          '401': { description: 'There is no live session.' },
+        },
+      },
+    },
     '/logout': {
       post: {
         summary: 'Log out: revoke the session in the cookie and clear it.',

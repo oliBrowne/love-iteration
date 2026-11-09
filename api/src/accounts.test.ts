@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { after, test } from 'node:test';
 import {
   checkAccountInput,
+  changePassword,
   checkLogin,
   createAccount,
   HandleTakenError,
@@ -75,4 +76,37 @@ test('checkLogin accepts the right password in any handle case only', async () =
     await checkLogin(db, 'nobody', 'a long enough secret'),
     undefined,
   );
+});
+
+test('changePassword needs the old password and changes nothing otherwise', async () => {
+  const db = createTestDb();
+  const made = await createAccount(db, {
+    handle: 'sam',
+    password: 'a long enough secret',
+    displayName: 'Sam',
+  });
+  assert.equal(
+    await changePassword(db, made.id, 'not the old one', 'a brand new secret'),
+    'wrong_password',
+  );
+  assert.equal(
+    await changePassword(db, made.id, undefined, 'a brand new secret'),
+    'wrong_password',
+  );
+  assert.equal(
+    await changePassword(db, made.id, 'a long enough secret', 'short'),
+    'invalid_new',
+  );
+  assert.equal(await checkLogin(db, 'sam', 'a long enough secret'), made.id);
+  assert.equal(
+    await changePassword(
+      db,
+      made.id,
+      'a long enough secret',
+      'a brand new secret',
+    ),
+    'changed',
+  );
+  assert.equal(await checkLogin(db, 'sam', 'a long enough secret'), undefined);
+  assert.equal(await checkLogin(db, 'sam', 'a brand new secret'), made.id);
 });

@@ -20,6 +20,16 @@ const minPassword = 10;
 const maxPassword = 200;
 const maxDisplayName = 60;
 
+const passwordRule = `A password must be ${minPassword} to ${maxPassword} characters long.`;
+
+function isAcceptablePassword(password: unknown): password is string {
+  return (
+    typeof password === 'string' &&
+    password.length >= minPassword &&
+    password.length <= maxPassword
+  );
+}
+
 // Checks a sign-up request. The display name is optional and defaults to the
 // handle. Reasons never repeat what was submitted.
 export function checkAccountInput(input: AccountInput): AccountCheck {
@@ -29,15 +39,8 @@ export function checkAccountInput(input: AccountInput): AccountCheck {
   const handle = validateHandle(input.handle);
   if (!handle.ok) return { ok: false, reason: handle.reason };
   const { password } = input;
-  if (
-    typeof password !== 'string' ||
-    password.length < minPassword ||
-    password.length > maxPassword
-  ) {
-    return {
-      ok: false,
-      reason: `A password must be ${minPassword} to ${maxPassword} characters long.`,
-    };
+  if (!isAcceptablePassword(password)) {
+    return { ok: false, reason: passwordRule };
   }
   let displayName = handle.handle;
   if (input.displayName !== undefined) {
@@ -105,3 +108,29 @@ export async function checkLogin(
   const ok = await verifyPassword(password, String(row.password_hash));
   return ok ? String(row.id) : undefined;
 }
+
+export type PasswordChange = 'changed' | 'wrong_password' | 'invalid_new';
+
+// Replaces an account's password hash, but only when the old password matches.
+// Nothing is changed on failure.
+export async function changePassword(
+  db: Db,
+  accountId: string,
+  oldPassword: unknown,
+  newPassword: unknown,
+): Promise<PasswordChange> {
+  if (typeof oldPassword !== 'string') return 'wrong_password';
+  const row = db
+    .prepare('SELECT password_hash FROM accounts WHERE id = ?')
+    .get(accountId);
+  if (!row || !(await verifyPassword(oldPassword, String(row.password_hash)))) {
+    return 'wrong_password';
+  }
+  if (!isAcceptablePassword(newPassword)) return 'invalid_new';
+  db.prepare(
+    'UPDATE accounts SET password_hash = ?, updated_at = ? WHERE id = ?',
+  ).run(await hashPassword(newPassword), new Date().toISOString(), accountId);
+  return 'changed';
+}
+
+export { passwordRule };

@@ -3,7 +3,9 @@ import { createServer } from 'node:http';
 import type { IncomingMessage, Server, ServerResponse } from 'node:http';
 import {
   checkAccountInput,
+  changePassword,
   checkLogin,
+  passwordRule,
   createAccount,
   HandleTakenError,
 } from './accounts.ts';
@@ -109,6 +111,17 @@ export function handleRequest(
     sendJson(res, 200, { ok: true });
     return;
   }
+  if (path === '/password' && req.method === 'POST' && db && sessions) {
+    const accountId = sessionAccount(req, sessions);
+    if (accountId === undefined) {
+      sendError(res, 'unauthorized', 'Please log in.');
+      return;
+    }
+    updatePassword(req, res, db, accountId).catch(() => {
+      if (!res.headersSent) sendError(res, 'server_error');
+    });
+    return;
+  }
   // Everything else that changes data needs a live session, so a new write
   // route is protected by default and only answers 404 once logged in.
   const isWrite = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method ?? '');
@@ -126,6 +139,30 @@ function sessionAccount(
 ): string | undefined {
   const token = readSessionToken(req.headers.cookie);
   return token ? sessions.find(token) : undefined;
+}
+
+// POST /password: the old password is required; the new one replaces it (200).
+async function updatePassword(
+  req: IncomingMessage,
+  res: ServerResponse,
+  db: Db,
+  accountId: string,
+): Promise<void> {
+  const body = await readJsonBody(req);
+  if (rejectBadJson(res, body)) return;
+  const input = body.ok ? body.value : null;
+  const { oldPassword, newPassword } =
+    typeof input === 'object' && input !== null
+      ? (input as Record<string, unknown>)
+      : { oldPassword: undefined, newPassword: undefined };
+  const result = await changePassword(db, accountId, oldPassword, newPassword);
+  if (result === 'wrong_password') {
+    sendError(res, 'invalid_request', 'The current password is not right.');
+  } else if (result === 'invalid_new') {
+    sendError(res, 'invalid_request', passwordRule);
+  } else {
+    sendJson(res, 200, { ok: true });
+  }
 }
 
 // POST /login: valid credentials start a session (200); anything else is 401.

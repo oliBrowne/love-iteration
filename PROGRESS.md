@@ -1691,3 +1691,9 @@
 - Verified: server test (all four write methods get 401 without a session; GET of an unknown route is 404; once logged in the write reaches routing and gets 404). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L283 add the password change endpoint (old password required).
 - Blockers: none
+
+## 2026-11-09 — L283: Add password change endpoint
+- Changed: `POST /password` (logged in) takes `{ oldPassword, newPassword }`, checks the old password, validates the new one with the sign-up rule, and stores a fresh salted hash. Wrong or missing old password, or a bad new one, returns 400 and changes nothing.
+- Verified: account tests (wrong/missing old, bad new, success: old password stops working, new one works) and a server test (401 without a session; 400 cases; 200 then login with old fails and new succeeds). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L284 revoke other sessions when the password changes.
+- Blockers: none
