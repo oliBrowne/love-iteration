@@ -7,7 +7,11 @@ import {
   createAccount,
   HandleTakenError,
 } from './accounts.ts';
-import { sessionCookie } from './cookie.ts';
+import {
+  clearedSessionCookie,
+  readSessionToken,
+  sessionCookie,
+} from './cookie.ts';
 import { corsHeaders } from './cors.ts';
 import type { Db } from './db.ts';
 import { sendError } from './errors.ts';
@@ -86,6 +90,14 @@ export function handleRequest(
     login(req, res, db, sessions, throttle, secureCookies).catch(() => {
       if (!res.headersSent) sendError(res, 'server_error');
     });
+    return;
+  }
+  if (path === '/logout' && req.method === 'POST' && sessions) {
+    // Revoking is safe to repeat: with no live session it still answers 200.
+    const token = readSessionToken(req.headers.cookie);
+    if (token) sessions.revoke(token);
+    res.setHeader('set-cookie', clearedSessionCookie(secureCookies));
+    sendJson(res, 200, { ok: true });
     return;
   }
   sendError(res, 'not_found');

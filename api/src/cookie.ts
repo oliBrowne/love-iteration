@@ -16,3 +16,19 @@ export function sessionCookie(token: string, secure: boolean): string {
   if (secure) parts.push('Secure');
   return parts.join('; ');
 }
+
+// Reads the session token from a request's Cookie header, if there is one.
+export function readSessionToken(
+  header: string | undefined,
+): string | undefined {
+  for (const part of (header ?? '').split(';')) {
+    const [name, ...rest] = part.trim().split('=');
+    if (name === sessionCookieName) return rest.join('=') || undefined;
+  }
+  return undefined;
+}
+
+// A Set-Cookie value that makes the browser forget the session cookie.
+export function clearedSessionCookie(secure: boolean): string {
+  return `${sessionCookieName}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax${secure ? '; Secure' : ''}`;
+}

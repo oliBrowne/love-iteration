@@ -23,3 +23,13 @@ test('a session expires after its lifetime', () => {
   time += 1;
   assert.equal(store.find(token), undefined);
 });
+
+test('a revoked session stops working; revoking an unknown token is fine', () => {
+  const store = createMemorySessionStore();
+  const token = store.create('acct-1');
+  const other = store.create('acct-1');
+  store.revoke(token);
+  assert.equal(store.find(token), undefined);
+  assert.equal(store.find(other), 'acct-1');
+  store.revoke('not-a-token');
+});

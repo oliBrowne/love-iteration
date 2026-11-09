@@ -94,6 +94,17 @@ export const openApiDocument = {
         },
       },
     },
+    '/logout': {
+      post: {
+        summary: 'Log out: revoke the session in the cookie and clear it.',
+        responses: {
+          '200': {
+            description:
+              'The session is ended (also when there was none), and the cookie is cleared.',
+          },
+        },
+      },
+    },
     '/health': {
       get: {
         summary: 'Report that the server is running.',

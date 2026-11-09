@@ -301,3 +301,42 @@ test('POST /login sets a Secure cookie when secure cookies are on', async () => 
     await new Promise((resolve) => server.close(resolve));
   }
 });
+
+test('POST /logout revokes the session so its token stops working', async () => {
+  const db = createTestDb();
+  const sessions = createMemorySessionStore();
+  const server = createApiServer(undefined, [], undefined, db, sessions);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    const made = await postJson(`${base}/accounts`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const { id } = (await made.json()) as { id: string };
+    const login = await postJson(`${base}/login`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const token =
+      /^love_session=([^;]+)/.exec(
+        login.headers.get('set-cookie') ?? '',
+      )?.[1] ?? '';
+    assert.equal(sessions.find(token), id);
+
+    const out = await fetch(`${base}/logout`, {
+      method: 'POST',
+      headers: { cookie: `love_session=${token}` },
+    });
+    assert.equal(out.status, 200);
+    assert.match(out.headers.get('set-cookie') ?? '', /Max-Age=0/);
+    assert.equal(sessions.find(token), undefined);
+
+    // Logging out again, or with no cookie, is harmless.
+    const again = await fetch(`${base}/logout`, { method: 'POST' });
+    assert.equal(again.status, 200);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});

@@ -1673,3 +1673,9 @@
 - Verified: cookie unit tests, config tests, server tests (cookie has HttpOnly; Secure appears when secure cookies are on and the token finds the account). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L280 add a logout endpoint that revokes the session.
 - Blockers: none
+
+## 2026-11-09 — L280: Add logout endpoint
+- Changed: `POST /logout` ends the session named by the `love_session` cookie and clears the cookie; it answers 200 even with no session. Session stores gained `revoke(token)`.
+- Verified: tests for store revoke, cookie parsing/clearing, and a server test where a token works after login, stops working after logout, and a repeat logout is harmless. API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L281 add the current-account endpoint (authenticated request returns the account ID).
+- Blockers: none

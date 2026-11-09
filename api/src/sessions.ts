@@ -8,6 +8,8 @@ export type SessionStore = {
   create(accountId: string): string;
   // Returns the account for a live token, or undefined.
   find(token: string): string | undefined;
+  // Ends a session. Unknown tokens are ignored.
+  revoke(token: string): void;
 };
 
 function hashToken(token: string): string {
@@ -39,6 +41,9 @@ export function createMemorySessionStore(
         return undefined;
       }
       return session.accountId;
+    },
+    revoke(token) {
+      sessions.delete(hashToken(token));
     },
   };
 }
