@@ -1679,3 +1679,9 @@
 - Verified: tests for store revoke, cookie parsing/clearing, and a server test where a token works after login, stops working after logout, and a repeat logout is harmless. API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L281 add the current-account endpoint (authenticated request returns the account ID).
 - Blockers: none
+
+## 2026-11-09 — L281: Add current-account endpoint
+- Changed: `GET /me` returns `{ accountId }` for a request carrying a live session cookie, and 401 for no cookie, a forged token, or a revoked session.
+- Verified: server test (login then /me gives the account ID; missing and forged cookies get 401). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L282 reject unauthenticated writes on protected routes with 401.
+- Blockers: none

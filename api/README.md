@@ -68,4 +68,6 @@ The database file is set by `LOVE_DB_PATH` (default `love.db`; `/data/love.db` i
 
 `POST /login` with `{ "handle", "password" }` answers `200` with `{ ok: true }` and a `love_session` cookie when they match (HttpOnly, SameSite=Lax, 7 days; also `Secure` when `NODE_ENV=production`, which the Docker image sets, so browsers send it over HTTPS only. The token is never in the response body), and `401` with `unauthorized` otherwise (an unknown handle and a wrong password get the same reply). After 5 failed logins for a handle (or from one address) within 15 minutes, further attempts get `429` with `retry-after: 900`, even with the right password; this applies to unknown handles too. Sessions last 7 days and are kept in memory for now, so they end when the server restarts; only a hash of each token is held.
 
+`GET /me` answers `200` with `{ accountId }` when the session cookie is live, and `401` otherwise.
+
 `POST /logout` revokes the session named by the cookie and clears the cookie. It answers `200` even when there was no session, so it is safe to repeat.

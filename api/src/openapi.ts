@@ -94,6 +94,26 @@ export const openApiDocument = {
         },
       },
     },
+    '/me': {
+      get: {
+        summary: 'Return the account ID of the logged-in session.',
+        responses: {
+          '200': {
+            description: 'The session is live.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  required: ['accountId'],
+                  properties: { accountId: { type: 'string' } },
+                },
+              },
+            },
+          },
+          '401': { description: 'There is no live session.' },
+        },
+      },
+    },
     '/logout': {
       post: {
         summary: 'Log out: revoke the session in the cookie and clear it.',

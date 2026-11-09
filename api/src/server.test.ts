@@ -340,3 +340,36 @@ test('POST /logout revokes the session so its token stops working', async () => 
     await new Promise((resolve) => server.close(resolve));
   }
 });
+
+test('GET /me returns the account ID for a live session only', async () => {
+  const db = createTestDb();
+  const sessions = createMemorySessionStore();
+  const server = createApiServer(undefined, [], undefined, db, sessions);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    const made = await postJson(`${base}/accounts`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const { id } = (await made.json()) as { id: string };
+    const login = await postJson(`${base}/login`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const cookie = (login.headers.get('set-cookie') ?? '').split(';')[0] ?? '';
+
+    const me = await fetch(`${base}/me`, { headers: { cookie } });
+    assert.equal(me.status, 200);
+    assert.deepEqual(await me.json(), { accountId: id });
+
+    assert.equal((await fetch(`${base}/me`)).status, 401);
+    const forged = await fetch(`${base}/me`, {
+      headers: { cookie: 'love_session=forged' },
+    });
+    assert.equal(forged.status, 401);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});

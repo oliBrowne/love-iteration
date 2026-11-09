@@ -92,6 +92,16 @@ export function handleRequest(
     });
     return;
   }
+  if (path === '/me' && req.method === 'GET' && sessions) {
+    const token = readSessionToken(req.headers.cookie);
+    const accountId = token ? sessions.find(token) : undefined;
+    if (accountId === undefined) {
+      sendError(res, 'unauthorized', 'Please log in.');
+      return;
+    }
+    sendJson(res, 200, { accountId });
+    return;
+  }
   if (path === '/logout' && req.method === 'POST' && sessions) {
     // Revoking is safe to repeat: with no live session it still answers 200.
     const token = readSessionToken(req.headers.cookie);

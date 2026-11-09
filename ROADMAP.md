@@ -311,7 +311,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L278 Add session table — Done when migration stores hashed session token.
 - [x] L279 Set secure session cookie — Done when production cookie is HttpOnly and Secure.
 - [x] L280 Add logout endpoint — Done when session is revoked in a test.
-- [ ] L281 Add current-account endpoint — Done when authenticated request returns account ID.
+- [x] L281 Add current-account endpoint — Done when authenticated request returns account ID.
 - [ ] L282 Reject unauthenticated write — Done when protected route returns 401.
 - [ ] L283 Add password change endpoint — Done when old password is required.
 - [ ] L284 Add password-change session revocation — Done when old sessions stop working.
