@@ -6,6 +6,8 @@ export type Config = {
   host: string;
   databasePath: string;
   allowedOrigins: string[];
+  // Session cookies are Secure (HTTPS only) when NODE_ENV is production.
+  secureCookies: boolean;
 };
 
 // Reads server settings from environment variables and checks them all at
@@ -51,5 +53,6 @@ export function loadConfig(env: Record<string, string | undefined>): Config {
     host,
     databasePath,
     allowedOrigins: parseOrigins(env.LOVE_ALLOWED_ORIGINS),
+    secureCookies: env.NODE_ENV?.trim() === 'production',
   };
 }

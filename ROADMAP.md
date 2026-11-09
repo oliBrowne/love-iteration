@@ -309,7 +309,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L276 Add failed-login response — Done when invalid credentials reveal no account existence.
 - [x] L277 Add login throttling — Done when repeated failures are limited.
 - [x] L278 Add session table — Done when migration stores hashed session token.
-- [ ] L279 Set secure session cookie — Done when production cookie is HttpOnly and Secure.
+- [x] L279 Set secure session cookie — Done when production cookie is HttpOnly and Secure.
 - [ ] L280 Add logout endpoint — Done when session is revoked in a test.
 - [ ] L281 Add current-account endpoint — Done when authenticated request returns account ID.
 - [ ] L282 Reject unauthenticated write — Done when protected route returns 401.

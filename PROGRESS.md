@@ -1667,3 +1667,9 @@
 - Verified: migration test (columns, duplicate hash rejected, unknown account rejected, cascade on account delete). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L279 set the session cookie (HttpOnly, Secure in production).
 - Blockers: none
+
+## 2026-11-09 — L279: Set secure session cookie
+- Changed: `POST /login` now sends the session as a `love_session` cookie (HttpOnly, SameSite=Lax, 7 days, plus Secure when `NODE_ENV=production`, which the Docker image sets) and no longer puts the token in the response body (`{ ok: true }`).
+- Verified: cookie unit tests, config tests, server tests (cookie has HttpOnly; Secure appears when secure cookies are on and the token finds the account). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L280 add a logout endpoint that revokes the session.
+- Blockers: none

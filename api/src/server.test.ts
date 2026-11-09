@@ -207,8 +207,11 @@ test('POST /login starts a session for valid credentials only', async () => {
       password: 'a long enough secret',
     });
     assert.equal(ok.status, 200);
-    const { sessionToken } = (await ok.json()) as { sessionToken: string };
-    assert.equal(sessions.find(sessionToken), id);
+    assert.deepEqual(await ok.json(), { ok: true });
+    const cookie = ok.headers.get('set-cookie') ?? '';
+    assert.match(cookie, /HttpOnly/);
+    const token = /^love_session=([^;]+)/.exec(cookie)?.[1] ?? '';
+    assert.equal(sessions.find(token), id);
 
     const wrong = await postJson(`${base}/login`, {
       handle: 'sam',
@@ -263,6 +266,37 @@ test('POST /login blocks a handle after repeated failures, even a right password
     });
     assert.equal(blocked.status, 429);
     assert.equal(blocked.headers.get('retry-after'), '900');
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
+
+test('POST /login sets a Secure cookie when secure cookies are on', async () => {
+  const db = createTestDb();
+  const server = createApiServer(
+    undefined,
+    [],
+    undefined,
+    db,
+    createMemorySessionStore(),
+    undefined,
+    true,
+  );
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    await postJson(`${base}/accounts`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const res = await postJson(`${base}/login`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const cookie = res.headers.get('set-cookie') ?? '';
+    assert.match(cookie, /HttpOnly/);
+    assert.match(cookie, /Secure/);
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }

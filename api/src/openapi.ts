@@ -71,13 +71,17 @@ export const openApiDocument = {
         },
         responses: {
           '200': {
-            description: 'A session was started.',
+            description:
+              'A session was started and sent as an HttpOnly cookie (Secure in production).',
+            headers: {
+              'Set-Cookie': { schema: { type: 'string' } },
+            },
             content: {
               'application/json': {
                 schema: {
                   type: 'object',
-                  required: ['sessionToken'],
-                  properties: { sessionToken: { type: 'string' } },
+                  required: ['ok'],
+                  properties: { ok: { type: 'boolean' } },
                 },
               },
             },

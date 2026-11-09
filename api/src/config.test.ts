@@ -11,7 +11,20 @@ test('a valid environment gives a config with the default port', () => {
     host: '127.0.0.1',
     databasePath: 'love.db',
     allowedOrigins: [],
+    secureCookies: false,
   });
+});
+
+test('cookies are Secure only when NODE_ENV is production', () => {
+  const env = { LOVE_SESSION_SECRET: secret };
+  assert.equal(
+    loadConfig({ ...env, NODE_ENV: 'production' }).secureCookies,
+    true,
+  );
+  assert.equal(
+    loadConfig({ ...env, NODE_ENV: 'development' }).secureCookies,
+    false,
+  );
 });
 
 test('the host defaults to localhost and can be set on purpose', () => {

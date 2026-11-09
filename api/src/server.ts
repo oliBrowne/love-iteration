@@ -7,6 +7,7 @@ import {
   createAccount,
   HandleTakenError,
 } from './accounts.ts';
+import { sessionCookie } from './cookie.ts';
 import { corsHeaders } from './cors.ts';
 import type { Db } from './db.ts';
 import { sendError } from './errors.ts';
@@ -36,6 +37,7 @@ export function handleRequest(
   db?: Db,
   sessions?: SessionStore,
   throttle?: LoginThrottle,
+  secureCookies = false,
 ): void {
   // A fresh ID per request, set first so every reply (even errors) carries it.
   const requestId = randomUUID();
@@ -81,7 +83,7 @@ export function handleRequest(
     return;
   }
   if (path === '/login' && req.method === 'POST' && db && sessions) {
-    login(req, res, db, sessions, throttle).catch(() => {
+    login(req, res, db, sessions, throttle, secureCookies).catch(() => {
       if (!res.headersSent) sendError(res, 'server_error');
     });
     return;
@@ -96,6 +98,7 @@ async function login(
   db: Db,
   sessions: SessionStore,
   throttle?: LoginThrottle,
+  secureCookies = false,
 ): Promise<void> {
   const body = await readJsonBody(req);
   if (rejectBadJson(res, body)) return;
@@ -125,7 +128,12 @@ async function login(
     return;
   }
   throttle?.clear(keys[1] as string);
-  sendJson(res, 200, { sessionToken: sessions.create(accountId) });
+  // The token travels only in an HttpOnly cookie, never in the body.
+  res.setHeader(
+    'set-cookie',
+    sessionCookie(sessions.create(accountId), secureCookies),
+  );
+  sendJson(res, 200, { ok: true });
 }
 
 // POST /accounts: validates the request and stores one account (201).
@@ -161,6 +169,7 @@ export function createApiServer(
   db?: Db,
   sessions?: SessionStore,
   throttle: LoginThrottle = createLoginThrottle(),
+  secureCookies = false,
 ): Server {
   return createServer((req, res) =>
     handleRequest(
@@ -172,13 +181,19 @@ export function createApiServer(
       db,
       sessions,
       throttle,
+      secureCookies,
     ),
   );
 }
 
 // Starts listening on the configured host and port (localhost by default).
 export function startServer(
-  config: { host: string; port: number; allowedOrigins?: readonly string[] },
+  config: {
+    host: string;
+    port: number;
+    allowedOrigins?: readonly string[];
+    secureCookies?: boolean;
+  },
   log?: LogFn,
   db?: Db,
   sessions?: SessionStore,
@@ -189,6 +204,8 @@ export function startServer(
     undefined,
     db,
     sessions,
+    undefined,
+    config.secureCookies,
   );
   return new Promise((resolve, reject) => {
     server.once('error', reject);
