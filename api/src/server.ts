@@ -93,8 +93,7 @@ export function handleRequest(
     return;
   }
   if (path === '/me' && req.method === 'GET' && sessions) {
-    const token = readSessionToken(req.headers.cookie);
-    const accountId = token ? sessions.find(token) : undefined;
+    const accountId = sessionAccount(req, sessions);
     if (accountId === undefined) {
       sendError(res, 'unauthorized', 'Please log in.');
       return;
@@ -110,7 +109,23 @@ export function handleRequest(
     sendJson(res, 200, { ok: true });
     return;
   }
+  // Everything else that changes data needs a live session, so a new write
+  // route is protected by default and only answers 404 once logged in.
+  const isWrite = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method ?? '');
+  if (isWrite && sessions && sessionAccount(req, sessions) === undefined) {
+    sendError(res, 'unauthorized', 'Please log in.');
+    return;
+  }
   sendError(res, 'not_found');
+}
+
+// Returns the account of the request's live session cookie, if any.
+function sessionAccount(
+  req: IncomingMessage,
+  sessions: SessionStore,
+): string | undefined {
+  const token = readSessionToken(req.headers.cookie);
+  return token ? sessions.find(token) : undefined;
 }
 
 // POST /login: valid credentials start a session (200); anything else is 401.

@@ -373,3 +373,38 @@ test('GET /me returns the account ID for a live session only', async () => {
     await new Promise((resolve) => server.close(resolve));
   }
 });
+
+test('writes to protected routes need a live session', async () => {
+  const db = createTestDb();
+  const sessions = createMemorySessionStore();
+  const server = createApiServer(undefined, [], undefined, db, sessions);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    for (const method of ['POST', 'PUT', 'PATCH', 'DELETE']) {
+      const res = await fetch(`${base}/spaces`, { method });
+      assert.equal(res.status, 401, method);
+    }
+    // Reading an unknown route is still a plain 404.
+    assert.equal((await fetch(`${base}/spaces`)).status, 404);
+
+    await postJson(`${base}/accounts`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const login = await postJson(`${base}/login`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const cookie = (login.headers.get('set-cookie') ?? '').split(';')[0] ?? '';
+    // Logged in, the same write passes the guard and finds no such route yet.
+    const res = await fetch(`${base}/spaces`, {
+      method: 'POST',
+      headers: { cookie },
+    });
+    assert.equal(res.status, 404);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});

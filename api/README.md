@@ -70,4 +70,6 @@ The database file is set by `LOVE_DB_PATH` (default `love.db`; `/data/love.db` i
 
 `GET /me` answers `200` with `{ accountId }` when the session cookie is live, and `401` otherwise.
 
+Every other `POST`, `PUT`, `PATCH` or `DELETE` needs a live session cookie and answers `401` without one, so a new write route is protected by default. Only `/accounts`, `/login` and `/logout` are open.
+
 `POST /logout` revokes the session named by the cookie and clears the cookie. It answers `200` even when there was no session, so it is safe to repeat.

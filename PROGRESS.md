@@ -1685,3 +1685,9 @@
 - Verified: server test (login then /me gives the account ID; missing and forged cookies get 401). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L282 reject unauthenticated writes on protected routes with 401.
 - Blockers: none
+
+## 2026-11-09 — L282: Reject unauthenticated write
+- Changed: any POST/PUT/PATCH/DELETE other than sign-up, login and logout now answers 401 unless the request carries a live session cookie, so future write routes are protected by default. Reads of unknown routes stay 404.
+- Verified: server test (all four write methods get 401 without a session; GET of an unknown route is 404; once logged in the write reaches routing and gets 404). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L283 add the password change endpoint (old password required).
+- Blockers: none
