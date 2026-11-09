@@ -110,4 +110,17 @@ export const migrations: Migration[] = [
       DROP TABLE accounts;
       ALTER TABLE accounts_new RENAME TO accounts`,
   },
+  {
+    version: 9,
+    // Only a hash of each session token is stored, never the token itself, so
+    // a copy of the database cannot be used to log in.
+    sql: `
+      CREATE TABLE sessions (
+        token_hash TEXT PRIMARY KEY,
+        account_id TEXT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+        created_at TEXT NOT NULL,
+        expires_at TEXT NOT NULL
+      );
+      CREATE INDEX sessions_by_account ON sessions (account_id)`,
+  },
 ];

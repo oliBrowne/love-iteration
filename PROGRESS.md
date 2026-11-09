@@ -1661,3 +1661,9 @@
 - Verified: API tests (throttle unit tests incl. window expiry; server test: 3 failures then a correct password is blocked with 429). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L278 back sessions with a database table of hashed tokens.
 - Blockers: none
+
+## 2026-11-09 — L278: Add session table
+- Changed: migration 9 adds a `sessions` table that stores only a SHA-256 hash of each session token, the account, and creation/expiry times. Rows are removed with their account. Nothing reads or writes it yet; the store switches to it in a later step.
+- Verified: migration test (columns, duplicate hash rejected, unknown account rejected, cascade on account delete). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L279 set the session cookie (HttpOnly, Secure in production).
+- Blockers: none

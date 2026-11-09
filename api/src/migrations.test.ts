@@ -210,3 +210,23 @@ test('handle is unique and email is optional for new accounts', () => {
   insert.run('a2', 'Other', 'hash', 'now', 'now', 'other');
   assert.throws(() => insert.run('a3', 'Again', 'hash', 'now', 'now', 'demo'));
 });
+
+test('sessions keep a token hash per row and go away with their account', () => {
+  const db = freshDb();
+  assert.deepEqual(columns(db, 'sessions'), [
+    'token_hash',
+    'account_id',
+    'created_at',
+    'expires_at',
+  ]);
+  db.prepare(
+    'INSERT INTO accounts (id, display_name, password_hash, created_at, updated_at, handle) VALUES (?, ?, ?, ?, ?, ?)',
+  ).run('a1', 'Demo', 'hash', 'now', 'now', 'demo');
+  const add = db.prepare('INSERT INTO sessions VALUES (?, ?, ?, ?)');
+  add.run('hash-1', 'a1', 'now', 'later');
+  assert.throws(() => add.run('hash-1', 'a1', 'now', 'later'));
+  assert.throws(() => add.run('hash-2', 'nope', 'now', 'later'));
+  db.prepare('DELETE FROM accounts WHERE id = ?').run('a1');
+  assert.equal(db.prepare('SELECT * FROM sessions').all().length, 0);
+  db.close();
+});
