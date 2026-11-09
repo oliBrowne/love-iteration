@@ -1709,3 +1709,9 @@
 - Verified: deletion tests (nothing deleted on wrong password or phrase; solo space, records, sessions removed; shared space handed over with the other person's record and tombstone kept) and a server test (401 without session, 400 cases, 200 then session and login both fail). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L286 add the sharing opt-in screen (local data stays local until an explicit choice).
 - Blockers: none. Note: the handover rule for shared spaces is my choice; revisit if you prefer deleting shared spaces too.
+
+## 2026-11-09 — L286: Add sharing opt-in screen
+- Changed: a new Sharing page (linked from Settings as "Sharing choices") says sharing is off and that everything stays on this device. "Turn on sharing" first asks for confirmation ("Nothing is sent yet…"); only "Yes, turn on sharing" records the choice (in this browser's localStorage, guarded so blocked storage leaves it off). It can be turned off again. The page sends nothing; no account or server is connected in the web app yet.
+- Verified: unit tests for the stored choice (default off, save, blocked storage) and page tests (starts off and stores nothing, "Not now" leaves it off, confirm turns on, turn off, remembers earlier choice); route tests. Typecheck, lint, build, format:check, vitest, API tests, roadmap tests/check. UI reasoned (not browser-tested): plain text and buttons in the existing layout, so a narrow phone layout reflows; native buttons and links are keyboard reachable with the app's visible focus styles; no motion added.
+- Next: L287 create shared space endpoint (authenticated creator becomes owner).
+- Blockers: none

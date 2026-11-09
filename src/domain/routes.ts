@@ -10,6 +10,7 @@ export const routes = [
   'search',
   'settings',
   'privacy',
+  'sharing',
 ] as const;
 
 export type Route = (typeof routes)[number];
@@ -26,6 +27,7 @@ export const routeLabels: Record<Route, string> = {
   search: 'Search',
   settings: 'Settings',
   privacy: 'Privacy policy',
+  sharing: 'Sharing',
 };
 
 export function routeToHash(route: Route): string {

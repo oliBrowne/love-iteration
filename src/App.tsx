@@ -7,6 +7,7 @@ import { IdeasPage } from './features/ideas/IdeasPage.tsx';
 import { MemoriesPage } from './features/memories/MemoriesPage.tsx';
 import { ReflectionPage } from './features/reflection/ReflectionPage.tsx';
 import { RitualsPage } from './features/rituals/RitualsPage.tsx';
+import { SharingPage } from './features/sharing/SharingPage.tsx';
 import { SearchPage } from './features/search/SearchPage.tsx';
 import { TimelinePage } from './features/timeline/TimelinePage.tsx';
 import { storageSupported, storageUnsupportedMessage } from './data/index.ts';
@@ -29,6 +30,8 @@ function App() {
         <SettingsPage />
       ) : route === 'privacy' ? (
         <PrivacyPage />
+      ) : route === 'sharing' ? (
+        <SharingPage />
       ) : route === 'gratitude' ? (
         <GratitudePage />
       ) : route === 'memories' ? (

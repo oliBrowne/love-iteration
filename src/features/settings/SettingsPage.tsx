@@ -129,6 +129,9 @@ export function SettingsPage({ sources }: SettingsPageProps) {
       <p>
         <a href={routeToHash('privacy')}>Read the privacy policy</a>
       </p>
+      <p>
+        <a href={routeToHash('sharing')}>Sharing choices</a>
+      </p>
       {counts ? (
         <ul aria-label="Records stored on this device">
           {counts.map(({ key, label, count }) => (

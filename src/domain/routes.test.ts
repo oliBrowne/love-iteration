@@ -5,7 +5,7 @@ describe('routes', () => {
   it('lists the main nav pages: Home, Check-in, Gratitude, Memories, Rituals, Reflection, Ideas, Timeline, Search, and Settings', () => {
     expect(
       routes
-        .filter((route) => route !== 'privacy')
+        .filter((route) => route !== 'privacy' && route !== 'sharing')
         .map((route) => routeLabels[route]),
     ).toEqual([
       'Home',
@@ -24,6 +24,11 @@ describe('routes', () => {
   it('has a Privacy policy page reached from Settings', () => {
     expect(routeLabels.privacy).toBe('Privacy policy');
     expect(parseRoute('#/privacy')).toBe('privacy');
+  });
+
+  it('has a Sharing page reached from Settings', () => {
+    expect(routeLabels.sharing).toBe('Sharing');
+    expect(parseRoute('#/sharing')).toBe('sharing');
   });
 });
 
