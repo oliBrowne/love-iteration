@@ -80,6 +80,14 @@ export async function createAccount(
   return { id, handle: details.handle, displayName: details.displayName };
 }
 
+// A hash nobody's password matches. Unknown handles are checked against it so
+// they take as long as a wrong password and timing reveals nothing.
+let decoyHash: Promise<string> | undefined;
+function getDecoyHash(): Promise<string> {
+  decoyHash ??= hashPassword('decoy-password-for-unknown-handles');
+  return decoyHash;
+}
+
 // Returns the account ID when the handle and password match, otherwise
 // undefined. A missing account and a wrong password look the same to callers.
 export async function checkLogin(
@@ -90,7 +98,10 @@ export async function checkLogin(
   const row = db
     .prepare('SELECT id, password_hash FROM accounts WHERE handle = ?')
     .get(handle.trim().toLowerCase());
-  if (!row) return undefined;
+  if (!row) {
+    await verifyPassword(password, await getDecoyHash());
+    return undefined;
+  }
   const ok = await verifyPassword(password, String(row.password_hash));
   return ok ? String(row.id) : undefined;
 }

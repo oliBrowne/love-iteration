@@ -216,6 +216,14 @@ test('POST /login starts a session for valid credentials only', async () => {
     assert.equal(wrong.status, 401);
     const missing = await postJson(`${base}/login`, { handle: 5 });
     assert.equal(missing.status, 401);
+
+    // An unknown handle answers exactly like a wrong password.
+    const unknown = await postJson(`${base}/login`, {
+      handle: 'nobody',
+      password: 'not the secret!',
+    });
+    assert.equal(unknown.status, wrong.status);
+    assert.deepEqual(await unknown.json(), await wrong.json());
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }

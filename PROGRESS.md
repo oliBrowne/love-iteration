@@ -1649,3 +1649,9 @@
 - Verified: API tests (store lookup, uniqueness, expiry; checkLogin right/wrong/unknown; POST /login 200 with a token that finds the account, 401 for a wrong password and a malformed body). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L276 make failed logins reveal nothing about whether an account exists (including timing). The token is returned in the body only until L279 moves it into a cookie; L278 will back the store with the database.
 - Blockers: none
+
+## 2026-11-09 — L276: Add failed-login response
+- Changed: a login for an unknown handle now does the same password-hashing work as a wrong password (against a decoy hash), so neither the 401 body nor the response time shows whether an account exists.
+- Verified: API tests (unknown handle and wrong password return identical 401 status and body). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check. Timing equality reasoned from the shared scrypt path, not measured.
+- Next: L277 limit repeated login failures.
+- Blockers: none
