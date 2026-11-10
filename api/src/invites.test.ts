@@ -92,3 +92,33 @@ test('an expired token cannot be accepted', () => {
   );
   assert.equal(findInvite(db, 'not-a-token'), 'unknown');
 });
+
+test('a token names exactly one space', () => {
+  const { db, space } = setup();
+  const other = createSpace(db, 'a1', 'Another demo space');
+  const first = createInvite(db, 'a1', space.id);
+  const second = createInvite(db, 'a1', other.id);
+  if (first === 'not_owner' || second === 'not_owner') assert.fail();
+  const lookup = (link: string) => findInvite(db, link.replace('/invite/', ''));
+  assert.deepEqual(lookup(first.link), {
+    inviteId: first.id,
+    spaceId: space.id,
+  });
+  assert.deepEqual(lookup(second.link), {
+    inviteId: second.id,
+    spaceId: other.id,
+  });
+  // Every stored invite points at one space; there is no "all spaces" form.
+  const rows = db.prepare('SELECT space_id FROM invites').all();
+  assert.deepEqual(
+    rows.map((r) => r.space_id).sort(),
+    [space.id, other.id].sort(),
+  );
+  assert.throws(() =>
+    db
+      .prepare(
+        "INSERT INTO invites (id, space_id, created_by, token_hash, created_at, expires_at) VALUES ('x', NULL, 'a1', 'h', 'n', 'n')",
+      )
+      .run(),
+  );
+});

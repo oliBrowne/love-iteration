@@ -1739,3 +1739,9 @@
 - Verified: unit tests (hours parsing; token valid just before expiry, expired at and after it; unknown token) and a server test (hours=1 expires within the hour; hours=0 gives 400). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L291 limit invite scope (token names exactly one space).
 - Blockers: none
+
+## 2026-11-10 — L291: Limit invite scope
+- Changed: Documented and tested that an invite token resolves to exactly one space: two invites for two spaces each open only their own, and the database refuses an invite with no space.
+- Verified: invite test with two spaces plus a NOT NULL check. API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L292 accept invite endpoint (accepted person becomes member).
+- Blockers: none

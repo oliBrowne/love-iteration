@@ -53,7 +53,10 @@ export function createInvite(
   return { id, link: `/invite/${token}`, expiresAt };
 }
 
-// Looks up an invite by the token from its link. An unknown token and an
+// Looks up an invite by the token from its link. A token names exactly one
+// space (the invites table requires a space and has no wildcard form), so it
+// can only ever open the space it was created for.
+// An unknown token and an
 // expired one are told apart so the screen can say what happened; an expired
 // invite can never be accepted.
 export function findInvite(

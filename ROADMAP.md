@@ -321,7 +321,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L288 List my spaces endpoint — Done when only memberships are returned.
 - [x] L289 Create invite endpoint — Done when owner receives a one-time invitation link.
 - [x] L290 Set invite expiry — Done when expired token cannot be accepted.
-- [ ] L291 Limit invite scope — Done when token names exactly one space.
+- [x] L291 Limit invite scope — Done when token names exactly one space.
 - [ ] L292 Accept invite endpoint — Done when accepted person becomes member.
 - [ ] L293 Reject invite reuse — Done when second acceptance fails.
 - [ ] L294 Revoke invite endpoint — Done when owner can invalidate unused token.
