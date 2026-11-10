@@ -399,7 +399,7 @@ test('writes to protected routes need a live session', async () => {
     });
     const cookie = (login.headers.get('set-cookie') ?? '').split(';')[0] ?? '';
     // Logged in, the same write passes the guard and finds no such route yet.
-    const res = await fetch(`${base}/spaces`, {
+    const res = await fetch(`${base}/not-a-route`, {
       method: 'POST',
       headers: { cookie },
     });
@@ -530,6 +530,48 @@ test('DELETE /account needs login, the password and the confirmation phrase', as
       password: 'a long enough secret',
     });
     assert.equal(again.status, 401);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
+
+test('POST /spaces makes the logged-in caller the owner', async () => {
+  const db = createTestDb();
+  const sessions = createMemorySessionStore();
+  const server = createApiServer(undefined, [], undefined, db, sessions);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    await postJson(`${base}/accounts`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const login = await postJson(`${base}/login`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const cookie = (login.headers.get('set-cookie') ?? '').split(';')[0] ?? '';
+    const send = (value: unknown, withCookie = true) =>
+      fetch(`${base}/spaces`, {
+        method: 'POST',
+        headers: {
+          ...(withCookie ? { cookie } : {}),
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(value),
+      });
+
+    assert.equal((await send({ name: 'Demo space' }, false)).status, 401);
+    assert.equal((await send({ name: '  ' })).status, 400);
+    const made = await send({ name: 'Demo space' });
+    assert.equal(made.status, 201);
+    const space = (await made.json()) as { id: string; role: string };
+    assert.equal(space.role, 'owner');
+    const row = db
+      .prepare('SELECT role FROM memberships WHERE space_id = ?')
+      .get(space.id);
+    assert.equal(row?.role, 'owner');
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }

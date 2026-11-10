@@ -25,6 +25,7 @@ import type { RateLimiter } from './rateLimit.ts';
 import { formatLogLine } from './requestLog.ts';
 import { securityHeaders } from './securityHeaders.ts';
 import type { SessionStore } from './sessions.ts';
+import { checkSpaceName, createSpace, spaceNameRule } from './spaces.ts';
 import { apiName, apiVersion } from './version.ts';
 
 function sendJson(res: ServerResponse, status: number, body: unknown): void {
@@ -138,6 +139,17 @@ export function handleRequest(
     );
     return;
   }
+  if (path === '/spaces' && req.method === 'POST' && db && sessions) {
+    const accountId = sessionAccount(req, sessions);
+    if (accountId === undefined) {
+      sendError(res, 'unauthorized', 'Please log in.');
+      return;
+    }
+    addSpace(req, res, db, accountId).catch(() => {
+      if (!res.headersSent) sendError(res, 'server_error');
+    });
+    return;
+  }
   // Everything else that changes data needs a live session, so a new write
   // route is protected by default and only answers 404 once logged in.
   const isWrite = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method ?? '');
@@ -155,6 +167,28 @@ function sessionAccount(
 ): string | undefined {
   const token = readSessionToken(req.headers.cookie);
   return token ? sessions.find(token) : undefined;
+}
+
+// POST /spaces: creates a shared space; the caller becomes its owner (201).
+async function addSpace(
+  req: IncomingMessage,
+  res: ServerResponse,
+  db: Db,
+  accountId: string,
+): Promise<void> {
+  const body = await readJsonBody(req);
+  if (rejectBadJson(res, body)) return;
+  const input = body.ok ? body.value : null;
+  const name = checkSpaceName(
+    typeof input === 'object' && input !== null
+      ? (input as Record<string, unknown>).name
+      : undefined,
+  );
+  if (name === undefined) {
+    sendError(res, 'invalid_request', spaceNameRule);
+    return;
+  }
+  sendJson(res, 201, createSpace(db, accountId, name));
 }
 
 // POST /password: the old password is required; the new one replaces it (200)

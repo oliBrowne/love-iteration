@@ -317,7 +317,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L284 Add password-change session revocation — Done when old sessions stop working.
 - [x] L285 Add account deletion flow — Done when records and sessions are removed after confirmation.
 - [x] L286 Add sharing opt-in screen — Done when local data stays local until explicit choice.
-- [ ] L287 Create shared space endpoint — Done when authenticated creator becomes owner.
+- [x] L287 Create shared space endpoint — Done when authenticated creator becomes owner.
 - [ ] L288 List my spaces endpoint — Done when only memberships are returned.
 - [ ] L289 Create invite endpoint — Done when owner receives a one-time invitation link.
 - [ ] L290 Set invite expiry — Done when expired token cannot be accepted.

@@ -1715,3 +1715,9 @@
 - Verified: unit tests for the stored choice (default off, save, blocked storage) and page tests (starts off and stores nothing, "Not now" leaves it off, confirm turns on, turn off, remembers earlier choice); route tests. Typecheck, lint, build, format:check, vitest, API tests, roadmap tests/check. UI reasoned (not browser-tested): plain text and buttons in the existing layout, so a narrow phone layout reflows; native buttons and links are keyboard reachable with the app's visible focus styles; no motion added.
 - Next: L287 create shared space endpoint (authenticated creator becomes owner).
 - Blockers: none
+
+## 2026-11-10 — L287: Create shared space endpoint
+- Changed: `POST /spaces` (logged in) takes a name (1–80 characters) and creates a shared space; the caller becomes its owner. 401 without a session, 400 for a bad name.
+- Verified: spaces unit tests (name rule, creator is owner) and a server test (401, 400, 201 with owner membership row). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L288 list my spaces endpoint (only memberships returned).
+- Blockers: none

@@ -170,6 +170,30 @@ export const openApiDocument = {
         },
       },
     },
+    '/spaces': {
+      post: {
+        summary: 'Create a shared space. The caller becomes its owner.',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['name'],
+                properties: {
+                  name: { type: 'string', minLength: 1, maxLength: 80 },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          '201': { description: 'The space was created: id, name, role.' },
+          '400': { description: 'The name is not valid.' },
+          '401': { description: 'There is no live session.' },
+        },
+      },
+    },
     '/logout': {
       post: {
         summary: 'Log out: revoke the session in the cookie and clear it.',
