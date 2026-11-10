@@ -810,3 +810,63 @@ test('DELETE /spaces/:id/invites/:inviteId cancels an unused invite', async () =
     await new Promise((resolve) => server.close(resolve));
   }
 });
+
+test('DELETE /spaces/:id/membership removes my membership', async () => {
+  const db = createTestDb();
+  const sessions = createMemorySessionStore();
+  const server = createApiServer(undefined, [], undefined, db, sessions);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    const cookies: string[] = [];
+    for (const handle of ['sam', 'alex']) {
+      await postJson(`${base}/accounts`, {
+        handle,
+        password: 'a long enough secret',
+      });
+      const login = await postJson(`${base}/login`, {
+        handle,
+        password: 'a long enough secret',
+      });
+      cookies.push((login.headers.get('set-cookie') ?? '').split(';')[0] ?? '');
+    }
+    const send = (
+      method: string,
+      path: string,
+      cookie?: string,
+      body?: unknown,
+    ) =>
+      fetch(`${base}${path}`, {
+        method,
+        headers: {
+          ...(cookie ? { cookie } : {}),
+          'content-type': 'application/json',
+        },
+        body: body === undefined ? undefined : JSON.stringify(body),
+      });
+    const made = await send('POST', '/spaces', cookies[0], {
+      name: 'Sam demo',
+    });
+    const { id } = (await made.json()) as { id: string };
+    const inv = await send('POST', `/spaces/${id}/invites`, cookies[0]);
+    const { link } = (await inv.json()) as { link: string };
+    await send('POST', '/invites/accept', cookies[1], {
+      token: link.replace('/invite/', ''),
+    });
+    const path = `/spaces/${id}/membership`;
+
+    assert.equal((await send('DELETE', path)).status, 401);
+    assert.equal((await send('DELETE', path, cookies[1])).status, 200);
+    assert.equal((await send('DELETE', path, cookies[1])).status, 404);
+    const mine = await send('GET', '/spaces', cookies[1]);
+    assert.deepEqual(await mine.json(), { spaces: [] });
+    const theirs = await send('GET', '/spaces', cookies[0]);
+    assert.equal(
+      ((await theirs.json()) as { spaces: unknown[] }).spaces.length,
+      1,
+    );
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});

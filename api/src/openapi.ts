@@ -240,6 +240,17 @@ export const openApiDocument = {
         },
       },
     },
+    '/spaces/{id}/membership': {
+      delete: {
+        summary:
+          'Leave a shared space. If the owner leaves, the longest-standing member becomes owner; the last person out closes the space.',
+        responses: {
+          '200': { description: 'The caller is no longer a member.' },
+          '401': { description: 'There is no live session.' },
+          '404': { description: 'The caller is not a member of that space.' },
+        },
+      },
+    },
     '/invites/accept': {
       post: {
         summary:

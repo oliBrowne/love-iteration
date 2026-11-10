@@ -1763,3 +1763,9 @@
 - Verified: unit tests (owner revokes, repeat is safe, accept refused afterwards, non-owner/wrong space/missing not found, accepted can't be revoked) and a server test (401, 404, 200, accept then 400). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L295 leave shared space endpoint (membership is removed).
 - Blockers: none
+
+## 2026-11-10 — L295: Leave shared space endpoint
+- Changed: `DELETE /spaces/:id/membership` removes the caller's membership. Their records stay for the others. If the owner leaves, the longest-standing member becomes owner; the last person out closes the space. Non-members get 404.
+- Verified: unit tests (member leaves, space stays; owner hand-over; last one out deletes; not-a-member) and a server test (401, 200, 404 on repeat, lists updated). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check. Note: leaving keeps the leaver's records in the space — revisit if you prefer removing them.
+- Next: L296 remove member endpoint (owner can remove another member).
+- Blockers: none

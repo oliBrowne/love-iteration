@@ -35,6 +35,7 @@ import type { SessionStore } from './sessions.ts';
 import {
   checkSpaceName,
   createSpace,
+  leaveSpace,
   listSpaces,
   spaceNameRule,
 } from './spaces.ts';
@@ -200,6 +201,18 @@ export function handleRequest(
     const invite = createInvite(db, accountId, inviteMatch[1] as string, hours);
     if (invite === 'not_owner') sendError(res, 'not_found');
     else sendJson(res, 201, invite);
+    return;
+  }
+  const leaveMatch = /^\/spaces\/([^/]+)\/membership$/.exec(path ?? '');
+  if (leaveMatch && req.method === 'DELETE' && db && sessions) {
+    const accountId = sessionAccount(req, sessions);
+    if (accountId === undefined) {
+      sendError(res, 'unauthorized', 'Please log in.');
+      return;
+    }
+    if (leaveSpace(db, accountId, leaveMatch[1] as string) === 'not_found') {
+      sendError(res, 'not_found');
+    } else sendJson(res, 200, { ok: true });
     return;
   }
   const revokeMatch = /^\/spaces\/([^/]+)\/invites\/([^/]+)$/.exec(path ?? '');

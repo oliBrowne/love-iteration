@@ -55,3 +55,53 @@ export function listSpaces(db: Db, accountId: string): Space[] {
       role: row.role === 'owner' ? 'owner' : 'member',
     }));
 }
+
+// Removes the account's membership. Their records stay in the space for the
+// others. If the owner leaves and others remain, the longest-standing other
+// member becomes owner; if nobody remains, the space and its records are
+// deleted. Returns 'not_found' when the account is not a member.
+export function leaveSpace(
+  db: Db,
+  accountId: string,
+  spaceId: string,
+): 'left' | 'not_found' {
+  const mine = db
+    .prepare('SELECT 1 FROM memberships WHERE space_id = ? AND account_id = ?')
+    .get(spaceId, accountId);
+  if (!mine) return 'not_found';
+  db.exec('BEGIN');
+  try {
+    const heir = db
+      .prepare(
+        `SELECT account_id FROM memberships
+         WHERE space_id = ? AND account_id != ?
+         ORDER BY joined_at, account_id LIMIT 1`,
+      )
+      .get(spaceId, accountId);
+    if (!heir) {
+      db.prepare('DELETE FROM spaces WHERE id = ?').run(spaceId);
+    } else {
+      const stillOwned = db
+        .prepare(
+          "SELECT 1 FROM memberships WHERE space_id = ? AND account_id != ? AND role = 'owner'",
+        )
+        .get(spaceId, accountId);
+      if (!stillOwned) {
+        db.prepare(
+          "UPDATE memberships SET role = 'owner' WHERE space_id = ? AND account_id = ?",
+        ).run(spaceId, String(heir.account_id));
+      }
+      db.prepare(
+        'DELETE FROM memberships WHERE space_id = ? AND account_id = ?',
+      ).run(spaceId, accountId);
+      db.prepare(
+        'DELETE FROM sync_cursors WHERE space_id = ? AND account_id = ?',
+      ).run(spaceId, accountId);
+    }
+    db.exec('COMMIT');
+  } catch (error) {
+    db.exec('ROLLBACK');
+    throw error;
+  }
+  return 'left';
+}
