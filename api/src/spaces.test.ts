@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { after, test } from 'node:test';
-import { checkSpaceName, createSpace } from './spaces.ts';
+import { checkSpaceName, createSpace, listSpaces } from './spaces.ts';
 import { closeTestDbs, createTestDb } from './testDb.ts';
 
 after(closeTestDbs);
@@ -30,4 +30,32 @@ test('the creator becomes the owner of the new space', () => {
       ?.created_by,
     'a1',
   );
+});
+
+test('listing returns only the spaces the account belongs to', () => {
+  const db = createTestDb();
+  const add = db.prepare(
+    'INSERT INTO accounts (id, display_name, password_hash, created_at, updated_at, handle) VALUES (?, ?, ?, ?, ?, ?)',
+  );
+  add.run('a1', 'Demo One', 'h', 'now', 'now', 'one');
+  add.run('a2', 'Demo Two', 'h', 'now', 'now', 'two');
+  const mine = createSpace(db, 'a1', 'Mine');
+  createSpace(db, 'a2', 'Theirs');
+  const joined = createSpace(db, 'a2', 'Joined');
+  db.prepare('INSERT INTO memberships VALUES (?, ?, ?, ?)').run(
+    joined.id,
+    'a1',
+    'member',
+    '9999',
+  );
+  const spaces = listSpaces(db, 'a1');
+  assert.deepEqual(
+    spaces.map((s) => [s.name, s.role]),
+    [
+      ['Mine', 'owner'],
+      ['Joined', 'member'],
+    ],
+  );
+  assert.equal(spaces[0]?.id, mine.id);
+  assert.deepEqual(listSpaces(db, 'nobody'), []);
 });

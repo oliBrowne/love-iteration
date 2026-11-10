@@ -1721,3 +1721,9 @@
 - Verified: spaces unit tests (name rule, creator is owner) and a server test (401, 400, 201 with owner membership row). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L288 list my spaces endpoint (only memberships returned).
 - Blockers: none
+
+## 2026-11-10 — L288: List my spaces endpoint
+- Changed: `GET /spaces` (logged in) returns only the spaces the caller is a member of, with their role. 401 without a session.
+- Verified: store test (own and joined spaces listed, others' not) and a server test with two accounts (each sees only their own; 401 logged out). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L289 create invite endpoint (owner receives a one-time invitation link).
+- Blockers: none

@@ -387,7 +387,7 @@ test('writes to protected routes need a live session', async () => {
       assert.equal(res.status, 401, method);
     }
     // Reading an unknown route is still a plain 404.
-    assert.equal((await fetch(`${base}/spaces`)).status, 404);
+    assert.equal((await fetch(`${base}/not-a-route`)).status, 404);
 
     await postJson(`${base}/accounts`, {
       handle: 'sam',
@@ -572,6 +572,50 @@ test('POST /spaces makes the logged-in caller the owner', async () => {
       .prepare('SELECT role FROM memberships WHERE space_id = ?')
       .get(space.id);
     assert.equal(row?.role, 'owner');
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
+
+test('GET /spaces lists only my memberships', async () => {
+  const db = createTestDb();
+  const sessions = createMemorySessionStore();
+  const server = createApiServer(undefined, [], undefined, db, sessions);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    const cookies: string[] = [];
+    for (const handle of ['sam', 'alex']) {
+      await postJson(`${base}/accounts`, {
+        handle,
+        password: 'a long enough secret',
+      });
+      const login = await postJson(`${base}/login`, {
+        handle,
+        password: 'a long enough secret',
+      });
+      cookies.push((login.headers.get('set-cookie') ?? '').split(';')[0] ?? '');
+    }
+    const make = (cookie: string, name: string) =>
+      fetch(`${base}/spaces`, {
+        method: 'POST',
+        headers: { cookie, 'content-type': 'application/json' },
+        body: JSON.stringify({ name }),
+      });
+    await make(cookies[0] as string, 'Sam demo');
+    await make(cookies[1] as string, 'Alex demo');
+
+    assert.equal((await fetch(`${base}/spaces`)).status, 401);
+    const res = await fetch(`${base}/spaces`, {
+      headers: { cookie: cookies[0] as string },
+    });
+    assert.equal(res.status, 200);
+    const body = (await res.json()) as { spaces: { name: string }[] };
+    assert.deepEqual(
+      body.spaces.map((s) => s.name),
+      ['Sam demo'],
+    );
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }

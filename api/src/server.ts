@@ -25,7 +25,12 @@ import type { RateLimiter } from './rateLimit.ts';
 import { formatLogLine } from './requestLog.ts';
 import { securityHeaders } from './securityHeaders.ts';
 import type { SessionStore } from './sessions.ts';
-import { checkSpaceName, createSpace, spaceNameRule } from './spaces.ts';
+import {
+  checkSpaceName,
+  createSpace,
+  listSpaces,
+  spaceNameRule,
+} from './spaces.ts';
 import { apiName, apiVersion } from './version.ts';
 
 function sendJson(res: ServerResponse, status: number, body: unknown): void {
@@ -137,6 +142,15 @@ export function handleRequest(
         if (!res.headersSent) sendError(res, 'server_error');
       },
     );
+    return;
+  }
+  if (path === '/spaces' && req.method === 'GET' && db && sessions) {
+    const accountId = sessionAccount(req, sessions);
+    if (accountId === undefined) {
+      sendError(res, 'unauthorized', 'Please log in.');
+      return;
+    }
+    sendJson(res, 200, { spaces: listSpaces(db, accountId) });
     return;
   }
   if (path === '/spaces' && req.method === 'POST' && db && sessions) {

@@ -171,6 +171,15 @@ export const openApiDocument = {
       },
     },
     '/spaces': {
+      get: {
+        summary: 'List the spaces the caller belongs to (and only those).',
+        responses: {
+          '200': {
+            description: 'An object with a spaces list: id, name, role.',
+          },
+          '401': { description: 'There is no live session.' },
+        },
+      },
       post: {
         summary: 'Create a shared space. The caller becomes its owner.',
         requestBody: {

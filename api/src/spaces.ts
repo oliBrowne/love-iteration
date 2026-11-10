@@ -38,3 +38,20 @@ export function createSpace(db: Db, accountId: string, name: string): Space {
   }
   return { id, name, role: 'owner' };
 }
+
+// Lists only the spaces this account belongs to, oldest membership first.
+export function listSpaces(db: Db, accountId: string): Space[] {
+  return db
+    .prepare(
+      `SELECT s.id, s.name, m.role FROM memberships m
+       JOIN spaces s ON s.id = m.space_id
+       WHERE m.account_id = ?
+       ORDER BY m.joined_at, s.id`,
+    )
+    .all(accountId)
+    .map((row) => ({
+      id: String(row.id),
+      name: String(row.name),
+      role: row.role === 'owner' ? 'owner' : 'member',
+    }));
+}
