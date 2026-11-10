@@ -7,6 +7,7 @@ import {
   findInvite,
   hashInviteToken,
   parseInviteHours,
+  revokeInvite,
 } from './invites.ts';
 import { createSpace } from './spaces.ts';
 import { closeTestDbs, createTestDb } from './testDb.ts';
@@ -190,4 +191,33 @@ test('a second acceptance fails and adds no one', () => {
     db.prepare('SELECT accepted_by FROM invites').get()?.accepted_by,
     'a2',
   );
+});
+
+test('the owner can revoke an unused invite and it cannot be accepted', () => {
+  const { db, space } = setup();
+  const invite = createInvite(db, 'a1', space.id);
+  if (invite === 'not_owner') assert.fail();
+  const token = invite.link.replace('/invite/', '');
+  assert.equal(revokeInvite(db, 'a2', space.id, invite.id), 'not_found');
+  assert.equal(findInvite(db, token) === 'revoked', false);
+  assert.equal(revokeInvite(db, 'a1', space.id, invite.id), 'revoked');
+  assert.equal(revokeInvite(db, 'a1', space.id, invite.id), 'revoked');
+  assert.equal(findInvite(db, token), 'revoked');
+  assert.equal(acceptInvite(db, 'a2', token), 'revoked');
+  assert.equal(
+    db.prepare('SELECT * FROM memberships WHERE account_id = ?').all('a2')
+      .length,
+    0,
+  );
+});
+
+test('an accepted invite cannot be revoked; wrong space is not found', () => {
+  const { db, space } = setup();
+  const other = createSpace(db, 'a1', 'Another demo space');
+  const invite = createInvite(db, 'a1', space.id);
+  if (invite === 'not_owner') assert.fail();
+  assert.equal(revokeInvite(db, 'a1', other.id, invite.id), 'not_found');
+  acceptInvite(db, 'a2', invite.link.replace('/invite/', ''));
+  assert.equal(revokeInvite(db, 'a1', space.id, invite.id), 'used');
+  assert.equal(revokeInvite(db, 'a1', space.id, 'missing'), 'not_found');
 });

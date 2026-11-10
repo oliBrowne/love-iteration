@@ -1757,3 +1757,9 @@
 - Verified: unit test (second and third acceptance return used; no extra member; first acceptor recorded) and server test (409 for the same and a different account). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L294 revoke invite endpoint (owner can invalidate an unused token).
 - Blockers: none
+
+## 2026-11-10 — L294: Revoke invite endpoint
+- Changed: `DELETE /spaces/:id/invites/:inviteId` lets the space's owner cancel an unused invitation; the link then fails with 400 "cancelled". Non-owners and wrong spaces get 404, an already-accepted invite gets 409.
+- Verified: unit tests (owner revokes, repeat is safe, accept refused afterwards, non-owner/wrong space/missing not found, accepted can't be revoked) and a server test (401, 404, 200, accept then 400). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L295 leave shared space endpoint (membership is removed).
+- Blockers: none

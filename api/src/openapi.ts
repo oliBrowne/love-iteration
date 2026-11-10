@@ -227,6 +227,19 @@ export const openApiDocument = {
         },
       },
     },
+    '/spaces/{id}/invites/{inviteId}': {
+      delete: {
+        summary: 'Cancel an unused invitation. Owner only.',
+        responses: {
+          '200': { description: 'The invitation can no longer be accepted.' },
+          '401': { description: 'There is no live session.' },
+          '404': {
+            description: 'No such invitation, or the caller does not own it.',
+          },
+          '409': { description: 'The invitation was already accepted.' },
+        },
+      },
+    },
     '/invites/accept': {
       post: {
         summary:

@@ -25,6 +25,7 @@ import {
   createInvite,
   inviteHoursRule,
   parseInviteHours,
+  revokeInvite,
 } from './invites.ts';
 import { readJsonBody, rejectBadJson } from './jsonBody.ts';
 import type { RateLimiter } from './rateLimit.ts';
@@ -201,6 +202,25 @@ export function handleRequest(
     else sendJson(res, 201, invite);
     return;
   }
+  const revokeMatch = /^\/spaces\/([^/]+)\/invites\/([^/]+)$/.exec(path ?? '');
+  if (revokeMatch && req.method === 'DELETE' && db && sessions) {
+    const accountId = sessionAccount(req, sessions);
+    if (accountId === undefined) {
+      sendError(res, 'unauthorized', 'Please log in.');
+      return;
+    }
+    const result = revokeInvite(
+      db,
+      accountId,
+      revokeMatch[1] as string,
+      revokeMatch[2] as string,
+    );
+    if (result === 'not_found') sendError(res, 'not_found');
+    else if (result === 'used') {
+      sendError(res, 'conflict', 'That invitation was already used.');
+    } else sendJson(res, 200, { ok: true });
+    return;
+  }
   // Everything else that changes data needs a live session, so a new write
   // route is protected by default and only answers 404 once logged in.
   const isWrite = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method ?? '');
@@ -246,6 +266,8 @@ async function joinSpace(
     sendError(res, 'invalid_request', 'That invitation has expired.');
   } else if (result === 'used') {
     sendError(res, 'conflict', 'That invitation was already used.');
+  } else if (result === 'revoked') {
+    sendError(res, 'invalid_request', 'That invitation was cancelled.');
   } else {
     sendJson(res, 200, { spaceId: result.spaceId });
   }

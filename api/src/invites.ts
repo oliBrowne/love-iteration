@@ -63,13 +63,19 @@ export function findInvite(
   db: Db,
   token: string,
   now: () => number = Date.now,
-): { inviteId: string; spaceId: string } | 'unknown' | 'expired' | 'used' {
+):
+  | { inviteId: string; spaceId: string }
+  | 'unknown'
+  | 'expired'
+  | 'used'
+  | 'revoked' {
   const row = db
     .prepare(
-      'SELECT id, space_id, expires_at, accepted_at FROM invites WHERE token_hash = ?',
+      'SELECT id, space_id, expires_at, accepted_at, revoked_at FROM invites WHERE token_hash = ?',
     )
     .get(hashInviteToken(token));
   if (!row) return 'unknown';
+  if (row.revoked_at !== null) return 'revoked';
   if (row.accepted_at !== null) return 'used';
   if (Date.parse(String(row.expires_at)) <= now()) return 'expired';
   return { inviteId: String(row.id), spaceId: String(row.space_id) };
@@ -85,7 +91,7 @@ export function acceptInvite(
   accountId: string,
   token: string,
   now: () => number = Date.now,
-): Accepted | 'unknown' | 'expired' | 'used' {
+): Accepted | 'unknown' | 'expired' | 'used' | 'revoked' {
   const found = findInvite(db, token, now);
   if (typeof found === 'string') return found;
   const when = new Date(now()).toISOString();
@@ -111,4 +117,29 @@ export function acceptInvite(
     throw error;
   }
   return { spaceId: found.spaceId };
+}
+
+// Lets the owner of a space cancel an invite nobody has accepted yet. A
+// stranger, a plain member, or an invite of another space is 'not_found'
+// (nothing is revealed); an accepted invite cannot be revoked ('used').
+export function revokeInvite(
+  db: Db,
+  accountId: string,
+  spaceId: string,
+  inviteId: string,
+  now: () => number = Date.now,
+): 'revoked' | 'not_found' | 'used' {
+  const row = db
+    .prepare(
+      `SELECT i.accepted_at FROM invites i
+       JOIN memberships m ON m.space_id = i.space_id
+       WHERE i.id = ? AND i.space_id = ? AND m.account_id = ? AND m.role = 'owner'`,
+    )
+    .get(inviteId, spaceId, accountId);
+  if (!row) return 'not_found';
+  if (row.accepted_at !== null) return 'used';
+  db.prepare(
+    'UPDATE invites SET revoked_at = COALESCE(revoked_at, ?) WHERE id = ?',
+  ).run(new Date(now()).toISOString(), inviteId);
+  return 'revoked';
 }
