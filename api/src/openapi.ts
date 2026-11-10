@@ -207,8 +207,19 @@ export const openApiDocument = {
       post: {
         summary:
           'Create a one-time invitation link for a space. Owner only. The link is shown once.',
+        parameters: [
+          {
+            name: 'hours',
+            in: 'query',
+            required: false,
+            description:
+              'Hours the invite stays valid (1 to 720, default 168).',
+            schema: { type: 'integer', minimum: 1, maximum: 720 },
+          },
+        ],
         responses: {
           '201': { description: 'The invite: id, link, expiresAt.' },
+          '400': { description: 'The hours value is not valid.' },
           '401': { description: 'There is no live session.' },
           '404': {
             description: 'No such space, or the caller does not own it.',

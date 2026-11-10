@@ -320,7 +320,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L287 Create shared space endpoint — Done when authenticated creator becomes owner.
 - [x] L288 List my spaces endpoint — Done when only memberships are returned.
 - [x] L289 Create invite endpoint — Done when owner receives a one-time invitation link.
-- [ ] L290 Set invite expiry — Done when expired token cannot be accepted.
+- [x] L290 Set invite expiry — Done when expired token cannot be accepted.
 - [ ] L291 Limit invite scope — Done when token names exactly one space.
 - [ ] L292 Accept invite endpoint — Done when accepted person becomes member.
 - [ ] L293 Reject invite reuse — Done when second acceptance fails.

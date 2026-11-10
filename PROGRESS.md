@@ -1733,3 +1733,9 @@
 - Verified: invite unit tests (hash only stored, unique links, non-owner/unknown space refused) and a server test (401, 404, 201 link shape). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L290 set invite expiry (expired token cannot be accepted).
 - Blockers: none
+
+## 2026-11-10 — L290: Set invite expiry
+- Changed: Invites take an optional `?hours=1..720` (default 168) and record when they expire. A new `findInvite` lookup reports an expired token as `expired`, so it can never be accepted.
+- Verified: unit tests (hours parsing; token valid just before expiry, expired at and after it; unknown token) and a server test (hours=1 expires within the hour; hours=0 gives 400). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L291 limit invite scope (token names exactly one space).
+- Blockers: none

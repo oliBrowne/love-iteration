@@ -663,6 +663,18 @@ test('POST /spaces/:id/invites gives the owner a link, others a 404', async () =
     const body = (await ok.json()) as { link: string; expiresAt: string };
     assert.match(body.link, /^\/invite\/[A-Za-z0-9_-]{40,}$/);
     assert.ok(Date.parse(body.expiresAt) > Date.now());
+
+    const short = await fetch(`${base}/spaces/${id}/invites?hours=1`, {
+      method: 'POST',
+      headers: { cookie: cookies[0] as string },
+    });
+    const soon = ((await short.json()) as { expiresAt: string }).expiresAt;
+    assert.ok(Date.parse(soon) < Date.now() + 61 * 60 * 1000);
+    const bad = await fetch(`${base}/spaces/${id}/invites?hours=0`, {
+      method: 'POST',
+      headers: { cookie: cookies[0] as string },
+    });
+    assert.equal(bad.status, 400);
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }

@@ -20,7 +20,7 @@ import type { Db } from './db.ts';
 import { sendError } from './errors.ts';
 import { createLoginThrottle } from './loginThrottle.ts';
 import type { LoginThrottle } from './loginThrottle.ts';
-import { createInvite } from './invites.ts';
+import { createInvite, inviteHoursRule, parseInviteHours } from './invites.ts';
 import { readJsonBody, rejectBadJson } from './jsonBody.ts';
 import type { RateLimiter } from './rateLimit.ts';
 import { formatLogLine } from './requestLog.ts';
@@ -172,8 +172,15 @@ export function handleRequest(
       sendError(res, 'unauthorized', 'Please log in.');
       return;
     }
+    const hours = parseInviteHours(
+      new URL(req.url ?? '/', 'http://x').searchParams.get('hours'),
+    );
+    if (hours === undefined) {
+      sendError(res, 'invalid_request', inviteHoursRule);
+      return;
+    }
     // Spaces that are not yours look the same as spaces that do not exist.
-    const invite = createInvite(db, accountId, inviteMatch[1] as string);
+    const invite = createInvite(db, accountId, inviteMatch[1] as string, hours);
     if (invite === 'not_owner') sendError(res, 'not_found');
     else sendJson(res, 201, invite);
     return;

@@ -1,8 +1,21 @@
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import type { Db } from './db.ts';
 
-// An invite lasts 7 days unless a later step changes the rule.
-export const inviteLifetimeMs = 7 * 24 * 60 * 60 * 1000;
+const hourMs = 60 * 60 * 1000;
+
+// An invite lasts 7 days unless the owner asks for 1 to 720 hours (30 days).
+export const defaultInviteHours = 24 * 7;
+export const maxInviteHours = 24 * 30;
+export const inviteHoursRule = `Invite hours must be a whole number from 1 to ${maxInviteHours}.`;
+
+// Reads an hours setting from text such as "24". Missing text means the
+// default; anything that is not a whole number in range is undefined.
+export function parseInviteHours(text: string | null): number | undefined {
+  if (text === null) return defaultInviteHours;
+  if (!/^\d{1,4}$/.test(text)) return undefined;
+  const hours = Number(text);
+  return hours >= 1 && hours <= maxInviteHours ? hours : undefined;
+}
 
 export type CreatedInvite = { id: string; link: string; expiresAt: string };
 
@@ -20,6 +33,7 @@ export function createInvite(
   db: Db,
   accountId: string,
   spaceId: string,
+  hours: number = defaultInviteHours,
   now: () => number = Date.now,
 ): CreatedInvite | 'not_owner' {
   const owner = db
@@ -31,10 +45,28 @@ export function createInvite(
   const id = randomUUID();
   const token = randomBytes(32).toString('base64url');
   const created = new Date(now()).toISOString();
-  const expiresAt = new Date(now() + inviteLifetimeMs).toISOString();
+  const expiresAt = new Date(now() + hours * hourMs).toISOString();
   db.prepare(
     `INSERT INTO invites (id, space_id, created_by, token_hash, created_at, expires_at)
      VALUES (?, ?, ?, ?, ?, ?)`,
   ).run(id, spaceId, accountId, hashInviteToken(token), created, expiresAt);
   return { id, link: `/invite/${token}`, expiresAt };
+}
+
+// Looks up an invite by the token from its link. An unknown token and an
+// expired one are told apart so the screen can say what happened; an expired
+// invite can never be accepted.
+export function findInvite(
+  db: Db,
+  token: string,
+  now: () => number = Date.now,
+): { inviteId: string; spaceId: string } | 'unknown' | 'expired' {
+  const row = db
+    .prepare(
+      'SELECT id, space_id, expires_at FROM invites WHERE token_hash = ?',
+    )
+    .get(hashInviteToken(token));
+  if (!row) return 'unknown';
+  if (Date.parse(String(row.expires_at)) <= now()) return 'expired';
+  return { inviteId: String(row.id), spaceId: String(row.space_id) };
 }
