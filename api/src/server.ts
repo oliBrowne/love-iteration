@@ -20,7 +20,12 @@ import type { Db } from './db.ts';
 import { sendError } from './errors.ts';
 import { createLoginThrottle } from './loginThrottle.ts';
 import type { LoginThrottle } from './loginThrottle.ts';
-import { createInvite, inviteHoursRule, parseInviteHours } from './invites.ts';
+import {
+  acceptInvite,
+  createInvite,
+  inviteHoursRule,
+  parseInviteHours,
+} from './invites.ts';
 import { readJsonBody, rejectBadJson } from './jsonBody.ts';
 import type { RateLimiter } from './rateLimit.ts';
 import { formatLogLine } from './requestLog.ts';
@@ -165,6 +170,17 @@ export function handleRequest(
     });
     return;
   }
+  if (path === '/invites/accept' && req.method === 'POST' && db && sessions) {
+    const accountId = sessionAccount(req, sessions);
+    if (accountId === undefined) {
+      sendError(res, 'unauthorized', 'Please log in.');
+      return;
+    }
+    joinSpace(req, res, db, accountId).catch(() => {
+      if (!res.headersSent) sendError(res, 'server_error');
+    });
+    return;
+  }
   const inviteMatch = /^\/spaces\/([^/]+)\/invites$/.exec(path ?? '');
   if (inviteMatch && req.method === 'POST' && db && sessions) {
     const accountId = sessionAccount(req, sessions);
@@ -202,6 +218,35 @@ function sessionAccount(
 ): string | undefined {
   const token = readSessionToken(req.headers.cookie);
   return token ? sessions.find(token) : undefined;
+}
+
+// POST /invites/accept: the token travels in the body, never the path, because
+// paths are logged. The caller joins the one space the invite names (200).
+async function joinSpace(
+  req: IncomingMessage,
+  res: ServerResponse,
+  db: Db,
+  accountId: string,
+): Promise<void> {
+  const body = await readJsonBody(req);
+  if (rejectBadJson(res, body)) return;
+  const input = body.ok ? body.value : null;
+  const token =
+    typeof input === 'object' && input !== null
+      ? (input as Record<string, unknown>).token
+      : undefined;
+  if (typeof token !== 'string' || token === '') {
+    sendError(res, 'invalid_request', 'An invite token is needed.');
+    return;
+  }
+  const result = acceptInvite(db, accountId, token);
+  if (result === 'unknown') {
+    sendError(res, 'not_found', 'That invitation was not found.');
+  } else if (result === 'expired') {
+    sendError(res, 'invalid_request', 'That invitation has expired.');
+  } else {
+    sendJson(res, 200, { spaceId: result.spaceId });
+  }
 }
 
 // POST /spaces: creates a shared space; the caller becomes its owner (201).

@@ -679,3 +679,70 @@ test('POST /spaces/:id/invites gives the owner a link, others a 404', async () =
     await new Promise((resolve) => server.close(resolve));
   }
 });
+
+test('POST /invites/accept adds the caller to the invited space', async () => {
+  const db = createTestDb();
+  const sessions = createMemorySessionStore();
+  const server = createApiServer(undefined, [], undefined, db, sessions);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    const cookies: string[] = [];
+    for (const handle of ['sam', 'alex']) {
+      await postJson(`${base}/accounts`, {
+        handle,
+        password: 'a long enough secret',
+      });
+      const login = await postJson(`${base}/login`, {
+        handle,
+        password: 'a long enough secret',
+      });
+      cookies.push((login.headers.get('set-cookie') ?? '').split(';')[0] ?? '');
+    }
+    const send = (path: string, cookie: string, body?: unknown) =>
+      fetch(`${base}${path}`, {
+        method: 'POST',
+        headers: { cookie, 'content-type': 'application/json' },
+        body: body === undefined ? undefined : JSON.stringify(body),
+      });
+    const made = await send('/spaces', cookies[0] as string, {
+      name: 'Sam demo',
+    });
+    const { id } = (await made.json()) as { id: string };
+    const inv = await send(`/spaces/${id}/invites`, cookies[0] as string);
+    const { link } = (await inv.json()) as { link: string };
+    const token = link.replace('/invite/', '');
+
+    const anon = await fetch(`${base}/invites/accept`, {
+      method: 'POST',
+      body: JSON.stringify({ token }),
+    });
+    assert.equal(anon.status, 401);
+    assert.equal(
+      (await send('/invites/accept', cookies[1] as string, {})).status,
+      400,
+    );
+    assert.equal(
+      (await send('/invites/accept', cookies[1] as string, { token: 'nope' }))
+        .status,
+      404,
+    );
+    const ok = await send('/invites/accept', cookies[1] as string, { token });
+    assert.equal(ok.status, 200);
+    assert.deepEqual(await ok.json(), { spaceId: id });
+
+    const list = await fetch(`${base}/spaces`, {
+      headers: { cookie: cookies[1] as string },
+    });
+    const body = (await list.json()) as {
+      spaces: { id: string; role: string }[];
+    };
+    assert.deepEqual(
+      body.spaces.map((s) => [s.id, s.role]),
+      [[id, 'member']],
+    );
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});

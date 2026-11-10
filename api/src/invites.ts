@@ -73,3 +73,33 @@ export function findInvite(
   if (Date.parse(String(row.expires_at)) <= now()) return 'expired';
   return { inviteId: String(row.id), spaceId: String(row.space_id) };
 }
+
+export type Accepted = { spaceId: string };
+
+// Accepts an invite: the person becomes a member of the one space it names and
+// the invite records who accepted it and when. Someone already in the space
+// stays a member (never downgraded from owner).
+export function acceptInvite(
+  db: Db,
+  accountId: string,
+  token: string,
+  now: () => number = Date.now,
+): Accepted | 'unknown' | 'expired' {
+  const found = findInvite(db, token, now);
+  if (typeof found === 'string') return found;
+  const when = new Date(now()).toISOString();
+  db.exec('BEGIN');
+  try {
+    db.prepare(
+      "INSERT OR IGNORE INTO memberships VALUES (?, ?, 'member', ?)",
+    ).run(found.spaceId, accountId, when);
+    db.prepare(
+      'UPDATE invites SET accepted_by = ?, accepted_at = ? WHERE id = ?',
+    ).run(accountId, when, found.inviteId);
+    db.exec('COMMIT');
+  } catch (error) {
+    db.exec('ROLLBACK');
+    throw error;
+  }
+  return { spaceId: found.spaceId };
+}

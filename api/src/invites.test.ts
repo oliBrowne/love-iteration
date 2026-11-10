@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { after, test } from 'node:test';
 import {
+  acceptInvite,
   createInvite,
   defaultInviteHours,
   findInvite,
@@ -121,4 +122,49 @@ test('a token names exactly one space', () => {
       )
       .run(),
   );
+});
+
+test('accepting makes the person a member and records it', () => {
+  const { db, space } = setup();
+  const invite = createInvite(db, 'a1', space.id);
+  if (invite === 'not_owner') assert.fail();
+  const token = invite.link.replace('/invite/', '');
+  assert.deepEqual(acceptInvite(db, 'a2', token), { spaceId: space.id });
+  const member = db
+    .prepare(
+      'SELECT role FROM memberships WHERE space_id = ? AND account_id = ?',
+    )
+    .get(space.id, 'a2');
+  assert.equal(member?.role, 'member');
+  const row = db.prepare('SELECT accepted_by FROM invites').get();
+  assert.equal(row?.accepted_by, 'a2');
+});
+
+test('accepting an unknown or expired token adds no one', () => {
+  const { db, space } = setup();
+  const start = Date.parse('2030-01-01T00:00:00Z');
+  const invite = createInvite(db, 'a1', space.id, 1, () => start);
+  if (invite === 'not_owner') assert.fail();
+  const token = invite.link.replace('/invite/', '');
+  assert.equal(
+    acceptInvite(db, 'a2', token, () => start + 2 * 3600 * 1000),
+    'expired',
+  );
+  assert.equal(acceptInvite(db, 'a2', 'nope'), 'unknown');
+  assert.equal(
+    db.prepare('SELECT * FROM memberships WHERE account_id = ?').all('a2')
+      .length,
+    0,
+  );
+});
+
+test('the owner accepting their own invite stays owner', () => {
+  const { db, space } = setup();
+  const invite = createInvite(db, 'a1', space.id);
+  if (invite === 'not_owner') assert.fail();
+  acceptInvite(db, 'a1', invite.link.replace('/invite/', ''));
+  const row = db
+    .prepare('SELECT role FROM memberships WHERE account_id = ?')
+    .get('a1');
+  assert.equal(row?.role, 'owner');
 });

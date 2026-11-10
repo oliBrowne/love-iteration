@@ -1745,3 +1745,9 @@
 - Verified: invite test with two spaces plus a NOT NULL check. API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L292 accept invite endpoint (accepted person becomes member).
 - Blockers: none
+
+## 2026-11-10 — L292: Accept invite endpoint
+- Changed: `POST /invites/accept` (logged in) takes the token in the JSON body (never the path, since paths are logged) and makes the caller a member of the one space the invite names; the invite records who accepted it. Unknown token 404, expired or missing token 400. An owner accepting their own invite stays owner.
+- Verified: invite unit tests (member added and recorded; unknown/expired add no one; owner stays owner) and a server test (401, 400, 404, 200, then the space appears in the caller's list). API typecheck/tests, root typecheck, lint, build, format:check, vitest (one unrelated frontend test failed once in a run and passed on two reruns; this change touches only api/), roadmap tests/check.
+- Next: L293 reject invite reuse (second acceptance fails).
+- Blockers: none

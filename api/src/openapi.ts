@@ -227,6 +227,30 @@ export const openApiDocument = {
         },
       },
     },
+    '/invites/accept': {
+      post: {
+        summary:
+          'Accept an invitation. The caller becomes a member of the one space it names.',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['token'],
+                properties: { token: { type: 'string' } },
+              },
+            },
+          },
+        },
+        responses: {
+          '200': { description: 'The caller joined: spaceId.' },
+          '400': { description: 'No token, or the invitation has expired.' },
+          '401': { description: 'There is no live session.' },
+          '404': { description: 'No such invitation.' },
+        },
+      },
+    },
     '/logout': {
       post: {
         summary: 'Log out: revoke the session in the cookie and clear it.',
