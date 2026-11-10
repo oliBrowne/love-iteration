@@ -57,19 +57,20 @@ export function createInvite(
 // space (the invites table requires a space and has no wildcard form), so it
 // can only ever open the space it was created for.
 // An unknown token and an
-// expired one are told apart so the screen can say what happened; an expired
+// expired one (or one already used) are told apart so the screen can say what happened; an expired
 // invite can never be accepted.
 export function findInvite(
   db: Db,
   token: string,
   now: () => number = Date.now,
-): { inviteId: string; spaceId: string } | 'unknown' | 'expired' {
+): { inviteId: string; spaceId: string } | 'unknown' | 'expired' | 'used' {
   const row = db
     .prepare(
-      'SELECT id, space_id, expires_at FROM invites WHERE token_hash = ?',
+      'SELECT id, space_id, expires_at, accepted_at FROM invites WHERE token_hash = ?',
     )
     .get(hashInviteToken(token));
   if (!row) return 'unknown';
+  if (row.accepted_at !== null) return 'used';
   if (Date.parse(String(row.expires_at)) <= now()) return 'expired';
   return { inviteId: String(row.id), spaceId: String(row.space_id) };
 }
@@ -84,7 +85,7 @@ export function acceptInvite(
   accountId: string,
   token: string,
   now: () => number = Date.now,
-): Accepted | 'unknown' | 'expired' {
+): Accepted | 'unknown' | 'expired' | 'used' {
   const found = findInvite(db, token, now);
   if (typeof found === 'string') return found;
   const when = new Date(now()).toISOString();
@@ -93,9 +94,17 @@ export function acceptInvite(
     db.prepare(
       "INSERT OR IGNORE INTO memberships VALUES (?, ?, 'member', ?)",
     ).run(found.spaceId, accountId, when);
-    db.prepare(
-      'UPDATE invites SET accepted_by = ?, accepted_at = ? WHERE id = ?',
-    ).run(accountId, when, found.inviteId);
+    // The WHERE clause makes the claim atomic: of two simultaneous
+    // acceptances only one changes a row.
+    const claimed = db
+      .prepare(
+        'UPDATE invites SET accepted_by = ?, accepted_at = ? WHERE id = ? AND accepted_at IS NULL',
+      )
+      .run(accountId, when, found.inviteId);
+    if (claimed.changes !== 1) {
+      db.exec('ROLLBACK');
+      return 'used';
+    }
     db.exec('COMMIT');
   } catch (error) {
     db.exec('ROLLBACK');

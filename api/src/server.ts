@@ -244,6 +244,8 @@ async function joinSpace(
     sendError(res, 'not_found', 'That invitation was not found.');
   } else if (result === 'expired') {
     sendError(res, 'invalid_request', 'That invitation has expired.');
+  } else if (result === 'used') {
+    sendError(res, 'conflict', 'That invitation was already used.');
   } else {
     sendJson(res, 200, { spaceId: result.spaceId });
   }

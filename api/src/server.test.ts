@@ -731,6 +731,15 @@ test('POST /invites/accept adds the caller to the invited space', async () => {
     const ok = await send('/invites/accept', cookies[1] as string, { token });
     assert.equal(ok.status, 200);
     assert.deepEqual(await ok.json(), { spaceId: id });
+    // The link works once: a second try fails, even for the same person.
+    assert.equal(
+      (await send('/invites/accept', cookies[1] as string, { token })).status,
+      409,
+    );
+    assert.equal(
+      (await send('/invites/accept', cookies[0] as string, { token })).status,
+      409,
+    );
 
     const list = await fetch(`${base}/spaces`, {
       headers: { cookie: cookies[1] as string },

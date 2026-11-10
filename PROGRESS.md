@@ -1751,3 +1751,9 @@
 - Verified: invite unit tests (member added and recorded; unknown/expired add no one; owner stays owner) and a server test (401, 400, 404, 200, then the space appears in the caller's list). API typecheck/tests, root typecheck, lint, build, format:check, vitest (one unrelated frontend test failed once in a run and passed on two reruns; this change touches only api/), roadmap tests/check.
 - Next: L293 reject invite reuse (second acceptance fails).
 - Blockers: none
+
+## 2026-11-10 — L293: Reject invite reuse
+- Changed: An invitation link now works once: a second acceptance (by anyone, including the first person) gets 409 and adds no one. The claim is a single conditional update, so two simultaneous tries cannot both succeed.
+- Verified: unit test (second and third acceptance return used; no extra member; first acceptor recorded) and server test (409 for the same and a different account). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L294 revoke invite endpoint (owner can invalidate an unused token).
+- Blockers: none

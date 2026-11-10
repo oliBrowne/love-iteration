@@ -168,3 +168,26 @@ test('the owner accepting their own invite stays owner', () => {
     .get('a1');
   assert.equal(row?.role, 'owner');
 });
+
+test('a second acceptance fails and adds no one', () => {
+  const { db, space } = setup();
+  db.prepare(
+    'INSERT INTO accounts (id, display_name, password_hash, created_at, updated_at, handle) VALUES (?, ?, ?, ?, ?, ?)',
+  ).run('a3', 'Demo Three', 'h', 'now', 'now', 'three');
+  const invite = createInvite(db, 'a1', space.id);
+  if (invite === 'not_owner') assert.fail();
+  const token = invite.link.replace('/invite/', '');
+  assert.deepEqual(acceptInvite(db, 'a2', token), { spaceId: space.id });
+  assert.equal(acceptInvite(db, 'a3', token), 'used');
+  assert.equal(acceptInvite(db, 'a2', token), 'used');
+  assert.equal(findInvite(db, token), 'used');
+  assert.equal(
+    db.prepare('SELECT * FROM memberships WHERE account_id = ?').all('a3')
+      .length,
+    0,
+  );
+  assert.equal(
+    db.prepare('SELECT accepted_by FROM invites').get()?.accepted_by,
+    'a2',
+  );
+});

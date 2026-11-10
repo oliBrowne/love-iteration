@@ -248,6 +248,7 @@ export const openApiDocument = {
           '400': { description: 'No token, or the invitation has expired.' },
           '401': { description: 'There is no live session.' },
           '404': { description: 'No such invitation.' },
+          '409': { description: 'The invitation was already used.' },
         },
       },
     },
