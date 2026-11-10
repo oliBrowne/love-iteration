@@ -1727,3 +1727,9 @@
 - Verified: store test (own and joined spaces listed, others' not) and a server test with two accounts (each sees only their own; 401 logged out). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L289 create invite endpoint (owner receives a one-time invitation link).
 - Blockers: none
+
+## 2026-11-10 — L289: Create invite endpoint
+- Changed: `POST /spaces/:id/invites` gives the space's owner a one-time invitation link (`/invite/<token>`, shown once; only a hash is stored). Members, strangers and unknown spaces get 404; no session gets 401. Invites currently last 7 days.
+- Verified: invite unit tests (hash only stored, unique links, non-owner/unknown space refused) and a server test (401, 404, 201 link shape). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L290 set invite expiry (expired token cannot be accepted).
+- Blockers: none

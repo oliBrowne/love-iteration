@@ -203,6 +203,19 @@ export const openApiDocument = {
         },
       },
     },
+    '/spaces/{id}/invites': {
+      post: {
+        summary:
+          'Create a one-time invitation link for a space. Owner only. The link is shown once.',
+        responses: {
+          '201': { description: 'The invite: id, link, expiresAt.' },
+          '401': { description: 'There is no live session.' },
+          '404': {
+            description: 'No such space, or the caller does not own it.',
+          },
+        },
+      },
+    },
     '/logout': {
       post: {
         summary: 'Log out: revoke the session in the cookie and clear it.',

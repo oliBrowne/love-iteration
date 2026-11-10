@@ -20,6 +20,7 @@ import type { Db } from './db.ts';
 import { sendError } from './errors.ts';
 import { createLoginThrottle } from './loginThrottle.ts';
 import type { LoginThrottle } from './loginThrottle.ts';
+import { createInvite } from './invites.ts';
 import { readJsonBody, rejectBadJson } from './jsonBody.ts';
 import type { RateLimiter } from './rateLimit.ts';
 import { formatLogLine } from './requestLog.ts';
@@ -162,6 +163,19 @@ export function handleRequest(
     addSpace(req, res, db, accountId).catch(() => {
       if (!res.headersSent) sendError(res, 'server_error');
     });
+    return;
+  }
+  const inviteMatch = /^\/spaces\/([^/]+)\/invites$/.exec(path ?? '');
+  if (inviteMatch && req.method === 'POST' && db && sessions) {
+    const accountId = sessionAccount(req, sessions);
+    if (accountId === undefined) {
+      sendError(res, 'unauthorized', 'Please log in.');
+      return;
+    }
+    // Spaces that are not yours look the same as spaces that do not exist.
+    const invite = createInvite(db, accountId, inviteMatch[1] as string);
+    if (invite === 'not_owner') sendError(res, 'not_found');
+    else sendJson(res, 201, invite);
     return;
   }
   // Everything else that changes data needs a live session, so a new write

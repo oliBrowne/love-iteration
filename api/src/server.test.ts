@@ -620,3 +620,50 @@ test('GET /spaces lists only my memberships', async () => {
     await new Promise((resolve) => server.close(resolve));
   }
 });
+
+test('POST /spaces/:id/invites gives the owner a link, others a 404', async () => {
+  const db = createTestDb();
+  const sessions = createMemorySessionStore();
+  const server = createApiServer(undefined, [], undefined, db, sessions);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    const cookies: string[] = [];
+    for (const handle of ['sam', 'alex']) {
+      await postJson(`${base}/accounts`, {
+        handle,
+        password: 'a long enough secret',
+      });
+      const login = await postJson(`${base}/login`, {
+        handle,
+        password: 'a long enough secret',
+      });
+      cookies.push((login.headers.get('set-cookie') ?? '').split(';')[0] ?? '');
+    }
+    const made = await fetch(`${base}/spaces`, {
+      method: 'POST',
+      headers: {
+        cookie: cookies[0] as string,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ name: 'Sam demo' }),
+    });
+    const { id } = (await made.json()) as { id: string };
+    const invite = (cookie?: string) =>
+      fetch(`${base}/spaces/${id}/invites`, {
+        method: 'POST',
+        headers: cookie ? { cookie } : {},
+      });
+
+    assert.equal((await invite()).status, 401);
+    assert.equal((await invite(cookies[1])).status, 404);
+    const ok = await invite(cookies[0]);
+    assert.equal(ok.status, 201);
+    const body = (await ok.json()) as { link: string; expiresAt: string };
+    assert.match(body.link, /^\/invite\/[A-Za-z0-9_-]{40,}$/);
+    assert.ok(Date.parse(body.expiresAt) > Date.now());
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
