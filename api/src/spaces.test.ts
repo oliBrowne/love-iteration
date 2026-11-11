@@ -4,6 +4,7 @@ import {
   checkSpaceName,
   createSpace,
   leaveSpace,
+  removeMember,
   listSpaces,
 } from './spaces.ts';
 import { closeTestDbs, createTestDb } from './testDb.ts';
@@ -108,4 +109,22 @@ test('an owner who leaves hands the space over; the last one out closes it', () 
   assert.equal(leaveSpace(db, 'a2', space.id), 'left');
   assert.equal(db.prepare('SELECT * FROM spaces').all().length, 0);
   assert.equal(leaveSpace(db, 'a1', 'missing'), 'not_found');
+});
+
+test('an owner can remove another member; others cannot', () => {
+  const db = twoAccounts();
+  const space = createSpace(db, 'a1', 'Demo space');
+  db.prepare('INSERT INTO memberships VALUES (?, ?, ?, ?)').run(
+    space.id,
+    'a2',
+    'member',
+    '2',
+  );
+  assert.equal(removeMember(db, 'a2', space.id, 'a1'), 'not_found');
+  assert.equal(removeMember(db, 'a1', space.id, 'a1'), 'self');
+  assert.equal(removeMember(db, 'a1', space.id, 'zz'), 'not_found');
+  assert.equal(removeMember(db, 'a1', space.id, 'a2'), 'removed');
+  assert.deepEqual(listSpaces(db, 'a2'), []);
+  assert.equal(listSpaces(db, 'a1').length, 1);
+  assert.equal(removeMember(db, 'a1', space.id, 'a2'), 'not_found');
 });

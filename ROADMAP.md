@@ -326,7 +326,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L293 Reject invite reuse — Done when second acceptance fails.
 - [x] L294 Revoke invite endpoint — Done when owner can invalidate unused token.
 - [x] L295 Leave shared space endpoint — Done when membership is removed.
-- [ ] L296 Remove member endpoint — Done when owner can remove another member.
+- [x] L296 Remove member endpoint — Done when owner can remove another member.
 - [ ] L297 Protect personal records — Done when shared member cannot fetch personal entries.
 - [ ] L298 Show shared-space member list — Done when UI names current members.
 - [ ] L299 Show invitation permission copy — Done when UI explains visibility before acceptance.

@@ -105,3 +105,39 @@ export function leaveSpace(
   }
   return 'left';
 }
+
+// Lets a space's owner remove another member. Their records stay for the
+// others. Non-owners and unknown spaces or members get 'not_found'; the owner
+// removing themselves gets 'self' (they should leave instead).
+export function removeMember(
+  db: Db,
+  ownerId: string,
+  spaceId: string,
+  memberId: string,
+): 'removed' | 'not_found' | 'self' {
+  const owner = db
+    .prepare(
+      "SELECT 1 FROM memberships WHERE space_id = ? AND account_id = ? AND role = 'owner'",
+    )
+    .get(spaceId, ownerId);
+  if (!owner) return 'not_found';
+  if (memberId === ownerId) return 'self';
+  const target = db
+    .prepare('SELECT 1 FROM memberships WHERE space_id = ? AND account_id = ?')
+    .get(spaceId, memberId);
+  if (!target) return 'not_found';
+  db.exec('BEGIN');
+  try {
+    db.prepare(
+      'DELETE FROM memberships WHERE space_id = ? AND account_id = ?',
+    ).run(spaceId, memberId);
+    db.prepare(
+      'DELETE FROM sync_cursors WHERE space_id = ? AND account_id = ?',
+    ).run(spaceId, memberId);
+    db.exec('COMMIT');
+  } catch (error) {
+    db.exec('ROLLBACK');
+    throw error;
+  }
+  return 'removed';
+}

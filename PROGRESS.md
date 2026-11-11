@@ -1769,3 +1769,9 @@
 - Verified: unit tests (member leaves, space stays; owner hand-over; last one out deletes; not-a-member) and a server test (401, 200, 404 on repeat, lists updated). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check. Note: leaving keeps the leaver's records in the space — revisit if you prefer removing them.
 - Next: L296 remove member endpoint (owner can remove another member).
 - Blockers: none
+
+## 2026-11-11 — L296: Remove member endpoint
+- Changed: `DELETE /spaces/:id/members/:accountId` lets the space owner remove another member; their records stay. Non-owners and unknown members get 404, the owner removing themselves gets 400 (leave instead).
+- Verified: unit test (owner removes, non-owner/self/unknown refused, repeat 404) and server test (401, 404, 400, 200, 404, removed member sees no spaces). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L297 protect personal records (shared member cannot fetch personal entries).
+- Blockers: none

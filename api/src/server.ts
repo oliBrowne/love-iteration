@@ -37,6 +37,7 @@ import {
   createSpace,
   leaveSpace,
   listSpaces,
+  removeMember,
   spaceNameRule,
 } from './spaces.ts';
 import { apiName, apiVersion } from './version.ts';
@@ -212,6 +213,25 @@ export function handleRequest(
     }
     if (leaveSpace(db, accountId, leaveMatch[1] as string) === 'not_found') {
       sendError(res, 'not_found');
+    } else sendJson(res, 200, { ok: true });
+    return;
+  }
+  const removeMatch = /^\/spaces\/([^/]+)\/members\/([^/]+)$/.exec(path ?? '');
+  if (removeMatch && req.method === 'DELETE' && db && sessions) {
+    const accountId = sessionAccount(req, sessions);
+    if (accountId === undefined) {
+      sendError(res, 'unauthorized', 'Please log in.');
+      return;
+    }
+    const result = removeMember(
+      db,
+      accountId,
+      removeMatch[1] as string,
+      removeMatch[2] as string,
+    );
+    if (result === 'not_found') sendError(res, 'not_found');
+    else if (result === 'self') {
+      sendError(res, 'invalid_request', 'Leave the space instead.');
     } else sendJson(res, 200, { ok: true });
     return;
   }

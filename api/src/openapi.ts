@@ -251,6 +251,20 @@ export const openApiDocument = {
         },
       },
     },
+    '/spaces/{id}/members/{accountId}': {
+      delete: {
+        summary:
+          'Owner removes another member. Their records stay in the space.',
+        responses: {
+          '200': { description: 'The member was removed.' },
+          '400': { description: 'The owner tried to remove themselves.' },
+          '401': { description: 'There is no live session.' },
+          '404': {
+            description: 'Not the owner, or no such space or member.',
+          },
+        },
+      },
+    },
     '/invites/accept': {
       post: {
         summary:
