@@ -1799,3 +1799,9 @@
 - Verified: new flow test passes; API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check. Note: it drives the real server over HTTP with cookies, not a Playwright page, because no invite UI exists in the web app yet.
 - Next: L301 define sync record envelope (scope, id, revision, payload typed).
 - Blockers: none
+
+## 2026-11-11 — L301: Define sync record envelope
+- Changed: New typed `SyncEnvelope` (scope personal/shared, optional spaceId, id, revision, kind, payload, deleted) and `makeEnvelope` (revision defaults to 1), exported from the domain. Nothing is sent anywhere.
+- Verified: unit tests for fields and default/explicit revision; typecheck, lint, build, format:check, vitest, API tests, roadmap tests/check.
+- Next: L302 validate sync scope (personal record cannot be uploaded as shared).
+- Blockers: none

@@ -99,3 +99,5 @@ export {
   validateImportIds,
   validateImportRoot,
 } from './importValidation.ts';
+export type { SyncEnvelope, SyncScope } from './syncEnvelope.ts';
+export { makeEnvelope } from './syncEnvelope.ts';

@@ -334,7 +334,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 
 ## 11 Opt-in sync and offline conflicts
 
-- [ ] L301 Define sync record envelope — Done when scope, id, revision, and payload are typed.
+- [x] L301 Define sync record envelope — Done when scope, id, revision, and payload are typed.
 - [ ] L302 Validate sync scope — Done when personal record cannot be uploaded as shared.
 - [ ] L303 Add server record put — Done when owner write increments revision.
 - [ ] L304 Add server record list — Done when only member can read space records.
