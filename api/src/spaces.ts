@@ -141,3 +141,37 @@ export function removeMember(
   }
   return 'removed';
 }
+
+export type SpaceRecord = {
+  id: string;
+  kind: string;
+  body: string;
+  revision: number;
+  updatedAt: string;
+};
+
+// Returns the records of one shared space, but only to its members. Personal
+// entries are never stored in a space, and records from any other space are
+// never included. Non-members get null.
+export function listSpaceRecords(
+  db: Db,
+  accountId: string,
+  spaceId: string,
+): SpaceRecord[] | null {
+  const member = db
+    .prepare('SELECT 1 FROM memberships WHERE space_id = ? AND account_id = ?')
+    .get(spaceId, accountId);
+  if (!member) return null;
+  return db
+    .prepare(
+      'SELECT id, kind, body, revision, updated_at FROM records WHERE space_id = ? ORDER BY updated_at, id',
+    )
+    .all(spaceId)
+    .map((row) => ({
+      id: String(row.id),
+      kind: String(row.kind),
+      body: String(row.body),
+      revision: Number(row.revision),
+      updatedAt: String(row.updated_at),
+    }));
+}

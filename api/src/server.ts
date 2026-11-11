@@ -36,6 +36,7 @@ import {
   checkSpaceName,
   createSpace,
   leaveSpace,
+  listSpaceRecords,
   listSpaces,
   removeMember,
   spaceNameRule,
@@ -214,6 +215,18 @@ export function handleRequest(
     if (leaveSpace(db, accountId, leaveMatch[1] as string) === 'not_found') {
       sendError(res, 'not_found');
     } else sendJson(res, 200, { ok: true });
+    return;
+  }
+  const recordsMatch = /^\/spaces\/([^/]+)\/records$/.exec(path ?? '');
+  if (recordsMatch && req.method === 'GET' && db && sessions) {
+    const accountId = sessionAccount(req, sessions);
+    if (accountId === undefined) {
+      sendError(res, 'unauthorized', 'Please log in.');
+      return;
+    }
+    const records = listSpaceRecords(db, accountId, recordsMatch[1] as string);
+    if (!records) sendError(res, 'not_found');
+    else sendJson(res, 200, { records });
     return;
   }
   const removeMatch = /^\/spaces\/([^/]+)\/members\/([^/]+)$/.exec(path ?? '');

@@ -1775,3 +1775,9 @@
 - Verified: unit test (owner removes, non-owner/self/unknown refused, repeat 404) and server test (401, 404, 400, 200, 404, removed member sees no spaces). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L297 protect personal records (shared member cannot fetch personal entries).
 - Blockers: none
+
+## 2026-11-11 — L297: Protect personal records
+- Changed: `GET /spaces/:id/records` returns a shared space's records only to its members (others get 404). It never includes records from other spaces, and personal entries are never stored on the server.
+- Verified: unit test (member sees only that space's record; other space and missing space give null) and server test (401, 404 for non-member, 200 for member). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
+- Next: L298 show shared-space member list in the UI.
+- Blockers: none

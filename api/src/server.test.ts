@@ -940,3 +940,52 @@ test('DELETE /spaces/:id/members/:accountId lets the owner remove a member', asy
     await new Promise((resolve) => server.close(resolve));
   }
 });
+
+test('GET /spaces/:id/records hides records from non-members', async () => {
+  const db = createTestDb();
+  const sessions = createMemorySessionStore();
+  const server = createApiServer(undefined, [], undefined, db, sessions);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    const cookies: string[] = [];
+    for (const handle of ['sam', 'alex']) {
+      await postJson(`${base}/accounts`, {
+        handle,
+        password: 'a long enough secret',
+      });
+      const login = await postJson(`${base}/login`, {
+        handle,
+        password: 'a long enough secret',
+      });
+      cookies.push((login.headers.get('set-cookie') ?? '').split(';')[0] ?? '');
+    }
+    const get = (path: string, cookie?: string) =>
+      fetch(`${base}${path}`, { headers: cookie ? { cookie } : {} });
+    const made = await fetch(`${base}/spaces`, {
+      method: 'POST',
+      headers: { cookie: cookies[0] ?? '', 'content-type': 'application/json' },
+      body: JSON.stringify({ name: 'Sam demo' }),
+    });
+    const { id } = (await made.json()) as { id: string };
+    const owner = db
+      .prepare('SELECT account_id FROM memberships WHERE space_id = ?')
+      .get(id) as { account_id: string };
+    db.prepare(
+      'INSERT INTO records (id, space_id, kind, body, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    ).run('r1', id, 'demo', '{}', owner.account_id, 'now', 'now');
+    const path = `/spaces/${id}/records`;
+
+    assert.equal((await get(path)).status, 401);
+    assert.equal((await get(path, cookies[1])).status, 404);
+    const ok = await get(path, cookies[0]);
+    assert.equal(ok.status, 200);
+    assert.equal(
+      ((await ok.json()) as { records: unknown[] }).records.length,
+      1,
+    );
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});

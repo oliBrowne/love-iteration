@@ -251,6 +251,17 @@ export const openApiDocument = {
         },
       },
     },
+    '/spaces/{id}/records': {
+      get: {
+        summary:
+          'List the shared records of one space. Only members can read them; personal entries are never stored here.',
+        responses: {
+          '200': { description: 'The records of that space only.' },
+          '401': { description: 'There is no live session.' },
+          '404': { description: 'The caller is not a member of that space.' },
+        },
+      },
+    },
     '/spaces/{id}/members/{accountId}': {
       delete: {
         summary:

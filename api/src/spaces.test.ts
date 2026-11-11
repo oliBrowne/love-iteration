@@ -4,6 +4,7 @@ import {
   checkSpaceName,
   createSpace,
   leaveSpace,
+  listSpaceRecords,
   removeMember,
   listSpaces,
 } from './spaces.ts';
@@ -127,4 +128,27 @@ test('an owner can remove another member; others cannot', () => {
   assert.deepEqual(listSpaces(db, 'a2'), []);
   assert.equal(listSpaces(db, 'a1').length, 1);
   assert.equal(removeMember(db, 'a1', space.id, 'a2'), 'not_found');
+});
+
+test('a member only reads records of spaces they belong to', () => {
+  const db = twoAccounts();
+  const shared = createSpace(db, 'a1', 'Shared demo');
+  const solo = createSpace(db, 'a1', 'Private demo');
+  db.prepare('INSERT INTO memberships VALUES (?, ?, ?, ?)').run(
+    shared.id,
+    'a2',
+    'member',
+    '2',
+  );
+  const add = db.prepare(
+    'INSERT INTO records (id, space_id, kind, body, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+  );
+  add.run('r1', shared.id, 'demo', '{"note":"shared"}', 'a1', 'now', 'now');
+  add.run('r2', solo.id, 'demo', '{"note":"private"}', 'a1', 'now', 'now');
+  assert.deepEqual(
+    listSpaceRecords(db, 'a2', shared.id)?.map((r) => r.id),
+    ['r1'],
+  );
+  assert.equal(listSpaceRecords(db, 'a2', solo.id), null);
+  assert.equal(listSpaceRecords(db, 'a2', 'missing'), null);
 });
