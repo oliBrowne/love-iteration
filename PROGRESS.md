@@ -1787,3 +1787,9 @@
 - Verified: component tests (names + owner marker, empty state) and a page test; typecheck, lint, build, format:check, vitest (453), API tests, roadmap tests/check. Not yet wired to the API (no web client exists yet).
 - Next: L299 invitation permission copy (UI explains visibility before acceptance).
 - Blockers: none
+
+## 2026-11-11 — L299: Show invitation permission copy
+- Changed: New `InvitePermissions` explains, before accepting, that nothing is shared yet, what members can see (name, records added to the space), what they never see (personal entries, other spaces), and that the person can leave or the inviter can cancel.
+- Verified: component tests for the space name, not-shared-yet line, visible/private lists and leave note; typecheck, lint, build, format:check, vitest (455) incl. no-judgment copy scan, API tests, roadmap tests/check. Headings and lists only, so it reads well on a narrow phone and with a screen reader; no web invite route exists yet to mount it.
+- Next: L300 invite browser flow test (invitation, acceptance, revocation work).
+- Blockers: none
