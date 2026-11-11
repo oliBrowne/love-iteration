@@ -330,7 +330,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L297 Protect personal records — Done when shared member cannot fetch personal entries.
 - [x] L298 Show shared-space member list — Done when UI names current members.
 - [x] L299 Show invitation permission copy — Done when UI explains visibility before acceptance.
-- [ ] L300 Add invite browser flow test — Done when invitation, acceptance, and revocation work.
+- [x] L300 Add invite browser flow test — Done when invitation, acceptance, and revocation work.
 
 ## 11 Opt-in sync and offline conflicts
 

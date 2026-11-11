@@ -1793,3 +1793,9 @@
 - Verified: component tests for the space name, not-shared-yet line, visible/private lists and leave note; typecheck, lint, build, format:check, vitest (455) incl. no-judgment copy scan, API tests, roadmap tests/check. Headings and lists only, so it reads well on a narrow phone and with a screen reader; no web invite route exists yet to mount it.
 - Next: L300 invite browser flow test (invitation, acceptance, revocation work).
 - Blockers: none
+
+## 2026-11-11 — L300: Add invite flow test
+- Changed: Added `api/src/inviteFlow.test.ts`: one end-to-end test that creates accounts, invites, accepts (member appears), cancels a second invite, and confirms the late acceptance is refused and joins nothing.
+- Verified: new flow test passes; API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check. Note: it drives the real server over HTTP with cookies, not a Playwright page, because no invite UI exists in the web app yet.
+- Next: L301 define sync record envelope (scope, id, revision, payload typed).
+- Blockers: none
