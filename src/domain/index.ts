@@ -100,4 +100,4 @@ export {
   validateImportRoot,
 } from './importValidation.ts';
 export type { SyncEnvelope, SyncScope } from './syncEnvelope.ts';
-export { makeEnvelope } from './syncEnvelope.ts';
+export { assertUploadable, makeEnvelope } from './syncEnvelope.ts';

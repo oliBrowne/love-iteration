@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { makeEnvelope, type SyncEnvelope } from './syncEnvelope.ts';
+import {
+  assertUploadable,
+  makeEnvelope,
+  type SyncEnvelope,
+} from './syncEnvelope.ts';
 
 describe('sync envelope', () => {
   it('carries scope, id, revision and payload, starting at revision 1', () => {
@@ -30,5 +34,31 @@ describe('sync envelope', () => {
     });
     expect(envelope.revision).toBe(4);
     expect(envelope.scope).toBe('personal');
+  });
+});
+
+describe('assertUploadable', () => {
+  const base = { id: 'rec-demo', kind: 'gratitude', payload: {} };
+
+  it('accepts a shared record that names its space', () => {
+    expect(() =>
+      assertUploadable(
+        makeEnvelope({ ...base, scope: 'shared', spaceId: 'space-demo' }),
+      ),
+    ).not.toThrow();
+  });
+
+  it('refuses a personal record, even one labelled with a space', () => {
+    for (const spaceId of [undefined, 'space-demo']) {
+      expect(() =>
+        assertUploadable(makeEnvelope({ ...base, scope: 'personal', spaceId })),
+      ).toThrowError(/stay on this device/);
+    }
+  });
+
+  it('refuses a shared record with no space', () => {
+    expect(() =>
+      assertUploadable(makeEnvelope({ ...base, scope: 'shared' })),
+    ).toThrowError(/needs a shared space/);
   });
 });

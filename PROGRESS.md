@@ -1805,3 +1805,9 @@
 - Verified: unit tests for fields and default/explicit revision; typecheck, lint, build, format:check, vitest, API tests, roadmap tests/check.
 - Next: L302 validate sync scope (personal record cannot be uploaded as shared).
 - Blockers: none
+
+## 2026-11-11 — L302: Validate sync scope
+- Changed: `assertUploadable` refuses to upload a personal record (even if it is labelled with a space) and a shared record with no space, with plain messages. Nothing is sent anywhere.
+- Verified: unit tests for shared accepted, personal refused with and without a space label, shared without space refused; typecheck, lint, build, format:check, vitest (460), API tests, roadmap tests/check.
+- Next: L303 server record put (owner write increments revision).
+- Blockers: none
