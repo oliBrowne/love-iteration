@@ -1781,3 +1781,9 @@
 - Verified: unit test (member sees only that space's record; other space and missing space give null) and server test (401, 404 for non-member, 200 for member). API typecheck/tests, root typecheck, lint, build, format:check, vitest, roadmap tests/check.
 - Next: L298 show shared-space member list in the UI.
 - Blockers: none
+
+## 2026-11-11 — L298: Show shared-space member list
+- Changed: New `MemberList` names everyone in a shared space (owner marked, "Just you for now." when empty). The Sharing page shows it when given members; it stays hidden while no space is connected. Plain list, so it reads well on a narrow phone and with a screen reader.
+- Verified: component tests (names + owner marker, empty state) and a page test; typecheck, lint, build, format:check, vitest (453), API tests, roadmap tests/check. Not yet wired to the API (no web client exists yet).
+- Next: L299 invitation permission copy (UI explains visibility before acceptance).
+- Blockers: none

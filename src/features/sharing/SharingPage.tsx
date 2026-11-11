@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { routeToHash } from '../../domain/index.ts';
 import { Button, InlineError } from '../../ui/index.ts';
+import { MemberList, type SpaceMember } from './MemberList.tsx';
 import { readSharingChoice, saveSharingChoice } from './sharingChoice.ts';
 
 // Sharing is opt-in. Nothing here sends anything: it only records, on this
 // device, whether the person has chosen to turn sharing on.
-export function SharingPage() {
+export function SharingPage({ members }: { members?: SpaceMember[] }) {
   const [choice, setChoice] = useState(() => readSharingChoice());
   const [confirming, setConfirming] = useState(false);
   const [problem, setProblem] = useState<string>();
@@ -60,6 +61,7 @@ export function SharingPage() {
           Turn on sharing
         </Button>
       )}
+      {members ? <MemberList members={members} /> : null}
     </section>
   );
 }

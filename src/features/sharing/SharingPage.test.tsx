@@ -47,4 +47,11 @@ describe('SharingPage', () => {
     render(<SharingPage />);
     expect(screen.getByRole('status').textContent).toMatch(/Sharing is on/);
   });
+
+  it('names current members when a space is connected', () => {
+    render(
+      <SharingPage members={[{ id: 'a1', name: 'Demo One', role: 'owner' }]} />,
+    );
+    expect(screen.getByText('Demo One (owner)')).toBeTruthy();
+  });
 });
