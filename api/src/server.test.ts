@@ -989,3 +989,47 @@ test('GET /spaces/:id/records hides records from non-members', async () => {
     await new Promise((resolve) => server.close(resolve));
   }
 });
+
+test('PUT /spaces/:id/records/:recordId writes and bumps the revision', async () => {
+  const db = createTestDb();
+  const sessions = createMemorySessionStore();
+  const server = createApiServer(undefined, [], undefined, db, sessions);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    await postJson(`${base}/accounts`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const login = await postJson(`${base}/login`, {
+      handle: 'sam',
+      password: 'a long enough secret',
+    });
+    const cookie = (login.headers.get('set-cookie') ?? '').split(';')[0] ?? '';
+    const made = await fetch(`${base}/spaces`, {
+      method: 'POST',
+      headers: { cookie, 'content-type': 'application/json' },
+      body: JSON.stringify({ name: 'Sam demo' }),
+    });
+    const { id } = (await made.json()) as { id: string };
+    const put = (body: unknown, c = cookie) =>
+      fetch(`${base}/spaces/${id}/records/r1`, {
+        method: 'PUT',
+        headers: { cookie: c, 'content-type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+    const one = (await (await put({ kind: 'demo', body: 'a' })).json()) as {
+      revision: number;
+    };
+    const two = (await (await put({ kind: 'demo', body: 'b' })).json()) as {
+      revision: number;
+    };
+    assert.equal(one.revision, 1);
+    assert.equal(two.revision, 2);
+    assert.equal((await put({ kind: 'demo' })).status, 400);
+    assert.equal((await put({ kind: 'demo', body: 'x' }, '')).status, 401);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});

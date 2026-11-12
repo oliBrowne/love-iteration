@@ -1811,3 +1811,9 @@
 - Verified: unit tests for shared accepted, personal refused with and without a space label, shared without space refused; typecheck, lint, build, format:check, vitest (460), API tests, roadmap tests/check.
 - Next: L303 server record put (owner write increments revision).
 - Blockers: none
+
+## 2026-11-12 — L303: Add server record put
+- Changed: `PUT /spaces/:id/records/:recordId` lets a space member write one shared record; the first write is revision 1 and each rewrite adds one. Non-members and ids from another space get the same not-found. Documented in the OpenAPI summary.
+- Verified: new unit test and HTTP test (revision 1 → 2, 400 on bad body, 401 without session); API typecheck/tests (116), root typecheck, lint, build, format:check, vitest (460), roadmap tests/check.
+- Next: L304 server record list (only members can read space records).
+- Blockers: none

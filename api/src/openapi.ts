@@ -262,6 +262,18 @@ export const openApiDocument = {
         },
       },
     },
+    '/spaces/{id}/records/{recordId}': {
+      put: {
+        summary:
+          'Write one shared record. Members only; each write of the same id adds one to its revision.',
+        responses: {
+          '200': { description: 'The record with its new revision.' },
+          '400': { description: 'The kind or body is missing.' },
+          '401': { description: 'There is no live session.' },
+          '404': { description: 'The caller is not a member of that space.' },
+        },
+      },
+    },
     '/spaces/{id}/members/{accountId}': {
       delete: {
         summary:

@@ -175,3 +175,37 @@ export function listSpaceRecords(
       updatedAt: String(row.updated_at),
     }));
 }
+
+// Writes one record into a space, only for its members. The first write makes
+// revision 1; each later write of the same id adds one. A record id that
+// belongs to another space is refused. Returns null for non-members and for
+// ids that live elsewhere, so neither reveals anything.
+export function putSpaceRecord(
+  db: Db,
+  accountId: string,
+  spaceId: string,
+  recordId: string,
+  kind: string,
+  body: string,
+): SpaceRecord | null {
+  const member = db
+    .prepare('SELECT 1 FROM memberships WHERE space_id = ? AND account_id = ?')
+    .get(spaceId, accountId);
+  if (!member) return null;
+  const now = new Date().toISOString();
+  const existing = db
+    .prepare('SELECT space_id, revision FROM records WHERE id = ?')
+    .get(recordId);
+  if (!existing) {
+    db.prepare(
+      'INSERT INTO records (id, space_id, kind, body, revision, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, 1, ?, ?, ?)',
+    ).run(recordId, spaceId, kind, body, accountId, now, now);
+    return { id: recordId, kind, body, revision: 1, updatedAt: now };
+  }
+  if (existing.space_id !== spaceId) return null;
+  const revision = Number(existing.revision) + 1;
+  db.prepare(
+    'UPDATE records SET kind = ?, body = ?, revision = ?, updated_at = ? WHERE id = ? AND space_id = ?',
+  ).run(kind, body, revision, now, recordId, spaceId);
+  return { id: recordId, kind, body, revision, updatedAt: now };
+}

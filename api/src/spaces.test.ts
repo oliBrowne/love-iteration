@@ -5,6 +5,7 @@ import {
   createSpace,
   leaveSpace,
   listSpaceRecords,
+  putSpaceRecord,
   removeMember,
   listSpaces,
 } from './spaces.ts';
@@ -151,4 +152,26 @@ test('a member only reads records of spaces they belong to', () => {
   );
   assert.equal(listSpaceRecords(db, 'a2', solo.id), null);
   assert.equal(listSpaceRecords(db, 'a2', 'missing'), null);
+});
+
+test('an owner write increments the record revision', () => {
+  const db = createTestDb();
+  const add = (id: string, handle: string) =>
+    db
+      .prepare(
+        'INSERT INTO accounts (id, display_name, password_hash, created_at, updated_at, handle) VALUES (?, ?, ?, ?, ?, ?)',
+      )
+      .run(id, 'Demo', 'h', 'now', 'now', handle);
+  add('a1', 'one');
+  add('a2', 'two');
+  const space = createSpace(db, 'a1', 'Demo space');
+  const other = createSpace(db, 'a2', 'Other demo');
+  const first = putSpaceRecord(db, 'a1', space.id, 'r1', 'demo', '{"a":1}');
+  const second = putSpaceRecord(db, 'a1', space.id, 'r1', 'demo', '{"a":2}');
+  assert.equal(first?.revision, 1);
+  assert.equal(second?.revision, 2);
+  assert.equal(listSpaceRecords(db, 'a1', space.id)?.[0]?.body, '{"a":2}');
+  // Non-members and other spaces' ids are refused.
+  assert.equal(putSpaceRecord(db, 'a2', space.id, 'r1', 'demo', 'x'), null);
+  assert.equal(putSpaceRecord(db, 'a2', other.id, 'r1', 'demo', 'x'), null);
 });

@@ -37,6 +37,7 @@ import {
   createSpace,
   leaveSpace,
   listSpaceRecords,
+  putSpaceRecord,
   listSpaces,
   removeMember,
   spaceNameRule,
@@ -229,6 +230,25 @@ export function handleRequest(
     else sendJson(res, 200, { records });
     return;
   }
+  const putMatch = /^\/spaces\/([^/]+)\/records\/([^/]+)$/.exec(path ?? '');
+  if (putMatch && req.method === 'PUT' && db && sessions) {
+    const accountId = sessionAccount(req, sessions);
+    if (accountId === undefined) {
+      sendError(res, 'unauthorized', 'Please log in.');
+      return;
+    }
+    putRecord(
+      req,
+      res,
+      db,
+      accountId,
+      putMatch[1] as string,
+      putMatch[2] as string,
+    ).catch(() => {
+      if (!res.headersSent) sendError(res, 'server_error');
+    });
+    return;
+  }
   const removeMatch = /^\/spaces\/([^/]+)\/members\/([^/]+)$/.exec(path ?? '');
   if (removeMatch && req.method === 'DELETE' && db && sessions) {
     const accountId = sessionAccount(req, sessions);
@@ -317,6 +337,37 @@ async function joinSpace(
   } else {
     sendJson(res, 200, { spaceId: result.spaceId });
   }
+}
+
+// PUT /spaces/:id/records/:recordId: members write one shared record (200).
+// The body text is stored as given and never logged.
+async function putRecord(
+  req: IncomingMessage,
+  res: ServerResponse,
+  db: Db,
+  accountId: string,
+  spaceId: string,
+  recordId: string,
+): Promise<void> {
+  const parsed = await readJsonBody(req);
+  if (rejectBadJson(res, parsed)) return;
+  const input = parsed.ok ? parsed.value : null;
+  const { kind, body } =
+    typeof input === 'object' && input !== null
+      ? (input as Record<string, unknown>)
+      : { kind: undefined, body: undefined };
+  if (
+    typeof kind !== 'string' ||
+    kind === '' ||
+    kind.length > 40 ||
+    typeof body !== 'string'
+  ) {
+    sendError(res, 'invalid_request', 'A record needs a kind and a body.');
+    return;
+  }
+  const record = putSpaceRecord(db, accountId, spaceId, recordId, kind, body);
+  if (!record) sendError(res, 'not_found');
+  else sendJson(res, 200, record);
 }
 
 // POST /spaces: creates a shared space; the caller becomes its owner (201).
