@@ -1817,3 +1817,9 @@
 - Verified: new unit test and HTTP test (revision 1 → 2, 400 on bad body, 401 without session); API typecheck/tests (116), root typecheck, lint, build, format:check, vitest (460), roadmap tests/check.
 - Next: L304 server record list (only members can read space records).
 - Blockers: none
+
+## 2026-11-13 — L304: Add server record list
+- Changed: Confirmed `GET /spaces/:id/records` (added with L297) already returns a space's records only to its members; non-members get the same not-found. Documented in the OpenAPI summary. No code change was needed.
+- Verified: existing unit test (`a member only reads records of spaces they belong to`) and HTTP test (`GET /spaces/:id/records hides records from non-members`) pass; typecheck, build, API tests (116), vitest, roadmap tests/check.
+- Next: L305 server record delete (deletion writes a tombstone).
+- Blockers: none
