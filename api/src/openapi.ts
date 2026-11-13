@@ -273,6 +273,15 @@ export const openApiDocument = {
           '404': { description: 'The caller is not a member of that space.' },
         },
       },
+      delete: {
+        summary:
+          'Delete one shared record. Members only; a tombstone with the next revision is kept so other devices learn it is gone.',
+        responses: {
+          '200': { description: 'The tombstone: id, revision and time.' },
+          '401': { description: 'There is no live session.' },
+          '404': { description: 'No such record in a space the caller is in.' },
+        },
+      },
     },
     '/spaces/{id}/members/{accountId}': {
       delete: {

@@ -209,3 +209,41 @@ export function putSpaceRecord(
   ).run(kind, body, revision, now, recordId, spaceId);
   return { id: recordId, kind, body, revision, updatedAt: now };
 }
+
+export type Tombstone = { id: string; revision: number; deletedAt: string };
+
+// Deletes one record from a space, only for its members, and leaves a
+// tombstone (the record id with its next revision) so other devices learn it
+// is gone. Returns null for non-members, unknown ids and other spaces' ids.
+export function deleteSpaceRecord(
+  db: Db,
+  accountId: string,
+  spaceId: string,
+  recordId: string,
+): Tombstone | null {
+  const member = db
+    .prepare('SELECT 1 FROM memberships WHERE space_id = ? AND account_id = ?')
+    .get(spaceId, accountId);
+  if (!member) return null;
+  const existing = db
+    .prepare('SELECT revision FROM records WHERE id = ? AND space_id = ?')
+    .get(recordId, spaceId);
+  if (!existing) return null;
+  const revision = Number(existing.revision) + 1;
+  const now = new Date().toISOString();
+  db.exec('BEGIN');
+  try {
+    db.prepare('DELETE FROM records WHERE id = ? AND space_id = ?').run(
+      recordId,
+      spaceId,
+    );
+    db.prepare(
+      'INSERT OR REPLACE INTO tombstones (record_id, space_id, revision, deleted_by, deleted_at) VALUES (?, ?, ?, ?, ?)',
+    ).run(recordId, spaceId, revision, accountId, now);
+    db.exec('COMMIT');
+  } catch (error) {
+    db.exec('ROLLBACK');
+    throw error;
+  }
+  return { id: recordId, revision, deletedAt: now };
+}

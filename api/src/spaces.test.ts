@@ -3,6 +3,7 @@ import { after, test } from 'node:test';
 import {
   checkSpaceName,
   createSpace,
+  deleteSpaceRecord,
   leaveSpace,
   listSpaceRecords,
   putSpaceRecord,
@@ -174,4 +175,28 @@ test('an owner write increments the record revision', () => {
   // Non-members and other spaces' ids are refused.
   assert.equal(putSpaceRecord(db, 'a2', space.id, 'r1', 'demo', 'x'), null);
   assert.equal(putSpaceRecord(db, 'a2', other.id, 'r1', 'demo', 'x'), null);
+});
+
+test('deleting a record removes it and writes a tombstone', () => {
+  const db = createTestDb();
+  const add = (id: string, handle: string) =>
+    db
+      .prepare(
+        'INSERT INTO accounts (id, display_name, password_hash, created_at, updated_at, handle) VALUES (?, ?, ?, ?, ?, ?)',
+      )
+      .run(id, 'Demo', 'h', 'now', 'now', handle);
+  add('a1', 'one');
+  add('a2', 'two');
+  const space = createSpace(db, 'a1', 'Demo space');
+  putSpaceRecord(db, 'a1', space.id, 'r1', 'demo', 'x');
+  // A non-member cannot delete it.
+  assert.equal(deleteSpaceRecord(db, 'a2', space.id, 'r1'), null);
+  const gone = deleteSpaceRecord(db, 'a1', space.id, 'r1');
+  assert.equal(gone?.revision, 2);
+  assert.deepEqual(listSpaceRecords(db, 'a1', space.id), []);
+  const row = db.prepare('SELECT * FROM tombstones').all();
+  assert.equal(row.length, 1);
+  assert.equal(row[0]?.record_id, 'r1');
+  assert.equal(row[0]?.revision, 2);
+  assert.equal(deleteSpaceRecord(db, 'a1', space.id, 'r1'), null);
 });

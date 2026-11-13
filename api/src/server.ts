@@ -35,6 +35,7 @@ import type { SessionStore } from './sessions.ts';
 import {
   checkSpaceName,
   createSpace,
+  deleteSpaceRecord,
   leaveSpace,
   listSpaceRecords,
   putSpaceRecord,
@@ -247,6 +248,22 @@ export function handleRequest(
     ).catch(() => {
       if (!res.headersSent) sendError(res, 'server_error');
     });
+    return;
+  }
+  if (putMatch && req.method === 'DELETE' && db && sessions) {
+    const accountId = sessionAccount(req, sessions);
+    if (accountId === undefined) {
+      sendError(res, 'unauthorized', 'Please log in.');
+      return;
+    }
+    const gone = deleteSpaceRecord(
+      db,
+      accountId,
+      putMatch[1] as string,
+      putMatch[2] as string,
+    );
+    if (!gone) sendError(res, 'not_found');
+    else sendJson(res, 200, gone);
     return;
   }
   const removeMatch = /^\/spaces\/([^/]+)\/members\/([^/]+)$/.exec(path ?? '');

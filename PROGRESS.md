@@ -1823,3 +1823,9 @@
 - Verified: existing unit test (`a member only reads records of spaces they belong to`) and HTTP test (`GET /spaces/:id/records hides records from non-members`) pass; typecheck, build, API tests (116), vitest, roadmap tests/check.
 - Next: L305 server record delete (deletion writes a tombstone).
 - Blockers: none
+
+## 2026-11-13 — L305: Add server record delete
+- Changed: `DELETE /spaces/:id/records/:recordId` lets a member delete a shared record; it is removed and a tombstone with the next revision is stored so other devices can learn it is gone. Non-members and unknown ids get not-found. Documented in OpenAPI.
+- Verified: new unit test (non-member refused, record gone, tombstone row with revision 2, second delete refused); API typecheck/tests (117), root typecheck, lint, build, format:check, roadmap tests/check. No HTTP-level test for the new route.
+- Next: L306 server cursor response (changed records after a cursor are returned).
+- Blockers: none
