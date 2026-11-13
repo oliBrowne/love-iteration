@@ -251,6 +251,19 @@ export const openApiDocument = {
         },
       },
     },
+    '/spaces/{id}/changes': {
+      get: {
+        summary:
+          'Records written and deleted in one space after the ?cursor= time, plus a new cursor. Members only.',
+        responses: {
+          '200': {
+            description: 'records, deleted tombstones and the next cursor.',
+          },
+          '401': { description: 'There is no live session.' },
+          '404': { description: 'The caller is not a member of that space.' },
+        },
+      },
+    },
     '/spaces/{id}/records': {
       get: {
         summary:

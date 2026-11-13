@@ -37,6 +37,7 @@ import {
   createSpace,
   deleteSpaceRecord,
   leaveSpace,
+  listSpaceChanges,
   listSpaceRecords,
   putSpaceRecord,
   listSpaces,
@@ -217,6 +218,26 @@ export function handleRequest(
     if (leaveSpace(db, accountId, leaveMatch[1] as string) === 'not_found') {
       sendError(res, 'not_found');
     } else sendJson(res, 200, { ok: true });
+    return;
+  }
+  const changesMatch = /^\/spaces\/([^/]+)\/changes$/.exec(path ?? '');
+  if (changesMatch && req.method === 'GET' && db && sessions) {
+    const accountId = sessionAccount(req, sessions);
+    if (accountId === undefined) {
+      sendError(res, 'unauthorized', 'Please log in.');
+      return;
+    }
+    const cursor = new URL(req.url ?? '/', 'http://x').searchParams.get(
+      'cursor',
+    );
+    const changes = listSpaceChanges(
+      db,
+      accountId,
+      changesMatch[1] as string,
+      cursor ?? '',
+    );
+    if (!changes) sendError(res, 'not_found');
+    else sendJson(res, 200, changes);
     return;
   }
   const recordsMatch = /^\/spaces\/([^/]+)\/records$/.exec(path ?? '');

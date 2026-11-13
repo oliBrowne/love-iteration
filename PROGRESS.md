@@ -1829,3 +1829,9 @@
 - Verified: new unit test (non-member refused, record gone, tombstone row with revision 2, second delete refused); API typecheck/tests (117), root typecheck, lint, build, format:check, roadmap tests/check. No HTTP-level test for the new route.
 - Next: L306 server cursor response (changed records after a cursor are returned).
 - Blockers: none
+
+## 2026-11-13 — L306: Add server cursor response
+- Changed: `GET /spaces/:id/changes?cursor=<time>` returns the shared records written and the tombstones deleted after that cursor, plus a new cursor (the newest change time; unchanged when nothing changed). Members only. Documented in OpenAPI.
+- Verified: new unit test (first fetch, quiet fetch keeps cursor, later write + delete returned, non-member null); API typecheck/tests (118), root typecheck, lint, build, format:check, roadmap check. No HTTP-level test for the route. Cursor is a strict timestamp comparison, so L307 must handle many changes sharing one time.
+- Next: L307 cursor pagination (a large change set pages without omissions).
+- Blockers: none

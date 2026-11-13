@@ -5,6 +5,7 @@ import {
   createSpace,
   deleteSpaceRecord,
   leaveSpace,
+  listSpaceChanges,
   listSpaceRecords,
   putSpaceRecord,
   removeMember,
@@ -199,4 +200,33 @@ test('deleting a record removes it and writes a tombstone', () => {
   assert.equal(row[0]?.record_id, 'r1');
   assert.equal(row[0]?.revision, 2);
   assert.equal(deleteSpaceRecord(db, 'a1', space.id, 'r1'), null);
+});
+
+test('changes after a cursor include writes and deletions only', async () => {
+  const db = createTestDb();
+  db.prepare(
+    'INSERT INTO accounts (id, display_name, password_hash, created_at, updated_at, handle) VALUES (?, ?, ?, ?, ?, ?)',
+  ).run('a1', 'Demo', 'h', 'now', 'now', 'one');
+  const space = createSpace(db, 'a1', 'Demo space');
+  putSpaceRecord(db, 'a1', space.id, 'r1', 'demo', 'x');
+  const first = listSpaceChanges(db, 'a1', space.id, '');
+  assert.equal(first?.records.length, 1);
+  const cursor = first?.cursor ?? '';
+  // Nothing new: empty, and the cursor stays put.
+  const quiet = listSpaceChanges(db, 'a1', space.id, cursor);
+  assert.deepEqual(quiet, { records: [], deleted: [], cursor });
+  await new Promise((resolve) => setTimeout(resolve, 5));
+  putSpaceRecord(db, 'a1', space.id, 'r2', 'demo', 'y');
+  deleteSpaceRecord(db, 'a1', space.id, 'r1');
+  const next = listSpaceChanges(db, 'a1', space.id, cursor);
+  assert.deepEqual(
+    next?.records.map((r) => r.id),
+    ['r2'],
+  );
+  assert.deepEqual(
+    next?.deleted.map((d) => d.id),
+    ['r1'],
+  );
+  assert.ok((next?.cursor ?? '') > cursor);
+  assert.equal(listSpaceChanges(db, 'nobody', space.id, ''), null);
 });

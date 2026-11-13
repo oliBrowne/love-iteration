@@ -339,7 +339,7 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L303 Add server record put — Done when owner write increments revision.
 - [x] L304 Add server record list — Done when only member can read space records.
 - [x] L305 Add server record delete — Done when deletion writes a tombstone.
-- [ ] L306 Add server cursor response — Done when changed records after cursor are returned.
+- [x] L306 Add server cursor response — Done when changed records after cursor are returned.
 - [ ] L307 Add cursor pagination — Done when large change set pages without omissions.
 - [ ] L308 Add client sync queue store — Done when offline mutation remains queued.
 - [ ] L309 Queue local create — Done when new shared record appears in queue.

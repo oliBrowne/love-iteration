@@ -247,3 +247,53 @@ export function deleteSpaceRecord(
   }
   return { id: recordId, revision, deletedAt: now };
 }
+
+export type SpaceChanges = {
+  records: SpaceRecord[];
+  deleted: Tombstone[];
+  cursor: string;
+};
+
+// Returns what changed in a space after `cursor` (an ISO time; empty means
+// from the start): records written and records deleted. The returned cursor is
+// the newest change time seen, or the one given when nothing changed. Members
+// only; others get null.
+export function listSpaceChanges(
+  db: Db,
+  accountId: string,
+  spaceId: string,
+  cursor: string,
+): SpaceChanges | null {
+  const member = db
+    .prepare('SELECT 1 FROM memberships WHERE space_id = ? AND account_id = ?')
+    .get(spaceId, accountId);
+  if (!member) return null;
+  const records = db
+    .prepare(
+      'SELECT id, kind, body, revision, updated_at FROM records WHERE space_id = ? AND updated_at > ? ORDER BY updated_at, id',
+    )
+    .all(spaceId, cursor)
+    .map((row) => ({
+      id: String(row.id),
+      kind: String(row.kind),
+      body: String(row.body),
+      revision: Number(row.revision),
+      updatedAt: String(row.updated_at),
+    }));
+  const deleted = db
+    .prepare(
+      'SELECT record_id, revision, deleted_at FROM tombstones WHERE space_id = ? AND deleted_at > ? ORDER BY deleted_at, record_id',
+    )
+    .all(spaceId, cursor)
+    .map((row) => ({
+      id: String(row.record_id),
+      revision: Number(row.revision),
+      deletedAt: String(row.deleted_at),
+    }));
+  const times = [
+    cursor,
+    ...records.map((r) => r.updatedAt),
+    ...deleted.map((d) => d.deletedAt),
+  ];
+  return { records, deleted, cursor: times.reduce((a, b) => (b > a ? b : a)) };
+}
