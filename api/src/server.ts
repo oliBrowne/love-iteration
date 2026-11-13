@@ -227,14 +227,17 @@ export function handleRequest(
       sendError(res, 'unauthorized', 'Please log in.');
       return;
     }
-    const cursor = new URL(req.url ?? '/', 'http://x').searchParams.get(
-      'cursor',
-    );
+    const query = new URL(req.url ?? '/', 'http://x').searchParams;
+    const cursor = query.get('cursor');
+    const asked = Number(query.get('limit'));
+    const limit =
+      Number.isInteger(asked) && asked >= 1 ? Math.min(asked, 500) : 100;
     const changes = listSpaceChanges(
       db,
       accountId,
       changesMatch[1] as string,
       cursor ?? '',
+      limit,
     );
     if (!changes) sendError(res, 'not_found');
     else sendJson(res, 200, changes);

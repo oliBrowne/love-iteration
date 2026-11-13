@@ -1835,3 +1835,9 @@
 - Verified: new unit test (first fetch, quiet fetch keeps cursor, later write + delete returned, non-member null); API typecheck/tests (118), root typecheck, lint, build, format:check, roadmap check. No HTTP-level test for the route. Cursor is a strict timestamp comparison, so L307 must handle many changes sharing one time.
 - Next: L307 cursor pagination (a large change set pages without omissions).
 - Blockers: none
+
+## 2026-11-13 — L307: Add cursor pagination
+- Changed: `GET /spaces/:id/changes` now pages with `?limit=` (default 100, max 500). Changes are ordered by a "time|id" position, so many changes with the same timestamp still page cleanly; each page returns the new cursor and a `more` flag. This also fixes the tie-at-one-timestamp gap noted in L306.
+- Verified: new unit test (25 changes at one timestamp plus a deletion, pages of 10 → 3 pages, no omissions or repeats); API typecheck/tests (119), root typecheck, lint, build, format:check, roadmap tests/check. No HTTP-level test for the `limit` parameter.
+- Next: L308 client sync queue store (an offline mutation stays queued).
+- Blockers: none

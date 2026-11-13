@@ -252,48 +252,86 @@ export type SpaceChanges = {
   records: SpaceRecord[];
   deleted: Tombstone[];
   cursor: string;
+  more: boolean;
 };
 
-// Returns what changed in a space after `cursor` (an ISO time; empty means
-// from the start): records written and records deleted. The returned cursor is
-// the newest change time seen, or the one given when nothing changed. Members
-// only; others get null.
+// A change position is "time|id"; changes are ordered by it, so many changes
+// that share one time still page without omissions.
+function position(at: string, id: string): string {
+  return `${at}|${id}`;
+}
+
+// Returns up to `limit` changes in a space after `cursor` (empty means from
+// the start): records written and records deleted, in order. `cursor` in the
+// result is the position of the last change returned (or the one given), and
+// `more` says another page follows. Members only; others get null.
 export function listSpaceChanges(
   db: Db,
   accountId: string,
   spaceId: string,
   cursor: string,
+  limit = 100,
 ): SpaceChanges | null {
   const member = db
     .prepare('SELECT 1 FROM memberships WHERE space_id = ? AND account_id = ?')
     .get(spaceId, accountId);
   if (!member) return null;
-  const records = db
+  const since = cursor.split('|')[0] ?? '';
+  type Change = {
+    at: string;
+    pos: string;
+    record?: SpaceRecord;
+    gone?: Tombstone;
+  };
+  const changes: Change[] = [];
+  for (const row of db
     .prepare(
-      'SELECT id, kind, body, revision, updated_at FROM records WHERE space_id = ? AND updated_at > ? ORDER BY updated_at, id',
+      'SELECT id, kind, body, revision, updated_at FROM records WHERE space_id = ? AND updated_at >= ?',
     )
-    .all(spaceId, cursor)
-    .map((row) => ({
+    .all(spaceId, since)) {
+    const record = {
       id: String(row.id),
       kind: String(row.kind),
       body: String(row.body),
       revision: Number(row.revision),
       updatedAt: String(row.updated_at),
-    }));
-  const deleted = db
+    };
+    changes.push({
+      at: record.updatedAt,
+      pos: position(record.updatedAt, record.id),
+      record,
+    });
+  }
+  for (const row of db
     .prepare(
-      'SELECT record_id, revision, deleted_at FROM tombstones WHERE space_id = ? AND deleted_at > ? ORDER BY deleted_at, record_id',
+      'SELECT record_id, revision, deleted_at FROM tombstones WHERE space_id = ? AND deleted_at >= ?',
     )
-    .all(spaceId, cursor)
-    .map((row) => ({
+    .all(spaceId, since)) {
+    const gone = {
       id: String(row.record_id),
       revision: Number(row.revision),
       deletedAt: String(row.deleted_at),
-    }));
-  const times = [
-    cursor,
-    ...records.map((r) => r.updatedAt),
-    ...deleted.map((d) => d.deletedAt),
-  ];
-  return { records, deleted, cursor: times.reduce((a, b) => (b > a ? b : a)) };
+    };
+    changes.push({
+      at: gone.deletedAt,
+      pos: position(gone.deletedAt, gone.id),
+      gone,
+    });
+  }
+  const after = changes
+    .filter((c) => cursor === '' || c.pos > cursor)
+    .sort((a, b) => (a.pos < b.pos ? -1 : a.pos > b.pos ? 1 : 0));
+  const page = after.slice(0, limit);
+  const records: SpaceRecord[] = [];
+  const deleted: Tombstone[] = [];
+  for (const c of page) {
+    if (c.record) records.push(c.record);
+    if (c.gone) deleted.push(c.gone);
+  }
+  return {
+    records,
+    deleted,
+    cursor: page.length > 0 ? (page[page.length - 1] as Change).pos : cursor,
+    more: after.length > page.length,
+  };
 }

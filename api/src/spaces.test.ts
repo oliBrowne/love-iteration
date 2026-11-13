@@ -214,7 +214,7 @@ test('changes after a cursor include writes and deletions only', async () => {
   const cursor = first?.cursor ?? '';
   // Nothing new: empty, and the cursor stays put.
   const quiet = listSpaceChanges(db, 'a1', space.id, cursor);
-  assert.deepEqual(quiet, { records: [], deleted: [], cursor });
+  assert.deepEqual(quiet, { records: [], deleted: [], cursor, more: false });
   await new Promise((resolve) => setTimeout(resolve, 5));
   putSpaceRecord(db, 'a1', space.id, 'r2', 'demo', 'y');
   deleteSpaceRecord(db, 'a1', space.id, 'r1');
@@ -229,4 +229,46 @@ test('changes after a cursor include writes and deletions only', async () => {
   );
   assert.ok((next?.cursor ?? '') > cursor);
   assert.equal(listSpaceChanges(db, 'nobody', space.id, ''), null);
+});
+
+test('a large change set pages without omissions or repeats', () => {
+  const db = createTestDb();
+  db.prepare(
+    'INSERT INTO accounts (id, display_name, password_hash, created_at, updated_at, handle) VALUES (?, ?, ?, ?, ?, ?)',
+  ).run('a1', 'Demo', 'h', 'now', 'now', 'one');
+  const space = createSpace(db, 'a1', 'Demo space');
+  // Many records with the very same timestamp, plus one deletion.
+  for (let i = 0; i < 25; i++) {
+    putSpaceRecord(
+      db,
+      'a1',
+      space.id,
+      `r${String(i).padStart(2, '0')}`,
+      'demo',
+      'x',
+    );
+  }
+  db.prepare('UPDATE records SET updated_at = ?').run(
+    '2026-01-01T00:00:00.000Z',
+  );
+  deleteSpaceRecord(db, 'a1', space.id, 'r00');
+  const seen: string[] = [];
+  let cursor = '';
+  let pages = 0;
+  for (;;) {
+    const page = listSpaceChanges(db, 'a1', space.id, cursor, 10);
+    assert.ok(page);
+    pages += 1;
+    seen.push(
+      ...page.records.map((r) => r.id),
+      ...page.deleted.map((d) => `gone:${d.id}`),
+    );
+    cursor = page.cursor;
+    if (!page.more) break;
+  }
+  assert.equal(pages, 3);
+  assert.equal(seen.length, 25);
+  assert.equal(new Set(seen).size, 25);
+  assert.ok(seen.includes('gone:r00'));
+  assert.ok(!seen.includes('r00'));
 });
