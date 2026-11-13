@@ -1841,3 +1841,9 @@
 - Verified: new unit test (25 changes at one timestamp plus a deletion, pages of 10 → 3 pages, no omissions or repeats); API typecheck/tests (119), root typecheck, lint, build, format:check, roadmap tests/check. No HTTP-level test for the `limit` parameter.
 - Next: L308 client sync queue store (an offline mutation stays queued).
 - Blockers: none
+
+## 2026-11-13 — Direction change: the project is now an art gallery
+- Changed: README, CLAUDE.md, AGENTS.md, docs/ARCHITECTURE.md, and docs/DAILY-RUN.md now describe a gallery of ASCII and three.js art pieces with a craft bar. ROADMAP.md L308–L360 were replaced: gallery foundation (L308–L319), 32 pieces (L320–L351), polish (L352–L360). The journal and `api/` code stays but is no longer extended.
+- Verified: roadmap check and tests, format:check, lint, vitest (460), build. No app code changed.
+- Next: L308 add three.js with lazy loading.
+- Blockers: none

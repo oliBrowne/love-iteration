@@ -2,37 +2,39 @@
 
 ## Product
 
-Love Iteration helps an individual or consenting pair notice what is going well, discuss what needs care, and turn ideas into shared time. It should feel calm and useful in under two minutes a day. The product is a journal and planner; it does not score people, diagnose relationships, or send automated advice about a partner.
+Love Iteration is a small gallery of art pieces made for one person to enjoy. Each piece is drawn in ASCII or built as a three.js scene. The home page is the collection; a piece opens full screen with a title and a short caption. There is nothing to fill in. It should feel cute, warm, and carefully made, and work well on a phone.
 
-The core loop is **check in → appreciate → plan → reflect**. Each step stands alone, so the app remains useful when someone skips a day. A local-only personal space comes first. Sharing is opt-in and can be turned off without losing a personal export.
+It is not a journal, planner, or relationship tracker. Tasks L001–L307 built one, with a sharing server in `api/`. That direction stopped on 2026-11-13. The old code remains in the repository, tucked behind one quiet link, and is not extended.
 
-## Release sequence
+## The craft bar
 
-1. **Days 1–60:** Working app shell and personal check-ins.
-2. **Days 61–150:** Gratitude, memories, date ideas, and rituals.
-3. **Days 151–240:** Weekly reflection, search, accessibility, export, import, and privacy controls. This is a complete offline release.
-4. **Days 241–330:** Self-hostable server, explicit partner invitations, sync, and conflict handling.
-5. **Days 331–360:** Reliability, security review, documentation, and release packaging.
+A piece is done when it is:
 
-The 360 tasks in `ROADMAP.md` are sequential. A daily run implements one task, updates its checkbox, tests it, and makes one commit. Reordering requires an explicit roadmap edit with an explanation in the commit.
+- **Composed:** a deliberate picture with a clear subject, depth, and balance.
+- **Alive:** at least two layers of motion or one real interaction, looping without a visible jump.
+- **Detailed:** at least one small touch that rewards a second look.
+- **Polished:** right at 320px and on desktop, with a title and caption, smooth on a phone.
+- **Considerate:** a composed still under reduced motion, and a text description for screen readers.
 
 ## Technical shape
 
-The first application uses React, TypeScript, and Vite. Domain rules are pure TypeScript functions. Browser persistence is behind a small repository interface backed by IndexedDB. UI components do not read storage directly. Dates are stored as ISO strings and rendered in the user's locale. Stored records have stable IDs, a schema version, creation time, and update time. Runtime validation is at the persistence boundary.
+React, TypeScript, and Vite. three.js is the only 3D library and loads lazily, so the home page stays light.
 
-Unit tests cover domain rules and repository behavior. Browser tests cover the core flows. Accessibility checks are part of feature completion. A simple static build works offline after first load. Avoid analytics, tracking, and third-party fonts.
+- **Registry.** One typed list describes every piece: id, title, medium (`ascii` or `three`), caption, text description, and a lazily loaded component. The gallery and routes read from it.
+- **ASCII pieces.** A shared canvas component renders a monospace frame that scales to the screen. A piece supplies a pure function from time to frame (a grid of characters), which makes it testable. A shared loop drives the animation and stops when the piece is hidden.
+- **three.js pieces.** A shared stage component owns the renderer, resize handling, the animation loop, and disposal. A piece supplies a function that builds its scene and an update step. Geometry is built in code; no large model or texture downloads.
+- **Fallbacks.** Under `prefers-reduced-motion`, or without WebGL, a piece shows a composed still.
+- **Each piece lives in its own folder** under `src/pieces/<id>/`, with small pure helpers and a focused test.
 
-Optional sharing adds a small Node/TypeScript API with SQLite and migrations. The API owns accounts, invitations, and synchronization. It never silently uploads local records. Sync is per record with a revision and deletion marker; the UI offers a clear resolution flow for conflicting edits. Do not promise end-to-end encryption: the server can read shared records in this design. Transport must use HTTPS outside local development. The server is self-hostable before any managed deployment is considered.
+Unit tests cover frame generators, the registry, and fallbacks. A browser test opens the gallery and a piece. The static build works offline after first load. No analytics, tracking, or third-party fonts.
 
-## Data boundaries
+## Content boundaries
 
-- Personal records stay on the device until the person explicitly enables sharing.
-- Never put journal text in URLs, logs, crash reports, or Git commits.
-- A partner invite grants access only to the selected shared space. Personal entries remain personal.
-- Export and deletion must work before account or sync features ship.
-- Provide clear controls for leaving a shared space and revoking invitations.
-- No push notifications or email messages are sent until the person explicitly opts in.
+- Pieces are scenes and moods. Never invent relationship details, names, dates, or messages.
+- Any words inside a piece are clearly labelled demo text.
+- Nothing personal is stored or sent anywhere. Favourites, if added, stay in the browser.
+- Never commit personal entries, secrets, or tokens.
 
-## Definition of done for one day
+## Definition of done for one task
 
-The task's acceptance check passes, the smallest relevant automated tests pass, the app still builds once it exists, changed UI is keyboard-usable, and the commit contains the task ID. If a task cannot be completed safely, record a blocker and stop. Do not mark it complete or jump to the next task.
+The task's acceptance check passes, a piece meets the craft bar, tests and the build pass, the result has been looked at running at phone and desktop widths, and the commit contains the task ID. If a task cannot be finished well, record why and stop. Do not mark it complete or jump to the next task.

@@ -1,6 +1,6 @@
-# 360 daily tasks
+# Love Iteration roadmap
 
-Complete one numbered task per day. Each line names one small change and its observable completion check. The first unchecked task is next. See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for the product boundaries and [AGENTS.md](AGENTS.md) for the daily workflow.
+L001–L307 built the first version (a journal and sharing server, now set aside). **From L308 the project is a gallery of small ASCII and three.js art pieces.** Each line is one task with an observable completion check; the first unchecked task is next. A piece is one task and must meet the craft bar in [ARCHITECTURE.md](docs/ARCHITECTURE.md). See [AGENTS.md](AGENTS.md) for the daily workflow.
 
 ## 01 Foundation and app shell
 
@@ -341,59 +341,67 @@ Complete one numbered task per day. Each line names one small change and its obs
 - [x] L305 Add server record delete — Done when deletion writes a tombstone.
 - [x] L306 Add server cursor response — Done when changed records after cursor are returned.
 - [x] L307 Add cursor pagination — Done when large change set pages without omissions.
-- [ ] L308 Add client sync queue store — Done when offline mutation remains queued.
-- [ ] L309 Queue local create — Done when new shared record appears in queue.
-- [ ] L310 Queue local update — Done when later edit coalesces same record.
-- [ ] L311 Queue local delete — Done when delete supersedes pending update.
-- [ ] L312 Add explicit enable-sync action — Done when queue sends only after user opts in.
-- [ ] L313 Add first upload preview — Done when UI shows exact record counts.
-- [ ] L314 Add upload worker — Done when queued record is acknowledged on success.
-- [ ] L315 Add download worker — Done when remote record appears locally.
-- [ ] L316 Add retry delay — Done when temporary failure backs off without data loss.
-- [ ] L317 Add offline status — Done when UI states that changes are waiting.
-- [ ] L318 Add last-sync timestamp — Done when successful sync time is visible.
-- [ ] L319 Add conflict detection — Done when revision mismatch returns conflict response.
-- [ ] L320 Add conflict detail view — Done when both local and remote values are shown.
-- [ ] L321 Add keep-local resolution — Done when chosen local value uploads as new revision.
-- [ ] L322 Add keep-remote resolution — Done when chosen remote value replaces local record.
-- [ ] L323 Add conflict cancellation — Done when neither version is discarded on cancel.
-- [ ] L324 Add server tombstone retention — Done when stale client cannot revive a deleted record.
-- [ ] L325 Add membership loss handling — Done when revoked member stops syncing immediately.
-- [ ] L326 Add sign-out queue handling — Done when pending local edits remain local.
-- [ ] L327 Add multi-device sync test — Done when edit on device A appears on B.
-- [ ] L328 Add offline merge test — Done when nonconflicting edits converge after reconnect.
-- [ ] L329 Add same-record conflict test — Done when both versions remain until choice.
-- [ ] L330 Add sync privacy audit — Done when no personal-scope payload crosses network.
 
-## 12 Reliability, polish, and release
+The remaining sync and release tasks were dropped on 2026-11-13 when the project changed direction. The journal and server code stays in the repository but is no longer being built on.
 
-- [ ] L331 Audit empty states — Done when every route has a useful first-use view.
-- [ ] L332 Audit form errors — Done when errors identify the field and recovery step.
-- [ ] L333 Audit focus restoration — Done when dialogs return focus to opener.
-- [ ] L334 Audit reduced motion — Done when animation follows system preference.
-- [ ] L335 Audit high contrast — Done when controls remain clear in forced colors.
-- [ ] L336 Audit narrow layout — Done when core flows work at 320px width.
-- [ ] L337 Audit wide layout — Done when reading width stays comfortable.
-- [ ] L338 Add theme preference — Done when light, dark, and system choices persist.
-- [ ] L339 Add locale-ready strings — Done when visible UI text uses one message catalog.
-- [ ] L340 Add date formatting tests — Done when representative locale formats are checked.
-- [ ] L341 Add dependency update check — Done when CI reports outdated direct packages.
-- [ ] L342 Add dependency vulnerability check — Done when CI reports critical advisories.
-- [ ] L343 Add API authorization matrix test — Done when every write route enforces membership.
-- [ ] L344 Add invitation token entropy test — Done when generated tokens meet length requirement.
-- [ ] L345 Add session expiry test — Done when expired cookie cannot authenticate.
-- [ ] L346 Add backup restore test — Done when restored API database passes integrity check.
-- [ ] L347 Add export compatibility test — Done when older export fixture still imports.
-- [ ] L348 Add migration-from-first-version test — Done when oldest supported data upgrades.
-- [ ] L349 Add seeded demo data command — Done when sample records are clearly synthetic.
-- [ ] L350 Add demo reset command — Done when only synthetic demo data is removed.
-- [ ] L351 Add user guide for local mode — Done when setup, export, and deletion are documented.
-- [ ] L352 Add user guide for sharing — Done when consent and visibility are documented.
-- [ ] L353 Add administrator guide — Done when HTTPS, backup, and update steps are documented.
-- [ ] L354 Add troubleshooting guide — Done when common storage and sync errors have steps.
-- [ ] L355 Add release checklist — Done when build, tests, privacy, and rollback gates are listed.
-- [ ] L356 Run full browser regression — Done when all core scenarios pass on two engines.
-- [ ] L357 Run accessibility regression — Done when critical routes pass keyboard and AX checks.
-- [ ] L358 Run offline recovery regression — Done when app works after disconnected reload.
-- [ ] L359 Build release artifacts — Done when web bundle and API image are reproducible.
-- [ ] L360 Tag v1.0 release candidate — Done when all checks and 360 task boxes are complete.
+## 12 Gallery foundation
+
+- [ ] L308 Add three.js with lazy loading — Done when three.js loads in its own chunk only when a three.js piece opens.
+- [ ] L309 Define the piece registry — Done when one typed list gives each piece an id, title, medium, caption, and component.
+- [ ] L310 Build the ASCII canvas component — Done when a monospace frame renders crisply and scales to a 320px screen without wrapping.
+- [ ] L311 Build the ASCII animation loop — Done when frames advance smoothly and hold a composed still under reduced motion.
+- [ ] L312 Build the three.js stage component — Done when a scene mounts, resizes with the window, and disposes cleanly when left.
+- [ ] L313 Add still fallbacks for scenes — Done when reduced motion or missing WebGL shows a composed still instead of a blank.
+- [ ] L314 Refresh the visual language — Done when tokens cover paper, ink, rose, and a dusk palette used by the gallery.
+- [ ] L315 Build the gallery home — Done when Home shows the collection as cards with live previews at phone and desktop widths.
+- [ ] L316 Add the piece page — Done when a card opens its piece full screen with its caption and a way back by touch and keyboard.
+- [ ] L317 Tuck the journal tools away — Done when Home is the gallery and the old tools are reachable only from one quiet link.
+- [ ] L318 Add gentle piece transitions — Done when opening and closing a piece fades softly and is instant under reduced motion.
+- [ ] L319 Add gallery browser test — Done when Playwright opens Home, opens a piece, and returns.
+
+## 13 The collection
+
+- [ ] L320 ASCII piece: Paper boat on a slow river — Done when a boat drifts across rippling water and loops seamlessly.
+- [ ] L321 three.js piece: Drifting lanterns — Done when glowing paper lanterns rise through a dusk sky and can be nudged by touch.
+- [ ] L322 ASCII piece: Two windows at night — Done when two lit windows far apart share one sky with a slow shooting star.
+- [ ] L323 three.js piece: Two stars in orbit — Done when two small stars circle each other and leave soft trails.
+- [ ] L324 ASCII piece: Rain on the window — Done when drops run down the glass at different speeds over a blurred street.
+- [ ] L325 three.js piece: Tiny floating garden — Done when a low-poly island with a tree and flowers turns slowly and sways.
+- [ ] L326 ASCII piece: Cat asleep on a letter — Done when a cat breathes, flicks an ear, and stretches now and then.
+- [ ] L327 three.js piece: Paper cranes — Done when folded cranes glide in a loose flock and scatter gently from a tap.
+- [ ] L328 ASCII piece: Tea for two — Done when steam curls from two cups and the curls briefly meet.
+- [ ] L329 three.js piece: Snow globe — Done when snow swirls inside a glass globe when it is shaken by drag or tap.
+- [ ] L330 ASCII piece: Lighthouse — Done when a beam sweeps over waves and lights a far-off boat as it passes.
+- [ ] L331 three.js piece: Jar of fireflies — Done when fireflies drift and pulse inside a glass jar with a warm glow.
+- [ ] L332 ASCII piece: Night train — Done when a train crosses a moonlit landscape with lit carriage windows.
+- [ ] L333 three.js piece: Cottage with a lit window — Done when a small cottage sits under falling snow with chimney smoke and a warm window.
+- [ ] L334 ASCII piece: Moon phases — Done when the moon moves through its phases over a quiet horizon.
+- [ ] L335 three.js piece: Moon and tide — Done when a low moon pulls a shimmering tide in and out.
+- [ ] L336 ASCII piece: First snow — Done when snow settles on a bench and a lamp post and slowly builds up.
+- [ ] L337 three.js piece: Cherry blossom — Done when petals fall from a branch and swirl in a soft wind.
+- [ ] L338 ASCII piece: Constellation — Done when stars appear one by one and lines join them into a heart.
+- [ ] L339 three.js piece: Little planet — Done when a tiny planet with two houses on opposite sides turns between day and night.
+- [ ] L340 ASCII piece: Sprout — Done when a seed grows into a flowering plant and gently restarts.
+- [ ] L341 three.js piece: Music box — Done when a music box turns with a little dancing figure and drifting notes.
+- [ ] L342 ASCII piece: Fireflies in the field — Done when fireflies blink over tall grass in an unhurried rhythm.
+- [ ] L343 three.js piece: Aurora — Done when ribbons of light ripple over dark hills.
+- [ ] L344 ASCII piece: Typewriter — Done when keys strike and a line of clearly labelled demo text types itself onto paper.
+- [ ] L345 three.js piece: Hot air balloons — Done when patchwork balloons float past clouds at different depths.
+- [ ] L346 ASCII piece: Campfire — Done when flames flicker and sparks rise under a starry sky.
+- [ ] L347 three.js piece: Origami heart — Done when a sheet of paper folds itself into a heart and unfolds again.
+- [ ] L348 ASCII piece: Postcard — Done when a postcard turns over to show a stamp, a wavy postmark, and demo lines.
+- [ ] L349 three.js piece: Kite — Done when a kite tugs on its string and follows the pointer through the wind.
+- [ ] L350 ASCII piece: Waves at dusk — Done when layered waves roll in under a setting sun.
+- [ ] L351 three.js piece: Night sky dome — Done when a field of stars slowly wheels overhead with an occasional meteor.
+
+## 14 Gallery polish
+
+- [ ] L352 Add piece descriptions for screen readers — Done when every piece has a short text description announced in place of the art.
+- [ ] L353 Add a favourites shelf — Done when a piece can be hearted and favourites show first after reload.
+- [ ] L354 Add piece of the day — Done when Home features one piece chosen by the date.
+- [ ] L355 Add a slow slideshow mode — Done when pieces advance on their own with pause and keyboard controls.
+- [ ] L356 Add performance budget — Done when each scene holds a steady frame rate on a mid-range phone profile and pauses when hidden.
+- [ ] L357 Make the gallery work offline — Done when every piece opens after first load with the network off.
+- [ ] L358 Add title cards — Done when each piece opens with a brief hand-set title that fades away.
+- [ ] L359 Review every piece against the craft bar — Done when each piece is rechecked on a phone width and weak ones are improved or noted.
+- [ ] L360 Plan the next collection — Done when thirty new piece ideas are listed for the roadmap extension.
