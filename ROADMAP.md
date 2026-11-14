@@ -348,8 +348,8 @@ The remaining sync and release tasks were dropped on 2026-11-13 when the project
 
 - [ ] L308 Add three.js with lazy loading — Done when three.js loads in its own chunk only when a three.js piece opens.
 - [ ] L309 Define the piece registry — Done when one typed list gives each piece an id, title, medium, caption, and component.
-- [ ] L310 Build the ASCII canvas component — Done when a monospace frame renders crisply and scales to a 320px screen without wrapping.
-- [ ] L311 Build the ASCII animation loop — Done when frames advance smoothly and hold a composed still under reduced motion.
+- [ ] L310 Build the ASCII field renderer — Done when a brightness and colour field maps through a character ramp onto a dense grid that fits a 320px screen.
+- [ ] L311 Add timeline, noise, and bloom helpers — Done when eased phases, value noise, and a soft glow pass are unit tested and reduced motion holds a composed still.
 - [ ] L312 Build the three.js stage component — Done when a scene mounts, resizes with the window, and disposes cleanly when left.
 - [ ] L313 Add still fallbacks for scenes — Done when reduced motion or missing WebGL shows a composed still instead of a blank.
 - [ ] L314 Refresh the visual language — Done when tokens cover paper, ink, rose, and a dusk palette used by the gallery.

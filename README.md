@@ -20,15 +20,18 @@ Cute, warm, and a bit magical. Paper and ink tones, a soft rose accent, dusk blu
 
 ### The craft bar
 
+The effort level to match is [iremcnar/eyeTutorial](https://github.com/iremcnar/eyeTutorial): an eye opens, blinks, and the camera dives through the pupil into a starfield and a heart-shaped nebula, all rendered procedurally as text. Every piece here should feel like that much care went into it. Use it as a standard for effort, not as something to copy.
+
 A piece is finished only when all of this is true:
 
-- **Composed.** It reads as a deliberate picture, with a clear subject, depth, and balance. Not a tech demo or a single spinning shape.
-- **Alive.** It has at least two layers of motion or one real interaction, and it loops without a visible jump.
-- **Detailed.** There is at least one small touch someone would smile at on a second look.
+- **Rendered, not typed.** ASCII pieces are computed: a dense grid where shape, light, and texture come from maths and noise, mapped through a dark-to-bright character ramp with colour. Not a few hand-typed sprites moving around.
+- **A small journey.** It runs on a timeline with at least three eased phases and a moment of surprise (a transformation, a camera move, a reveal), then loops or rests gracefully.
+- **Layered.** Several distinct layers work together: subject, texture, light, atmosphere, particles. Glow or depth where it helps.
+- **Detailed.** There are small touches someone would smile at on a second look.
 - **Polished.** It looks right at 320px wide and on desktop, has a title and caption, and stays smooth on a phone.
 - **Considerate.** Reduced motion shows a composed still. A short text description stands in for screen readers.
 
-One beautiful piece is worth more than five rushed ones. If a piece isn't there yet, keep working on it or leave the task unchecked and say why.
+One piece at this level is a full run's work and is worth more than ten quick ones. If a piece isn't there yet, keep working on it or leave the task unchecked and say why.
 
 ## Where the project stands
 

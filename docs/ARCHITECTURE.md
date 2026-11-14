@@ -8,11 +8,12 @@ It is not a journal, planner, or relationship tracker. Tasks L001–L307 built o
 
 ## The craft bar
 
-A piece is done when it is:
+The effort level to match is [iremcnar/eyeTutorial](https://github.com/iremcnar/eyeTutorial), a procedurally rendered ASCII animation with a timeline, layered detail, and glow. It is a standard for effort, not code to copy. A piece is done when it is:
 
-- **Composed:** a deliberate picture with a clear subject, depth, and balance.
-- **Alive:** at least two layers of motion or one real interaction, looping without a visible jump.
-- **Detailed:** at least one small touch that rewards a second look.
+- **Rendered, not typed:** ASCII pieces compute a dense grid from maths and noise and map brightness through a character ramp with colour.
+- **A small journey:** a timeline of at least three eased phases with a moment of surprise, looping or resting gracefully.
+- **Layered:** subject, texture, light, atmosphere, and particles working together, with glow or depth where it helps.
+- **Detailed:** small touches that reward a second look.
 - **Polished:** right at 320px and on desktop, with a title and caption, smooth on a phone.
 - **Considerate:** a composed still under reduced motion, and a text description for screen readers.
 
@@ -21,8 +22,8 @@ A piece is done when it is:
 React, TypeScript, and Vite. three.js is the only 3D library and loads lazily, so the home page stays light.
 
 - **Registry.** One typed list describes every piece: id, title, medium (`ascii` or `three`), caption, text description, and a lazily loaded component. The gallery and routes read from it.
-- **ASCII pieces.** A shared canvas component renders a monospace frame that scales to the screen. A piece supplies a pure function from time to frame (a grid of characters), which makes it testable. A shared loop drives the animation and stops when the piece is hidden.
-- **three.js pieces.** A shared stage component owns the renderer, resize handling, the animation loop, and disposal. A piece supplies a function that builds its scene and an update step. Geometry is built in code; no large model or texture downloads.
+- **ASCII pieces.** A shared field renderer draws a dense character grid to a canvas, redrawing only cells that changed. A piece supplies a pure function from time to a brightness and colour field; shared helpers provide value noise, easing, timelines, a character ramp, particle stamping, and a soft bloom pass. Pure functions keep it testable. The loop adapts to the device's speed and stops when the piece is hidden.
+- **three.js pieces.** A shared stage component owns the renderer, resize handling, the animation loop, and disposal. A piece supplies a function that builds its scene and a timeline-driven update step, with the same expectations: layered, lit, and choreographed, not a single spinning shape. Geometry is built in code; no large model or texture downloads.
 - **Fallbacks.** Under `prefers-reduced-motion`, or without WebGL, a piece shows a composed still.
 - **Each piece lives in its own folder** under `src/pieces/<id>/`, with small pure helpers and a focused test.
 
