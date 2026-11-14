@@ -2,7 +2,7 @@
 
 ## Before editing
 
-Work from this repository's root. Inspect `git status` and the most recent commit. If today's target is already met (see below), stop and report that. If there are unrelated uncommitted changes, leave them untouched and report the conflict.
+Work from this repository's root. Inspect `git status` and the most recent commit. If a roadmap commit was already pushed today (America/Denver), stop and report that. If there are unrelated uncommitted changes, leave them untouched and report the conflict.
 
 Read `docs/ARCHITECTURE.md`. Then run:
 
@@ -13,18 +13,14 @@ node scripts/roadmap.mjs next
 
 The first unchecked task is the only task in progress at any time. The numbered task and its “Done when” clause define the smallest acceptable change. Do not work ahead or mark a task complete because code was written without checking its behavior.
 
-## Daily target
+## Pace
 
-Timezone is `America/Denver`. The target is deterministic, so a re-run on the same day never overshoots:
+One run a day works on one task. Foundation tasks usually finish in a run. **A piece may take several days, and that is expected**: up to about four runs is fine when the result is more detailed and better.
 
-```sh
-export TZ=America/Denver
-TODAY=$(date +%F)
-TARGET=$(node -e 'console.log(require("crypto").createHash("sha256").update(process.argv[1]).digest()[0]%12+1)' "$TODAY")
-DONE=$(git log origin/main --since="$TODAY 00:00" --author=ofbrowne4@gmail.com --grep='^L[0-9]\{3\}:' --oneline | wc -l)
-```
-
-Complete `TARGET - DONE` tasks (1–12 per day). If that is 0 or less, report that today's target is already met and stop. Each task is its own real commit; never make empty commits or split a task to pad the count.
+- Each run makes one real pass on the current piece (for example: composition and subject, then texture and light, then timeline and particles, then polish) and commits it as `LNNN: what this pass added`. The app must build after every commit.
+- Tick the checkbox only in the run where the piece meets the craft bar. Until then the task stays unchecked and stays next.
+- Note in `PROGRESS.md` what is done and what the next pass should add.
+- Never start a second piece in the same run to raise the count, and never ship a piece early.
 
 ## Implement and verify
 
@@ -36,9 +32,9 @@ Complete `TARGET - DONE` tasks (1–12 per day). If that is 0 or less, report th
 6. Change exactly one `ROADMAP.md` checkbox from `[ ]` to `[x]`. Run `node scripts/roadmap.mjs check` again.
 7. Commit the task and checkbox together as `LNNN: concise description`.
 
-Push each task's commit to `origin main` right away. The daily automation is authorized to push directly to `main`; each run completes today's target number of tasks, one at a time, in order. Do not open pull requests.
+Push each task's commit to `origin main` right away. The daily automation is authorized to push directly to `main`; each run works on the one next task. Do not open pull requests.
 
-**Quality comes before the count.** The target is an upper aim, not a quota. If a piece needs the rest of the run to be good, finish it and stop, and report how many tasks were completed. Never ship a plain or rushed piece to reach the number. If a check fails or a decision is missing, leave the task unchecked and report the exact blocker. Do not skip it.
+If a check fails or a decision is missing, leave the task unchecked and report the exact blocker. Do not skip it.
 
 ## Handoff message
 

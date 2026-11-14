@@ -31,7 +31,7 @@ A piece is finished only when all of this is true:
 - **Polished.** It looks right at 320px wide and on desktop, has a title and caption, and stays smooth on a phone.
 - **Considerate.** Reduced motion shows a composed still. A short text description stands in for screen readers.
 
-One piece at this level is a full run's work and is worth more than ten quick ones. If a piece isn't there yet, keep working on it or leave the task unchecked and say why.
+One piece at this level can take several days and is worth more than ten quick ones. If a piece isn't there yet, keep working on it or leave the task unchecked and say why.
 
 ## Where the project stands
 
@@ -46,9 +46,9 @@ From L308 the roadmap is the gallery: first the foundation (ASCII canvas, three.
 3. **Make it well.** For a piece, sketch the composition first, build it, then look at it running and refine it until it meets the craft bar.
 4. **Verify.** Run typecheck, lint, tests, and build. Look at the piece at a phone width, with reduced motion on, and with the keyboard.
 5. **Record it.** Tick the task, add a `PROGRESS.md` entry, and commit as `LNNN: short description`, pushed to `main`.
-6. **Don't rush the count.** Stopping after fewer, finished pieces is a good run. A rushed piece is not.
+6. **Take the time it needs.** One run works on one task. A piece may take several days: each day adds one real pass, committed as `LNNN: what this pass added`, and the box is ticked only when the piece meets the craft bar.
 
-Use honest dates and meaningful commits. Never make empty commits or split one piece into several commits.
+Use honest dates and meaningful commits. Never make empty commits or pad the history; every commit is a real improvement that builds.
 
 ### Progress entry
 
