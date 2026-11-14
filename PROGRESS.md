@@ -1847,3 +1847,9 @@
 - Verified: roadmap check and tests, format:check, lint, vitest (460), build. No app code changed.
 - Next: L308 add three.js with lazy loading.
 - Blockers: none
+
+## 2026-11-14 — L308: Add three.js with lazy loading
+- Changed: three.js is a dependency, reachable only through `loadThree()` in `src/three/loadThree.ts` (a shared dynamic import that retries after a failed load). No piece uses it yet, so nothing changes on screen.
+- Verified: unit test (loads, shares one load); typecheck, lint, format:check, vitest, roadmap tests/check, build. With a temporary dynamic import of `loadThree`, the build produced a separate `three.module` chunk (~695 kB) and the main bundle stayed ~286 kB; the temporary import was removed. Not looked at in a browser: no UI changed.
+- Next: L309 define the piece registry.
+- Blockers: none

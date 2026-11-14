@@ -346,7 +346,7 @@ The remaining sync and release tasks were dropped on 2026-11-13 when the project
 
 ## 12 Gallery foundation
 
-- [ ] L308 Add three.js with lazy loading — Done when three.js loads in its own chunk only when a three.js piece opens.
+- [x] L308 Add three.js with lazy loading — Done when three.js loads in its own chunk only when a three.js piece opens.
 - [ ] L309 Define the piece registry — Done when one typed list gives each piece an id, title, medium, caption, and component.
 - [ ] L310 Build the ASCII field renderer — Done when a brightness and colour field maps through a character ramp onto a dense grid that fits a 320px screen.
 - [ ] L311 Add timeline, noise, and bloom helpers — Done when eased phases, value noise, and a soft glow pass are unit tested and reduced motion holds a composed still.
