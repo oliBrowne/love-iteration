@@ -1853,3 +1853,9 @@
 - Verified: unit test (loads, shares one load); typecheck, lint, format:check, vitest, roadmap tests/check, build. With a temporary dynamic import of `loadThree`, the build produced a separate `three.module` chunk (~695 kB) and the main bundle stayed ~286 kB; the temporary import was removed. Not looked at in a browser: no UI changed.
 - Next: L309 define the piece registry.
 - Blockers: none
+
+## 2026-11-15 — L309: Define the piece registry
+- Changed: `src/gallery/registry.ts` has the one typed list of pieces (id, title, medium, caption, component), plus `findPiece` and a `checkPieces` validator. The list is empty until the first piece lands, so nothing changes on screen.
+- Verified: new unit tests (valid list, lookup, bad slug/duplicate/missing words); typecheck, lint, format:check, vitest, roadmap tests/check, build. Not looked at in a browser: no UI changed.
+- Next: L310 build the ASCII field renderer (brightness and colour field through a character ramp, dense grid fitting 320px).
+- Blockers: none
