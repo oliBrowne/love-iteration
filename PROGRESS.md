@@ -1859,3 +1859,9 @@
 - Verified: new unit tests (valid list, lookup, bad slug/duplicate/missing words); typecheck, lint, format:check, vitest, roadmap tests/check, build. Not looked at in a browser: no UI changed.
 - Next: L310 build the ASCII field renderer (brightness and colour field through a character ramp, dense grid fitting 320px).
 - Blockers: none
+
+## 2026-11-16 — L310: Build the ASCII field renderer
+- Changed: `src/ascii/field.ts` turns a scene function (position and time to brightness and colour) into a dense grid of ramp characters, sized so about 64 columns fit a 320px screen. `AsciiCanvas` draws it as coloured text, redraws only changed cells, pauses when hidden, and holds one still frame under reduced motion. No piece uses it yet, so nothing changes in the gallery.
+- Verified: new unit tests (ramp, grid sizing, field sampling, changed cells); typecheck, lint, vitest, format:check, roadmap check/tests, build. Looked at a temporary demo (removed) at 320px, 1280px, and reduced motion in Chromium: a round glowing disc, dense and crisp.
+- Next: L311 timeline, noise, and bloom helpers (eased phases, value noise, soft glow, tested).
+- Blockers: none
