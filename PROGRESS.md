@@ -1865,3 +1865,9 @@
 - Verified: new unit tests (ramp, grid sizing, field sampling, changed cells); typecheck, lint, vitest, format:check, roadmap check/tests, build. Looked at a temporary demo (removed) at 320px, 1280px, and reduced motion in Chromium: a round glowing disc, dense and crisp.
 - Next: L311 timeline, noise, and bloom helpers (eased phases, value noise, soft glow, tested).
 - Blockers: none
+
+## 2026-11-17 — L311: Add timeline, noise, and bloom helpers
+- Changed: `src/ascii/helpers.ts` adds easing curves, a looping `phaseAt` timeline (named phases with eased progress), `stillTimeAt` for the composed reduced-motion frame (fed to `AsciiCanvas` `stillTime`), value noise and `fbm`, and a `bloom` glow pass over rendered cells. No piece uses them yet, so nothing changes on screen.
+- Verified: new unit tests (easing, phases/looping/odd times, still time, noise determinism and smoothness, bloom spread and no-op cases); typecheck, lint, vitest, format:check, build, roadmap check/tests. Not looked at in a browser: no UI changed.
+- Next: L312 three.js stage component (mounts, resizes, disposes cleanly).
+- Blockers: none
