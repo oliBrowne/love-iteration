@@ -1871,3 +1871,9 @@
 - Verified: new unit tests (easing, phases/looping/odd times, still time, noise determinism and smoothness, bloom spread and no-op cases); typecheck, lint, vitest, format:check, build, roadmap check/tests. Not looked at in a browser: no UI changed.
 - Next: L312 three.js stage component (mounts, resizes, disposes cleanly).
 - Blockers: none
+
+## 2026-11-18 — L312: Build the three.js stage component
+- Changed: `src/three/stage.ts` (`mountStage`) owns the renderer, camera, resize handling and animation loop for a three.js piece, pauses when hidden, holds one still frame under reduced motion, and disposes the piece, geometry, materials, renderer and canvas on leave. `ThreeStage` is the React wrapper that lazy-loads three.js and offers a `fallback` slot. No piece uses it yet.
+- Verified: new unit tests (mount, resize, reduced-motion still, single clean dispose, cleanup when setup throws); typecheck, lint, vitest, format:check, build, roadmap check/tests. Looked at a temporary demo (removed) in Chromium at 320px and 1280px: the canvas filled its box and resized when the viewport widened.
+- Next: L313 still fallbacks for scenes (reduced motion or no WebGL shows a composed still).
+- Blockers: none
