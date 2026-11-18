@@ -4,6 +4,21 @@
   --color-ink: #2b2523;
   --color-accent: #b5446e;
 
+  /* Paper and ink, a little softer, for captions and quiet borders. */
+  --color-paper-shade: #f3eadc;
+  --color-ink-soft: #5d514d;
+  --color-line: #e2d6c4;
+
+  /* Soft rose, lighter than the accent, for glows and card washes. */
+  --color-rose: #e8a3b8;
+  --color-rose-wash: #f8dfe6;
+
+  /* Dusk, for night scenes and still fallbacks: deep sky down to a warm horizon. */
+  --color-dusk-deep: #2c2b52;
+  --color-dusk-mid: #5a4a7a;
+  --color-dusk-glow: #e9b7a8;
+  --color-dusk-star: #fff1c9;
+
   --font-size-body: 1.125rem;
   --font-size-h1: 2rem;
   --font-size-h2: 1.5rem;

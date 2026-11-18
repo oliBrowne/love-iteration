@@ -1,7 +1,7 @@
 interface SceneStillProps {
   /** Plain-words description; also shown as the still's caption. */
   description: string;
-  /** Top and bottom of the dusk sky. */
+  /** Top and bottom of the sky, as CSS colours. Defaults to the dusk tokens. */
   sky?: readonly [string, string];
 }
 
@@ -11,7 +11,7 @@ interface SceneStillProps {
  */
 export function SceneStill({
   description,
-  sky = ['#3b3a63', '#e9b7a8'],
+  sky = ['var(--color-dusk-deep)', 'var(--color-dusk-glow)'],
 }: SceneStillProps) {
   return (
     <div
@@ -25,7 +25,7 @@ export function SceneStill({
         boxSizing: 'border-box',
         padding: '1rem',
         background: `linear-gradient(180deg, ${sky[0]}, ${sky[1]})`,
-        color: '#fffdf9',
+        color: 'var(--color-dusk-star)',
       }}
     >
       <p
@@ -33,7 +33,10 @@ export function SceneStill({
         style={{
           margin: 0,
           fontSize: '1rem',
-          textShadow: '0 1px 3px rgba(43, 37, 35, 0.7)',
+          padding: '0.5rem 0.75rem',
+          borderRadius: '0.5rem',
+          background:
+            'color-mix(in srgb, var(--color-dusk-deep) 85%, transparent)',
         }}
       >
         {description}

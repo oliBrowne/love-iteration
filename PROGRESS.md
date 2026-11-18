@@ -1883,3 +1883,9 @@
 - Verified: new unit tests (no-WebGL still with caption, custom fallback, reduced-motion hook); typecheck, lint, vitest, format:check, build, roadmap check/tests. Looked at a temporary demo (removed) in Chromium at 320px: with reduced motion the canvas drew one still frame; with WebGL disabled the dusk still and caption appeared.
 - Next: L314 refresh the visual language (tokens for paper, ink, rose, dusk).
 - Blockers: none
+
+## 2026-11-18 — L314: Refresh the visual language
+- Changed: `src/index.css` tokens now cover paper (paper, shade, line), ink (ink, soft), soft rose (rose, wash, plus the existing accent) and a dusk palette (deep, mid, glow, star). The scene still fallback uses the dusk tokens, with its caption on a dusk panel so it stays readable.
+- Verified: new token tests (all tokens defined; contrast ink/paper >7, soft ink/paper >4.5, dusk star/deep >7); typecheck, lint, vitest, format:check, build, roadmap check/tests. Looked at the still at 320px in Chromium via a temporary page (removed).
+- Next: L315 gallery home (cards with live previews).
+- Blockers: none
