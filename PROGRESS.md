@@ -1913,3 +1913,9 @@
 - Verified: unit tests (fade-out then back via Escape and link; instant under reduced motion); typecheck, lint, vitest (502), format:check, build, roadmap check/tests. In Chromium with a temporary demo piece (removed): with normal motion the piece page runs `gentle-fade-in`, gets the leaving class on Escape, and the URL returns to the gallery after the fade; with reduced motion the animation is `none` and Escape returns at once.
 - Next: L319 gallery browser test (Playwright opens Home, opens a piece, returns). The registry is still empty, so that test needs a piece to open; the first real piece may need to land first, or the test can open a piece through a test-only registry entry. Decide in L319.
 - Blockers: none
+
+## 2026-11-18 — L319: Add gallery browser test
+- Changed: `e2e/gallery.spec.ts` covers the gallery flow in Playwright: Home shows the Gallery; a card opens its piece (title and caption shown), Back returns by click, and Escape returns by keyboard; an unknown piece address shows "Piece not found" and leads back; the piece page is reachable and leavable by keyboard (title focused, Tab to Back, Enter). With the registry still empty, the card-opening branch ends at the "first pieces are on their way" note, so it starts testing real cards as soon as the first piece is registered.
+- Verified: new spec passes (3/3) against the real build; also passed with a temporary registered piece (removed) so the card → piece → Back → Escape branch actually ran. typecheck, lint, vitest (502), format:check, build, roadmap check/tests.
+- Next: L320 ASCII piece: Paper boat on a slow river — the first real piece (boat drifts across rippling water and loops seamlessly); expect several passes to reach the craft bar.
+- Blockers: none
