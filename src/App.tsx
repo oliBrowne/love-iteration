@@ -1,5 +1,6 @@
 import { CheckInPage } from './features/checkin/CheckInPage.tsx';
 import { GratitudePage } from './features/gratitude/GratitudePage.tsx';
+import { GalleryHome } from './gallery/GalleryHome.tsx';
 import { HomePage } from './features/home/HomePage.tsx';
 import { PrivacyPage } from './features/settings/PrivacyPage.tsx';
 import { SettingsPage } from './features/settings/SettingsPage.tsx';
@@ -49,7 +50,10 @@ function App() {
       ) : route === 'check-in' ? (
         <CheckInPage />
       ) : (
-        <HomePage />
+        <>
+          <GalleryHome />
+          <HomePage />
+        </>
       )}
     </PageLayout>
   );

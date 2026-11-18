@@ -1889,3 +1889,9 @@
 - Verified: new token tests (all tokens defined; contrast ink/paper >7, soft ink/paper >4.5, dusk star/deep >7); typecheck, lint, vitest, format:check, build, roadmap check/tests. Looked at the still at 320px in Chromium via a temporary page (removed).
 - Next: L315 gallery home (cards with live previews).
 - Blockers: none
+
+## 2026-11-18 — L315: Build the gallery home
+- Changed: Home now opens with a "Gallery" section (`src/gallery/GalleryHome.tsx`): a responsive grid of cards, each a link to `#/piece/<id>` with a live preview (started only once near the screen, held as a still under reduced motion), title, caption and medium. While the collection is empty it shows a gentle "first pieces are on their way" note. The old journal Home still sits below it until L317 tucks it away. Page width widened to 60rem for the grid.
+- Verified: new unit tests (cards, links, preview, empty state); typecheck, lint, vitest, format:check, build, roadmap check/tests; Playwright home/narrow/smoke/navigation specs. Looked at a temporary page with three demo previews (removed) at 320px (one column, no horizontal overflow) and 1280px (three columns) in Chromium. The real registry is still empty, so the live site shows the empty note.
+- Next: L316 piece page (full screen with caption and a way back).
+- Blockers: none
