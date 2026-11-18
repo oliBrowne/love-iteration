@@ -364,3 +364,39 @@ input[type='file']:focus-visible,
 .quiet-footer a {
   color: var(--color-ink-soft);
 }
+
+@keyframes gentle-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes gentle-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Opening a piece (and coming back to the gallery) fades in; leaving a piece fades out. */
+.piece-page,
+.gallery {
+  animation: gentle-fade-in 320ms ease-out both;
+}
+
+.piece-page-leaving {
+  animation: gentle-fade-out 280ms ease-in both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .piece-page,
+  .gallery,
+  .piece-page-leaving {
+    animation: none;
+  }
+}

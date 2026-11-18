@@ -1,12 +1,15 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, describe, expect, it } from 'vitest';
-import { PiecePage } from './PiecePage';
+import { act } from 'react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { LEAVE_MS, PiecePage } from './PiecePage';
 import { parsePieceId } from './pieceRoute';
 import type { Piece } from './registry';
 
 afterEach(() => {
   cleanup();
+  vi.useRealTimers();
+  vi.unstubAllGlobals();
   window.location.hash = '';
 });
 
@@ -46,11 +49,34 @@ describe('PiecePage', () => {
     expect(back.getAttribute('href')).toBe('#/');
   });
 
-  it('goes back to the gallery on Escape', () => {
+  it('fades out softly, then goes back, on Escape or the back link', () => {
+    vi.useFakeTimers();
     window.location.hash = '#/piece/demo-one';
-    render(<PiecePage id="demo-one" pieces={demo} />);
+    const { container } = render(<PiecePage id="demo-one" pieces={demo} />);
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(container.querySelector('.piece-page-leaving')).not.toBeNull();
+    expect(window.location.hash).toBe('#/piece/demo-one');
+    act(() => {
+      vi.advanceTimersByTime(LEAVE_MS);
+    });
+    expect(window.location.hash).toBe('#/');
+
+    window.location.hash = '#/piece/demo-one';
+    fireEvent.click(screen.getByRole('link', { name: /Back to the gallery/ }));
+    expect(container.querySelector('.piece-page-leaving')).not.toBeNull();
+  });
+
+  it('goes back at once under reduced motion', () => {
+    vi.stubGlobal('matchMedia', () => ({
+      matches: true,
+      addEventListener() {},
+      removeEventListener() {},
+    }));
+    window.location.hash = '#/piece/demo-one';
+    const { container } = render(<PiecePage id="demo-one" pieces={demo} />);
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(window.location.hash).toBe('#/');
+    expect(container.querySelector('.piece-page-leaving')).toBeNull();
   });
 
   it('explains kindly when the piece does not exist', () => {

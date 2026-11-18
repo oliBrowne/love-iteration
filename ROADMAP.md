@@ -356,7 +356,7 @@ The remaining sync and release tasks were dropped on 2026-11-13 when the project
 - [x] L315 Build the gallery home — Done when Home shows the collection as cards with live previews at phone and desktop widths.
 - [x] L316 Add the piece page — Done when a card opens its piece full screen with its caption and a way back by touch and keyboard.
 - [x] L317 Tuck the journal tools away — Done when Home is the gallery and the old tools are reachable only from one quiet link.
-- [ ] L318 Add gentle piece transitions — Done when opening and closing a piece fades softly and is instant under reduced motion.
+- [x] L318 Add gentle piece transitions — Done when opening and closing a piece fades softly and is instant under reduced motion.
 - [ ] L319 Add gallery browser test — Done when Playwright opens Home, opens a piece, and returns.
 
 ## 13 The collection

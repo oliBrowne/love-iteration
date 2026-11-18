@@ -1907,3 +1907,9 @@
 - Verified: new unit tests (`hasRoute`); updated App/page tests to start at `#/home`; typecheck, lint, vitest (501), format:check, build, roadmap check/tests. Playwright: all 37 pass with `--workers=1`; the journal specs now start at `/#/home`, a new smoke test covers gallery → Journal tools → Gallery, and the keyboard check-in tab limit was raised by two for the extra link. With the default two workers a different 1–2 focus/persistence tests time out on each run, including on the commit before this one (existing flakiness, not caused here). Looked at the gallery home at 320px (no overflow).
 - Next: L318 gentle piece transitions (soft fade open/close, instant under reduced motion).
 - Blockers: none
+
+## 2026-11-18 — L318: Add gentle piece transitions
+- Changed: opening a piece fades it in (320ms) and coming back fades the gallery in; leaving a piece (Back link or Escape) fades it out (280ms) before returning. Under the reduced-motion setting there is no animation and Back/Escape return at once. The fade-out is a short timer, so it still completes in a hidden tab.
+- Verified: unit tests (fade-out then back via Escape and link; instant under reduced motion); typecheck, lint, vitest (502), format:check, build, roadmap check/tests. In Chromium with a temporary demo piece (removed): with normal motion the piece page runs `gentle-fade-in`, gets the leaving class on Escape, and the URL returns to the gallery after the fade; with reduced motion the animation is `none` and Escape returns at once.
+- Next: L319 gallery browser test (Playwright opens Home, opens a piece, returns). The registry is still empty, so that test needs a piece to open; the first real piece may need to land first, or the test can open a piece through a test-only registry entry. Decide in L319.
+- Blockers: none
