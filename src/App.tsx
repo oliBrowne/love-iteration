@@ -1,5 +1,7 @@
 import { CheckInPage } from './features/checkin/CheckInPage.tsx';
 import { GratitudePage } from './features/gratitude/GratitudePage.tsx';
+import { PiecePage } from './gallery/PiecePage.tsx';
+import { usePieceId } from './gallery/pieceRoute.ts';
 import { GalleryHome } from './gallery/GalleryHome.tsx';
 import { HomePage } from './features/home/HomePage.tsx';
 import { PrivacyPage } from './features/settings/PrivacyPage.tsx';
@@ -17,6 +19,8 @@ import { useRoute } from './useRoute.ts';
 
 function App() {
   const route = useRoute();
+  const pieceId = usePieceId();
+  if (pieceId !== undefined) return <PiecePage id={pieceId} />;
   if (!storageSupported(globalThis.indexedDB)) {
     return (
       <PageLayout>

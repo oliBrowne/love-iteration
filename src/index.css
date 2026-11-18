@@ -296,3 +296,61 @@ input[type='file']:focus-visible,
   text-transform: uppercase;
   color: var(--color-accent);
 }
+
+.piece-page,
+#root > .piece-page {
+  position: fixed;
+  inset: 0;
+  width: auto;
+  max-width: none;
+  display: grid;
+  background: var(--color-dusk-deep);
+  color: var(--color-dusk-star);
+}
+
+.piece-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.piece-bar {
+  position: relative;
+  align-self: end;
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem var(--space-page) calc(1rem + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--color-dusk-deep), transparent);
+}
+
+.piece-back {
+  position: fixed;
+  z-index: 1;
+  top: calc(0.75rem + env(safe-area-inset-top));
+  left: 0.75rem;
+  padding: 0.75rem 1rem;
+  min-height: 2.75rem;
+  box-sizing: border-box;
+  border-radius: 0.5rem;
+  color: var(--color-dusk-star);
+  background: var(--color-dusk-deep);
+  text-decoration: none;
+}
+
+.piece-title {
+  margin: 0;
+  font-size: var(--font-size-h2);
+}
+
+.piece-title:focus-visible {
+  outline: 3px solid var(--color-rose);
+  outline-offset: 2px;
+}
+
+.piece-caption {
+  margin: 0;
+  font-size: var(--font-size-small);
+}
+
+.piece-page a:focus-visible {
+  outline-color: var(--color-rose);
+}

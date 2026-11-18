@@ -1895,3 +1895,9 @@
 - Verified: new unit tests (cards, links, preview, empty state); typecheck, lint, vitest, format:check, build, roadmap check/tests; Playwright home/narrow/smoke/navigation specs. Looked at a temporary page with three demo previews (removed) at 320px (one column, no horizontal overflow) and 1280px (three columns) in Chromium. The real registry is still empty, so the live site shows the empty note.
 - Next: L316 piece page (full screen with caption and a way back).
 - Blockers: none
+
+## 2026-11-18 — L316: Add the piece page
+- Changed: `#/piece/<id>` opens a piece full screen (`src/gallery/PiecePage.tsx`) with its title and caption over a dusk fade, a large "Back to the gallery" link (top left, 44px+ tap target) and Escape to go back. The title takes focus on arrival so Tab reaches Back next; an unknown id shows "Piece not found" with the same way back. Cards from the gallery home already link here.
+- Verified: new unit tests (address parsing, title/caption, focus, back link, Escape, not found); typecheck, lint, vitest, format:check, build, roadmap check/tests. Looked at a temporary page with a demo piece at 320px and 1280px in Chromium (fills the screen, focus rings visible, Tab goes title → Back); the first version was capped at 60rem wide by the shared layout rule, fixed. No real pieces exist yet, so the live app has nothing to open.
+- Next: L317 tuck the journal tools behind one quiet link so Home is the gallery.
+- Blockers: none
