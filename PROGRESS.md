@@ -1877,3 +1877,9 @@
 - Verified: new unit tests (mount, resize, reduced-motion still, single clean dispose, cleanup when setup throws); typecheck, lint, vitest, format:check, build, roadmap check/tests. Looked at a temporary demo (removed) in Chromium at 320px and 1280px: the canvas filled its box and resized when the viewport widened.
 - Next: L313 still fallbacks for scenes (reduced motion or no WebGL shows a composed still).
 - Blockers: none
+
+## 2026-11-18 — L313: Add still fallbacks for scenes
+- Changed: `ThreeStage` now follows the device's reduced-motion setting (new `useReducedMotion` hook) and draws one composed frame instead of animating. If WebGL is missing or three.js fails to load, it shows `SceneStill`, a dusk-sky card carrying the scene's description (a piece can pass its own richer `fallback`). Never a blank.
+- Verified: new unit tests (no-WebGL still with caption, custom fallback, reduced-motion hook); typecheck, lint, vitest, format:check, build, roadmap check/tests. Looked at a temporary demo (removed) in Chromium at 320px: with reduced motion the canvas drew one still frame; with WebGL disabled the dusk still and caption appeared.
+- Next: L314 refresh the visual language (tokens for paper, ink, rose, dusk).
+- Blockers: none

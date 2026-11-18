@@ -351,7 +351,7 @@ The remaining sync and release tasks were dropped on 2026-11-13 when the project
 - [x] L310 Build the ASCII field renderer — Done when a brightness and colour field maps through a character ramp onto a dense grid that fits a 320px screen.
 - [x] L311 Add timeline, noise, and bloom helpers — Done when eased phases, value noise, and a soft glow pass are unit tested and reduced motion holds a composed still.
 - [x] L312 Build the three.js stage component — Done when a scene mounts, resizes with the window, and disposes cleanly when left.
-- [ ] L313 Add still fallbacks for scenes — Done when reduced motion or missing WebGL shows a composed still instead of a blank.
+- [x] L313 Add still fallbacks for scenes — Done when reduced motion or missing WebGL shows a composed still instead of a blank.
 - [ ] L314 Refresh the visual language — Done when tokens cover paper, ink, rose, and a dusk palette used by the gallery.
 - [ ] L315 Build the gallery home — Done when Home shows the collection as cards with live previews at phone and desktop widths.
 - [ ] L316 Add the piece page — Done when a card opens its piece full screen with its caption and a way back by touch and keyboard.
