@@ -38,3 +38,9 @@ export function parseRoute(hash: string): Route {
   const name = hash.replace(/^#\/?/, '');
   return routes.find((route) => route === name) ?? 'home';
 }
+
+/** True when the address names one of the journal pages (as opposed to the gallery at `#/`). */
+export function hasRoute(hash: string): boolean {
+  const name = hash.replace(/^#\/?/, '');
+  return routes.some((route) => route === name);
+}

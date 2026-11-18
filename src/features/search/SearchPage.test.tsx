@@ -44,7 +44,7 @@ describe('Search route', () => {
   });
 
   it('has a Search link in the main navigation', () => {
-    window.location.hash = '';
+    window.location.hash = '#/home';
     render(<App />);
     const link = screen.getByRole('link', { name: 'Search' });
     expect(link.getAttribute('href')).toBe('#/search');

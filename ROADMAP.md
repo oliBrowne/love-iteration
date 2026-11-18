@@ -355,7 +355,7 @@ The remaining sync and release tasks were dropped on 2026-11-13 when the project
 - [x] L314 Refresh the visual language — Done when tokens cover paper, ink, rose, and a dusk palette used by the gallery.
 - [x] L315 Build the gallery home — Done when Home shows the collection as cards with live previews at phone and desktop widths.
 - [x] L316 Add the piece page — Done when a card opens its piece full screen with its caption and a way back by touch and keyboard.
-- [ ] L317 Tuck the journal tools away — Done when Home is the gallery and the old tools are reachable only from one quiet link.
+- [x] L317 Tuck the journal tools away — Done when Home is the gallery and the old tools are reachable only from one quiet link.
 - [ ] L318 Add gentle piece transitions — Done when opening and closing a piece fades softly and is instant under reduced motion.
 - [ ] L319 Add gallery browser test — Done when Playwright opens Home, opens a piece, and returns.
 

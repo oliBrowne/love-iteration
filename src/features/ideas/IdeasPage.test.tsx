@@ -29,7 +29,7 @@ describe('Ideas route', () => {
   });
 
   it('has an Ideas link in the main navigation', () => {
-    window.location.hash = '';
+    window.location.hash = '#/home';
     render(<App />);
     const link = screen.getByRole('link', { name: 'Ideas' });
     expect(link.getAttribute('href')).toBe('#/ideas');

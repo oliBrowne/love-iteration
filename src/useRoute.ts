@@ -10,3 +10,14 @@ export function useRoute(): Route {
   }, []);
   return route;
 }
+
+/** The current address hash, kept up to date. Re-renders on every change, even to the same route. */
+export function useHash(): string {
+  const [hash, setHash] = useState(() => window.location.hash);
+  useEffect(() => {
+    const onChange = () => setHash(window.location.hash);
+    window.addEventListener('hashchange', onChange);
+    return () => window.removeEventListener('hashchange', onChange);
+  }, []);
+  return hash;
+}

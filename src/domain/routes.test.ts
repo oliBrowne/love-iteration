@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { parseRoute, routeLabels, routes, routeToHash } from './routes.ts';
+import {
+  hasRoute,
+  parseRoute,
+  routeLabels,
+  routes,
+  routeToHash,
+} from './routes.ts';
 
 describe('routes', () => {
   it('lists the main nav pages: Home, Check-in, Gratitude, Memories, Rituals, Reflection, Ideas, Timeline, Search, and Settings', () => {
@@ -42,5 +48,15 @@ describe('parseRoute', () => {
     expect(parseRoute('')).toBe('home');
     expect(parseRoute('#/nowhere')).toBe('home');
     expect(routeToHash('check-in')).toBe('#/check-in');
+  });
+});
+
+describe('hasRoute', () => {
+  it('is true for journal pages and false for the gallery address', () => {
+    expect(hasRoute('#/settings')).toBe(true);
+    expect(hasRoute('#/home')).toBe(true);
+    expect(hasRoute('')).toBe(false);
+    expect(hasRoute('#/')).toBe(false);
+    expect(hasRoute('#/nowhere')).toBe(false);
   });
 });

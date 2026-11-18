@@ -1,7 +1,14 @@
 import type { ReactNode } from 'react';
 import { routeLabels, routeToHash } from '../domain/index.ts';
 
-export function PageLayout({ children }: { children: ReactNode }) {
+export function PageLayout({
+  children,
+  gallery = false,
+}: {
+  children: ReactNode;
+  /** The gallery home: no journal navigation, just one quiet link to the old tools. */
+  gallery?: boolean;
+}) {
   return (
     <div>
       <a
@@ -17,22 +24,30 @@ export function PageLayout({ children }: { children: ReactNode }) {
       </a>
       <header>
         <h1>Love Iteration</h1>
-        <nav aria-label="Main">
-          <a href={routeToHash('home')}>{routeLabels.home}</a>{' '}
-          <a href={routeToHash('check-in')}>{routeLabels['check-in']}</a>{' '}
-          <a href={routeToHash('gratitude')}>{routeLabels.gratitude}</a>{' '}
-          <a href={routeToHash('memories')}>{routeLabels.memories}</a>{' '}
-          <a href={routeToHash('rituals')}>{routeLabels.rituals}</a>{' '}
-          <a href={routeToHash('reflection')}>{routeLabels.reflection}</a>{' '}
-          <a href={routeToHash('ideas')}>{routeLabels.ideas}</a>{' '}
-          <a href={routeToHash('timeline')}>{routeLabels.timeline}</a>{' '}
-          <a href={routeToHash('search')}>{routeLabels.search}</a>{' '}
-          <a href={routeToHash('settings')}>{routeLabels.settings}</a>
-        </nav>
+        {gallery ? null : (
+          <nav aria-label="Main">
+            <a href={routeToHash('home')}>{routeLabels.home}</a>{' '}
+            <a href={routeToHash('check-in')}>{routeLabels['check-in']}</a>{' '}
+            <a href={routeToHash('gratitude')}>{routeLabels.gratitude}</a>{' '}
+            <a href={routeToHash('memories')}>{routeLabels.memories}</a>{' '}
+            <a href={routeToHash('rituals')}>{routeLabels.rituals}</a>{' '}
+            <a href={routeToHash('reflection')}>{routeLabels.reflection}</a>{' '}
+            <a href={routeToHash('ideas')}>{routeLabels.ideas}</a>{' '}
+            <a href={routeToHash('timeline')}>{routeLabels.timeline}</a>{' '}
+            <a href={routeToHash('search')}>{routeLabels.search}</a>{' '}
+            <a href={routeToHash('settings')}>{routeLabels.settings}</a>{' '}
+            <a href="#/">Gallery</a>
+          </nav>
+        )}
       </header>
       <main id="main-content" tabIndex={-1}>
         {children}
       </main>
+      {gallery ? (
+        <footer className="quiet-footer">
+          <a href={routeToHash('home')}>Journal tools</a>
+        </footer>
+      ) : null}
     </div>
   );
 }

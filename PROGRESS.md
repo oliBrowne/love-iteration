@@ -1901,3 +1901,9 @@
 - Verified: new unit tests (address parsing, title/caption, focus, back link, Escape, not found); typecheck, lint, vitest, format:check, build, roadmap check/tests. Looked at a temporary page with a demo piece at 320px and 1280px in Chromium (fills the screen, focus rings visible, Tab goes title → Back); the first version was capped at 60rem wide by the shared layout rule, fixed. No real pieces exist yet, so the live app has nothing to open.
 - Next: L317 tuck the journal tools behind one quiet link so Home is the gallery.
 - Blockers: none
+
+## 2026-11-18 — L317: Tuck the journal tools away
+- Changed: the address `#/` (or none) now opens the gallery as Home: the title, the Gallery section and one quiet "Journal tools" link at the foot. The old journal's Home and all its pages are unchanged but now live behind that link (`#/home` and the other routes), where the journal navigation gains a "Gallery" link (last, so tab order is unchanged). Fixed a re-render bug along the way: going from `#/` to `#/home` is now tracked by a `useHash` hook.
+- Verified: new unit tests (`hasRoute`); updated App/page tests to start at `#/home`; typecheck, lint, vitest (501), format:check, build, roadmap check/tests. Playwright: all 37 pass with `--workers=1`; the journal specs now start at `/#/home`, a new smoke test covers gallery → Journal tools → Gallery, and the keyboard check-in tab limit was raised by two for the extra link. With the default two workers a different 1–2 focus/persistence tests time out on each run, including on the commit before this one (existing flakiness, not caused here). Looked at the gallery home at 320px (no overflow).
+- Next: L318 gentle piece transitions (soft fade open/close, instant under reduced motion).
+- Blockers: none

@@ -354,3 +354,13 @@ input[type='file']:focus-visible,
 .piece-page a:focus-visible {
   outline-color: var(--color-rose);
 }
+
+.quiet-footer {
+  margin-top: 2rem;
+  font-size: var(--font-size-small);
+  text-align: center;
+}
+
+.quiet-footer a {
+  color: var(--color-ink-soft);
+}

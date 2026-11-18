@@ -31,7 +31,7 @@ describe('Reflection route', () => {
   });
 
   it('has a Reflection link in the main navigation', () => {
-    window.location.hash = '';
+    window.location.hash = '#/home';
     render(<App />);
     const link = screen.getByRole('link', { name: 'Reflection' });
     expect(link.getAttribute('href')).toBe('#/reflection');

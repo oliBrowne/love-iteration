@@ -48,7 +48,7 @@ describe('Timeline route', () => {
   });
 
   it('has a Timeline link in the main navigation', () => {
-    window.location.hash = '';
+    window.location.hash = '#/home';
     render(<App />);
     const link = screen.getByRole('link', { name: 'Timeline' });
     expect(link.getAttribute('href')).toBe('#/timeline');

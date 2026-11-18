@@ -20,7 +20,7 @@ test('Home shows the mood saved today', async ({ page }) => {
   await page.getByRole('radio', { name: 'Glowing' }).check();
   await page.getByRole('button', { name: 'Save check-in' }).click();
   await expect(page.getByRole('listitem').first()).toContainText('Glowing');
-  await page.goto('/#/');
+  await page.goto('/#/home');
   await expect(page.getByTestId('today-summary')).toContainText('Glowing');
 });
 

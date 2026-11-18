@@ -29,7 +29,7 @@ describe('Rituals route', () => {
   });
 
   it('has a Rituals link in the main navigation', () => {
-    window.location.hash = '';
+    window.location.hash = '#/home';
     render(<App />);
     const link = screen.getByRole('link', { name: 'Rituals' });
     expect(link.getAttribute('href')).toBe('#/rituals');

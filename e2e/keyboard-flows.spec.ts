@@ -21,7 +21,7 @@ test('an idea can be added with the keyboard alone', async ({ page }) => {
 test('the skip link and main navigation work without a pointer', async ({
   page,
 }) => {
-  await page.goto('/');
+  await page.goto('/#/home');
   await page.keyboard.press('Tab');
   await expect(
     page.getByRole('link', { name: 'Skip to content' }),

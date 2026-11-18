@@ -6,7 +6,7 @@ test('a check-in can be completed with the keyboard alone', async ({
   await page.goto('/#/check-in');
 
   // Tab until the mood group takes focus (skip link and navigation come first).
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 14; i++) {
     await page.keyboard.press('Tab');
     if (
       await page

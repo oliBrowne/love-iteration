@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test('keyboard focus can skip the header', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#/home');
   await page.keyboard.press('Tab');
   const skip = page.getByRole('link', { name: 'Skip to content' });
   await expect(skip).toBeFocused();
