@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import { PaperBoat } from '../pieces/paper-boat/PaperBoat';
 
 export type PieceMedium = 'ascii' | 'three';
 
@@ -18,7 +19,15 @@ export interface Piece {
 }
 
 /** The one list of pieces. Add a new piece here when it meets the craft bar in README.md. */
-export const pieces: readonly Piece[] = [];
+export const pieces: readonly Piece[] = [
+  {
+    id: 'paper-boat',
+    title: 'Paper boat on a slow river',
+    medium: 'ascii',
+    caption: 'One small boat, one long day, drifting.',
+    component: PaperBoat,
+  },
+];
 
 const ID_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 

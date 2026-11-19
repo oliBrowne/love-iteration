@@ -1919,3 +1919,9 @@
 - Verified: new spec passes (3/3) against the real build; also passed with a temporary registered piece (removed) so the card → piece → Back → Escape branch actually ran. typecheck, lint, vitest (502), format:check, build, roadmap check/tests.
 - Next: L320 ASCII piece: Paper boat on a slow river — the first real piece (boat drifts across rippling water and loops seamlessly); expect several passes to reach the craft bar.
 - Blockers: none
+
+## 2026-11-19 — L320: Paper boat on a slow river (pass 1 of several)
+- Changed: the first real piece is in the gallery (`src/pieces/paper-boat/`): a computed ASCII scene of a folded paper boat drifting across a river over a 40s loop with four eased phases (morning, golden hour, dusk, lantern night). Layers: clouds, sun/moon with glow, stars, far shore with mist, perspective ripples, a light path on the water, the boat with a crease-shaded hull and sail, a broken reflection, a wake, a lantern that lights at dusk, fireflies, and a fish leap with spreading rings. The boat starts and ends out of frame so the loop has no seam (tested). Reduced motion holds the end of golden hour.
+- Verified: new unit tests (boat shape, mood loop, pose off-frame, field loops seamlessly and is always finite); typecheck, build; looked at it in Chromium at 320px, 1280px and with reduced motion (no horizontal overflow, no console errors).
+- Next: L320 pass 2 — the L320 box stays unchecked. Needs: more contrast and legibility of the sky and sun (currently dim and blobby), a clearer boat silhouette against the water, and a look at the mid-loop moments (fish leap at ~17s, night at ~30s) at phone width.
+- Blockers: none. Note: the scheduled prompt asks for several tasks per day, but the repository rules (CLAUDE.md, docs/DAILY-RUN.md) say one task per run with multi-day pieces, so this run did one pass on the next task only.
