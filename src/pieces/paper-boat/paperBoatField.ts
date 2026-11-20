@@ -86,7 +86,7 @@ function sky(x: number, y: number, aspect: number, u: number): FieldSample {
   const drift = 0.3 * Math.sin(TAU * u);
   const cloud = fbm(x * aspect * 2.6 + drift, y * 6.5, 4, 3);
   const cloudy = clamp01((cloud - 0.5) * 3.2) * clamp01(1.4 - g * 1.2);
-  const body = mood.lum * (0.14 + 0.2 * g);
+  const body = mood.lum * (0.3 + 0.32 * g);
   const cloudColour = lerpRgb(colour, mood.horizon, 0.7);
   const base: FieldSample = {
     brightness: body,
@@ -96,9 +96,9 @@ function sky(x: number, y: number, aspect: number, u: number): FieldSample {
   };
   let sample = over(
     base,
-    mood.lum * (0.45 + 0.3 * (1 - g)),
-    lightRgb(cloudColour, 1.05),
-    cloudy * 0.75,
+    mood.lum * (0.75 + 0.25 * (1 - g)),
+    lightRgb(cloudColour, 1.2),
+    cloudy * 0.6,
   );
 
   // Stars come out as the light goes, each twinkling on its own beat.
@@ -109,7 +109,7 @@ function sky(x: number, y: number, aspect: number, u: number): FieldSample {
     const twinkle = 0.5 + 0.5 * Math.sin(TAU * (u * 4 + star * 40));
     sample = over(
       sample,
-      0.4 + 0.5 * twinkle,
+      0.45 + 0.25 * twinkle,
       [235, 232, 255],
       mood.stars * (0.5 + 0.5 * twinkle),
     );
@@ -119,27 +119,27 @@ function sky(x: number, y: number, aspect: number, u: number): FieldSample {
   const sunX = 0.7;
   const sunD = Math.hypot((x - sunX) * aspect, y - mood.sunY);
   if (mood.sunAlpha > 0) {
-    const halo = Math.exp(-(sunD * sunD) / 0.012) * 0.55 * mood.sunAlpha;
+    const halo = Math.exp(-(sunD * sunD) / 0.018) * 0.7 * mood.sunAlpha;
     sample = glow(sample, halo, [255, 225, 175]);
     sample = over(
       sample,
       1,
       [255, 238, 205],
-      clamp01((0.055 - sunD) / 0.012) * mood.sunAlpha,
+      clamp01((0.058 - sunD) / 0.012) * mood.sunAlpha,
     );
   }
   if (mood.moonAlpha > 0) {
     const moonD = Math.hypot((x - 0.28) * aspect, y - 0.2);
     sample = glow(
       sample,
-      Math.exp(-(moonD * moonD) / 0.006) * 0.4 * mood.moonAlpha,
+      Math.exp(-(moonD * moonD) / 0.012) * 0.6 * mood.moonAlpha,
       [190, 200, 255],
     );
     sample = over(
       sample,
       0.95,
       [238, 240, 255],
-      clamp01((0.032 - moonD) / 0.01) * mood.moonAlpha,
+      clamp01((0.045 - moonD) / 0.01) * mood.moonAlpha,
     );
   }
   return sample;
@@ -160,7 +160,7 @@ function shore(
     const tint = lerpRgb([40, 46, 62], mood.horizon, 0.18);
     sample = over(
       sample,
-      0.22 + 0.22 * leaf * mood.lum,
+      0.3 + 0.2 * leaf * mood.lum,
       lightRgb(tint, 0.9 + 0.4 * leaf),
       clamp01((y - ridge) / 0.006 + 0.3),
     );
@@ -234,7 +234,7 @@ function water(
   const wave = 0.5 + 0.5 * Math.sin(depth * 5.2 + TAU * 5 * u + squiggle);
   const crest = clamp01((wave - 0.62) * 3);
   let sample: FieldSample = {
-    brightness: mood.lum * (0.2 + 0.1 * (1 - dw)) + crest * 0.22 * mood.lum,
+    brightness: mood.lum * (0.34 + 0.16 * (1 - dw)) + crest * 0.32 * mood.lum,
     r: body[0],
     g: body[1],
     b: body[2],
@@ -259,6 +259,16 @@ function water(
 
   // The boat's reflection, broken up by the ripples.
   if (y > pose.y) {
+    // A soft dark pool right under the hull, so the pale boat stands out from the water.
+    const sx = ((x - pose.x) * aspect) / (1.7 * pose.size);
+    const sy = (y - pose.y - 0.008) / (0.3 * pose.size);
+    const pool = Math.exp(-(sx * sx + sy * sy));
+    sample = over(
+      sample,
+      sample.brightness * 0.35,
+      lightRgb(deep, 0.6),
+      pool * 0.7,
+    );
     const wobble = 0.012 * Math.sin(y * 110 + TAU * 5 * u + squiggle);
     const mirrored = paper(x + wobble, y, aspect, true);
     if (mirrored) {

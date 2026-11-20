@@ -1925,3 +1925,9 @@
 - Verified: new unit tests (boat shape, mood loop, pose off-frame, field loops seamlessly and is always finite); typecheck, build; looked at it in Chromium at 320px, 1280px and with reduced motion (no horizontal overflow, no console errors).
 - Next: L320 pass 2 — the L320 box stays unchecked. Needs: more contrast and legibility of the sky and sun (currently dim and blobby), a clearer boat silhouette against the water, and a look at the mid-loop moments (fish leap at ~17s, night at ~30s) at phone width.
 - Blockers: none. Note: the scheduled prompt asks for several tasks per day, but the repository rules (CLAUDE.md, docs/DAILY-RUN.md) say one task per run with multi-day pieces, so this run did one pass on the next task only.
+
+## 2026-11-20 — L320: Paper boat on a slow river (pass 2 of several)
+- Changed: the sky, sun, moon and water are much brighter and denser, so the scene no longer looks dim and blobby; the sun is a clear disc with a halo, stars are small points instead of blocks, the boat is about 50% larger and sits on a soft dark pool so its pale paper stands out from the water.
+- Verified: typecheck, lint, vitest, build, roadmap check/tests; looked at renders of the field in Chromium at 900px and 320px for morning, golden hour, the fish leap (~17s), dusk and night (no overflow). The L320 box stays unchecked.
+- Next: L320 pass 3 — a finer boat silhouette (crisper sail edge, visible fold lines), a clearer fish leap and rings at phone width, richer texture in the mid-water ripples, and a small extra detail (e.g. a dragonfly or reeds on the near bank). Then check against the craft bar and tick the box if it meets it.
+- Blockers: none. The scheduled prompt asks for several tasks per day (today's target was 4), but CLAUDE.md and docs/DAILY-RUN.md say one task per run and no second piece in a run, so this run did one pass only.
