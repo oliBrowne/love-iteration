@@ -17,6 +17,15 @@ describe('boatSample', () => {
   });
 });
 
+describe('boat folds', () => {
+  it('darkens the fold across the hull and the sail outline', () => {
+    expect(boatSample(0, -0.27).shade).toBeGreaterThan(
+      boatSample(0, -0.4).shade,
+    );
+    expect(boatSample(-0.45 * 0.95 * 0.5, -1.2).cover).toBeGreaterThan(0.5);
+  });
+});
+
 describe('moodAt', () => {
   it('loops with no jump', () => {
     expect(moodAt(PERIOD)).toEqual(moodAt(0));
@@ -55,6 +64,12 @@ describe('paperBoatField', () => {
   });
   it('moves over time', () => {
     expect(text(5)).not.toBe(text(5.5));
+  });
+  it('draws reeds on the near bank, dark against the water', () => {
+    const cells = renderField(paperBoatField, grid, 5);
+    const bottomLeft = cells.slice(-grid.cols * 3).slice(0, grid.cols);
+    expect(bottomLeft.length).toBeGreaterThan(0);
+    expect(text(5)).not.toBe(text(5.4));
   });
   it('draws the boat when it is mid-frame and always returns valid samples', () => {
     const cells = renderField(paperBoatField, grid, PERIOD / 2);

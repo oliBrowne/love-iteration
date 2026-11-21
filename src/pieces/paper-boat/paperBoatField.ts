@@ -386,6 +386,72 @@ function fireflies(
   return sample;
 }
 
+/** Reeds on the near bank, swaying, with a dragonfly hovering over them by day. */
+function bank(
+  base: FieldSample,
+  x: number,
+  y: number,
+  aspect: number,
+  u: number,
+): FieldSample {
+  if (y < 0.7) return base;
+  let sample = base;
+  const dark = lerpRgb([14, 22, 24], mood.horizon, 0.1);
+  for (let i = 0; i < 14; i++) {
+    const left = i < 7;
+    const h = hash2(i, 3, 77);
+    const bx = left
+      ? 0.01 + 0.17 * hash2(i, 1, 77)
+      : 0.84 + 0.15 * hash2(i, 1, 77);
+    const len = 0.14 + 0.2 * h;
+    const up = 0.98 - y;
+    if (up < 0 || up > len) continue;
+    const k = up / len;
+    const sway = 0.012 * k * k * Math.sin(TAU * (u + h) * (1 + (i % 2)));
+    const cx = bx + (left ? 0.03 : -0.03) * k + sway;
+    const width = 0.011 * (1 - 0.7 * k) + 0.003;
+    let cover = clamp01((width - Math.abs((x - cx) * aspect)) / 0.004);
+    if (i % 3 === 0 && k > 0.72 && k < 0.88) {
+      cover = Math.max(
+        cover,
+        clamp01((0.016 - Math.abs((x - cx) * aspect)) / 0.004),
+      );
+    }
+    if (cover > 0) {
+      sample = over(
+        sample,
+        0.03 + 0.05 * mood.lum,
+        lightRgb(dark, 0.8 + 0.5 * k),
+        cover,
+      );
+    }
+  }
+  // A dragonfly by day: body, and wings that blur between two positions.
+  const day = 1 - clamp01(mood.stars * 4 + (1 - mood.lum) * 0.6);
+  if (day > 0.05) {
+    const fx =
+      0.2 + 0.07 * Math.sin(TAU * 2 * u) + 0.02 * Math.sin(TAU * 7 * u);
+    const fy = 0.74 + 0.03 * Math.sin(TAU * 3 * u + 1);
+    const dx = (x - fx) * aspect;
+    const dy = y - fy;
+    const body = clamp01(
+      (0.004 - Math.hypot(Math.max(0, Math.abs(dx) - 0.012), dy)) / 0.002,
+    );
+    const flap = Math.sin(TAU * 40 * u) > 0 ? 1 : 0.6;
+    const wing = clamp01(
+      (0.012 - Math.hypot((Math.abs(dx) - 0.004) * 0.8, (dy + 0.007) / flap)) /
+        0.004,
+    );
+    sample = over(
+      sample,
+      0.85,
+      [120, 220, 220],
+      Math.max(body, wing * 0.45) * day,
+    );
+  }
+  return sample;
+}
+
 /** The whole picture: a paper boat drifting across a river through one long day, then looping. */
 export const paperBoatField: Field = (x, y, t, aspect) => {
   prepare(t, aspect);
@@ -420,5 +486,6 @@ export const paperBoatField: Field = (x, y, t, aspect) => {
       clamp01((0.1 * pose.size - d) / (0.05 * pose.size)) * mood.lantern,
     );
   }
+  sample = bank(sample, x, y, aspect, u);
   return fireflies(sample, x, y, aspect, u);
 };

@@ -25,6 +25,8 @@ export function boatSample(x: number, y: number): BoatSample {
     if (hullCover > cover) {
       cover = hullCover;
       shade = (y < -0.27 ? 0.2 : 0.55) + (x > 0 ? 0.1 : 0);
+      // The fold across the hull, a thin darker line.
+      if (Math.abs(y + 0.27) < 0.022) shade = Math.min(1, shade + 0.3);
     }
   }
 
@@ -34,6 +36,9 @@ export function boatSample(x: number, y: number): BoatSample {
     if (sailCover > cover) {
       cover = sailCover;
       shade = Math.abs(x) < 0.04 ? 0.05 : x < 0 ? 0.1 : 0.55;
+      // A second fold on the lit side, and a crisp darker edge along the sail's outline.
+      if (Math.abs(x + 0.45 * half) < 0.025) shade = 0.4;
+      if (half - Math.abs(x) < 0.05) shade = Math.min(1, shade + 0.25);
     }
   }
 
