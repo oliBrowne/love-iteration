@@ -1937,3 +1937,9 @@
 - Verified: typecheck, lint, vitest (514), format:check, build, roadmap check/tests; new unit tests for the folds and the bank. Looked at the field as text at 160x50 (reeds read as dark silhouettes along the bottom corners) and in Chromium at 320px and 1100px with and without reduced motion: no overflow, no console errors. I could not get a confident look at the mid-loop moments in the browser screenshots, so the L320 box stays unchecked.
 - Next: L320 pass 4 — a final review of every phase (fish leap, dusk, night) at phone width, a check that the dragonfly and reeds read at 320px, then tick the box if it meets the craft bar.
 - Blockers: none. The scheduled prompt's target for today was 11 tasks, but CLAUDE.md and docs/DAILY-RUN.md say one task per run with multi-day pieces; this run did one pass on the next task only.
+
+## 2026-11-22 — L320: Paper boat on a slow river (pass 4 of several)
+- Changed: the boat is about 15–35% larger depending on screen shape (biggest gain on phones), and its reflection is fainter so the pale hull separates from the water instead of merging with its mirror image.
+- Verified: typecheck, lint, vitest, format:check, build, roadmap check/tests. Looked at the real build in Chromium at 320px at ~8s and ~24s (dusk): no horizontal overflow, no console errors. The boat now reads as a clear shape, but at 320px the ASCII grid is still coarse and the scene remains fairly dark, so I did not judge it at the craft bar. The L320 box stays unchecked.
+- Next: L320 pass 5 — raise overall contrast of the sky/water at phone width, make the fish leap and its rings clearer, then tick the box if it meets the craft bar.
+- Blockers: none. The scheduled prompt's target for today was 8 tasks, but CLAUDE.md and docs/DAILY-RUN.md say one task per run with multi-day pieces; this run did one pass only.

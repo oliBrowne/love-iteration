@@ -282,7 +282,7 @@ function water(
             : [mirrored.sample.r, mirrored.sample.g, mirrored.sample.b],
           0.65,
         ),
-        mirrored.cover * 0.55 * fade * (1 - 0.4 * crest),
+        mirrored.cover * 0.4 * fade * (1 - 0.4 * crest),
       );
     }
     // Wake: two soft lines spreading behind the boat, gone before the boat leaves the frame.

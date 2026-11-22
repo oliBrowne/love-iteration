@@ -170,7 +170,7 @@ export interface BoatPose {
 /** Where the boat is. It starts and ends fully out of frame, so the loop has no seam. */
 export function boatPose(t: number, aspect: number): BoatPose {
   const progress = (((t % PERIOD) + PERIOD) % PERIOD) / PERIOD;
-  const size = Math.min(0.115, Math.max(0.045, aspect * 0.2));
+  const size = Math.min(0.13, Math.max(0.05, aspect * 0.27));
   const margin = (1.5 * size) / Math.max(aspect, 0.1) + 0.05;
   const turn = Math.PI * 2 * progress;
   return {
