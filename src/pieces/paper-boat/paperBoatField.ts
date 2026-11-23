@@ -322,10 +322,10 @@ function water(
       const dx = (x - cx) * aspect;
       const dy = (y - cy) / 0.32;
       const d = Math.hypot(dx, dy);
-      const line = Math.exp(-(((d - radius) / 0.008) ** 2));
+      const line = Math.exp(-(((d - radius) / 0.011) ** 2));
       sample = glow(
         sample,
-        line * 0.55 * clamp01(1 - age / 2.6) * (1 - ring * 0.4),
+        line * 0.9 * clamp01(1 - age / 2.6) * (1 - ring * 0.4),
         [255, 240, 230],
       );
     }
@@ -348,14 +348,14 @@ function leap(
   const fy = 0.76 - 0.17 * arc;
   const dx = (x - fx) * aspect;
   const dy = y - fy;
-  const body = clamp01((0.028 - Math.hypot(dx * 0.8, dy * 1.5)) / 0.01);
+  const body = clamp01((0.04 - Math.hypot(dx * 0.7, dy * 1.4)) / 0.012);
   let sample = over(base, 0.95, [255, 214, 214], body);
   for (let i = 0; i < 6; i++) {
     const h = hash2(i, 5, 2);
     const ex = fx + (h - 0.5) * 0.09 * (0.3 + p);
     const ey = fy + 0.02 + 0.05 * (hash2(i, 6, 2) * p);
     const d = Math.hypot((x - ex) * aspect, y - ey);
-    sample = glow(sample, clamp01((0.011 - d) / 0.006) * 0.8, [255, 245, 240]);
+    sample = glow(sample, clamp01((0.015 - d) / 0.007) * 0.9, [255, 245, 240]);
   }
   return sample;
 }
@@ -487,5 +487,11 @@ export const paperBoatField: Field = (x, y, t, aspect) => {
     );
   }
   sample = bank(sample, x, y, aspect, u);
-  return fireflies(sample, x, y, aspect, u);
+  return lift(fireflies(sample, x, y, aspect, u));
 };
+
+/** Lifts the mid-tones so thin characters give way to denser ones; darks and brights stay put. */
+function lift(sample: FieldSample): FieldSample {
+  const b = clamp01(sample.brightness);
+  return { ...sample, brightness: Math.pow(b, 0.72) };
+}

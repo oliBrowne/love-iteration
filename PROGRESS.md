@@ -1943,3 +1943,9 @@
 - Verified: typecheck, lint, vitest, format:check, build, roadmap check/tests. Looked at the real build in Chromium at 320px at ~8s and ~24s (dusk): no horizontal overflow, no console errors. The boat now reads as a clear shape, but at 320px the ASCII grid is still coarse and the scene remains fairly dark, so I did not judge it at the craft bar. The L320 box stays unchecked.
 - Next: L320 pass 5 — raise overall contrast of the sky/water at phone width, make the fish leap and its rings clearer, then tick the box if it meets the craft bar.
 - Blockers: none. The scheduled prompt's target for today was 8 tasks, but CLAUDE.md and docs/DAILY-RUN.md say one task per run with multi-day pieces; this run did one pass only.
+
+## 2026-11-23 — L320: Paper boat on a slow river (pass 5 of several)
+- Changed: mid-tones are lifted so the sky and water use denser characters and read brighter at phone width; the fish is larger and its splash drops and rings are stronger.
+- Verified: typecheck, lint, vitest, format:check, build, roadmap check/tests. Looked at the running piece in Chromium at 320px and 1100px at ~6s, ~18s (fish leap), ~24s and ~32s: clearly denser and brighter, no overflow. The L320 box stays unchecked: the near-bank and night phase still read dim, and the fish is still small at 320px.
+- Next: L320 pass 6 — brighten the night phase and near bank, check the fish leap at 320px, then tick the box if it meets the craft bar.
+- Blockers: none. Today's target was 1 task, done as one pass on L320 (per CLAUDE.md, pieces span several runs).
