@@ -98,15 +98,15 @@ export const MOODS: readonly Mood[] = [
     lum: 0.66,
   },
   {
-    top: [30, 36, 90],
-    horizon: [95, 95, 160],
+    top: [44, 52, 118],
+    horizon: [120, 118, 190],
     sunY: 0.56,
     sunAlpha: 0,
     moonAlpha: 1,
     stars: 1,
     lantern: 1,
     fireflies: 1,
-    lum: 0.55,
+    lum: 0.68,
   },
 ];
 

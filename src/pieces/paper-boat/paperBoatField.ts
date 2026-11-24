@@ -348,14 +348,14 @@ function leap(
   const fy = 0.76 - 0.17 * arc;
   const dx = (x - fx) * aspect;
   const dy = y - fy;
-  const body = clamp01((0.04 - Math.hypot(dx * 0.7, dy * 1.4)) / 0.012);
+  const body = clamp01((0.06 - Math.hypot(dx * 0.6, dy * 1.2)) / 0.014);
   let sample = over(base, 0.95, [255, 214, 214], body);
   for (let i = 0; i < 6; i++) {
     const h = hash2(i, 5, 2);
     const ex = fx + (h - 0.5) * 0.09 * (0.3 + p);
     const ey = fy + 0.02 + 0.05 * (hash2(i, 6, 2) * p);
     const d = Math.hypot((x - ex) * aspect, y - ey);
-    sample = glow(sample, clamp01((0.015 - d) / 0.007) * 0.9, [255, 245, 240]);
+    sample = glow(sample, clamp01((0.022 - d) / 0.009) * 1, [255, 245, 240]);
   }
   return sample;
 }
@@ -396,7 +396,7 @@ function bank(
 ): FieldSample {
   if (y < 0.7) return base;
   let sample = base;
-  const dark = lerpRgb([14, 22, 24], mood.horizon, 0.1);
+  const dark = lerpRgb([22, 34, 36], mood.horizon, 0.22);
   for (let i = 0; i < 14; i++) {
     const left = i < 7;
     const h = hash2(i, 3, 77);
@@ -420,8 +420,8 @@ function bank(
     if (cover > 0) {
       sample = over(
         sample,
-        0.03 + 0.05 * mood.lum,
-        lightRgb(dark, 0.8 + 0.5 * k),
+        0.1 + 0.1 * mood.lum + 0.1 * k,
+        lightRgb(dark, 0.9 + 0.7 * k),
         cover,
       );
     }
