@@ -101,6 +101,19 @@ function sky(x: number, y: number, aspect: number, u: number): FieldSample {
     cloudy * 0.6,
   );
 
+  // Long thin cloud streaks lying along the horizon, lit from below, strongest at dusk.
+  const streak = fbm(x * aspect * 1.1 + 0.2 * Math.sin(TAU * u), y * 34, 3, 17);
+  const streakAmount =
+    clamp01((streak - 0.52) * 4) *
+    Math.exp(-(((y - HORIZON * 0.78) / 0.12) ** 2)) *
+    (0.35 + 0.65 * clamp01(mood.stars * 3));
+  sample = over(
+    sample,
+    mood.lum * 0.95,
+    lightRgb(mood.horizon, 1.15),
+    streakAmount * 0.55,
+  );
+
   // Stars come out as the light goes, each twinkling on its own beat.
   const cellX = Math.floor(x * 70);
   const cellY = Math.floor(y * 90);
@@ -346,8 +359,10 @@ function leap(
   const arc = 4 * p * (1 - p);
   const fx = 0.73 + 0.1 * p;
   const fy = 0.76 - 0.17 * arc;
-  const dx = (x - fx) * aspect;
-  const dy = y - fy;
+  // On a tall, narrow screen the fish is drawn larger so it still reads.
+  const big = 1 + 0.7 * clamp01((1 - aspect) / 0.6);
+  const dx = ((x - fx) * aspect) / big;
+  const dy = (y - fy) / big;
   const body = clamp01((0.06 - Math.hypot(dx * 0.6, dy * 1.2)) / 0.014);
   let sample = over(base, 0.95, [255, 214, 214], body);
   for (let i = 0; i < 6; i++) {

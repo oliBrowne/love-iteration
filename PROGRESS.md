@@ -1955,3 +1955,9 @@
 - Verified: typecheck, lint, vitest (514), format:check, build, roadmap check/tests. Looked at the real build in Chromium at 320px (night, ~34s) and 1100px (fish leap, ~18s): no horizontal overflow, no console errors; the fish now reads clearly on desktop. The L320 box stays unchecked: the sky is still sparse at 320px and the fish leap was not checked at phone width.
 - Next: L320 pass 7 — check the fish leap at 320px, add a little texture to the dusk sky, then tick the box if it meets the craft bar.
 - Blockers: none. Today's target was 9 tasks, but CLAUDE.md and docs/DAILY-RUN.md say one task per run (a piece spans several runs), so this run did one pass on L320 only.
+
+## 2026-11-25 — L320: Paper boat on a slow river (pass 7, finished)
+- Changed: long thin cloud streaks now lie along the horizon and glow most at dusk, and the fish is drawn up to 70% larger on narrow phone screens so its leap reads.
+- Verified: typecheck, lint, vitest, format:check, build, roadmap check/tests. Looked at the real build in Chromium at 320px at ~18s (fish leap and rings clearly visible) and ~24s (dusk streaks, lantern, night stars arriving): no horizontal overflow, no console errors. With the earlier passes (folds, reeds, dragonfly, brighter night, loop) the piece now meets the craft bar, so the L320 box is ticked.
+- Next: next unchecked task per `node scripts/roadmap.mjs next`.
+- Blockers: none. Today's target was 6 tasks, but CLAUDE.md and docs/DAILY-RUN.md say one task per run, so this run did one task only.
