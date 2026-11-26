@@ -362,7 +362,7 @@ The remaining sync and release tasks were dropped on 2026-11-13 when the project
 ## 13 The collection
 
 - [x] L320 ASCII piece: Paper boat on a slow river — Done when a boat drifts across rippling water and loops seamlessly.
-- [ ] L321 three.js piece: Drifting lanterns — Done when glowing paper lanterns rise through a dusk sky and can be nudged by touch.
+- [x] L321 three.js piece: Drifting lanterns — Done when glowing paper lanterns rise through a dusk sky and can be nudged by touch.
 - [ ] L322 ASCII piece: Two windows at night — Done when two lit windows far apart share one sky with a slow shooting star.
 - [ ] L323 three.js piece: Two stars in orbit — Done when two small stars circle each other and leave soft trails.
 - [ ] L324 ASCII piece: Rain on the window — Done when drops run down the glass at different speeds over a blurred street.

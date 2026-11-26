@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import { Lanterns } from '../pieces/lanterns/Lanterns';
 import { PaperBoat } from '../pieces/paper-boat/PaperBoat';
 
 export type PieceMedium = 'ascii' | 'three';
@@ -26,6 +27,13 @@ export const pieces: readonly Piece[] = [
     medium: 'ascii',
     caption: 'One small boat, one long day, drifting.',
     component: PaperBoat,
+  },
+  {
+    id: 'lanterns',
+    title: 'Drifting lanterns',
+    medium: 'three',
+    caption: 'Light one, then a crowd. Touch the sky to nudge them.',
+    component: Lanterns,
   },
 ];
 

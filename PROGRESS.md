@@ -1961,3 +1961,9 @@
 - Verified: typecheck, lint, vitest, format:check, build, roadmap check/tests. Looked at the real build in Chromium at 320px at ~18s (fish leap and rings clearly visible) and ~24s (dusk streaks, lantern, night stars arriving): no horizontal overflow, no console errors. With the earlier passes (folds, reeds, dragonfly, brighter night, loop) the piece now meets the craft bar, so the L320 box is ticked.
 - Next: next unchecked task per `node scripts/roadmap.mjs next`.
 - Blockers: none. Today's target was 6 tasks, but CLAUDE.md and docs/DAILY-RUN.md say one task per run, so this run did one task only.
+
+## 2026-11-26 — L321: Drifting lanterns
+- Changed: the first three.js piece (`src/pieces/lanterns/`, registered as "Drifting lanterns"). A 40s loop over rolling hills with a lit cottage window: dusk, gather (lanterns lit one by one), release (a crowd lifts together as night and stars arrive and a moon glows), ascent (they fade out at the top). Layers: gradient sky, twinkling stars, moon with halo, three hills, paper lanterns shaded base-to-top with flame glow and flicker, falling embers. Touch: a swipe pushes nearby lanterns along it and a tap puffs them away; they flare, then spring back to their path. Reduced motion holds the crowd mid-release; no WebGL shows the shared still.
+- Verified: typecheck, lint, vitest, format:check, build, roadmap check/tests; new unit tests for the schedule (seamless loop, crowd at release), nudge spring and hills. Looked at the real build in Chromium (software WebGL) at 320px and 1200px at ~3s, ~12s, ~21s, with a drag nudge at phone width, and with reduced motion: no horizontal overflow, no console errors. After the first look I shrank the lanterns and softened the glow, which was blowing out.
+- Next: L322 ASCII piece: Two windows at night.
+- Blockers: none. Today's target was 1 task.
