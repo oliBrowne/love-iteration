@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react';
 import { Lanterns } from '../pieces/lanterns/Lanterns';
 import { PaperBoat } from '../pieces/paper-boat/PaperBoat';
+import { TwoWindows } from '../pieces/two-windows/TwoWindows';
 
 export type PieceMedium = 'ascii' | 'three';
 
@@ -34,6 +35,13 @@ export const pieces: readonly Piece[] = [
     medium: 'three',
     caption: 'Light one, then a crowd. Touch the sky to nudge them.',
     component: Lanterns,
+  },
+  {
+    id: 'two-windows',
+    title: 'Two windows at night',
+    medium: 'ascii',
+    caption: 'Far apart, one sky. Wait for the shooting star.',
+    component: TwoWindows,
   },
 ];
 
