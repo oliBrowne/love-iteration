@@ -120,11 +120,22 @@ function sky(x: number, y: number, aspect: number): FieldSample {
     clamp01((fbm(x * aspect * 5, y * 9, 4, 5) - 0.35) * 2.2);
   sample = glow(sample, band * 0.5 * night.stars, [150, 150, 230]);
 
+  // A soft nebula: drifting wisps of rose and violet low in the sky.
+  const wisp = clamp01(
+    (fbm(x * aspect * 2.6 + 4, y * 4.2, 4, 17) - 0.42) * 2.4,
+  );
+  const wispBand = Math.exp(-(((y - 0.38) / 0.22) ** 2));
+  sample = glow(
+    sample,
+    wisp * wispBand * 0.28 * night.stars,
+    lerpRgb([150, 90, 190], [230, 120, 170], clamp01(x * 1.3)),
+  );
+
   // Stars: many small, a few large with a little cross of light.
   const cx = Math.floor(x * aspect * 60);
   const cy = Math.floor(y * 60);
   const h = hash2(cx, cy, 9);
-  if (h > 0.962 && y < SKY_END - 0.04) {
+  if (h > 0.94 && y < SKY_END - 0.04) {
     const beat = 3 + (Math.floor(h * 1000) % 5);
     const twinkle = 0.5 + 0.5 * Math.sin(TAU * (beat * u + h * 40));
     const big = h > 0.99;
@@ -165,6 +176,19 @@ function farHills(
     [tint[0] * (0.8 + 0.4 * leaf), tint[1] * (0.8 + 0.4 * leaf), tint[2]],
     clamp01((y - ridge) / 0.006 + 0.4),
   );
+  // A few tiny far-off lights along the ridge.
+  for (const fx of [0.33, 0.47, 0.58, 0.7]) {
+    const fy = farRidge(fx, aspect) + 0.012 + 0.01 * hash2(fx * 100, 2, 4);
+    const d = Math.hypot((x - fx) * aspect, (y - fy) * 1.6);
+    const flick =
+      0.75 +
+      0.25 * Math.sin(TAU * (2 + (Math.floor(fx * 10) % 3)) * u + fx * 20);
+    sample = glow(
+      sample,
+      Math.exp(-(d * d) / 0.00012) * 0.9 * night.stars * flick,
+      [255, 214, 150],
+    );
+  }
   const mist =
     fbm(x * aspect * 2 + 0.2 * Math.sin(TAU * u), y * 14, 3, 21) *
     Math.exp(-(((y - ridge - 0.02) / 0.05) ** 2));
@@ -289,6 +313,30 @@ function houseBody(
       );
     }
   }
+  // A door beside the window, and a roof edge catching the last light.
+  const doorX = dx - (tall ? -0.95 : 1.1) * s;
+  if (Math.abs(doorX) < 0.32 * s && y > h.base - 1.25 * s && y <= h.base) {
+    out = over(out, 0.22 + 0.05 * grain, [44, 30, 52], 1);
+    if (Math.hypot(doorX - 0.18 * s, y - (h.base - 0.6 * s)) < 0.04 * s) {
+      out = over(out, 0.8, [255, 210, 130], 1);
+    }
+  }
+  const roofLine = Math.abs(y - (wallTop - (tall ? 0.35 : 0) * s));
+  if (roofLine < 0.004 && Math.abs(dx) < bodyW / 2 + 0.3 * s) {
+    out = over(out, 0.7, [150, 130, 190], 0.6 * (1 - night.depth * 0.5));
+  }
+  // A low picket fence in front.
+  const fx = Math.abs(dx) - bodyW / 2;
+  if (
+    fx > 0.2 * s &&
+    fx < 2.2 * s &&
+    y > h.base - 0.5 * s &&
+    y <= h.base + 0.004
+  ) {
+    const post = Math.abs(((fx / (0.28 * s)) % 1) - 0.5) < 0.2;
+    const rail = Math.abs(y - (h.base - 0.25 * s)) < 0.003;
+    if (post || rail) out = over(out, 0.3, [62, 52, 100], 1);
+  }
   return out;
 }
 
@@ -368,8 +416,8 @@ function windowGlow(
   // A pool of light on the ground just below the sill.
   const pool =
     Math.exp(-((dx / (2.2 * s)) ** 2)) *
-    Math.exp(-(((y - h.base) / (0.5 * s)) ** 2));
-  out = glow(out, level * 0.25 * pool, WARM);
+    Math.exp(-(((y - h.base - 0.5 * s) / (0.9 * s)) ** 2));
+  out = glow(out, level * 0.4 * pool, WARM);
   return out;
 }
 
@@ -408,8 +456,8 @@ function smoke(
     out = over(
       out,
       0.35 + 0.25 * puff,
-      [150, 150, 190],
-      body * clamp01((puff - 0.25) * 2.4) * fade * 0.55 * night.right,
+      [175, 172, 215],
+      body * clamp01((puff - 0.25) * 2.4) * fade * 0.85 * night.right,
     );
   }
   return out;
